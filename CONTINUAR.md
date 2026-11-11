@@ -18,18 +18,18 @@ UI clara, branco mineral e azul acinzentado, alumínio acetinado, preto de instr
 
 ## Estado atual
 
-Criados: SKILL.md, referências, metadados, instalador, componentes, laboratório React e testes. O laboratório contém controles operáveis por teclado, gráfico SVG, comparador de cantos e shader opcional com fallback CSS. O repositório privado no GitHub foi criado em `jhosephebtc/jhosephe`. A skill passou na validação de frontmatter; quatro testes unitários, quatro testes de navegador e o build passaram após a adição do comparador de cantos.
+Criados: SKILL.md, referências, metadados, instalador, componentes, laboratório React e testes. O laboratório contém controles operáveis por teclado, gráfico SVG, comparador de cantos e shader opcional com fallback CSS. O repositório privado `jhosephebtc/jhosephe` está vinculado à pasta local `C:/Users/Administrador/Documents/ChatGPT/jhosephe`; a branch principal foi enviada ao GitHub. A skill passou na validação de frontmatter; quatro testes unitários, quatro testes de navegador e o build passaram após a adição do comparador de cantos.
 
 Python para leitura dos vídeos e validação YAML foi instalado apenas na pasta de pesquisa fora do repositório. Os executáveis ffmpeg do PATH apontavam para um destino inexistente; a análise utilizou uma ferramenta instalada nessa pasta.
 
 ## Próximos passos
 
-1. Confirmar que o conteúdo está sincronizado com o repositório privado e que a pasta local é um projeto separado.
+1. Se a pasta ainda não estiver na lista de projetos do Codex, adicioná-la pela interface selecionando `C:/Users/Administrador/Documents/ChatGPT/jhosephe`.
 2. Avaliar a skill em trabalhos reais, expandir receitas e testar dispositivos físicos e outros navegadores. Não presumir desempenho de hardware a partir dos testes locais.
 
 ## Localização de trabalho
 
-Este diretório é o novo pacote. Os artefatos de pesquisa permaneceram fora da distribuição, na pasta temporária de trabalho anterior. Não copiar material de referência nem dados de cartões para a demonstração.
+O projeto fica em `C:/Users/Administrador/Documents/ChatGPT/jhosephe`, com histórico Git independente. Os artefatos de pesquisa permaneceram fora da distribuição, na pasta temporária de trabalho anterior. Não copiar material de referência nem dados de cartões para a demonstração.
 
 ## Comando de retomada
 

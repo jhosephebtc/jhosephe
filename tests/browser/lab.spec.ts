@@ -23,6 +23,11 @@ test('o controle, o slider, o switch e o diálogo são operáveis por teclado', 
   await page.keyboard.press('Escape');
   await expect(page.getByRole('dialog')).toHaveCount(0);
   await expect(trigger).toBeFocused();
+  const smoothing = page.getByRole('slider', { name: 'Suavização' });
+  await expect(smoothing).toHaveValue('60');
+  await smoothing.focus();
+  await page.keyboard.press('End');
+  await expect(smoothing).toHaveValue('100');
 });
 
 test('movimento reduzido deixa a superfície estática e controles visíveis', async ({ page }) => {
