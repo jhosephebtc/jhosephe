@@ -1,0 +1,6 @@
+interface:
+  display_name: "jhosephe"
+  short_description: "Interfaces táteis com luz, vidro e movimento"
+  default_prompt: "Use $jhosephe para construir uma interface React clara e tátil, com materiais realistas, cantos contínuos e estados acessíveis."
+policy:
+  allow_implicit_invocation: true
