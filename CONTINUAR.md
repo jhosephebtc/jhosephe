@@ -1,36 +1,26 @@
-# Continuidade — jhosephe
+# Continuity — jhosephe
 
-## Objetivo e autorização
+Updated November 11, 2026. Project: C:/Users/Administrador/Documents/ChatGPT/jhosephe. Remote: https://github.com/jhosephebtc/jhosephe. Do not modify OrionVision.
 
-Criar um novo repositório independente para a super skill **jhosephe**, destinada ao desenvolvimento de interfaces React, CSS e shadcn/ui. Não modificar a interface nem os arquivos do projeto original. O usuário pediu identidade própria, sem nomes de autores de referências, uso de recursos do **Paper, incluindo shaders**, e fonte **Geist** como padrão.
+## Current approved direction
+Light monochrome throughout. Geist Sans only, including values and code. Subtle relief and shadows instead of contrasting separators. Glass, liquid glass on buttons, skeuomorphic volume. NO metal. Latest correction: sliders must be firm tactile glass without liquid distortion. Dials need stronger physical depth inspired by vintage instruments. Grab/grabbing cursor on dials/sliders.
 
-## Direção aprovada
+## Implemented
+Original skill and references; reusable React components; light solar panel using device geolocation and local calculations; laboratory at /lab; catalog at / and /components with eight components, previews, customization, code views, search and categories. Static shadcn registry generated from real assets/ui sources by scripts/build-registry.mjs. /installation documentation. Vercel build/route configuration in vercel.json.
 
-UI clara, branco mineral e azul acinzentado, alumínio acetinado, preto de instrumento e dourado pontual. Combinar skeuomorfismo com vidro: painéis sólidos para leitura, vidro em navegação/sobreposições, controles físicos onde a função justifica. Cantos contínuos com raio e smoothing separados; referência inicial de 60%. Pressão imediata, gestos diretos, retorno amortecido e animação reduzida acessível. Gráficos, barras e microinterações em SVG devem comunicar dados reais; não inventar métricas.
+## Latest user scope still in progress
+Translate all UI to American English. Add Calendar, DatePicker, BarSlider, Menu, Toast, Gallery, Input, SearchInput, DataForm. Improve client navigation between components without full page reloads. Reinforce physical glass slider and dial. Update the skill with these rules and new reference observations. Publish GitHub and Vercel; user has authorized team access.
 
-## Material já analisado
+## Work in progress outside repository
+Staging: C:/Users/Administrador/.codex/visualizations/2026/11/10/01a1c6ff-640d-7ee2-9557-32bcfee84588/solar-work. New components dial-v2.tsx, bar-slider.tsx, calendar.tsx, date-picker.tsx, menu.tsx, toast.tsx, gallery.tsx, input.tsx, search-input.tsx, data-form.tsx exist there but are NOT yet integrated. New library.spec.ts is also staged, not copied. Do not rerun apply_catalog.py: it was applied already and is not idempotent.
 
-- 19 imagens fornecidas: console automotivo, exteriores e cockpit, instrumentos com barras, botões claros, navegação em vidro, gráficos, materiais de cartão/carteira, geometria e luz.
-- 3 vídeos inspecionados por contact sheets: feedback de hover e tooltip (9,32s), construção geométrica de teclado (4,65s), cartão e alteração de estado (15,70s). Não interpretar um vídeo de edição como prova de comportamento em produção.
-- HTML salvo: 11 textos visíveis de posts extraídos como referência; scripts não executados.
-- Skills de design, animação, performance, gestos, mobile, composição de movimento e smooth corners consultadas. A síntese deve ser original, sem copiar personas ou promessas técnicas não verificadas.
-- Varredura em 700 arquivos de src/components/lib da base consultada; 345 com padrões relevantes. Há tokens compartilhados, paleta clara salvia, formas por superelipse amostrada, press feedback e foco. Revisão aprofundada de tokens, botão, cantos e CSS de interação; não houve auditoria visual de todas as telas em execução.
+Dependencies react-day-picker 9.14.0 and Radix dropdown-menu/popover/toast installed. Build passed after catalog creation; thirteen unit tests passed. Nine previous browser tests passed before catalog; browser tests must be rerun and expanded. Real shadcn CLI installation still needs end-to-end verification. The solar sr-only and skip-link global CSS was restored after routing split.
 
-## Estado atual
+## Deployment
+Vercel team team_7mZI7yP9jX3yNNc24MG5oTpV (0xjhosephe-2023s-projects) was authorized by the user successfully. list_projects(search=jhosephe) returned empty. Create Git-connected project from pushed main, then verify production readiness and public registry. Do not invent deployment links.
 
-Criados: SKILL.md, referências, metadados, instalador, componentes, laboratório React e testes. O laboratório contém controles operáveis por teclado, gráfico SVG, comparador de cantos e shader opcional com fallback CSS. O repositório privado `jhosephebtc/jhosephe` está vinculado à pasta local `C:/Users/Administrador/Documents/ChatGPT/jhosephe`; a branch principal foi enviada ao GitHub. A skill passou na validação de frontmatter; quatro testes unitários, quatro testes de navegador e o build passaram após a adição do comparador de cantos.
+## Reference video
+Polestar.mp4 (146.75 seconds, 1920x1080) sampled as contact sheets in research/polestar-sheet.jpg and research/polestar-console.jpg. Frames show material prototypes, modular console, raised controls, quiet scales and consistent directional lighting. Do not infer demonstrated interactive behaviors from a rendered image. Preserve mono/no-metal despite colors and physical metal in sources. The newest reference images show vintage tuner proportions, lever controls, scales and dense modular console.
 
-Python para leitura dos vídeos e validação YAML foi instalado apenas na pasta de pesquisa fora do repositório. Os executáveis ffmpeg do PATH apontavam para um destino inexistente; a análise utilizou uma ferramenta instalada nessa pasta.
-
-## Próximos passos
-
-1. Se a pasta ainda não estiver na lista de projetos do Codex, adicioná-la pela interface selecionando `C:/Users/Administrador/Documents/ChatGPT/jhosephe`.
-2. Avaliar a skill em trabalhos reais, expandir receitas e testar dispositivos físicos e outros navegadores. Não presumir desempenho de hardware a partir dos testes locais.
-
-## Localização de trabalho
-
-O projeto fica em `C:/Users/Administrador/Documents/ChatGPT/jhosephe`, com histórico Git independente. Os artefatos de pesquisa permaneceram fora da distribuição, na pasta temporária de trabalho anterior. Não copiar material de referência nem dados de cartões para a demonstração.
-
-## Comando de retomada
-
-“Leia CONTINUAR.md e SKILL.md neste repositório. Continue a implementação e validação da jhosephe a partir do estado real dos arquivos, incluindo Paper shaders. Preserve o projeto original. Atualize este checkpoint ao terminar.”
+## Local preview
+npm run dev serves http://127.0.0.1:4173/components. Server session 14804 was started during this task. npm run check builds the site and registry. Browser tests need PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH set to C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe.

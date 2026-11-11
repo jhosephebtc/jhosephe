@@ -2,15 +2,15 @@
 
 ## Adoção
 
-Leia as convenções locais antes de instalar bibliotecas. Em uma aplicação shadcn/ui existente, mapeie os papéis visuais para os tokens semânticos já utilizados (`background`, `foreground`, `card`, `primary`, `muted`, `border`, `ring` e pares de foreground). Adapte a sintaxe de cor e o Tailwind à versão do projeto. Evite substituir toda a folha de tema ou impor uma fonte quando o usuário especificar outra.
+Leia as convenções locais antes de instalar bibliotecas. Em uma aplicação shadcn/ui existente, mapeie os papéis visuais para os tokens semânticos já utilizados (`background`, `foreground`, `card`, `primary`, `muted`, `border`, `ring` e pares de foreground). Mantenha esses papéis em branco, cinza neutro e preto, inclusive primary, destructive e ring; expresse o significado do estado também em texto e ícone. Adapte a sintaxe de cor e o Tailwind à versão do projeto. Evite substituir toda a folha de tema ou impor uma fonte quando o usuário especificar outra.
 
-Para projeto novo use Geist Sans e Geist Mono. Em ambiente Vite, os pacotes de fonte variável podem ser importados como CSS local; em ambientes com carregador de fontes próprio, use o mecanismo do framework. Mantenha fallback do sistema. O laboratório é um exemplo, não um requisito para uso da skill.
+Para projeto novo use Geist Sans. Em ambiente Vite, os pacotes de fonte variável podem ser importados como CSS local; em ambientes com carregador de fontes próprio, use o mecanismo do framework. Mantenha fallback do sistema, `font-kerning: normal` e tokens tipográficos por papel. Use [Tipografia e layout](typography-layout.md) para tracking, entrelinha, spacing e grids. O laboratório é um exemplo, não um requisito para uso da skill.
 
 ## Primitivas reutilizáveis
 
 Os arquivos em `assets/ui` foram pensados para cópia e adaptação: as faces e tokens são separados dos controles semânticos. Instale as dependências que os arquivos escolhidos realmente importam; não copie `node_modules`. Componentes de formulário e sobreposição se beneficiam de primitivas que já oferecem teclado, foco e ARIA.
 
-- `button`: botão nativo com variantes, foco fora da superfície e conteúdo em fluxo normal.
+- `button`: botão nativo glass com variantes semânticas e feedback liquid, foco fora da superfície e conteúdo em fluxo normal.
 - `smooth-shape`: path responsivo decorativo, com fallback por raio.
 - `slider` e `switch`: valor exposto para tecnologias assistivas; rótulo visível associado.
 - `dialog`: foco preso no diálogo, Escape, título acessível e retorno de foco ao gatilho.

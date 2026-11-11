@@ -1,7 +1,7 @@
 import { Component, lazy, Suspense, useEffect, useRef, useState, type ReactNode } from 'react';
 
 const Mesh = lazy(() => import('@paper-design/shaders-react').then(module => ({ default: module.MeshGradient })));
-const colors = ['#d6e0e4', '#f4f7f5', '#bacbd4', '#eef2ee'];
+const colors = ['#dedede', '#f6f6f6', '#c8c8c8', '#f1f1f1'];
 
 class ShaderBoundary extends Component<{ children: ReactNode }, { failed: boolean }> {
   state = { failed: false };

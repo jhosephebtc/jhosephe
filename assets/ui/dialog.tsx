@@ -5,8 +5,12 @@ import { cn } from './utils';
 
 export const Dialog = DialogPrimitive.Root;
 export const DialogTrigger = DialogPrimitive.Trigger;
-export const DialogTitle = DialogPrimitive.Title;
-export const DialogDescription = DialogPrimitive.Description;
+export function DialogTitle({ className, ...props }: ComponentPropsWithoutRef<typeof DialogPrimitive.Title>) {
+  return <DialogPrimitive.Title className={cn('jh-dialog-title', className)} {...props} />;
+}
+export function DialogDescription({ className, ...props }: ComponentPropsWithoutRef<typeof DialogPrimitive.Description>) {
+  return <DialogPrimitive.Description className={cn('jh-dialog-description', className)} {...props} />;
+}
 export const DialogClose = DialogPrimitive.Close;
 
 export function DialogContent({ className, children, ...props }: ComponentPropsWithoutRef<typeof DialogPrimitive.Content>) {

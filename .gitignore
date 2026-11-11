@@ -6,3 +6,7 @@ playwright-report/
 *.local
 .env*
 !.env.example
+
+.vercel/
+examples/lab/public/r/
+examples/lab/public/registry.json

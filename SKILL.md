@@ -1,24 +1,35 @@
 ---
 name: jhosephe
-description: Projetar, implementar e revisar interfaces web táteis em React, CSS e shadcn/ui, com UI clara, materiais realistas, vidro controlado, cantos contínuos e movimento responsivo. Use em novos componentes, sistemas visuais, refinamento visual e revisão de interação.
+description: Projetar, implementar e revisar interfaces web táteis em React, CSS e shadcn/ui, com tema claro monocromático, glass, liquid glass, skeuomorfismo, tipografia Geist Sans e grids precisos, cantos contínuos e movimento responsivo. Use em novos componentes, sistemas visuais, refinamento visual e revisão de interação.
 ---
 
 # jhosephe
 
-Construa interfaces que pareçam objetos bem fabricados e sejam simples de operar. A assinatura é luz fria suave, cinzas e brancos minerais, encaixes precisos, contraste legível e resposta imediata. A família padrão é Geist: Sans para interface e Mono para medições, linhas técnicas e código. O realismo deve explicar hierarquia e uso.
+Construa interfaces que pareçam objetos bem fabricados e sejam simples de operar. A assinatura é luz neutra suave, uma paleta acromática de branco, cinzas e preto, encaixes precisos, contraste legível e resposta imediata. Use Geist Sans, sem serifas, em toda a interface, inclusive instrumentos, números, escalas e legendas. Não use famílias serifadas nem monoespaçadas. Para números que mudam, use tabular-nums na própria Geist Sans. O realismo deve explicar hierarquia e uso.
+
+## Regras da identidade
+
+- **Sempre monocromática.** Use branco, cinzas neutros e preto em fundos, canvas, faces, gradientes, texturas, sombras, reflexos, foco, SVG e shaders. Fundos também são sempre monocromáticos. Não introduza azul, dourado ou acentos cromáticos. Estados usam contraste, forma, ícone e texto. Preserve as cores de acessibilidade escolhidas pelo sistema em forced-colors.
+- **Geist Sans em tudo.** Não use serifadas nem fontes mono. Ative o kerning da fonte, ajuste tracking por papel e tamanho e mantenha números de instrumentos estáveis. Confira o texto real, acentos, unidades e quebras antes de acertar a composição.
+- **Grid e espaçamento deliberados.** Defina colunas, margens, gutters e uma escala de espaço antes de posicionar peças. Alinhe rótulos, valores e controles a eixos compartilhados; use ajustes ópticos localizados, sem espaçamentos arbitrários.
+
+- **Tema claro integral.** Fundos, molduras, bases, visores e controles usam branco e cinzas claros. Grafite fica na informação. Não crie blocos escuros para simular instrumentos.
+- **Glass, liquid glass e skeuomorfismo.** Botões e sliders são de vidro, com reflexo localizado, pequena deformação na pressão/arraste e volume coerente. Não use metal, acabamento cromado nem Liquid Metal, inclusive em detalhes. Paper pode produzir luz acromática suave atrás do vidro. Links ghost podem permanecer sem face. Preserve fallback CSS legível e movimento reduzido.
+- **Separação por relevo.** Prefira respiro, planos, sombras de contato suaves e brilho interior. Divisórias decorativas são quase imperceptíveis; evite linhas contrastantes, molduras marcadas e grids que pareçam tabelas desenhadas. Foco, limites funcionais e escalas mantêm contraste suficiente.
 
 ## Decida antes de desenhar
 
 Identifique a tarefa, o componente, a frequência de uso e os dispositivos. Leia os tokens e primitivas existentes. Preserve a stack, a semântica e o escopo solicitado. Em projeto novo, use React + TypeScript + CSS e componentes compatíveis com shadcn/ui. Em projeto existente, adapte os tokens em vez de introduzir um segundo tema global.
 
-Defina um material dominante e um material secundário. O ponto de partida é mineral claro para conteúdo e vidro para superfícies que flutuam. Metal pode tornar um controle identificável; uma textura narrativa pode destacar um objeto. Barras e escalas devem comunicar dados reais; gráficos decorativos devem ser identificados como ilustração. Não transforme todas as regiões em controles volumétricos.
+Defina um material dominante e um material secundário. O ponto de partida é mineral claro para conteúdo; botões e sliders são de vidro. Vidro também serve às superfícies que flutuam. O relevo skeuomórfico vem da luz e da profundidade do próprio vidro; uma textura narrativa pode destacar um objeto. Barras e escalas devem comunicar dados reais; gráficos decorativos devem ser identificados como ilustração. Não transforme todas as regiões em controles volumétricos.
 
 ## Carregue apenas o necessário
 
 | Tarefa | Referência |
 | --- | --- |
-| Direção visual, composição, paleta e tipografia | [Linguagem visual](references/design-language.md) |
-| Skeuomorfismo, luz, vidro, metal e textura | [Materiais](references/materials.md) |
+| Direção visual, composição e paleta monocromática | [Linguagem visual](references/design-language.md) |
+| Kerning, tracking, hierarquia, espaçamento e grids | [Tipografia e layout](references/typography-layout.md) |
+| Skeuomorfismo, glass, liquid glass e relevo | [Materiais](references/materials.md) |
 | Radius, suavização, clipping e contorno | [Cantos contínuos](references/corners.md) |
 | Pressão, molas, gestos e transições | [Movimento tátil](references/motion.md) |
 | Linhas, barras e microinterações SVG | [Instrumentos e SVG](references/instruments.md) |
@@ -37,15 +48,15 @@ Defina um material dominante e um material secundário. O ponto de partida é mi
 6. **Movimento proporcional.** Faça a frequência e o propósito definirem a intensidade. Entrada rápida, saída curta, repouso estável. Estados de hover dependem da capacidade de hover. Respeite movimento reduzido também no JavaScript.
 7. **Acabamento resiliente.** Valide teclado, toque, zoom, texto longo, disabled, loading, erro, ausência de blur, transparência reduzida e cores forçadas. O sistema deve continuar compreensível sem os efeitos.
 
-Os valores sugeridos são defaults ajustáveis, não requisitos para produtos com outra densidade, identidade ou matriz de suporte.
+Os números sugeridos são pontos de partida ajustáveis à densidade e à matriz de suporte. A paleta monocromática é uma decisão explícita desta identidade; uma referência colorida não altera essa regra.
 
 ## Recursos reutilizáveis
 
-[assets/ui](assets/ui) contém CSS e componentes funcionais: Button, Surface, SmoothShape, Switch, Slider, Dial e Dialog. Leia [integração](references/react-shadcn.md) antes de copiá-los. A geometria usa uma dependência declarada; não exige outra skill. O laboratório do repositório exercita os mesmos arquivos, sem uma implementação paralela.
+[assets/ui](assets/ui) contém CSS e componentes funcionais: Button, SmoothShape, Switch, Slider, Dial, Dialog, InstrumentBars e ShaderSurface. Leia [integração](references/react-shadcn.md) antes de copiá-los. A geometria usa uma dependência declarada; não exige outra skill. O laboratório do repositório exercita os mesmos arquivos, sem uma implementação paralela.
 
 ## Fluxo de trabalho
 
-- Comece por estrutura, estados e tokens. Aplique material ao componente funcionando.
+- Comece por estrutura, estados, tokens, escala tipográfica e grid. Confira alinhamentos e relações de espaço com o conteúdo real. Aplique material ao componente funcionando.
 - Para novo sistema, estabeleça uma pequena amostra: superfície, ação, entrada de dados e sobreposição. Só propague depois de conferir esses quatro casos.
 - Para revisão, registre evidência por arquivo/linha ou captura. Diferencie erro funcional de preferência estética e de hipótese que ainda precisa de medição.
 - Para gesto ou transição, teste interrupção, cancelamento, reversão e redução de movimento. Meça frames quando houver indício de custo; não prometa GPU ou desempenho a partir de uma propriedade CSS.

@@ -4,7 +4,7 @@
 
 Use escalas de linhas finas, indicadores de barra, marcadores e valores como instrumentos: um número principal claro, unidade próxima e linhas secundárias discretas. A geometria e o espaçamento criam ritmo; não reduza texto importante a uma textura. Em dados reais, preserve zero, negativos, unidade e domínio de escala. Uma barra não deve sugerir que um limite é zero ou 100 quando não é.
 
-Uma ilustração editorial pode combinar pontos, linhas, tipografia monoespaçada, padrões ASCII e blocos. Identifique-a como decoração quando não carregar dados. Nunca anime uma métrica financeira para inventar valores, atrasar o valor real ou sugerir trabalho que não está acontecendo.
+Uma ilustração editorial pode combinar pontos, linhas, tipografia sans-serif com números tabulares, padrões ASCII e blocos. Identifique-a como decoração quando não carregar dados. Nunca anime uma métrica financeira para inventar valores, atrasar o valor real ou sugerir trabalho que não está acontecendo.
 
 ## SVG com propósito
 

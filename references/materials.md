@@ -1,37 +1,37 @@
-# Materiais e luz
+# Glass, liquid glass e skeuomorfismo
 
 ## Vocabulário
 
-| Material | Face | Borda e relevo | Situação adequada |
+| Material | Face | Profundidade | Uso |
 | --- | --- | --- | --- |
-| Mineral fosco | branco ou cinza levemente frio, cobertura alta | filete claro em cima e sombra curta | conteúdo e formulários |
-| Vidro | cor translúcida, com tinta suficiente | brilho fino e sombra de separação | barra flutuante, popover, camada transitória |
-| Metal acetinado | gradiente estreito de cinzas frios | realce e sombra de contato direcionais | dial, pegador ou acionador |
-| Plástico escuro | carvão com brilho controlado | contorno e luz difusa | face de instrumento ou ação de alto contraste |
-| Textura narrativa | detalhe superficial discreto | borda e sombra coerentes | objeto expressivo, com conteúdo fora da textura |
+| Mineral claro | branco ou cinza claro, cobertura alta | sombra de contato tênue | conteúdo e formulários |
+| Glass | vidro neutro translúcido com texto protegido | brilho interior estreito, lente e sombra suave | botões, sliders e superfícies flutuantes |
+| Liquid glass | vidro que responde ao toque | reflexo local, compressão mínima, retorno contínuo | interação pontual sem atrasar a ação |
+| Relevo skeuomórfico | planos claros encaixados | rebaixo, volume e iluminação coerente | dial, puxador e objeto manipulável |
 
-Uma luz dominante vinda do alto organiza todas as sombras da mesma cena. Diferencie sombra de contato, que é curta, de sombra ambiental, que é larga e fraca. Em repouso, o controle tem uma face. Ao pressionar, diminua o relevo e desloque a face poucos pixels ou reduza levemente a escala. Não esconda estado selecionado dentro de um reflexo.
+Não use metal, cromado, alumínio ou Liquid Metal, nem como acabamento. A identidade se apoia em vidro e relevo. O tema inteiro permanece claro, inclusive visor, moldura, base e fundos. Preto/grafite é tinta para a informação.
 
-## Sombra leve da interface clara
+## Luz e sombras
 
-A base consultada usa uma hierarquia muito discreta: controles próximos ao plano, superfícies com duas sombras suaves e sobreposições com dispersão maior, mas pouca opacidade. Os tokens `--jh-shadow-control`, `--jh-shadow-surface`, `--jh-shadow-overlay` e `--jh-shadow-pressed` em `assets/ui/theme.css` preservam esse ponto de partida. Em casos onde duas faces coincidem, mantenha apenas uma sombra externa; aplique-a ao wrapper, sem recortar o foco.
+Uma luz dominante vinda do alto organiza a cena. Diferencie sombra de contato curta de sombra ambiental larga e fraca. Os tokens `--jh-shadow-control`, `--jh-shadow-surface`, `--jh-shadow-overlay` e `--jh-shadow-pressed` em `assets/ui/theme.css` preservam as sombras discretas da base clara consultada. Dê maior curso apenas a peças realmente manipuláveis. Não recorte o foco com o material.
 
-O relevo mais pronunciado fica reservado para uma peça de destaque, como um dial metálico. Não aplique essa intensidade a todos os campos, listas e painéis. As definições da base variam conforme o tema e os overrides ativos; valide o resultado na superfície real em vez de assumir um único valor para todas as telas.
+## Separação quase invisível
 
-## Vidro confiável
+Separe áreas com espaçamento, profundidade do plano e sombra suave. Evite enquadrar cada seção com uma linha. Se uma divisória for necessária, use `--jh-divider` como ponto de partida: preto com 3,5% de opacidade sobre fundo claro, acompanhado quando fizer sentido de brilho branco interno. Ajuste pela percepção no tamanho real, sem transformar esse valor em contraste obrigatório.
 
-1. Comece com uma cor opaca legível. Aplique `backdrop-filter` só quando suportado, sobre uma área pequena com fundo que realmente se beneficia da translucidez.
-2. Adicione brilho de borda por dentro, sem alterar o tamanho da caixa. Evite empilhar múltiplas superfícies translúcidas no mesmo eixo.
-3. Meça contraste sobre o fundo mais claro e mais escuro que o produto permite; dê à face tinta opaca suficiente.
-4. Sob transparência reduzida e cores forçadas, use uma face sólida. Um fallback de recurso ausente também deve ser sólido.
-5. Filtros de deslocamento, reflexo especular e WebGL têm suporte e custo variáveis. Use-os apenas quando o efeito faz diferença e valide por navegador, GPU e estado da página.
+Um rebaixo pode usar `inset 0 1px 3px rgb(0 0 0 / .025)` e um brilho inferior branco. Uma superfície elevada pode usar a sombra de superfície do tema. Não acumule sombras em wrappers consecutivos. A regra de discrição aplica-se a divisórias decorativas; foco, textos, escalas de dados e limites necessários para reconhecer um controle devem continuar legíveis.
 
-O pacote opcional `liquid-glass` oferece caminhos SVG, canvas e WebGL e primitivas React. É uma biblioteca experimental: confira sua versão e API antes de integrar, teste os fallbacks e mantenha seus avisos de licença. Não é necessária para um painel translúcido simples.
+## Glass confiável
 
-## Detalhes que criam realismo
+1. Comece com uma face clara opaca legível. Use `backdrop-filter` como melhoria progressiva em área pequena e com algo neutro atrás que torne a transparência perceptível.
+2. Brilho de borda fica por dentro e não altera o tamanho da caixa. Evite molduras marcadas, brilho intenso ou sucessivas camadas de blur.
+3. Meça contraste sobre os fundos reais permitidos; dê tinta suficiente à face. Não deforme texto, ícones, foco ou área clicável.
+4. Sem blur, com transparência reduzida ou em cores forçadas, preserve uma face sólida e a operação completa.
 
-- Uma faixa estreita de brilho, não um contorno branco grosso.
-- Mínima variação tonal na face; não dependa de ruído para revelar texto.
-- Ranhuras discretas em controles rotativos; se for SVG decorativo, deixe fora da árvore acessível.
-- Um reflexo faz sentido se acompanha a orientação do objeto e não altera o significado do estado.
-- Evite aparência quebrada quando sombras, filtros ou imagens não forem carregados.
+## Resposta liquid
+
+`Button` usa variantes semânticas primary, secondary e ghost. A resposta começa no pointerdown, mas a ação confirma em click/ativação semântica. Um reflexo nasce no ponto do toque e a face comprime levemente, com retorno amortecido e sem bounce recorrente. Isso é uma aproximação visual em CSS, não refração física.
+
+No slider, use trilha translúcida estreita e um thumb em forma de lente: luz superior, borda interna e transparência. Preserve a parte preenchida e o valor em texto. Durante arraste, o valor acompanha o ponteiro diretamente; uma pequena expansão da lente pode reforçar o toque. Teclado, foco e área de interação de 44px continuam ativos. O mesmo tratamento vale para sliders auxiliares.
+
+O pacote opcional `liquid-glass` pode ser investigado para refração especializada. Confira a API e o suporte da versão escolhida; não é uma dependência do exemplo. SVG/WebGL são melhorias opcionais. A ação, a legibilidade e a sensação de volume devem sobreviver sem eles. Movimento reduzido remove deformação e movimento contínuo, preservando a confirmação de estado.

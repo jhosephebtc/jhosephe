@@ -1,3 +1,4 @@
+import './lab.css';
 import { useState } from 'react';
 import { ArrowDown, ArrowUpRight, Check, CircleDashed, MoveRight, Sparkles } from 'lucide-react';
 import { Button } from '../../../assets/ui/button';
@@ -9,7 +10,7 @@ import { ShaderSurface } from '../../../assets/ui/shader-surface';
 import { SmoothShape } from '../../../assets/ui/smooth-shape';
 
 function Wordmark() {
-  return <a className="brand" href="#inicio" aria-label="jhosephe, início">
+  return <a className="brand" href="/" aria-label="jhosephe, início">
     <span className="brand__mark" aria-hidden="true"><span /></span>
     <span>jhosephe<span className="brand__period">.</span></span>
   </a>;
@@ -70,14 +71,14 @@ function MaterialStudy() {
           <div className="material-card__copy"><div><span>02 / VIDRO</span><h3>Luz em camadas.</h3><p>Transparência apenas onde faz sentido.</p></div><ArrowUpRight size={17} aria-hidden="true" /></div>
         </article>
         <article className="material-card">
-          <div className="material-card__art metal-art" aria-hidden="true"><div className="metal-disc"><span /></div></div>
-          <div className="material-card__copy"><div><span>03 / METAL</span><h3>Detalhe tangível.</h3><p>Precisão para convidar ao toque.</p></div><ArrowUpRight size={17} aria-hidden="true" /></div>
+          <div className="material-card__art relief-art" aria-hidden="true"><div className="relief-bed"><div className="relief-lens"><span /></div></div></div>
+          <div className="material-card__copy"><div><span>03 / RELEVO</span><h3>Profundidade sutil.</h3><p>Luz e volume dão forma ao toque.</p></div><ArrowUpRight size={17} aria-hidden="true" /></div>
         </article>
       </div>
       <div className="corner-study">
         <div className="corner-study__copy"><span className="eyebrow">FORMA / 04</span><h3>O detalhe está na curva.</h3><p>O raio permanece igual enquanto a transição do canto muda.</p>
-          <label htmlFor="smoothing">Suavização <output>{smoothing}%</output></label>
-          <input id="smoothing" type="range" min="0" max="100" value={smoothing} onChange={event => setSmoothing(event.currentTarget.valueAsNumber)} />
+          <div className="corner-study__label"><span id="smoothing-label">Suavização</span><output>{smoothing}%</output></div>
+          <Slider labelId="smoothing-label" value={[smoothing]} min={0} max={100} step={1} onValueChange={values => setSmoothing(values[0])} />
         </div>
         <div className="corner-study__samples" aria-hidden="true">
           <div><span className="corner-study__shape"><SmoothShape className="corner-study__face" radius={28} smoothing={0} /></span><span>00% / CURVA</span></div>
@@ -92,7 +93,7 @@ export function App() {
   return (
     <div className="site" id="inicio">
       <a className="skip-link" href="#conteudo">Ir para o conteúdo</a>
-      <header className="topbar"><Wordmark /><div className="topbar__middle">LABORATÓRIO DE INTERFACES</div><a className="topbar__link" href="#materiais">Explorar materiais <ArrowDown size={14} aria-hidden="true" /></a></header>
+      <header className="topbar"><Wordmark /><div className="topbar__middle">LABORATÓRIO DE INTERFACES</div><a className="topbar__link" href="/solar">Painel solar <ArrowUpRight size={14} aria-hidden="true" /></a><a className="topbar__link" href="#materiais">Explorar materiais <ArrowDown size={14} aria-hidden="true" /></a></header>
       <main id="conteudo">
         <div className="hero-grid">
           <section className="intro" aria-labelledby="title">
@@ -108,6 +109,10 @@ export function App() {
           <ControlDeck />
         </div>
         <MaterialStudy />
+        <section className="button-study" aria-labelledby="button-study-title">
+          <div><span className="eyebrow">MATERIAL / 05</span><h2 id="button-study-title">Vidro que responde.</h2><p>Um toque suave. Um reflexo preciso.</p></div>
+          <div className="button-study__actions"><a className="jh-button jh-button--glass jh-button--primary" href="/solar"><SmoothShape className="jh-button__face" radius={16} /><span className="jh-button__content">Abrir painel solar <ArrowUpRight size={15} aria-hidden="true" /></span></a></div>
+        </section>
         <section className="closing"><Sparkles size={18} aria-hidden="true" /><p>Uma interface é também uma sensação.</p><span>JHOSEPHE / INTERACTION LAB</span></section>
       </main>
       <footer className="footer"><Wordmark /><span>DESENHADO COM INTENÇÃO.</span><a href="#inicio">VOLTAR AO TOPO ↑</a></footer>
