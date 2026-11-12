@@ -1,12 +1,16 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type CSSProperties } from 'react';
 
 export type AudioMeterOrientation = 'horizontal' | 'vertical';
+export type AudioMeterColorScale = 'accent' | 'heat' | 'pastel';
 
-/** Animated retro level bars. Microphone access starts only after an explicit click. */
-export function AudioMeter({ label = 'Audio level', orientation = 'horizontal', barCount = 32 }: {
-  label?: string; orientation?: AudioMeterOrientation; barCount?: number;
+/** Animated matrix of square dB segments. Microphone access starts only after an explicit click. */
+export function AudioMeter({ label = 'Audio level', orientation = 'horizontal', barCount = 32, colorScale = 'accent', accentColor = 'oklch(72% 0.018 250)' }: {
+  label?: string; orientation?: AudioMeterOrientation; barCount?: number; colorScale?: AudioMeterColorScale; accentColor?: string;
 }) {
   const count = Math.max(8, Math.min(64, Math.round(barCount)));
+  const cellCount = 12;
+  const columns = orientation === 'horizontal' ? count : cellCount;
+  const rows = orientation === 'horizontal' ? cellCount : count;
   const [levels, setLevels] = useState<number[]>(() => Array.from({ length: count }, () => .12));
   const [mode, setMode] = useState<'demo' | 'microphone'>('demo');
   const [status, setStatus] = useState('Demo pulse');
@@ -32,7 +36,7 @@ export function AudioMeter({ label = 'Audio level', orientation = 'horizontal', 
         setLevels(Array.from({ length: count }, (_, index) => {
           const ripple = Math.max(0, Math.sin(phase * .63 + index * .39));
           const edge = .45 + .55 * Math.sin((index / count) * Math.PI);
-          return Math.min(1, .06 + edge * (.16 + ripple * .25 + pulse * .68));
+          return Math.min(1, .015 + edge * (.025 + ripple * .07 + pulse * .66));
         }));
         lastUpdate = time;
       }
@@ -83,16 +87,24 @@ export function AudioMeter({ label = 'Audio level', orientation = 'horizontal', 
     }
   };
 
-  const width = orientation === 'horizontal' ? 320 : 72;
-  const height = orientation === 'horizontal' ? 80 : 196;
-  const gap = orientation === 'horizontal' ? width / count : height / count;
+  const amplitude = Math.max(.001, Math.sqrt(levels.reduce((total, level) => total + level * level, 0) / levels.length));
+  const decibels = Math.max(-60, Math.min(0, Math.round(20 * Math.log10(amplitude))));
+  const colorFor = (position: number) => {
+    if (colorScale === 'accent') return accentColor;
+    if (colorScale === 'heat') return `oklch(70% 0.19 ${Math.round(220 - position * 190)})`;
+    return `oklch(82% 0.105 ${Math.round(275 - position * 115)})`;
+  };
   return <section className="jh-audio-meter" data-orientation={orientation} aria-label={label}>
-    <div className="jh-audio-meter__heading"><span>{label}</span><output>{Math.round(Math.max(...levels) * 100)}%</output></div>
-    <svg className="jh-audio-meter__bars" viewBox={`0 0 ${width} ${height}`} role="img" aria-label={`${label}, ${Math.round(Math.max(...levels) * 100)} percent`}>
-      {levels.map((level, index) => orientation === 'horizontal'
-        ? <rect key={index} x={index * gap + gap * .34} y={(height - level * 56) / 2} width={Math.max(1.4, gap * .27)} height={level * 56} rx="1" data-active={level > .24 || undefined} />
-        : <rect key={index} x={(width - level * 54) / 2} y={index * gap + gap * .32} width={level * 54} height={Math.max(1.4, gap * .34)} rx="1" data-active={level > .24 || undefined} />)}
-    </svg>
+    <div className="jh-audio-meter__heading"><span>{label}</span><output>{decibels} <small>dBFS</small></output></div>
+    <div className="jh-audio-meter__segments" data-orientation={orientation} data-scale={colorScale} style={{ gridTemplateColumns: `repeat(${columns}, 3px)`, gridTemplateRows: `repeat(${rows}, 3px)` } as CSSProperties} role="img" aria-label={`${label}, ${decibels} decibels full scale`}>
+      {levels.flatMap((level, band) => Array.from({ length: cellCount }, (_, cell) => {
+        const active = cell < Math.ceil(level * cellCount);
+        const position = cellCount <= 1 ? 1 : cell / (cellCount - 1);
+        const gridColumn = orientation === 'horizontal' ? band + 1 : cell + 1;
+        const gridRow = orientation === 'horizontal' ? cellCount - cell : count - band;
+        return <span key={`${band}-${cell}`} data-active={active} data-band={band} style={{ gridColumn, gridRow, '--jh-audio-cell-color': colorFor(position) } as CSSProperties} />;
+      }))}
+    </div>
     <div className="jh-audio-meter__actions">
       <button type="button" aria-pressed={mode === 'demo'} onClick={() => { releaseCapture(); setMode('demo'); setStatus('Demo pulse'); }}>Demo pulse</button>
       {mode === 'microphone'

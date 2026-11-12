@@ -1,13 +1,36 @@
 import * as SliderPrimitive from '@radix-ui/react-slider';
 import * as SwitchPrimitive from '@radix-ui/react-switch';
-import type { ComponentPropsWithoutRef } from 'react';
+import type { ComponentPropsWithoutRef, CSSProperties } from 'react';
 import { cn } from './utils';
 
-export function Slider({ className, labelId, ...props }: ComponentPropsWithoutRef<typeof SliderPrimitive.Root> & { labelId: string }) {
+export interface SliderProps extends ComponentPropsWithoutRef<typeof SliderPrimitive.Root> {
+  labelId: string;
+  thumbThickness?: number;
+  thumbHeight?: number;
+  thumbRadius?: number;
+  accentColor?: string;
+  accentColorEnd?: string;
+  accentGradient?: boolean;
+  glowIntensity?: number;
+  glowBlur?: number;
+}
+
+export function Slider({ className, labelId, thumbThickness = 15, thumbHeight = 34, thumbRadius = 7, accentColor = 'oklch(100% 0 0)', accentColorEnd = 'oklch(92% 0.035 250)', accentGradient = false, glowIntensity = 68, glowBlur = 5, style, ...props }: SliderProps) {
+  const intensity = Math.max(0, Math.min(100, glowIntensity));
+  const rootStyle = {
+    ...style,
+    '--jh-slider-accent-color': accentColor,
+    '--jh-slider-accent-color-end': accentColorEnd,
+    '--jh-slider-glow-color': accentGradient ? `color-mix(in oklch, ${accentColor} 50%, ${accentColorEnd} 50%)` : accentColor,
+    '--jh-slider-glow-strength': `${intensity}%`,
+    '--jh-slider-glow-strength-mid': `${Math.round(intensity * .62)}%`,
+    '--jh-slider-glow-strength-edge': `${Math.round(intensity * .3)}%`,
+    '--jh-slider-glow-blur': `${Math.max(0, Math.min(16, glowBlur))}px`,
+  } as CSSProperties;
   return (
-    <SliderPrimitive.Root className={cn('jh-slider', className)} {...props}>
+    <SliderPrimitive.Root className={cn('jh-slider', className)} data-accent-gradient={accentGradient || undefined} style={rootStyle} {...props}>
       <SliderPrimitive.Track className="jh-slider__track"><SliderPrimitive.Range className="jh-slider__range" /></SliderPrimitive.Track>
-      <SliderPrimitive.Thumb className="jh-slider__thumb" aria-labelledby={labelId} />
+      <SliderPrimitive.Thumb className="jh-slider__thumb" aria-labelledby={labelId} style={{ width: Math.max(8, thumbThickness), height: Math.max(20, thumbHeight), borderRadius: Math.max(0, thumbRadius) }} />
     </SliderPrimitive.Root>
   );
 }

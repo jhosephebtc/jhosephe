@@ -430,3 +430,9 @@
   .library-preview-stage--detent-dial .library-preview-object,.library-preview-stage--tactile-lever .library-preview-object { inset:52px 14px 54px; }
 }
 @media(prefers-reduced-motion:reduce) { .library-card-preview,.library-customizer,.library-tabs button { transition:none; } }
+.library-palette-setting { margin-block:2px; }
+.library-extra-palette { display:grid; justify-items:center; gap:13px; width:min(100%,310px); color:#555; font-size:11px; }
+.library-extra-palette > div { display:flex; align-items:center; justify-content:space-between; gap:20px; width:100%; }
+.library-extra-palette > output { max-width:100%; color:#777; font-size:10px; overflow-wrap:anywhere; text-align:center; }
+.library-card--oklch-palette .library-extra-palette { transform:scale(.82); width:330px; }
+.library-preview-stage--oklch-palette .library-preview-object { inset:72px 28px 66px; }

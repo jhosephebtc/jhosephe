@@ -29,6 +29,7 @@ import { ProgressBar } from '../../../../assets/ui/progress-bar';
 import { WeatherInstrument } from '../../../../assets/ui/weather-instrument';
 import { DetentDial } from '../../../../assets/ui/detent-dial';
 import { TactileLever } from '../../../../assets/ui/tactile-lever';
+import { OklchPalette } from '../../../../assets/ui/oklch-palette';
 import type { ComponentId, Settings } from './data';
 import { dateFromValue, dateToValue } from './extra-data';
 
@@ -36,7 +37,8 @@ export function ExtraPreview({ id, settings: s, onChange, compact }: { id: Compo
   const inputId = useId();
   const [menuStatus, setMenuStatus] = useState('');
   const [toastOpen, setToastOpen] = useState(false);
-  if (id === 'bar-slider') return <div className="library-extra-control"><BarSlider label="Intensity" value={s.value} onValueChange={value => onChange({ value })} disabled={s.disabled} /></div>;
+  if (id === 'bar-slider') return <div className="library-extra-control"><BarSlider label="Intensity" value={s.value} onValueChange={value => onChange({ value })} thumbThickness={s.thumbThickness} thumbHeight={s.thumbHeight} thumbRadius={s.thumbRadius} accentColor={s.accentColor} accentColorEnd={s.accentColorEnd} accentGradient={s.accentGradient} glowIntensity={s.glowIntensity} glowBlur={s.glowBlur} disabled={s.disabled} /></div>;
+  if (id === 'oklch-palette') return <div className="library-extra-palette"><div><span>Accent color</span><OklchPalette label="Choose a color" value={s.fillColor} onValueChange={fillColor => onChange({ fillColor })} material={s.material} /></div><output>{s.fillColor}</output></div>;
   if (id === 'calendar') return <div className="library-extra-calendar"><Calendar mode="single" selected={dateFromValue(s.date)} onSelect={date => onChange({ date: dateToValue(date) })} showOutsideDays={s.showOutsideDays} weekStartsOn={s.mondayFirst ? 1 : 0} /></div>;
   if (id === 'date-picker') return <DatePicker label="Choose a date" value={dateFromValue(s.date)} onChange={date => onChange({ date: dateToValue(date) })} disabled={s.disabled} />;
   if (id === 'menu') return <div className="library-extra-menu"><Menu><MenuTrigger asChild><Button>Options <ChevronDown size={14} aria-hidden="true" /></Button></MenuTrigger><MenuContent align={s.align}><MenuLabel>Workspace</MenuLabel><MenuItem onSelect={() => setMenuStatus('New project selected')}><Plus size={15} aria-hidden="true" />New project</MenuItem><MenuItem onSelect={() => setMenuStatus('Duplicate selected')}><Copy size={15} aria-hidden="true" />Duplicate</MenuItem><MenuItem onSelect={() => setMenuStatus('Archive selected')}><Archive size={15} aria-hidden="true" />Archive</MenuItem></MenuContent></Menu><p role="status">{menuStatus}</p></div>;
@@ -58,7 +60,7 @@ export function ExtraPreview({ id, settings: s, onChange, compact }: { id: Compo
   if (id === 'spectrum-control') return <div className="library-extra-spectrum"><SpectrumControl hue={s.spectrumHue} saturation={s.spectrumSaturation} lightness={s.spectrumLightness} onHueChange={spectrumHue => onChange({ spectrumHue })} onSaturationChange={spectrumSaturation => onChange({ spectrumSaturation })} onLightnessChange={spectrumLightness => onChange({ spectrumLightness })} /></div>;
   if (id === 'step-navigation') return <div className="library-extra-steps"><StepNavigation currentStep={s.stepIndex} onStepChange={stepIndex => onChange({ stepIndex })} steps={[{ id: 'location', label: 'Location', description: 'Choose a place.' }, { id: 'time', label: 'Time', description: 'Set a moment.' }, { id: 'review', label: 'Review', description: 'Confirm the details.' }]} /><span className="library-control-status" role="status">Step {s.stepIndex + 1} of 3</span></div>;
   if (id === 'date-time-picker') return <div className="library-extra-date-time"><DateTimePicker value={s.dateTime ? new Date(s.dateTime) : undefined} onChange={date => onChange({ dateTime: date?.toISOString() ?? '' })} /></div>;
-  if (id === 'audio-meter') return <div className="library-extra-audio"><AudioMeter label="Audio level" orientation={s.audioOrientation} barCount={compact ? 24 : 36} /></div>;
+  if (id === 'audio-meter') return <div className="library-extra-audio"><AudioMeter label="Audio level" orientation={s.audioOrientation} barCount={compact ? 24 : 36} colorScale={s.audioColorScale} accentColor={s.audioAccentColor} /></div>;
   if (id === 'weather-instrument') return <div className="library-extra-weather"><WeatherInstrument temperature={s.weatherTemperature} windSpeed={s.weatherWindSpeed} windDirection={s.weatherWindDirection} humidity={s.weatherHumidity} pressure={s.weatherPressure} /></div>;
   if (id === 'attitude-indicator') return <div className="library-extra-attitude"><AttitudeIndicator pitch={s.attitudePitch} roll={s.attitudeRoll} /></div>;
   if (id === 'navigation-instrument') return <div className="library-extra-navigation"><NavigationInstrument mode={s.navigationMode} heading={s.navigationHeading} speed={s.navigationSpeed} auxiliary={s.navigationAuxiliary} /></div>;

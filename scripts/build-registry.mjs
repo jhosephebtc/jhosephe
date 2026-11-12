@@ -22,6 +22,7 @@ const definitions = [
   ['smooth-shape', 'Smooth Corners', 'A responsive shape with continuous corners.', ['smooth-shape.tsx'], ['figma-squircle']],
   ['shader-surface', 'Glass Light', 'Monochromatic procedural light with a CSS fallback.', ['shader-surface.tsx'], ['@paper-design/shaders-react@0.0.82']],
   ['instrument', 'Instrument Bars', 'An SVG scale for values from zero to one hundred.', ['instrument.tsx'], []],
+  ['oklch-palette', 'OKLCH Palette', 'A contextual, keyboard-accessible color palette arranged as a honeycomb.', ['oklch-palette.tsx'], ['@radix-ui/react-popover', 'lucide-react']],
 ["bar-slider", "Bar Slider", "An interactive instrument scale with a solid glass handle.", ["bar-slider.tsx"], ["@radix-ui/react-slider"]],
 ["calendar", "Calendar", "A tactile calendar with accessible date selection.", ["calendar.tsx", "utils.ts"], ["react-day-picker@9.14.0", "clsx", "tailwind-merge"]],
 ["date-picker", "Date Picker", "A glass trigger and a focused calendar.", ["date-picker.tsx", "calendar.tsx", "button.tsx", "smooth-shape.tsx", "utils.ts"], ["react-day-picker@9.14.0", "@radix-ui/react-popover", "lucide-react", "class-variance-authority", "figma-squircle", "clsx", "tailwind-merge"]],
