@@ -10,8 +10,10 @@ export function AttitudeIndicator({ pitch = 0, roll = 0, label = 'Attitude indic
   return <section className="jh-attitude" aria-label={label}>
     <svg className="jh-attitude__dial" viewBox="0 0 200 200" role="img" aria-label={`Pitch ${Math.round(safePitch)} degrees, roll ${Math.round(safeRoll)} degrees`}>
       <defs><clipPath id={clipId}><circle cx="100" cy="100" r="76" /></clipPath></defs>
-      <circle cx="100" cy="100" r="88" className="jh-attitude__rim" />
-      <circle cx="100" cy="100" r="83" className="jh-attitude__seat" />
+      <circle cx="100" cy="100" r="92" className="jh-attitude__bezel" />
+      <circle cx="100" cy="100" r="88" className="jh-attitude__bezel-edge" />
+      <circle cx="100" cy="100" r="84" className="jh-attitude__rim" />
+      <circle cx="100" cy="100" r="80" className="jh-attitude__seat" />
       <g clipPath={`url(#${clipId})`}>
         <g transform={`rotate(${-safeRoll} 100 100) translate(0 ${safePitch * 1.65})`}>
           <rect x="0" y="0" width="200" height="100" fill="#fafafa" />
@@ -23,8 +25,9 @@ export function AttitudeIndicator({ pitch = 0, roll = 0, label = 'Attitude indic
         </g>
       </g>
       <g className="jh-attitude__aircraft"><path d="M48 99h34l8-5h20l8 5h34v4h-35l-6 8h-22l-6-8H48z" /></g>
-      <g className="jh-attitude__ticks" transform="translate(100 100)">{Array.from({ length: 18 }, (_, index) => <path key={index} d={index % 3 === 0 ? 'M0 -81v8' : 'M0 -82v4'} transform={`rotate(${index * 20})`} />)}</g>
+      <g className="jh-attitude__ticks" transform="translate(100 100)">{Array.from({ length: 24 }, (_, index) => <path key={index} d={index % 3 === 0 ? 'M0 -81v8' : 'M0 -82v4'} transform={`rotate(${index * 15})`} />)}</g>
       <circle cx="100" cy="100" r="76" className="jh-attitude__glass" />
+      <circle cx="100" cy="100" r="3.5" className="jh-attitude__hub" />
     </svg>
     <div className="jh-attitude__readout"><span>Pitch <output>{Math.round(safePitch)}°</output></span><span>Roll <output>{Math.round(safeRoll)}°</output></span></div>
   </section>;

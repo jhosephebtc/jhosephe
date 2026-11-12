@@ -10,3 +10,5 @@ playwright-report/
 .vercel/
 examples/lab/public/r/
 examples/lab/public/registry.json
+
+.tmp-shots/

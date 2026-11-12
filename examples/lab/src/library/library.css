@@ -436,3 +436,64 @@
 .library-extra-palette > output { max-width:100%; color:#777; font-size:10px; overflow-wrap:anywhere; text-align:center; }
 .library-card--oklch-palette .library-extra-palette { transform:scale(.82); width:330px; }
 .library-preview-stage--oklch-palette .library-preview-object { inset:72px 28px 66px; }
+
+/* Preview stages for finance / astronomy / race so panels keep inner margins. */
+.library-extra-market-chart,
+.library-extra-market-picker,
+.library-extra-astronomy,
+.library-extra-astrology,
+.library-extra-race,
+.library-extra-order,
+.library-extra-ephemeris,
+.library-extra-currency,
+.library-extra-finance-nav { width:min(100%,100%); min-width:0; }
+.library-preview-stage--financial-chart,
+.library-preview-stage--market-picker,
+.library-preview-stage--astronomy-instrument,
+.library-preview-stage--astrology-wheel,
+.library-preview-stage--race-telemetry { min-height:560px; }
+.library-preview-stage--ephemeris-picker,
+.library-preview-stage--currency-picker,
+.library-preview-stage--financial-order-modal,
+.library-preview-stage--finance-navigation { min-height:420px; }
+.library-preview-stage--compass,
+.library-preview-stage--attitude-indicator { min-height:420px; }
+.library-preview-stage--financial-chart .library-preview-object,
+.library-preview-stage--market-picker .library-preview-object,
+.library-preview-stage--astronomy-instrument .library-preview-object,
+.library-preview-stage--astrology-wheel .library-preview-object,
+.library-preview-stage--race-telemetry .library-preview-object {
+  inset:56px clamp(16px,3vw,36px) 76px;
+}
+.library-preview-stage--compass .library-preview-object,
+.library-preview-stage--attitude-indicator .library-preview-object,
+.library-preview-stage--weather-instrument .library-preview-object,
+.library-preview-stage--navigation-instrument .library-preview-object {
+  inset:56px clamp(18px,4vw,48px) 70px;
+}
+.library-card--financial-chart .library-extra-market-chart,
+.library-card--market-picker .library-extra-market-picker,
+.library-card--astronomy-instrument .library-extra-astronomy,
+.library-card--astrology-wheel .library-extra-astrology,
+.library-card--race-telemetry .library-extra-race {
+  transform:scale(.72);
+  transform-origin:center center;
+  width:560px;
+  flex:0 0 560px;
+}
+.library-card--compass .library-extra-compass,
+.library-card--attitude-indicator .library-extra-attitude {
+  transform:scale(.88);
+}
+@media (max-width:520px) {
+  .library-preview-stage--financial-chart,
+  .library-preview-stage--market-picker,
+  .library-preview-stage--astronomy-instrument,
+  .library-preview-stage--astrology-wheel,
+  .library-preview-stage--race-telemetry { min-height:480px; }
+  .library-preview-stage--financial-chart .library-preview-object,
+  .library-preview-stage--market-picker .library-preview-object,
+  .library-preview-stage--astronomy-instrument .library-preview-object,
+  .library-preview-stage--astrology-wheel .library-preview-object,
+  .library-preview-stage--race-telemetry .library-preview-object { inset:52px 12px 68px; }
+}
