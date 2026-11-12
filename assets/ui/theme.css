@@ -3984,3 +3984,62 @@ body:has(.library-detail .library-preview-object[data-jh-material="liquid-glass"
 .jh-market-picker__asset[aria-selected="true"]:hover {
   opacity: 1;
 }
+
+/* Financial order + picker scrollbars: Vertical scroller chrome (no track, no arrows, minimal thumb) */
+.jh-financial-order__body,
+.jh-picker-overlay .jh-scroll-area,
+.jh-picker-overlay .jh-scroll-frame > .jh-scroll-area {
+  scrollbar-width: thin;
+  scrollbar-color: #c8c8c8 transparent;
+}
+.jh-financial-order__body::-webkit-scrollbar,
+.jh-picker-overlay .jh-scroll-area::-webkit-scrollbar,
+.jh-picker-overlay .jh-scroll-frame > .jh-scroll-area::-webkit-scrollbar {
+  width: 10px;
+}
+.jh-financial-order__body::-webkit-scrollbar-track,
+.jh-picker-overlay .jh-scroll-area::-webkit-scrollbar-track,
+.jh-picker-overlay .jh-scroll-frame > .jh-scroll-area::-webkit-scrollbar-track {
+  margin: 8px 0;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+.jh-financial-order__body::-webkit-scrollbar-thumb,
+.jh-picker-overlay .jh-scroll-area::-webkit-scrollbar-thumb,
+.jh-picker-overlay .jh-scroll-frame > .jh-scroll-area::-webkit-scrollbar-thumb {
+  min-height: 28px;
+  border: 3px solid transparent;
+  border-radius: 99px;
+  background: #c8c8c8 padding-box;
+  box-shadow: none;
+}
+.jh-financial-order__body::-webkit-scrollbar-thumb:hover,
+.jh-picker-overlay .jh-scroll-area::-webkit-scrollbar-thumb:hover,
+.jh-picker-overlay .jh-scroll-frame > .jh-scroll-area::-webkit-scrollbar-thumb:hover {
+  background: #b8b8b8 padding-box;
+}
+.jh-financial-order__body::-webkit-scrollbar-button,
+.jh-picker-overlay .jh-scroll-area::-webkit-scrollbar-button,
+.jh-picker-overlay .jh-scroll-frame > .jh-scroll-area::-webkit-scrollbar-button,
+.jh-scroll-frame > .jh-scroll-area::-webkit-scrollbar-button,
+.jh-scroll-area::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
+}
+.jh-financial-order__body::-webkit-scrollbar-corner,
+.jh-picker-overlay .jh-scroll-area::-webkit-scrollbar-corner,
+.jh-scroll-frame > .jh-scroll-area::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Keep opacity-only picker hover (reinforce over older fill rules) */
+.jh-financial-order__type-options button:hover,
+.jh-financial-order__type-options button[aria-selected="true"],
+.jh-currency-picker__options button:hover,
+.jh-currency-picker__options button[aria-selected="true"] {
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
