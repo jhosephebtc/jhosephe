@@ -25,7 +25,16 @@ export function Dial({ value, onChange, label, min = 0, max = 100, step = 1, dis
     '--jh-slider-glow-strength-mid': `${Math.round(intensity * .62)}%`,
     '--jh-slider-glow-strength-edge': `${Math.round(intensity * .3)}%`,
     '--jh-slider-glow-blur': `${Math.max(0, Math.min(16, glowBlur))}px`,
+    '--jh-bar-cell-accent': accentGradient
+      ? `color-mix(in oklch, ${accentColor} ${Math.round((1 - fraction) * 100)}%, ${accentColorEnd} ${Math.round(fraction * 100)}%)`
+      : accentColor,
   } as CSSProperties;
+  const cellAccent = (index: number) => {
+    const position = tickCount > 1 ? index / (tickCount - 1) : 0;
+    return accentGradient
+      ? `color-mix(in oklch, ${accentColor} ${Math.round((1 - position) * 100)}%, ${accentColorEnd} ${Math.round(position * 100)}%)`
+      : accentColor;
+  };
   const release = () => { drag.current = null; setDragging(false); };
   const setFromPointer = (event: PointerEvent<HTMLInputElement>) => {
     const bounds = event.currentTarget.getBoundingClientRect();
@@ -52,6 +61,7 @@ export function Dial({ value, onChange, label, min = 0, max = 100, step = 1, dis
             className={index <= activeTicks ? 'jh-dial__tick is-active' : 'jh-dial__tick'}
             d={`M0 -${index % 4 === 0 ? 60 : 58}v-${index % 4 === 0 ? 5 : 3}`}
             transform={`rotate(${-135 + index * 11.25})`}
+            style={{ '--jh-bar-cell-accent': cellAccent(index) } as CSSProperties}
           />
         ))}
       </g>

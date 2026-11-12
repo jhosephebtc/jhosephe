@@ -1,4 +1,5 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
+import { PickerPanel } from './picker-panel';
 
 const CURRENCIES = [
   { code: 'USD', name: 'US Dollar', symbol: '$', rate: '1.0000' },
@@ -17,12 +18,68 @@ export function CurrencyPicker({ value = 'USD', onValueChange, label = 'Settleme
 }) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
+  const trigger = useRef<HTMLButtonElement>(null);
   const currency = CURRENCIES.find(item => item.code === value) ?? CURRENCIES[0];
-  const results = useMemo(() => CURRENCIES.filter(item => (item.code + ' ' + item.name).toLowerCase().includes(query.toLowerCase())), [query]);
-  const select = (code: string) => { onValueChange?.(code); setOpen(false); setQuery(''); };
-  return <div className="jh-currency-picker">
-    <span className="jh-currency-picker__label">{label}</span>
-    <button className="jh-currency-picker__trigger" type="button" aria-haspopup="listbox" aria-expanded={open} onClick={() => setOpen(value => !value)}><span className="jh-currency-picker__symbol">{currency.symbol}</span><span><strong>{currency.code}</strong><small>{currency.name}</small></span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4" /></svg></button>
-    {open && <div className="jh-currency-picker__popover"><label className="jh-currency-picker__search"><span className="jh-visually-hidden">Search currencies</span><input autoFocus value={query} onChange={event => setQuery(event.target.value)} placeholder="Search currency" onKeyDown={event => { if (event.key === 'Escape') setOpen(false); if (event.key === 'Enter' && results[0]) select(results[0].code); }} /><kbd>Esc</kbd></label><div className="jh-currency-picker__options" role="listbox" aria-label="Currency options">{results.map(item => <button key={item.code} type="button" role="option" aria-selected={item.code === value} onClick={() => select(item.code)}><span className="jh-currency-picker__option-symbol">{item.symbol}</span><span><strong>{item.code}</strong><small>{item.name}</small></span><span className="jh-currency-picker__rate">{item.rate}</span></button>)}</div><p>Indicative rates · Demo</p></div>}
-  </div>;
+  const results = useMemo(
+    () => CURRENCIES.filter(item => (item.code + ' ' + item.name).toLowerCase().includes(query.toLowerCase())),
+    [query],
+  );
+  const select = (code: string) => {
+    onValueChange?.(code);
+    setOpen(false);
+    setQuery('');
+  };
+
+  return (
+    <div className="jh-currency-picker" data-open={open || undefined}>
+      <span className="jh-currency-picker__label">{label}</span>
+      <button
+        ref={trigger}
+        className="jh-currency-picker__trigger"
+        type="button"
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        onClick={() => setOpen(value => !value)}
+      >
+        <span className="jh-currency-picker__symbol">{currency.symbol}</span>
+        <span>
+          <strong>{currency.code}</strong>
+          <small>{currency.name}</small>
+        </span>
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4" /></svg>
+      </button>
+      <PickerPanel
+        open={open}
+        triggerRef={trigger}
+        onClose={() => { setOpen(false); setQuery(''); }}
+        search={query}
+        onSearchChange={setQuery}
+        searchPlaceholder="Search currency"
+        label="Currency options"
+        className="jh-currency-picker__popover"
+        footer={<p>Indicative rates · Demo</p>}
+      >
+        <ul className="jh-currency-picker__options" role="listbox" aria-label="Currency options">
+          {results.map(item => (
+            <li key={item.code}>
+              <button
+                type="button"
+                role="option"
+                aria-selected={item.code === value}
+                onClick={() => select(item.code)}
+              >
+                <span className="jh-currency-picker__option-symbol">{item.symbol}</span>
+                <span>
+                  <strong>{item.code}</strong>
+                  <small>{item.name}</small>
+                </span>
+                <span className="jh-currency-picker__rate">{item.rate}</span>
+              </button>
+            </li>
+          ))}
+          {!results.length && <li className="jh-currency-picker__empty">No matching currencies.</li>}
+        </ul>
+      </PickerPanel>
+    </div>
+  );
 }

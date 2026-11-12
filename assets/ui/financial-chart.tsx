@@ -1,4 +1,5 @@
 import { useId, useMemo, useState, type PointerEvent } from 'react';
+import { SegmentedControl } from './segmented-control';
 
 type Period = '1D' | '1W' | '1M' | '1Y';
 type ChartMode = 'line' | 'bars';
@@ -46,25 +47,92 @@ export function FinancialChart({ symbol = 'NOVA', company = 'Nova Systems', curr
     setActiveIndex(Math.round(ratio * (values.length - 1)));
   };
 
-  return <section className="jh-financial-chart" aria-label={company + ' ' + symbol + ' market chart'}>
-    <header className="jh-financial-chart__header">
-      <div className="jh-financial-chart__identity"><span className="jh-financial-chart__mark" aria-hidden="true">{symbol.slice(0, 1)}</span><div><strong>{symbol}</strong><span>{company}</span></div></div>
-      <div className="jh-financial-chart__quote"><output>{format(selected)}</output><span data-positive={changePercent >= 0}>{changePercent >= 0 ? '+' : ''}{changePercent.toFixed(2)}% <small>today</small></span></div>
-    </header>
-    <div className="jh-financial-chart__toolbar">
-      <div className="jh-financial-chart__periods" role="group" aria-label="Chart period">{PERIODS.map(item => <button key={item} type="button" aria-pressed={period === item} onClick={() => { setPeriod(item); setActiveIndex(null); }}>{item}</button>)}</div>
-      <div className="jh-financial-chart__modes" role="group" aria-label="Chart style"><button type="button" aria-pressed={mode === 'line'} onClick={() => setMode('line')}>Line</button><button type="button" aria-pressed={mode === 'bars'} onClick={() => setMode('bars')}>Bars</button></div>
-    </div>
-    <div className="jh-financial-chart__plot-wrap">
-      <div className="jh-financial-chart__axis" aria-hidden="true"><span>{format(high)}</span><span>{format((high + low) / 2)}</span><span>{format(low)}</span></div>
-      <svg className="jh-financial-chart__plot" viewBox="0 0 1000 270" preserveAspectRatio="none" role="img" aria-label={period + ' price chart. ' + symbol + ' is at ' + format(selected)} onPointerMove={choosePoint} onPointerDown={choosePoint} onPointerLeave={() => setActiveIndex(null)} onKeyDown={event => { if (event.key === 'ArrowLeft') setActiveIndex(Math.max(0, selectedIndex - 1)); if (event.key === 'ArrowRight') setActiveIndex(Math.min(values.length - 1, selectedIndex + 1)); if (event.key === 'Home') setActiveIndex(0); if (event.key === 'End') setActiveIndex(values.length - 1); }} tabIndex={0}>
-        <defs><linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="currentColor" stopOpacity=".14" /><stop offset="1" stopColor="currentColor" stopOpacity="0" /></linearGradient></defs>
-        {[62, 126, 190, 252].map(y => <path key={y} d={'M0 ' + y + 'H1000'} className="jh-financial-chart__gridline" />)}
-        {mode === 'line' ? <><path d={area} className="jh-financial-chart__area" style={{ fill: "url(#" + gradientId + ")" }} /><path d={path} className="jh-financial-chart__line" pathLength="1" /></> : values.map((value, index) => { const point = points[index]; return <rect key={index} x={point.x - 5} y={point.y} width="10" height={232 - point.y} rx="3" className="jh-financial-chart__bar" data-selected={selectedIndex === index} />; })}
-        {activeIndex !== null && selectedPoint && <><path d={'M' + selectedPoint.x + ' 0V252'} className="jh-financial-chart__crosshair" /><circle cx={selectedPoint.x} cy={selectedPoint.y} r="6" className="jh-financial-chart__point-halo" /><circle cx={selectedPoint.x} cy={selectedPoint.y} r="3" className="jh-financial-chart__point" /></>}
-      </svg>
-    </div>
-    <div className="jh-financial-chart__timeline" aria-hidden="true">{LABELS[period].map(label => <span key={label}>{label}</span>)}</div>
-    <div className="jh-financial-chart__footer"><span>Market data · Demo</span><span>Volume <strong>2.48M</strong></span></div>
-  </section>;
+  return (
+    <section className="jh-financial-chart" aria-label={company + ' ' + symbol + ' market chart'}>
+      <header className="jh-financial-chart__header">
+        <div className="jh-financial-chart__identity">
+          <span className="jh-financial-chart__mark" aria-hidden="true">{symbol.slice(0, 1)}</span>
+          <div><strong>{symbol}</strong><span>{company}</span></div>
+        </div>
+        <div className="jh-financial-chart__quote">
+          <output>{format(selected)}</output>
+          <span data-positive={changePercent >= 0}>
+            {changePercent >= 0 ? '+' : ''}{changePercent.toFixed(2)}% <small>today</small>
+          </span>
+        </div>
+      </header>
+      <div className="jh-financial-chart__toolbar">
+        <SegmentedControl
+          label="Chart period"
+          value={period}
+          onValueChange={value => { setPeriod(value as Period); setActiveIndex(null); }}
+          options={PERIODS.map(item => ({ value: item, label: item }))}
+        />
+        <SegmentedControl
+          label="Chart style"
+          value={mode}
+          onValueChange={value => setMode(value as ChartMode)}
+          options={[
+            { value: 'line', label: 'Line' },
+            { value: 'bars', label: 'Bars' },
+          ]}
+        />
+      </div>
+      <div className="jh-financial-chart__plot-wrap">
+        <div className="jh-financial-chart__axis" aria-hidden="true">
+          <span>{format(high)}</span>
+          <span>{format((high + low) / 2)}</span>
+          <span>{format(low)}</span>
+        </div>
+        <svg
+          className="jh-financial-chart__plot"
+          viewBox="0 0 1000 270"
+          preserveAspectRatio="none"
+          role="img"
+          aria-label={period + ' price chart. ' + symbol + ' is at ' + format(selected)}
+          onPointerMove={choosePoint}
+          onPointerDown={choosePoint}
+          onPointerLeave={() => setActiveIndex(null)}
+          onKeyDown={event => {
+            if (event.key === 'ArrowLeft') setActiveIndex(Math.max(0, selectedIndex - 1));
+            if (event.key === 'ArrowRight') setActiveIndex(Math.min(values.length - 1, selectedIndex + 1));
+            if (event.key === 'Home') setActiveIndex(0);
+            if (event.key === 'End') setActiveIndex(values.length - 1);
+          }}
+          tabIndex={0}
+        >
+          <defs>
+            <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stopColor="currentColor" stopOpacity=".14" />
+              <stop offset="1" stopColor="currentColor" stopOpacity="0" />
+            </linearGradient>
+          </defs>
+          {[62, 126, 190, 252].map(y => <path key={y} d={'M0 ' + y + 'H1000'} className="jh-financial-chart__gridline" />)}
+          {mode === 'line' ? (
+            <>
+              <path d={area} className="jh-financial-chart__area" style={{ fill: 'url(#' + gradientId + ')' }} />
+              <path d={path} className="jh-financial-chart__line" pathLength="1" />
+            </>
+          ) : values.map((value, index) => {
+            const point = points[index];
+            return <rect key={index} x={point.x - 5} y={point.y} width="10" height={232 - point.y} rx="3" className="jh-financial-chart__bar" data-selected={selectedIndex === index} />;
+          })}
+          {activeIndex !== null && selectedPoint && (
+            <>
+              <path d={'M' + selectedPoint.x + ' 0V252'} className="jh-financial-chart__crosshair" />
+              <circle cx={selectedPoint.x} cy={selectedPoint.y} r="6" className="jh-financial-chart__point-halo" />
+              <circle cx={selectedPoint.x} cy={selectedPoint.y} r="3" className="jh-financial-chart__point" />
+            </>
+          )}
+        </svg>
+      </div>
+      <div className="jh-financial-chart__timeline" aria-hidden="true">
+        {LABELS[period].map(label => <span key={label}>{label}</span>)}
+      </div>
+      <div className="jh-financial-chart__footer">
+        <span>Market data · Demo</span>
+        <span>Volume <strong>2.48M</strong></span>
+      </div>
+    </section>
+  );
 }

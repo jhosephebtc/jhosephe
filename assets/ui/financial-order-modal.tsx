@@ -1,9 +1,18 @@
-import { useEffect, useId, useRef, useState } from 'react';
+import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { Button } from './button';
 import { CurrencyPicker } from './currency-picker';
+import { Input } from './input';
+import { PickerPanel } from './picker-panel';
+import { SegmentedControl } from './segmented-control';
 import { ShaderSurface } from './shader-surface';
 
 export type FinancialOrderMaterial = 'solid' | 'glass' | 'liquid' | 'liquid-glass';
+
+const ORDER_TYPES = [
+  { value: 'Market', label: 'Market', detail: 'Fill at the next available price' },
+  { value: 'Limit', label: 'Limit', detail: 'Fill only at your limit price or better' },
+] as const;
 
 const normalizeMaterial = (material: FinancialOrderMaterial) => {
   if (material === 'liquid-glass') return 'glass';
@@ -20,37 +29,43 @@ export function FinancialOrderModal({ symbol = 'NOVA', company = 'Nova Systems',
   const [quantity, setQuantity] = useState('10');
   const [currency, setCurrency] = useState('USD');
   const [orderType, setOrderType] = useState<'Market' | 'Limit'>('Market');
+  const [orderTypeOpen, setOrderTypeOpen] = useState(false);
+  const [orderTypeQuery, setOrderTypeQuery] = useState('');
   const [limit, setLimit] = useState(price.toFixed(2));
   const [placed, setPlaced] = useState(false);
-  const trigger = useRef<HTMLButtonElement>(null);
+  const launch = useRef<HTMLButtonElement>(null);
   const panel = useRef<HTMLDivElement>(null);
+  const orderTypeTrigger = useRef<HTMLButtonElement>(null);
   const finish = normalizeMaterial(material);
   const materialAttr = finish === 'glass' ? 'liquid-glass' : finish;
   const numericQuantity = Math.max(0, Number(quantity) || 0);
   const estimated = numericQuantity * (orderType === 'Limit' ? Number(limit) || price : price);
   const format = (amount: number) => new Intl.NumberFormat('en-US', { style: 'currency', currency, maximumFractionDigits: 2 }).format(amount);
+  const orderTypeResults = useMemo(
+    () => ORDER_TYPES.filter(item => (item.label + ' ' + item.detail).toLowerCase().includes(orderTypeQuery.toLowerCase())),
+    [orderTypeQuery],
+  );
 
   useEffect(() => {
     if (!open) return;
     const previous = document.activeElement as HTMLElement | null;
     const priorOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
-    const focusable = () => panel.current?.querySelectorAll<HTMLElement>('button:not(:disabled),input:not(:disabled),select:not(:disabled),[href]');
+    const focusable = () => panel.current?.querySelectorAll<HTMLElement>(
+      'button:not(:disabled),input:not(:disabled),[href],[role="radio"]',
+    );
     const first = focusable()?.[0];
     window.setTimeout(() => first?.focus(), 0);
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') { setOpen(false); return; }
-      if (event.key !== 'Tab') return;
-      const items = Array.from(focusable() ?? []);
-      if (!items.length) return;
-      if (event.shiftKey && document.activeElement === items[0]) { event.preventDefault(); items.at(-1)?.focus(); }
-      else if (!event.shiftKey && document.activeElement === items.at(-1)) { event.preventDefault(); items[0].focus(); }
+      if (event.key !== 'Escape') return;
+      if (document.querySelector('.jh-picker-overlay')) return;
+      setOpen(false);
     };
     document.addEventListener('keydown', onKeyDown);
     return () => {
       document.body.style.overflow = priorOverflow;
       document.removeEventListener('keydown', onKeyDown);
-      trigger.current?.focus();
+      launch.current?.focus();
       if (previous && previous !== document.body) previous.focus?.();
     };
   }, [open]);
@@ -89,19 +104,89 @@ export function FinancialOrderModal({ symbol = 'NOVA', company = 'Nova Systems',
             <div><strong>{symbol}</strong><span>{company}</span></div>
             <div><strong>{format(price)}</strong><small>Last price</small></div>
           </section>
-          <div className="jh-financial-order__side" role="group" aria-label="Order side">
-            {(['Buy', 'Sell'] as const).map(item => (
-              <button key={item} type="button" aria-pressed={side === item} onClick={() => setSide(item)}>{item}</button>
-            ))}
-          </div>
+
+          <SegmentedControl
+            label="Order side"
+            value={side}
+            onValueChange={value => setSide(value as 'Buy' | 'Sell')}
+            options={[
+              { value: 'Buy', label: 'Buy' },
+              { value: 'Sell', label: 'Sell' },
+            ]}
+          />
+
           <div className="jh-financial-order__fields">
-            <label>Shares<input inputMode="decimal" type="number" min="0.001" step="any" value={quantity} onChange={event => setQuantity(event.target.value)} /></label>
-            <label>Order type<select value={orderType} onChange={event => setOrderType(event.target.value as 'Market' | 'Limit')}><option>Market</option><option>Limit</option></select></label>
+            <label>
+              Shares
+              <Input
+                inputMode="decimal"
+                autoComplete="off"
+                value={quantity}
+                onChange={event => setQuantity(event.target.value.replace(/[^\d.]/g, ''))}
+              />
+            </label>
+            <div className="jh-financial-order__order-type">
+              <span className="jh-financial-order__field-label" id={id + '-order-type'}>Order type</span>
+              <button
+                ref={orderTypeTrigger}
+                type="button"
+                className="jh-financial-order__type-trigger jh-input"
+                aria-labelledby={id + '-order-type'}
+                aria-haspopup="listbox"
+                aria-expanded={orderTypeOpen}
+                onClick={() => setOrderTypeOpen(value => !value)}
+              >
+                <span>{orderType}</span>
+                <svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4" /></svg>
+              </button>
+              <PickerPanel
+                open={orderTypeOpen}
+                triggerRef={orderTypeTrigger}
+                onClose={() => { setOrderTypeOpen(false); setOrderTypeQuery(''); }}
+                search={orderTypeQuery}
+                onSearchChange={setOrderTypeQuery}
+                searchPlaceholder="Search order type"
+                label="Order type options"
+                className="jh-financial-order__type-panel"
+                preferredHeight={220}
+              >
+                <ul className="jh-financial-order__type-options" role="listbox" aria-label="Order type options">
+                  {orderTypeResults.map(item => (
+                    <li key={item.value}>
+                      <button
+                        type="button"
+                        role="option"
+                        aria-selected={orderType === item.value}
+                        onClick={() => {
+                          setOrderType(item.value);
+                          setOrderTypeOpen(false);
+                          setOrderTypeQuery('');
+                        }}
+                      >
+                        <strong>{item.label}</strong>
+                        <small>{item.detail}</small>
+                      </button>
+                    </li>
+                  ))}
+                  {!orderTypeResults.length && <li className="jh-currency-picker__empty">No matching order types.</li>}
+                </ul>
+              </PickerPanel>
+            </div>
             {orderType === 'Limit' && (
-              <label className="jh-financial-order__limit">Limit price<input inputMode="decimal" type="number" min="0.01" step="0.01" value={limit} onChange={event => setLimit(event.target.value)} /></label>
+              <label className="jh-financial-order__limit">
+                Limit price
+                <Input
+                  inputMode="decimal"
+                  autoComplete="off"
+                  value={limit}
+                  onChange={event => setLimit(event.target.value.replace(/[^\d.]/g, ''))}
+                />
+              </label>
             )}
           </div>
+
           <CurrencyPicker value={currency} onValueChange={setCurrency} label="Order currency" />
+
           <div className="jh-financial-order__account">
             <div><span>Paying from</span><strong>Everyday investing ·· 4821</strong></div>
             <span>Available<br /><b>{format(12480.52)}</b></span>
@@ -127,9 +212,14 @@ export function FinancialOrderModal({ symbol = 'NOVA', company = 'Nova Systems',
 
   return (
     <div className="jh-financial-order__launcher" data-jh-material={materialAttr}>
-      <button ref={trigger} className="jh-financial-order__launch" type="button" onClick={() => { setPlaced(false); setOpen(true); }}>
+      <Button
+        ref={launch}
+        className="jh-financial-order__launch"
+        variant="secondary"
+        onClick={() => { setPlaced(false); setOpen(true); }}
+      >
         Review order <span aria-hidden="true">↗</span>
-      </button>
+      </Button>
       {typeof document !== 'undefined' && content ? createPortal(content, document.body) : content}
     </div>
   );

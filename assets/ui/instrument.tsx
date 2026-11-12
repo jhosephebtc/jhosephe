@@ -2,6 +2,32 @@ import type { CSSProperties } from 'react';
 
 export type InstrumentBarsOrientation = 'horizontal' | 'vertical';
 
+const accentVars = (
+  accentColor: string,
+  accentColorEnd: string,
+  accentGradient: boolean,
+  glowIntensity: number,
+  glowBlur: number,
+) => {
+  const intensity = Math.max(0, Math.min(100, glowIntensity));
+  return {
+    '--jh-slider-accent-color': accentColor,
+    '--jh-slider-accent-color-end': accentColorEnd,
+    '--jh-slider-glow-color': accentGradient ? `color-mix(in oklch, ${accentColor} 50%, ${accentColorEnd} 50%)` : accentColor,
+    '--jh-slider-glow-strength': `${intensity}%`,
+    '--jh-slider-glow-strength-mid': `${Math.round(intensity * .62)}%`,
+    '--jh-slider-glow-strength-edge': `${Math.round(intensity * .3)}%`,
+    '--jh-slider-glow-blur': `${Math.max(0, Math.min(16, glowBlur))}px`,
+  } as CSSProperties;
+};
+
+const cellAccent = (index: number, total: number, accentColor: string, accentColorEnd: string, accentGradient: boolean) => {
+  const position = total > 1 ? index / (total - 1) : 0;
+  return accentGradient
+    ? `color-mix(in oklch, ${accentColor} ${Math.round((1 - position) * 100)}%, ${accentColorEnd} ${Math.round(position * 100)}%)`
+    : accentColor;
+};
+
 /** The visible text outside this SVG carries the value. */
 export function InstrumentBars({ value, orientation = 'horizontal',
   accentColor = 'oklch(100% 0 0)', accentColorEnd = 'oklch(92% 0.035 250)', accentGradient = false,
@@ -18,16 +44,7 @@ export function InstrumentBars({ value, orientation = 'horizontal',
   const normalized = Number.isFinite(value) ? Math.min(100, Math.max(0, value)) : 0;
   const bars = Array.from({ length: 33 }, (_, index) => index);
   const vertical = orientation === 'vertical';
-  const intensity = Math.max(0, Math.min(100, glowIntensity));
-  const style = {
-    '--jh-slider-accent-color': accentColor,
-    '--jh-slider-accent-color-end': accentColorEnd,
-    '--jh-slider-glow-color': accentGradient ? `color-mix(in oklch, ${accentColor} 50%, ${accentColorEnd} 50%)` : accentColor,
-    '--jh-slider-glow-strength': `${intensity}%`,
-    '--jh-slider-glow-strength-mid': `${Math.round(intensity * .62)}%`,
-    '--jh-slider-glow-strength-edge': `${Math.round(intensity * .3)}%`,
-    '--jh-slider-glow-blur': `${Math.max(0, Math.min(16, glowBlur))}px`,
-  } as CSSProperties;
+  const style = accentVars(accentColor, accentColorEnd, accentGradient, glowIntensity, glowBlur);
 
   if (vertical) {
     return (
@@ -54,6 +71,7 @@ export function InstrumentBars({ value, orientation = 'horizontal',
               height="3"
               rx="1.5"
               className={active ? 'jh-instrument__bar is-active' : 'jh-instrument__bar'}
+              style={{ '--jh-bar-cell-accent': cellAccent(index, bars.length, accentColor, accentColorEnd, accentGradient) } as CSSProperties}
             />
           );
         })}
@@ -86,6 +104,7 @@ export function InstrumentBars({ value, orientation = 'horizontal',
             height={height}
             rx="1.5"
             className={active ? 'jh-instrument__bar is-active' : 'jh-instrument__bar'}
+            style={{ '--jh-bar-cell-accent': cellAccent(index, bars.length, accentColor, accentColorEnd, accentGradient) } as CSSProperties}
           />
         );
       })}
