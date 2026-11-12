@@ -2249,7 +2249,8 @@ body:has(.library-detail .library-preview-object[data-jh-material="liquid-glass"
 .jh-bar-slider__thumb { position: relative; overflow: hidden; }
 
 /* Finance nav / currency popover width safety inside preview. */
-.jh-currency-picker__popover { min-width: 100%; max-width: min(100vw - 48px, 440px); }
+.jh-currency-picker__popover:not(.jh-picker-overlay) { min-width: 100%; max-width: min(100vw - 48px, 440px); }
+.jh-currency-picker__popover.jh-picker-overlay { min-width: 0; max-width: none; }
 .jh-currency-picker__search { min-width: 0; }
 .jh-currency-picker__search input { min-width: 0; flex: 1; }
 .jh-finance-nav--sidebar { max-width: 100%; }
@@ -2318,10 +2319,14 @@ body:has(.library-detail .library-preview-object[data-jh-material="liquid-glass"
   width: 100%;
 }
 
-/* Switch thumb: horizontal travel only — never translateY. */
+/* Switch thumb: horizontal travel only — Segmented-like easing. */
 .jh-switch__thumb {
   will-change: transform;
   transform: translateX(0);
+  transition:
+    transform 280ms cubic-bezier(.22, 1, .36, 1),
+    box-shadow 180ms var(--jh-ease),
+    background-color 180ms var(--jh-ease);
 }
 .jh-switch[data-state=checked] .jh-switch__thumb { transform: translateX(26px); }
 .jh-switch:active:not(:disabled) .jh-switch__thumb { transform: translateX(0); }
@@ -3722,4 +3727,128 @@ input.jh-input[type=number]::-webkit-inner-spin-button,
 @media (prefers-reduced-motion: reduce) {
   .jh-tactile-lever__range,
   .jh-tactile-lever__thumb { transition: none; }
+}
+
+/* —— Segmented: sliding raised thumb (smooth horizontal travel) —— */
+.jh-segmented {
+  position: relative;
+  isolation: isolate;
+}
+.jh-segmented__thumb {
+  position: absolute;
+  top: 4px;
+  left: 0;
+  bottom: 4px;
+  z-index: 0;
+  border-radius: 10px;
+  background: linear-gradient(155deg, #ffffffed, #ffffffa8);
+  box-shadow: inset 0 1px #fff, 0 1px 3px #0000000a;
+  pointer-events: none;
+  opacity: 0;
+  transition:
+    transform 280ms cubic-bezier(.22, 1, .36, 1),
+    width 280ms cubic-bezier(.22, 1, .36, 1),
+    opacity 120ms ease;
+  will-change: transform, width;
+}
+.jh-segmented__thumb[data-ready] { opacity: 1; }
+.jh-segmented__option { z-index: 1; }
+.jh-segmented__option span {
+  background: transparent !important;
+  box-shadow: none !important;
+  transition: color 200ms var(--jh-ease);
+}
+.jh-segmented__option input:checked + span {
+  color: #303030;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+[data-jh-material="liquid-glass"] .jh-segmented__thumb,
+[data-jh-material="liquid"] .jh-segmented__thumb,
+.jh-financial-order[data-jh-material="liquid-glass"] .jh-segmented__thumb,
+.jh-financial-order[data-jh-material="liquid"] .jh-segmented__thumb {
+  background: linear-gradient(155deg, #ffffffed, #ffffffa8);
+  background-image: linear-gradient(155deg, #ffffffed, #ffffffa8);
+  box-shadow: inset 0 1px #fff, 0 1px 3px #0000000a;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+[data-jh-material="liquid-glass"] .jh-segmented__option input:checked + span,
+[data-jh-material="liquid"] .jh-segmented__option input:checked + span,
+.jh-financial-order[data-jh-material="liquid-glass"] .jh-segmented__option input:checked + span,
+.jh-financial-order[data-jh-material="liquid"] .jh-segmented__option input:checked + span {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .jh-segmented__thumb { transition: none; }
+}
+
+/* —— Picker overlay: trigger-matched width + even margins —— */
+.jh-picker-overlay {
+  box-sizing: border-box;
+  width: var(--jh-picker-width, auto);
+  max-width: min(100vw - 24px, 100%);
+  min-width: 0;
+  padding: 10px;
+  gap: 8px;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  align-content: start;
+}
+.jh-currency-picker__popover.jh-picker-overlay,
+.jh-financial-order__type-panel.jh-picker-overlay {
+  min-width: 0 !important;
+  max-width: none !important;
+  width: var(--jh-picker-width, auto);
+}
+.jh-picker-overlay__search {
+  margin: 0;
+  min-width: 0;
+}
+.jh-picker-overlay__search .jh-input,
+.jh-picker-overlay__search input {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+}
+.jh-picker-overlay .jh-scroll-frame {
+  margin: 0;
+  min-width: 0;
+  width: 100%;
+  padding-right: 4px;
+  border-radius: 12px;
+  background: transparent;
+  box-shadow: none;
+}
+.jh-picker-overlay .jh-scroll-frame > .jh-scroll-area {
+  padding: 2px 4px 2px 2px;
+  border-radius: 12px;
+}
+.jh-picker-overlay__footer,
+.jh-picker-overlay > p,
+.jh-currency-picker__popover.jh-picker-overlay > p,
+.jh-picker-overlay__footer p {
+  margin: 0;
+  padding: 2px 2px 0;
+  color: #8a8a8a;
+  font-size: 9px;
+}
+.jh-financial-order__type-options,
+.jh-currency-picker__options {
+  gap: 4px;
+  padding: 0;
+  margin: 0;
+}
+.jh-financial-order__type-options button,
+.jh-currency-picker__options button {
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+}
+.jh-currency-picker__options button {
+  padding: 8px 10px;
 }

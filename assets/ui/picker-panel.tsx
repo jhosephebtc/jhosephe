@@ -16,8 +16,12 @@ export function placePickerPanel(trigger: HTMLElement | null, preferredHeight = 
   const top = openUp
     ? Math.max(12, rect.top - gap - maxHeight)
     : Math.min(window.innerHeight - maxHeight - 12, rect.bottom + gap);
-  const width = Math.min(Math.max(rect.width, 240), window.innerWidth - 24);
-  const left = Math.min(Math.max(12, rect.left), window.innerWidth - width - 12);
+  // Match trigger width exactly (viewport-clamped only). Never expand to stage width.
+  const width = Math.min(Math.max(rect.width, 160), window.innerWidth - 24);
+  const left = Math.min(
+    Math.max(12, rect.left),
+    Math.max(12, window.innerWidth - width - 12),
+  );
   return { top, left, width, maxHeight };
 }
 
@@ -90,7 +94,14 @@ export function PickerPanel({
       ref={panel}
       className={cn('jh-picker-overlay', className)}
       role="presentation"
-      style={{ top: box.top, left: box.left, width: box.width, maxHeight: box.maxHeight }}
+      style={{
+        top: box.top,
+        left: box.left,
+        width: box.width,
+        maxWidth: box.width,
+        maxHeight: box.maxHeight,
+        ['--jh-picker-width' as string]: `${box.width}px`,
+      }}
     >
       <label className="jh-picker-overlay__search">
         <span className="jh-visually-hidden">Search {label}</span>
