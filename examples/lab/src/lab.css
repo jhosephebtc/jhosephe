@@ -137,3 +137,16 @@
 .relief-lens { display: grid; place-items: center; width: 112px; height: 76px; border-radius: 24px; background: radial-gradient(ellipse at 30% 0%,#fffffff2,#ffffff70 65%,#ffffffa6); box-shadow: inset 0 1px 1px #fff,inset 0 -1px 2px #ffffffc9,0 8px 14px -7px #00000025; backdrop-filter: blur(5px); }
 .relief-lens span { width: 32px; height: 4px; border-radius: 10px; background: #5d5d5d8c; box-shadow: 0 1px 1px #fff; }
 @media (prefers-reduced-transparency: reduce) { .relief-lens { background: #f8f8f8; backdrop-filter: none; } }
+
+.instrument-study { width:min(100% - 80px,1320px); margin:0 auto; padding:92px 0 84px; border-top:1px solid #00000008; }
+.instrument-study__heading { display:flex; align-items:end; justify-content:space-between; gap:22px; margin-bottom:28px; }
+.instrument-study__heading h2 { max-width:600px; margin:10px 0 0; color:#363636; font-size:clamp(32px,4.4vw,54px); font-weight:450; letter-spacing:-.06em; line-height:1.04; }
+.instrument-study__heading .intro__link { margin-bottom:5px; }
+.instrument-study > .jh-finance-nav { margin-bottom:18px; }
+.instrument-study__grid { display:grid; grid-template-columns:minmax(0,1.35fr) minmax(300px,.85fr); align-items:start; gap:18px; }
+.instrument-study__market,.instrument-study__sky { min-width:0; }
+.instrument-study__market > .jh-financial-chart { width:100%; max-width:none; min-height:100%; }
+.instrument-study__sky { display:grid; gap:14px; }
+.instrument-study__sky > :where(.jh-astronomy,.jh-astrology-wheel) { width:100%; max-width:none; }
+@media (max-width:900px) { .instrument-study { width:min(100% - 48px,1320px); padding:70px 0; } .instrument-study__grid { grid-template-columns:1fr; } }
+@media (max-width:600px) { .instrument-study { width:calc(100% - 32px); padding:54px 0; } .instrument-study__heading { align-items:flex-start; flex-direction:column; } }

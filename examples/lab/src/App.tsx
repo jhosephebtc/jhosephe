@@ -8,6 +8,10 @@ import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, Dia
 import { InstrumentBars } from '../../../assets/ui/instrument';
 import { ShaderSurface } from '../../../assets/ui/shader-surface';
 import { SmoothShape } from '../../../assets/ui/smooth-shape';
+import { FinancialChart } from '../../../assets/ui/financial-chart';
+import { AstronomyInstrument } from '../../../assets/ui/astronomy-instrument';
+import { AstrologyWheel } from '../../../assets/ui/astrology-wheel';
+import { FinanceNavigation } from '../../../assets/ui/finance-navigation';
 
 function Wordmark() {
   return <a className="brand" href="/" aria-label="jhosephe, home">
@@ -109,6 +113,14 @@ export function App() {
           <ControlDeck />
         </div>
         <MaterialStudy />
+        <section className="instrument-study" id="instruments" aria-labelledby="instrument-study-title">
+          <div className="instrument-study__heading"><div><span className="eyebrow">Instruments / 06</span><h2 id="instrument-study-title">Signals with a sense of place.</h2></div><a className="intro__link" href="/components">Browse the component collection <MoveRight size={17} aria-hidden="true" /></a></div>
+          <FinanceNavigation layout="header" />
+          <div className="instrument-study__grid">
+            <div className="instrument-study__market"><FinancialChart symbol="NOVA" company="Nova Systems" /></div>
+            <div className="instrument-study__sky"><AstronomyInstrument latitude={-3.7319} longitude={-38.5267} location="Fortaleza" /><AstrologyWheel /></div>
+          </div>
+        </section>
         <section className="button-study" aria-labelledby="button-study-title">
           <div><span className="eyebrow">Material / 05</span><h2 id="button-study-title">Glass that responds.</h2><p>A gentle touch. A precise reflection.</p></div>
           <div className="button-study__actions"><a className="jh-button jh-button--glass jh-button--primary" href="/solar"><SmoothShape className="jh-button__face" radius={16} /><span className="jh-button__content">Open solar panel <ArrowUpRight size={15} aria-hidden="true" /></span></a></div>

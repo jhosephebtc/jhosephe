@@ -13,11 +13,11 @@ export function DialogDescription({ className, ...props }: ComponentPropsWithout
 }
 export const DialogClose = DialogPrimitive.Close;
 
-export function DialogContent({ className, children, ...props }: ComponentPropsWithoutRef<typeof DialogPrimitive.Content>) {
+export function DialogContent({ className, children, material = 'solid', ...props }: ComponentPropsWithoutRef<typeof DialogPrimitive.Content> & { material?: 'solid' | 'liquid-glass' }) {
   return (
     <DialogPrimitive.Portal>
       <DialogPrimitive.Overlay className="jh-dialog-overlay" />
-      <DialogPrimitive.Content className={cn('jh-dialog', className)} {...props}>
+      <DialogPrimitive.Content data-jh-material={material} className={cn('jh-dialog', className)} {...props}>
         {children}
         <DialogPrimitive.Close className="jh-dialog__close" aria-label="Close"><X size={17} aria-hidden="true" /></DialogPrimitive.Close>
       </DialogPrimitive.Content>

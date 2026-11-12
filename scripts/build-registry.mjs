@@ -55,7 +55,15 @@ const definitions = [
 const items = [];
 await mkdir(resolve(destination, 'r'), { recursive: true });
 for (const [name, title, description, sources, dependencies] of definitions) {
-  const files = [];
+  const files = [  ["financial-chart", "Financial Chart", "An interactive line and bar market chart.", ["financial-chart.tsx"], []],
+  ["market-picker", "Market Picker", "Search stocks, funds, and crypto demo data.", ["market-picker.tsx"], []],
+  ["currency-picker", "Currency Picker", "A searchable currency popover with demo rates.", ["currency-picker.tsx"], []],
+  ["financial-order-modal", "Financial Order Modal", "A multi-step brokerage order review dialog.", ["financial-order-modal.tsx", "currency-picker.tsx"], []],
+  ["astronomy-instrument", "Solar Ephemeris", "A live local-time solar position instrument.", ["astronomy-instrument.tsx"], []],
+  ["ephemeris-picker", "Ephemeris Picker", "Select an observation time, place, and body.", ["ephemeris-picker.tsx"], []],
+  ["astrology-wheel", "Astrology Wheel", "An interactive zodiac and planet chart.", ["astrology-wheel.tsx"], []],
+  ["race-telemetry", "Race Telemetry", "A tactile motorsport telemetry dashboard.", ["race-telemetry.tsx"], []],
+  ["finance-navigation", "Finance Navigation", "A responsive side menu and header navigation.", ["finance-navigation.tsx"], []],];
   for (const [index, filename] of sources.entries()) {
     let content = await readFile(resolve(root, 'assets/ui', filename), 'utf8');
     if (filename.endsWith('.tsx')) content = '"use client";\n' + (index === 0 ? 'import "./theme.css";\n' : '') + '\n' + content;
