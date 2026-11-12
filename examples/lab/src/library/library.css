@@ -497,3 +497,171 @@
   .library-preview-stage--astrology-wheel .library-preview-object,
   .library-preview-stage--race-telemetry .library-preview-object { inset:52px 12px 68px; }
 }
+
+/* Crop fixes: let open overlays escape the stage; give dense panels room. */
+.library-preview-stage--currency-picker,
+.library-preview-stage--ephemeris-picker,
+.library-preview-stage--financial-chart,
+.library-preview-stage--finance-navigation,
+.library-preview-stage--market-picker,
+.library-preview-stage--financial-order-modal {
+  overflow: visible;
+}
+.library-preview-stage--currency-picker,
+.library-preview-stage--ephemeris-picker {
+  min-height: 560px;
+  z-index: 3;
+}
+.library-preview-stage--currency-picker:has(.jh-currency-picker__popover),
+.library-preview-stage--ephemeris-picker:has(.jh-ephemeris-picker__panel) {
+  min-height: 720px;
+  margin-bottom: 24px;
+}
+.library-preview-stage--currency-picker .library-preview-object,
+.library-preview-stage--ephemeris-picker .library-preview-object {
+  inset: 56px clamp(20px,3vw,40px) 40px;
+  align-items: flex-start;
+  overflow: visible;
+}
+.library-preview-stage--currency-picker .library-extra-currency,
+.library-preview-stage--ephemeris-picker .library-extra-ephemeris {
+  width: min(100%, 440px);
+  position: relative;
+  z-index: 4;
+}
+.library-preview-stage--financial-chart {
+  min-height: 620px;
+}
+.library-preview-stage--financial-chart .library-preview-object {
+  inset: 64px clamp(28px,4vw,48px) 72px;
+  align-items: stretch;
+  justify-content: center;
+  overflow: visible;
+}
+.library-preview-stage--financial-chart .library-extra-market-chart,
+.library-preview-stage--financial-chart .jh-financial-chart {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+.library-preview-stage--finance-navigation {
+  min-height: 520px;
+  overflow: visible;
+}
+.library-preview-stage--finance-navigation .library-preview-object {
+  inset: 56px clamp(24px,4vw,48px) 68px;
+  align-items: stretch;
+  justify-content: center;
+  overflow: visible;
+}
+.library-preview-stage--finance-navigation .library-extra-finance-nav,
+.library-preview-stage--finance-navigation .jh-finance-nav {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+.library-preview-stage--currency-picker .library-preview-hint,
+.library-preview-stage--ephemeris-picker .library-preview-hint {
+  pointer-events: none;
+}
+@media (max-width:520px) {
+  .library-preview-stage--currency-picker,
+  .library-preview-stage--ephemeris-picker { min-height: 520px; }
+  .library-preview-stage--currency-picker:has(.jh-currency-picker__popover),
+  .library-preview-stage--ephemeris-picker:has(.jh-ephemeris-picker__panel) { min-height: 640px; }
+  .library-preview-stage--financial-chart .library-preview-object,
+  .library-preview-stage--finance-navigation .library-preview-object { inset: 54px 16px 64px; }
+}
+
+/* Liquid Appearance: stage backdrop adapts like Glass Light so sheen/blur can read. */
+.library-preview-stage.is-liquid-stage,
+.library-card-preview.is-liquid-stage {
+  background: radial-gradient(ellipse at 50% -20%, #f7f7f7, #d8d8d8 58%, #ececec);
+}
+.library-preview-stage.is-glass-stage,
+.library-card-preview.is-glass-stage {
+  background:
+    radial-gradient(ellipse at 20% 15%, #ffffffd9, transparent 42%),
+    radial-gradient(ellipse at 80% 85%, #dcdcdc88, transparent 48%),
+    radial-gradient(ellipse at 50% -20%, #fafafa, #e8e8e8);
+}
+.library-material-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  border-radius: inherit;
+}
+.library-material-backdrop .jh-shader {
+  opacity: .72;
+}
+.library-preview-stage.is-liquid-stage .library-preview-caption,
+.library-preview-stage.is-liquid-stage .library-preview-hint {
+  color: #4a4a4a;
+  text-shadow: 0 1px #ffffffb8;
+}
+.library-preview-stage.is-liquid-stage .library-preview-object,
+.library-card-preview.is-liquid-stage > :not(.library-material-backdrop):not(.library-card-index) {
+  position: relative;
+  z-index: 1;
+}
+.library-card-preview.is-liquid-stage .library-card-index { z-index: 2; }
+
+/* Vertical Instrument Bars preview. */
+.library-demo-instrument.is-vertical {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 18px 22px;
+  width: min(100%, 280px);
+}
+.library-demo-instrument.is-vertical .library-demo-label { grid-column: 1 / -1; }
+.library-demo-instrument.is-vertical output { margin-top: 0; align-self: end; }
+.library-instrument-control.is-vertical {
+  cursor: ns-resize;
+  width: 56px;
+  height: 220px;
+  padding: 0 4px;
+}
+.library-instrument-control.is-vertical .jh-instrument {
+  width: 100%;
+  height: 100%;
+}
+.library-card-preview .library-instrument-control.is-vertical {
+  height: 120px;
+  width: 42px;
+}
+.library-card-preview .library-demo-instrument.is-vertical {
+  width: min(100%, 220px);
+  margin-top: 12px;
+}
+.library-preview-stage--instrument:has(.library-demo-instrument.is-vertical) {
+  min-height: 420px;
+}
+.library-preview-stage--menu.is-liquid-stage {
+  min-height: 420px;
+}
+
+/* Financial order modal preview: room for launcher + open dialog (portaled). */
+.library-preview-stage--financial-order-modal {
+  min-height: 360px;
+  overflow: visible;
+  z-index: 2;
+}
+.library-preview-stage--financial-order-modal .library-preview-object {
+  inset: 64px clamp(24px, 4vw, 48px) 72px;
+  overflow: visible;
+}
+.library-extra-order {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-height: 120px;
+}
+/* When the portaled modal is open, keep caption/hint from fighting the dialog. */
+body:has(.jh-financial-order[data-jh-material]) .library-preview-stage--financial-order-modal .library-preview-hint {
+  opacity: .35;
+}
