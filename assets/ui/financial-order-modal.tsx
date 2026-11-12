@@ -1,4 +1,4 @@
-import { useEffect, useId, useMemo, useRef, useState } from 'react';
+import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Button } from './button';
 import { CurrencyPicker } from './currency-picker';
@@ -13,6 +13,8 @@ const ORDER_TYPES = [
   { value: 'Market', label: 'Market', detail: 'Fill at the next available price' },
   { value: 'Limit', label: 'Limit', detail: 'Fill only at your limit price or better' },
 ] as const;
+
+const ORDER_HEIGHT_EASE = 'height 340ms cubic-bezier(0.22, 1, 0.36, 1)';
 
 const normalizeMaterial = (material: FinancialOrderMaterial) => {
   if (material === 'liquid-glass') return 'glass';
@@ -36,6 +38,7 @@ export function FinancialOrderModal({ symbol = 'NOVA', company = 'Nova Systems',
   const launch = useRef<HTMLButtonElement>(null);
   const panel = useRef<HTMLDivElement>(null);
   const orderTypeTrigger = useRef<HTMLButtonElement>(null);
+  const panelHeight = useRef<number | null>(null);
   const finish = normalizeMaterial(material);
   const materialAttr = finish === 'glass' ? 'liquid-glass' : finish;
   const numericQuantity = Math.max(0, Number(quantity) || 0);
@@ -69,6 +72,52 @@ export function FinancialOrderModal({ symbol = 'NOVA', company = 'Nova Systems',
       if (previous && previous !== document.body) previous.focus?.();
     };
   }, [open]);
+
+  // Smooth panel height when Limit field (and other body content) grows/shrinks.
+  useLayoutEffect(() => {
+    const node = panel.current;
+    if (!open) {
+      panelHeight.current = null;
+      return;
+    }
+    if (!node) return;
+
+    const maxHeight = Math.min(760, window.innerHeight - 40);
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const measure = () => {
+      const prior = node.style.height;
+      node.style.height = 'auto';
+      const natural = Math.min(node.getBoundingClientRect().height, maxHeight);
+      node.style.height = prior;
+      return natural;
+    };
+
+    const target = measure();
+    const from = panelHeight.current;
+    if (from == null || reduce || Math.abs(from - target) < 0.5) {
+      node.style.transition = 'none';
+      node.style.height = `${target}px`;
+      panelHeight.current = target;
+      return;
+    }
+
+    node.style.transition = 'none';
+    node.style.height = `${from}px`;
+    void node.offsetHeight;
+    node.style.transition = ORDER_HEIGHT_EASE;
+    node.style.height = `${target}px`;
+    panelHeight.current = target;
+
+    const onEnd = (event: TransitionEvent) => {
+      if (event.propertyName !== 'height') return;
+      node.style.transition = 'none';
+      node.style.height = `${measure()}px`;
+      panelHeight.current = measure();
+      node.removeEventListener('transitionend', onEnd);
+    };
+    node.addEventListener('transitionend', onEnd);
+    return () => node.removeEventListener('transitionend', onEnd);
+  }, [open, orderType, side, currency, placed]);
 
   const content = open && (
     <div
@@ -172,17 +221,24 @@ export function FinancialOrderModal({ symbol = 'NOVA', company = 'Nova Systems',
                 </ul>
               </PickerPanel>
             </div>
-            {orderType === 'Limit' && (
-              <label className="jh-financial-order__limit">
-                Limit price
-                <Input
-                  inputMode="decimal"
-                  autoComplete="off"
-                  value={limit}
-                  onChange={event => setLimit(event.target.value.replace(/[^\d.]/g, ''))}
-                />
-              </label>
-            )}
+            <div
+              className="jh-financial-order__limit-slot"
+              data-open={orderType === 'Limit' ? 'true' : 'false'}
+              aria-hidden={orderType !== 'Limit'}
+            >
+              <div className="jh-financial-order__limit-slot-inner">
+                <label className="jh-financial-order__limit">
+                  Limit price
+                  <Input
+                    inputMode="decimal"
+                    autoComplete="off"
+                    tabIndex={orderType === 'Limit' ? 0 : -1}
+                    value={limit}
+                    onChange={event => setLimit(event.target.value.replace(/[^\d.]/g, ''))}
+                  />
+                </label>
+              </div>
+            </div>
           </div>
 
           <CurrencyPicker value={currency} onValueChange={setCurrency} label="Order currency" />

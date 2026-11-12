@@ -4043,3 +4043,569 @@ body:has(.library-detail .library-preview-object[data-jh-material="liquid-glass"
   background-image: none !important;
   box-shadow: none !important;
 }
+
+
+
+
+/* —— Queued polish: solid faces, calendar/date, hover, scrollbars, launch —— */
+
+/* Glass Button + Glass Menu solid: flat opaque face, no gradient (rim does the depth) */
+.jh-button__face {
+  background: #fff !important;
+  background-image: none !important;
+  box-shadow: inset 0 1px 1px #fff, inset 0 0 0 1px #0000000a, inset 0 -1px 1px #ffffffc9;
+}
+@supports (backdrop-filter: blur(12px)) {
+  .jh-button--glass .jh-button__face {
+    background: rgb(255 255 255 / .9) !important;
+    background-image: none !important;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+}
+[data-jh-material="solid"] .jh-button__face,
+.jh-button[data-jh-material="solid"] .jh-button__face {
+  background: #fff !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+.jh-menu[data-jh-material="solid"],
+.jh-menu[data-jh-material="solid"].jh-context-menu,
+.jh-context-menu[data-jh-material="solid"] {
+  background: #fff !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow:
+    inset 0 1px 1px #fff,
+    inset 0 0 0 1px #0000000a,
+    inset 0 -1px 1px #ffffffc9,
+    0 10px 30px -12px #0000002b !important;
+}
+.jh-menu[data-jh-material="solid"] .jh-menu__item[data-highlighted],
+.jh-context-menu[data-jh-material="solid"] .jh-menu__item[data-highlighted] {
+  background: #f5f5f5 !important;
+  background-image: none !important;
+  box-shadow: inset 0 1px 1px #fff, inset 0 0 0 1px #00000008 !important;
+}
+
+/* Glass / Tactile hover: text opacity only — do not lighten outline / face / shadow */
+@media (hover: hover) and (pointer: fine) {
+  .jh-button:not(:disabled):hover {
+    box-shadow: var(--jh-shadow-control), 0 1px 3px -2px #00000012 !important;
+  }
+  .jh-button:not(:disabled):hover .jh-button__face {
+    background: #fff !important;
+    background-image: none !important;
+    box-shadow: inset 0 1px 1px #fff, inset 0 0 0 1px #0000000a, inset 0 -1px 1px #ffffffc9 !important;
+  }
+  .jh-button:not(:disabled):hover .jh-button__face::before {
+    opacity: .75 !important;
+    transform: none !important;
+  }
+  .jh-button:not(:disabled):hover .jh-button__content {
+    opacity: .78;
+  }
+  .jh-button--secondary:not(:disabled):hover .jh-button__content {
+    opacity: .9;
+  }
+  .jh-button--ghost:not(:disabled):hover {
+    box-shadow: none !important;
+    background: transparent !important;
+  }
+  .jh-button--ghost:not(:disabled):hover .jh-button__content {
+    opacity: .85;
+  }
+  .jh-tactile-key:hover {
+    color: inherit !important;
+    box-shadow: var(--jh-depth-well) !important;
+  }
+  .jh-tactile-key:hover .jh-tactile-key__face {
+    box-shadow: var(--jh-depth-face) !important;
+    background: var(--jh-surface-face) !important;
+    opacity: 1 !important;
+  }
+  .jh-tactile-key:hover .jh-tactile-key__face,
+  .jh-tactile-key:hover {
+    /* text only */
+  }
+  .jh-tactile-key .jh-tactile-key__face {
+    transition: transform 110ms cubic-bezier(.2,.75,.25,1), box-shadow 140ms var(--jh-ease), background 140ms var(--jh-ease), opacity 140ms var(--jh-ease);
+  }
+  .jh-tactile-key:hover .jh-tactile-key__face {
+    color: inherit;
+  }
+  .jh-tactile-key:hover {
+    opacity: 1;
+  }
+  .jh-tactile-key:hover .jh-tactile-key__face {
+    /* keep face chrome; fade label via color alpha */
+    color: color-mix(in oklab, currentColor 72%, transparent);
+  }
+}
+
+/* Review order launcher = exact Glass Button (kill conflicting face paints) */
+.jh-financial-order__launch,
+.jh-financial-order__launch.jh-button,
+.jh-financial-order[data-jh-material="solid"] .jh-financial-order__launch,
+.jh-financial-order__launcher[data-jh-material="solid"] .jh-financial-order__launch.jh-button {
+  min-height: 44px !important;
+  padding: 0 20px !important;
+  border-radius: 16px !important;
+  color: #2e2e2eb8 !important;
+  font-weight: 450 !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: var(--jh-shadow-control), 0 1px 3px -2px #00000012 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+.jh-financial-order__launch.jh-button .jh-button__face,
+.jh-financial-order__launcher[data-jh-material="solid"] .jh-financial-order__launch.jh-button .jh-button__face,
+.jh-financial-order[data-jh-material="solid"] .jh-financial-order__launch .jh-button__face {
+  background: #fff !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: inset 0 1px 1px #fff, inset 0 0 0 1px #0000000a, inset 0 -1px 1px #ffffffc9 !important;
+}
+@supports (backdrop-filter: blur(12px)) {
+  .jh-financial-order__launcher[data-jh-material="liquid-glass"] .jh-financial-order__launch.jh-button .jh-button__face,
+  .jh-financial-order__launcher[data-jh-material="liquid"] .jh-financial-order__launch.jh-button .jh-button__face {
+    background: rgb(255 255 255 / .9) !important;
+    background-image: none !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+  }
+}
+
+/* Calendar + Date picker: Soft wells, Glass faces, Segmented selected days, margins */
+.jh-calendar {
+  box-sizing: border-box;
+  width: fit-content;
+  max-width: 100%;
+  padding: 16px 16px 14px !important;
+  border-radius: 18px !important;
+  background: #fff !important;
+  background-image: none !important;
+  box-shadow:
+    inset 0 1px 1px #fff,
+    inset 0 0 0 1px #0000000a,
+    inset 0 -1px 1px #ffffffc9,
+    0 8px 24px -16px #00000030 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+.jh-calendar__previous,
+.jh-calendar__next {
+  width: 34px !important;
+  height: 34px !important;
+  border-radius: 10px !important;
+  color: #5a5a5a !important;
+  background: #fff !important;
+  background-image: none !important;
+  box-shadow: inset 0 1px 1px #fff, inset 0 0 0 1px #0000000a, inset 0 -1px 1px #ffffffc9, 0 1px 3px -2px #00000012 !important;
+}
+.jh-calendar__previous:hover,
+.jh-calendar__next:hover {
+  background: #fff !important;
+  box-shadow: inset 0 1px 1px #fff, inset 0 0 0 1px #0000000a, inset 0 -1px 1px #ffffffc9, 0 1px 3px -2px #00000012 !important;
+  color: color-mix(in oklab, #5a5a5a 78%, transparent) !important;
+}
+.jh-calendar__day-button:hover {
+  background: transparent !important;
+  box-shadow: none !important;
+  opacity: .72;
+}
+.jh-calendar__selected .jh-calendar__day-button,
+.jh-calendar__day-button[aria-selected="true"] {
+  color: #303030 !important;
+  font-weight: 550 !important;
+  background: #fff !important;
+  background-image: none !important;
+  box-shadow: inset 0 1px #fff, 0 1px 3px #0000000a !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  opacity: 1 !important;
+}
+.jh-date-popover {
+  box-sizing: border-box;
+  padding: 10px !important;
+  border-radius: 18px !important;
+  background: #fff !important;
+  background-image: none !important;
+  box-shadow:
+    inset 0 1px 1px #fff,
+    inset 0 0 0 1px #0000000a,
+    inset 0 -1px 1px #ffffffc9,
+    0 10px 35px -12px #00000024 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+.jh-date-popover .jh-calendar {
+  padding: 8px 8px 6px !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+.jh-date-picker__clear {
+  width: calc(100% - 16px) !important;
+  margin: 4px 8px 8px !important;
+  min-height: 36px;
+  border: 0;
+  border-radius: 10px !important;
+  padding: 8px 12px !important;
+  color: #5a5a5a;
+  font: inherit;
+  font-size: 11px;
+  cursor: pointer;
+  background: #f1f1f1 !important;
+  background-image: none !important;
+  box-shadow: inset 0 1px 4px #0000000c, inset 0 -1px 1px #ffffffb3, 0 1px #fff !important;
+}
+.jh-date-picker__trigger.jh-button {
+  background: transparent !important;
+  box-shadow: var(--jh-shadow-control), 0 1px 3px -2px #00000012 !important;
+}
+.jh-date-time-popover {
+  box-sizing: border-box;
+  padding: 18px !important;
+  border-radius: 20px !important;
+  background: #fff !important;
+  background-image: none !important;
+  box-shadow:
+    inset 0 1px 1px #fff,
+    inset 0 0 0 1px #0000000a,
+    inset 0 -1px 1px #ffffffc9,
+    0 14px 34px -18px #00000026 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+.jh-date-time-zone {
+  background: #f1f1f1 !important;
+  background-image: none !important;
+  box-shadow: inset 0 1px 4px #0000000c, inset 0 -1px 1px #ffffffb3, 0 1px #fff !important;
+}
+.jh-date-time-slots > div {
+  display: grid;
+  gap: 6px;
+  max-height: 220px;
+  overflow: auto;
+  padding: 2px 6px 2px 0;
+  scrollbar-width: thin;
+  scrollbar-color: #d0d0d0 transparent;
+}
+.jh-date-time-slots button {
+  background: #fff !important;
+  background-image: none !important;
+  box-shadow: inset 0 1px 1px #fff, inset 0 0 0 1px #0000000a, inset 0 -1px 1px #ffffffc9 !important;
+}
+.jh-date-time-slots button[aria-pressed="true"] {
+  color: #303030 !important;
+  background: #fff !important;
+  background-image: none !important;
+  box-shadow: inset 0 1px #fff, 0 1px 3px #0000000a !important;
+}
+[data-jh-material="liquid-glass"].jh-calendar,
+[data-jh-material="liquid-glass"] .jh-calendar,
+[data-jh-material="liquid-glass"].jh-date-popover,
+[data-jh-material="liquid-glass"].jh-date-time-popover {
+  background: rgb(255 255 255 / .86) !important;
+  background-image: none !important;
+  backdrop-filter: blur(22px) saturate(1.04) !important;
+  -webkit-backdrop-filter: blur(22px) saturate(1.04) !important;
+}
+[data-jh-material="liquid-glass"] .jh-calendar__selected .jh-calendar__day-button,
+[data-jh-material="liquid-glass"] .jh-calendar__day-button[aria-selected="true"],
+[data-jh-material="liquid-glass"] .jh-date-time-slots button[aria-pressed="true"] {
+  background: rgb(255 255 255 / .92) !important;
+  background-image: none !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+}
+[data-jh-material="liquid"].jh-calendar,
+[data-jh-material="liquid"] .jh-calendar,
+[data-jh-material="liquid"].jh-date-popover,
+[data-jh-material="liquid"].jh-date-time-popover {
+  background:
+    linear-gradient(125deg, rgb(255 255 255 / .42), rgb(255 255 255 / .18) 42%, rgb(255 255 255 / .5)),
+    linear-gradient(175deg, rgb(255 255 255 / .55), rgb(240 240 240 / .28)) !important;
+  backdrop-filter: blur(28px) saturate(1.18) brightness(1.04) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(1.18) brightness(1.04) !important;
+}
+
+/* Picker overlays: concentric search + balanced content margins + discreet scrollbar */
+.jh-picker-overlay {
+  --jh-picker-radius: 16px;
+  --jh-picker-pad: 10px;
+  --jh-scroll-gap: 8px;
+  box-sizing: border-box;
+  border-radius: var(--jh-picker-radius) !important;
+  padding: var(--jh-picker-pad) !important;
+  gap: 8px !important;
+}
+.jh-picker-overlay__search .jh-input,
+.jh-picker-overlay__search input {
+  border-radius: calc(var(--jh-picker-radius) - var(--jh-picker-pad)) !important;
+}
+.jh-picker-overlay .jh-scroll-frame {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  padding: 2px var(--jh-scroll-gap) 2px 0 !important;
+  overflow: hidden !important;
+}
+.jh-picker-overlay .jh-scroll-frame > .jh-scroll-area {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  padding: 2px 4px 2px 2px !important;
+  scrollbar-gutter: auto !important;
+}
+.jh-picker-overlay .jh-scroll-area ul,
+.jh-picker-overlay .jh-scroll-area .jh-financial-order__type-options,
+.jh-picker-overlay .jh-scroll-area .jh-currency-picker__options {
+  display: grid !important;
+  gap: 2px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  list-style: none !important;
+}
+.jh-picker-overlay .jh-scroll-area li,
+.jh-picker-overlay .jh-scroll-area li:last-child,
+.jh-picker-overlay .jh-scroll-area li:hover {
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  min-height: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  color: inherit !important;
+}
+.jh-financial-order__type-options button {
+  display: grid !important;
+  justify-items: start !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 10px 10px 10px 2px !important;
+  text-align: left !important;
+}
+.jh-financial-order__type-options button strong,
+.jh-financial-order__type-options button small {
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: left !important;
+  justify-self: start !important;
+}
+
+/* Discreet vertical scrollbars — finance pickers, order modal, date slots */
+.jh-financial-order__body,
+.jh-picker-overlay .jh-scroll-frame > .jh-scroll-area,
+.jh-picker-overlay .jh-scroll-area,
+.jh-date-time-slots > div,
+.jh-scroll-frame > .jh-scroll-area {
+  scrollbar-width: thin;
+  scrollbar-color: #d4d4d4cc transparent;
+}
+.jh-financial-order__body::-webkit-scrollbar,
+.jh-picker-overlay .jh-scroll-frame > .jh-scroll-area::-webkit-scrollbar,
+.jh-picker-overlay .jh-scroll-area::-webkit-scrollbar,
+.jh-date-time-slots > div::-webkit-scrollbar,
+.jh-scroll-frame > .jh-scroll-area::-webkit-scrollbar {
+  width: 10px !important;
+}
+.jh-financial-order__body::-webkit-scrollbar-track,
+.jh-picker-overlay .jh-scroll-frame > .jh-scroll-area::-webkit-scrollbar-track,
+.jh-picker-overlay .jh-scroll-area::-webkit-scrollbar-track,
+.jh-date-time-slots > div::-webkit-scrollbar-track,
+.jh-scroll-frame > .jh-scroll-area::-webkit-scrollbar-track {
+  margin: 10px 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+.jh-financial-order__body::-webkit-scrollbar-thumb,
+.jh-picker-overlay .jh-scroll-frame > .jh-scroll-area::-webkit-scrollbar-thumb,
+.jh-picker-overlay .jh-scroll-area::-webkit-scrollbar-thumb,
+.jh-date-time-slots > div::-webkit-scrollbar-thumb,
+.jh-scroll-frame > .jh-scroll-area::-webkit-scrollbar-thumb {
+  min-height: 24px !important;
+  border: 3px solid transparent !important;
+  border-radius: 99px !important;
+  background: #d0d0d0b8 padding-box !important;
+  background-clip: padding-box !important;
+  box-shadow: none !important;
+}
+.jh-financial-order__body::-webkit-scrollbar-thumb:hover,
+.jh-picker-overlay .jh-scroll-frame > .jh-scroll-area::-webkit-scrollbar-thumb:hover,
+.jh-picker-overlay .jh-scroll-area::-webkit-scrollbar-thumb:hover,
+.jh-date-time-slots > div::-webkit-scrollbar-thumb:hover,
+.jh-scroll-frame > .jh-scroll-area::-webkit-scrollbar-thumb:hover {
+  background: #c4c4c4c9 padding-box !important;
+}
+.jh-financial-order__body::-webkit-scrollbar-button,
+.jh-picker-overlay .jh-scroll-area::-webkit-scrollbar-button,
+.jh-picker-overlay .jh-scroll-frame > .jh-scroll-area::-webkit-scrollbar-button,
+.jh-date-time-slots > div::-webkit-scrollbar-button,
+.jh-scroll-frame > .jh-scroll-area::-webkit-scrollbar-button,
+.jh-scroll-area::-webkit-scrollbar-button {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* Order modal: balanced body inset + height animation */
+.jh-financial-order {
+  overflow: hidden !important;
+  interpolate-size: allow-keywords;
+  height: fit-content;
+  max-height: min(760px, calc(100dvh - 40px));
+  transition: height 340ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.jh-financial-order__body {
+  box-sizing: border-box;
+  margin-right: 8px;
+  padding-right: 18px !important;
+  padding-left: 26px;
+  scrollbar-gutter: stable;
+}
+.jh-financial-order__limit-slot {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-rows: 0fr;
+  transition:
+    grid-template-rows 340ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 240ms cubic-bezier(0.22, 1, 0.36, 1);
+  opacity: 0;
+  pointer-events: none;
+}
+.jh-financial-order__limit-slot[data-open="true"] {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  pointer-events: auto;
+}
+.jh-financial-order__limit-slot-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+.jh-financial-order__limit-slot .jh-financial-order__limit {
+  display: grid;
+  gap: 6px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  transform: translateY(-8px);
+  opacity: 0.01;
+  transition:
+    transform 340ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 240ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.jh-financial-order__limit-slot[data-open="true"] .jh-financial-order__limit {
+  transform: translateY(0);
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .jh-financial-order,
+  .jh-financial-order__limit-slot,
+  .jh-financial-order__limit-slot .jh-financial-order__limit {
+    transition: none !important;
+  }
+}
+/* Asset summary + picker option text ↔ search alignment */
+.jh-financial-order__asset,
+.jh-financial-order__summary {
+  padding: 12px 14px !important;
+  border-radius: 14px !important;
+  background: #f1f1f1 !important;
+  background-image: none !important;
+  box-shadow: inset 0 1px 4px #0000000c, inset 0 -1px 1px #ffffffb3, 0 1px #fff !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+.jh-financial-order__asset .jh-market-picker__ticker {
+  width: 38px !important;
+  height: 38px !important;
+  border-radius: 12px !important;
+  color: #555 !important;
+  background: #fff !important;
+  background-image: none !important;
+  box-shadow:
+    inset 0 1px 1px #fff,
+    inset 0 0 0 1px #0000000a,
+    inset 0 -1px 1px #ffffffc9,
+    0 1px 3px -2px #00000012 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  font-weight: 550 !important;
+}
+.jh-financial-order[data-jh-material="solid"] .jh-financial-order__asset,
+.jh-financial-order[data-jh-material="solid"] .jh-financial-order__summary {
+  background: #f1f1f1 !important;
+  background-image: none !important;
+  box-shadow: inset 0 1px 4px #0000000c, inset 0 -1px 1px #ffffffb3, 0 1px #fff !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+.jh-financial-order[data-jh-material="liquid-glass"] .jh-financial-order__asset,
+.jh-financial-order[data-jh-material="liquid-glass"] .jh-financial-order__summary {
+  /* Soft Input well stays Soft under Glass appearance */
+  background: #f1f1f1 !important;
+  background-image: none !important;
+  box-shadow: inset 0 1px 4px #0000000c, inset 0 -1px 1px #ffffffb3, 0 1px #fff !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+.jh-financial-order[data-jh-material="liquid-glass"] .jh-financial-order__asset .jh-market-picker__ticker {
+  background: rgb(255 255 255 / .92) !important;
+  background-image: none !important;
+  box-shadow: inset 0 1px 1px #fff, inset 0 0 0 1px #0000000a, inset 0 -1px 1px #ffffffc9, 0 1px 3px -2px #00000012 !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+}
+.jh-financial-order[data-jh-material="liquid"] .jh-financial-order__asset,
+.jh-financial-order[data-jh-material="liquid"] .jh-financial-order__summary,
+.jh-financial-order.jh-menu--liquid .jh-financial-order__asset,
+.jh-financial-order.jh-menu--liquid .jh-financial-order__summary {
+  background: #f1f1f1 !important;
+  background-image: none !important;
+  box-shadow: inset 0 1px 4px #0000000c, inset 0 -1px 1px #ffffffb3, 0 1px #fff !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+.jh-financial-order[data-jh-material="liquid"] .jh-financial-order__asset .jh-market-picker__ticker,
+.jh-financial-order.jh-menu--liquid .jh-financial-order__asset .jh-market-picker__ticker {
+  background:
+    linear-gradient(125deg, rgb(255 255 255 / .55), rgb(255 255 255 / .22) 42%, rgb(255 255 255 / .6)),
+    linear-gradient(175deg, rgb(255 255 255 / .7), rgb(240 240 240 / .4)) !important;
+  box-shadow: inset 0 1px #ffffffed, inset 0 -8px 16px #ffffff40, 0 1px 3px -2px #00000014 !important;
+  backdrop-filter: blur(18px) saturate(1.1) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(1.1) !important;
+}
+
+/* Option labels share search-field text inset (input padding-left: 13px) */
+.jh-picker-overlay {
+  --jh-picker-search-pad-x: 13px;
+}
+.jh-picker-overlay .jh-scroll-frame {
+  padding-left: 0 !important;
+}
+.jh-picker-overlay .jh-scroll-frame > .jh-scroll-area {
+  padding-left: 0 !important;
+}
+.jh-picker-overlay .jh-financial-order__type-options,
+.jh-picker-overlay .jh-currency-picker__options {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+.jh-picker-overlay .jh-financial-order__type-options button,
+.jh-picker-overlay .jh-currency-picker__options button {
+  padding-left: var(--jh-picker-search-pad-x) !important;
+  padding-right: 12px !important;
+  box-sizing: border-box !important;
+}
+.jh-picker-overlay .jh-financial-order__type-options button strong,
+.jh-picker-overlay .jh-financial-order__type-options button small,
+.jh-picker-overlay .jh-currency-picker__options button strong,
+.jh-picker-overlay .jh-currency-picker__options button small {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+  text-align: left !important;
+  justify-self: start !important;
+}
