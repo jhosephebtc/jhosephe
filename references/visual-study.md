@@ -15,3 +15,8 @@ As referências entregues ao projeto foram tratadas como material de observaçã
 | Demonstrações em vídeo | estados de hover e tooltip, continuidade visual e construção precisa de formas; os trechos observados não comprovam todos os comportamentos de produção |
 
 Movimento é um comportamento, não um filtro aplicado ao conjunto. Em cada peça decida o que fica parado, o que muda em resposta ao usuário e qual informação permanece acessível sem efeito visual.
+
+
+## Controles físicos e instrumentos vintage
+
+As novas imagens e amostras do vídeo mostram módulos encaixados, controles elevados, escalas finas, assentos recuados e luz direcional consistente. Translate isso em profundidade do dial, pegas rígidas de vidro, barras interativas e espaçamento metódico. O vídeo foi inspecionado por amostras de quadros: não constitui evidência de gestos ou mecânica interativa. A direção funcional é definida e testada no código. Ignore metal, madeira, cores e marcas das referências.

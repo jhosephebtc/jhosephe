@@ -11,17 +11,26 @@ const tokens = rootBlock.split('\n').filter(line => line.trim().startsWith('--jh
 const componentStart = theme.indexOf('\n.jh-button {');
 if (componentStart < 0) throw new Error('Estilos dos componentes ausentes.');
 // Only prefixed tokens and component styles are distributed. No reset, body or host theme.
-const css = `@import "@fontsource-variable/geist";\n\n:root {\n${tokens}\n  --jh-ring: #525252;\n  --jh-popover: #ffffff;\n}\n\n[class^="jh-"], [class*=" jh-"] { font-family: var(--jh-font); font-kerning: normal; font-synthesis: none; }\n[class^="jh-"], [class*=" jh-"], [class^="jh-"] *, [class*=" jh-"] * { box-sizing: border-box; }\n.jh-button, .jh-switch, .jh-dialog__close { touch-action: manipulation; }\n.jh-button:focus-visible, .jh-switch:focus-visible, .jh-dialog__close:focus-visible { outline: 3px solid var(--jh-ring); outline-offset: 3px; }\n` + theme.slice(componentStart).replaceAll('var(--ring)', 'var(--jh-ring)').replaceAll('var(--popover)', 'var(--jh-popover)');
+const css = `@import "@fontsource-variable/geist";\n\n:root {\n${tokens}\n  --jh-ring: #525252;\n  --jh-popover: #ffffff;\n}\n\n[class^="jh-"], [class*=" jh-"] { font-family: var(--jh-font); font-kerning: normal; font-synthesis: none; }\n[class^="jh-"], [class*=" jh-"], [class^="jh-"] *, [class*=" jh-"] * { box-sizing: border-box; }\n.jh-button, .jh-switch, .jh-dialog__close { touch-action: manipulation; }\n.jh-button:focus-visible, .jh-switch:focus-visible, .jh-dialog__close:focus-visible { outline: 3px solid var(--jh-ring); outline-offset: 3px; }\n` + theme.slice(componentStart).replaceAll('var(--ring)', 'var(--jh-ring)').replaceAll('var(--popover)', 'var(--jh-popover)').replaceAll('var(--ring, #525252)', 'var(--jh-ring, #525252)');
 
 const definitions = [
-  ['button', 'Glass Button', 'Vidro com resposta liquid e cantos contínuos.', ['button.tsx', 'smooth-shape.tsx', 'utils.ts'], ['class-variance-authority', 'figma-squircle', 'clsx', 'tailwind-merge']],
-  ['slider', 'Glass Slider', 'Controle de valor com puxador em lente de vidro.', ['controls.tsx', 'utils.ts'], ['@radix-ui/react-slider', '@radix-ui/react-switch', 'clsx', 'tailwind-merge']],
-  ['switch', 'Glass Switch', 'Interruptor acessível com lente translúcida.', ['controls.tsx', 'utils.ts'], ['@radix-ui/react-slider', '@radix-ui/react-switch', 'clsx', 'tailwind-merge']],
-  ['dial', 'Tactile Dial', 'Controle de intensidade com volume e luz suave.', ['dial.tsx'], []],
-  ['dialog', 'Soft Dialog', 'Sobreposição clara com gerenciamento de foco.', ['dialog.tsx', 'button.tsx', 'smooth-shape.tsx', 'utils.ts'], ['@radix-ui/react-dialog', 'lucide-react', 'class-variance-authority', 'figma-squircle', 'clsx', 'tailwind-merge']],
-  ['smooth-shape', 'Smooth Corners', 'Forma responsiva com cantos contínuos.', ['smooth-shape.tsx'], ['figma-squircle']],
-  ['shader-surface', 'Glass Light', 'Luz procedural monocromática com fallback CSS.', ['shader-surface.tsx'], ['@paper-design/shaders-react@0.0.82']],
-  ['instrument', 'Instrument Bars', 'Escala visual em SVG para valores de zero a cem.', ['instrument.tsx'], []],
+  ['button', 'Glass Button', 'Glass with liquid feedback and continuous corners.', ['button.tsx', 'smooth-shape.tsx', 'utils.ts'], ['class-variance-authority', 'figma-squircle', 'clsx', 'tailwind-merge']],
+  ['slider', 'Glass Slider', 'A value control with a solid glass grip.', ['controls.tsx', 'utils.ts'], ['@radix-ui/react-slider', '@radix-ui/react-switch', 'clsx', 'tailwind-merge']],
+  ['switch', 'Glass Switch', 'An accessible switch with a translucent lens.', ['controls.tsx', 'utils.ts'], ['@radix-ui/react-slider', '@radix-ui/react-switch', 'clsx', 'tailwind-merge']],
+  ['dial', 'Tactile Dial', 'A tactile dial with a recessed seat and visible depth.', ['dial.tsx'], []],
+  ['dialog', 'Soft Dialog', 'A light overlay with managed focus.', ['dialog.tsx', 'button.tsx', 'smooth-shape.tsx', 'utils.ts'], ['@radix-ui/react-dialog', 'lucide-react', 'class-variance-authority', 'figma-squircle', 'clsx', 'tailwind-merge']],
+  ['smooth-shape', 'Smooth Corners', 'A responsive shape with continuous corners.', ['smooth-shape.tsx'], ['figma-squircle']],
+  ['shader-surface', 'Glass Light', 'Monochromatic procedural light with a CSS fallback.', ['shader-surface.tsx'], ['@paper-design/shaders-react@0.0.82']],
+  ['instrument', 'Instrument Bars', 'An SVG scale for values from zero to one hundred.', ['instrument.tsx'], []],
+["bar-slider", "Bar Slider", "An interactive instrument scale with a solid glass handle.", ["bar-slider.tsx"], ["@radix-ui/react-slider"]],
+["calendar", "Calendar", "A tactile calendar with accessible date selection.", ["calendar.tsx", "utils.ts"], ["react-day-picker@9.14.0", "clsx", "tailwind-merge"]],
+["date-picker", "Date Picker", "A glass trigger and a focused calendar.", ["date-picker.tsx", "calendar.tsx", "button.tsx", "smooth-shape.tsx", "utils.ts"], ["react-day-picker@9.14.0", "@radix-ui/react-popover", "lucide-react", "class-variance-authority", "figma-squircle", "clsx", "tailwind-merge"]],
+["menu", "Glass Menu", "A light menu with keyboard navigation.", ["menu.tsx", "button.tsx", "smooth-shape.tsx", "utils.ts"], ["@radix-ui/react-dropdown-menu", "class-variance-authority", "figma-squircle", "clsx", "tailwind-merge"]],
+["toast", "Soft Toast", "A controlled, accessible notification.", ["toast.tsx", "button.tsx", "smooth-shape.tsx", "utils.ts"], ["@radix-ui/react-toast", "lucide-react", "class-variance-authority", "figma-squircle", "clsx", "tailwind-merge"]],
+["gallery", "Gallery Slider", "A draggable gallery with native scroll snapping.", ["gallery.tsx"], ["lucide-react"]],
+["input", "Soft Input", "A softly recessed native text field.", ["input.tsx", "utils.ts"], ["clsx", "tailwind-merge"]],
+["search-input", "Search Field", "A recessed search field with a clear action.", ["search-input.tsx"], ["lucide-react"]],
+["data-form", "Details Card", "A complete form with validation and save feedback.", ["data-form.tsx", "input.tsx", "button.tsx", "smooth-shape.tsx", "utils.ts"], ["lucide-react", "class-variance-authority", "figma-squircle", "clsx", "tailwind-merge"]],
 ];
 const items = [];
 await mkdir(resolve(destination, 'r'), { recursive: true });

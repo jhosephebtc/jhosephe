@@ -1,6 +1,6 @@
 # jhosephe
 
-Uma skill para construir interfaces táteis em **React, CSS e shadcn/ui**. UI sempre monocromática em branco, cinzas e preto, tipografia Geist Sans (sem serifadas ou mono) com kerning e espaçamento cuidados, grids precisos, botões e sliders glass com resposta liquid, relevo skeuomórfico, luz suave com Paper, fundos claros e shaders acromáticos, divisórias quase imperceptíveis, cantos contínuos e movimento que responde ao usuário.
+Uma skill para construir interfaces táteis em **React, CSS e shadcn/ui**. Interfaces claras e monocromáticas em branco, cinza e preto; Geist Sans em toda a hierarquia, com kerning e espaçamento cuidados e grids precisos. Botões liquid glass, sliders rígidos de vidro com resposta tátil, relevo skeuomórfico, luz suave com Paper, shaders acromáticos, divisórias quase imperceptíveis, cantos contínuos e movimento que responde ao usuário.
 
 O pacote reúne instruções de projeto, receitas técnicas, componentes reutilizáveis e um laboratório interativo. A skill está em [SKILL.md](SKILL.md); o mapa de decisões está nas [referências](references/design-language.md).
 
@@ -29,7 +29,7 @@ Copie `SKILL.md`, `agents/`, `references/` e `assets/` para uma pasta `jhosephe`
 node scripts/install-skill.mjs --dest /caminho/para/skills/jhosephe
 ```
 
-Exemplo de uso: **“Use $jhosephe para criar um painel de configurações em React com superfície mineral clara, botões e sliders glass, resposta liquid, relevo sutil e divisórias quase imperceptíveis.”**
+Exemplo de uso: **“Use $jhosephe para criar um painel de configurações em React com superfície mineral clara, botões liquid glass, sliders de vidro táteis, relevo sutil e divisórias quase imperceptíveis.”**
 
 ## Conteúdo
 

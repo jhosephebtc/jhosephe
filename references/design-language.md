@@ -24,7 +24,7 @@ A identidade usa sempre branco, cinzas neutros e preto. Monocromática aqui sign
 
 O ponto de partida preserva os papéis neutros da base clara do app e do editor de nós: canvas quase branco, superfícies brancas, texto principal escuro, texto secundário moderado e vidro com coberturas distintas. São amostras, não garantias de contraste. Meça cada par aplicado, inclusive sobre vidro e gradiente. Opacidade sobre um fundo colorido pode produzir cor: mantenha o fundo acromático ou use uma face opaca. Não aplique um filtro grayscale ao aplicativo inteiro para corrigir tokens inconsistentes.
 
-O tema é integralmente claro: canvas, visores, molduras, pedestal e controles. Use grafite em números, texto e escalas; não crie áreas pretas para simular um instrumento. Materiais: glass, liquid glass e relevo skeuomórfico, sem metal.
+O tema é integralmente claro: canvas, visores, molduras, pedestal e controles. Use grafite em números, texto e escalas; não crie áreas pretas para simular um instrumento. Botões usam glass com resposta liquid pontual; sliders usam puxadores sólidos de vidro, táteis e sem deformação liquid. Relevo skeuomórfico organiza o volume, sem metal.
 
 ## Estados sem acentos de cor
 

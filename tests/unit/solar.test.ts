@@ -110,6 +110,6 @@ describe('observação solar', () => {
   });
 
   it('usa azimute horário a partir do norte com pontos cardeais portugueses', () => {
-    expect([0, 90, 180, 270, 360, -90].map(compassDirection)).toEqual(['N', 'L', 'S', 'O', 'N', 'O']);
+    expect([0, 90, 180, 270, 360, -90].map(compassDirection)).toEqual(['N', 'E', 'S', 'W', 'N', 'W']);
   });
 });

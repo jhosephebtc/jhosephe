@@ -56,7 +56,7 @@ function civilBoundary(civilStamp: number, timeZone: string) {
 }
 function validateCoordinates(latitude: number, longitude: number) {
   if (!Number.isFinite(latitude) || Math.abs(latitude) > 90 || !Number.isFinite(longitude) || Math.abs(longitude) > 180) {
-    throw new RangeError('Latitude deve estar entre −90 e 90; longitude entre −180 e 180.');
+    throw new RangeError('Latitude must be between −90 and 90; longitude between −180 and 180.');
   }
 }
 export function timezoneForCoordinates(latitude: number, longitude: number): string {
@@ -65,11 +65,11 @@ export function timezoneForCoordinates(latitude: number, longitude: number): str
 }
 export function validateLocation(location: Location): void {
   validateCoordinates(location.latitude, location.longitude);
-  if (!location.timeZone) throw new RangeError('Informe um fuso horário válido.');
+  if (!location.timeZone) throw new RangeError('Enter a valid time zone.');
   zoneFormatter(location.timeZone);
 }
 function validateDate(date: Date) {
-  if (!Number.isFinite(+date)) throw new RangeError('Data inválida.');
+  if (!Number.isFinite(+date)) throw new RangeError('Invalid date.');
 }
 function timeCandidates(date: Date, location: Location) {
   return getTimes(date, location.latitude, location.longitude, 0, offsetMinutes(date, location.timeZone));
@@ -149,14 +149,14 @@ export function buildSolarSnapshot(date: Date, location: Location = DEFAULT_LOCA
 }
 export function formatTime(date: Date | null, timeZone: string, seconds = false): string {
   if (!date || !Number.isFinite(+date)) return '—';
-  return new Intl.DateTimeFormat('pt-BR', {
+  return new Intl.DateTimeFormat('en-US', {
     timeZone, hour: '2-digit', minute: '2-digit', ...(seconds ? { second: '2-digit' as const } : {}), hourCycle: 'h23',
   }).format(date);
 }
 export function compassDirection(azimuth: number): string {
   if (!Number.isFinite(azimuth)) return '—';
   const normalized = ((azimuth % 360) + 360) % 360;
-  return ['N', 'NE', 'L', 'SE', 'S', 'SO', 'O', 'NO'][Math.round(normalized / 45) % 8];
+  return ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'][Math.round(normalized / 45) % 8];
 }
 export function buildDayPath(date: Date, location: Location = DEFAULT_LOCATION): SolarPathPoint[] {
   validateDate(date);

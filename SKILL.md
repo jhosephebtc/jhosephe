@@ -1,6 +1,6 @@
 ---
 name: jhosephe
-description: Projetar, implementar e revisar interfaces web táteis em React, CSS e shadcn/ui, com tema claro monocromático, glass, liquid glass, skeuomorfismo, tipografia Geist Sans e grids precisos, cantos contínuos e movimento responsivo. Use em novos componentes, sistemas visuais, refinamento visual e revisão de interação.
+description: Projetar, implementar e revisar interfaces web táteis em React, CSS e shadcn/ui, com tema claro monocromático, botões liquid glass, sliders rígidos de vidro, skeuomorfismo, tipografia Geist Sans e grids precisos, cantos contínuos e movimento responsivo. Use em novos componentes, sistemas visuais, refinamento visual e revisão de interação.
 ---
 
 # jhosephe
@@ -14,7 +14,8 @@ Construa interfaces que pareçam objetos bem fabricados e sejam simples de opera
 - **Grid e espaçamento deliberados.** Defina colunas, margens, gutters e uma escala de espaço antes de posicionar peças. Alinhe rótulos, valores e controles a eixos compartilhados; use ajustes ópticos localizados, sem espaçamentos arbitrários.
 
 - **Tema claro integral.** Fundos, molduras, bases, visores e controles usam branco e cinzas claros. Grafite fica na informação. Não crie blocos escuros para simular instrumentos.
-- **Glass, liquid glass e skeuomorfismo.** Botões e sliders são de vidro, com reflexo localizado, pequena deformação na pressão/arraste e volume coerente. Não use metal, acabamento cromado nem Liquid Metal, inclusive em detalhes. Paper pode produzir luz acromática suave atrás do vidro. Links ghost podem permanecer sem face. Preserve fallback CSS legível e movimento reduzido.
+- **Glass, liquid glass e skeuomorfismo.** Botões são de vidro e podem ter uma pequena resposta liquid à pressão. Sliders usam puxador sólido de vidro, com reflexo localizado e volume coerente: sem deformação liquid, expansão, squash ou elasticidade durante arraste. Não use metal, acabamento cromado nem Liquid Metal, inclusive em detalhes. Paper pode produzir luz acromática suave atrás do vidro. Links ghost podem permanecer sem face. Preserve fallback CSS legível e movimento reduzido.
+- **Switch tátil e ícones em baixo-relevo.** Evite trilho escuro em formato de cápsula com knob circular branco. Prefira um rocker de vidro claro, baixo e facetado, encaixado em um assento suave; o deslocamento comunica o estado sem depender apenas da cor. Ícones podem parecer gravados ou discretamente rebaixados em superfícies claras, com tinta suficiente para manter reconhecimento. Use relevo só em superfícies táteis, nunca como substituto de contraste ou estado.
 - **Separação por relevo.** Prefira respiro, planos, sombras de contato suaves e brilho interior. Divisórias decorativas são quase imperceptíveis; evite linhas contrastantes, molduras marcadas e grids que pareçam tabelas desenhadas. Foco, limites funcionais e escalas mantêm contraste suficiente.
 
 ## Decida antes de desenhar
@@ -52,7 +53,19 @@ Os números sugeridos são pontos de partida ajustáveis à densidade e à matri
 
 ## Recursos reutilizáveis
 
-[assets/ui](assets/ui) contém CSS e componentes funcionais: Button, SmoothShape, Switch, Slider, Dial, Dialog, InstrumentBars e ShaderSurface. Leia [integração](references/react-shadcn.md) antes de copiá-los. A geometria usa uma dependência declarada; não exige outra skill. O laboratório do repositório exercita os mesmos arquivos, sem uma implementação paralela.
+[assets/ui](assets/ui) contém CSS e componentes funcionais: Button, SmoothShape, Switch, Slider, Dial, Dialog, InstrumentBars, ShaderSurface, BarSlider, Calendar, DatePicker, Menu, Toast, Gallery, Input, SearchInput e DataForm. Leia [integração](references/react-shadcn.md) antes de copiá-los. A geometria usa uma dependência declarada; não exige outra skill. O laboratório do repositório exercita os mesmos arquivos, sem uma implementação paralela.
+
+## Interação física e linguagem
+
+- Use inglês americano em todo texto de produto, nomes acessíveis, estados, mensagens e exemplos. Geist Sans também em números e código.
+- Sliders têm puxadores rígidos de vidro e escala legível. Um seletor de barras pode funcionar como slider, com semântica, teclado e valor real.
+- Switches têm curto curso e uma peça de vidro baixa, facetada e claramente separada do assento. Mantenha o conjunto claro; não use o padrão de capsule escura com esfera branca.
+- Em ícones de controles de vidro, um realce fino e uma sombra suave podem sugerir gravação em baixo-relevo. Preserve silhueta, espessura do traço, foco e contraste em tamanhos pequenos.
+- Dials têm assento recuado, lateral visível e sombra de contato. A luz permanece fixa enquanto apenas o indicador gira. Arraste relativo evita saltos ao tocar; limites, step e cancelamento são explícitos.
+- Use cursor grab em controles arrastáveis e grabbing durante o gesto. Evite animar o valor atrás do ponteiro.
+- Traduza instrumentos vintage em proporções, escalas, alavancas e volume, mantendo a identidade clara, monocromática e sem metal.
+- Navegação entre componentes mantém a estrutura da página, histórico, foco e rolagem; transições curtas e interrompíveis, removidas com movimento reduzido.
+- Catálogos oferecem prévia, personalização, código real e instalação verificável; exemplos não fingem salvar dados em servidor.
 
 ## Fluxo de trabalho
 

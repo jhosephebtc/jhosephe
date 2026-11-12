@@ -5,11 +5,17 @@
 | Material | Face | Profundidade | Uso |
 | --- | --- | --- | --- |
 | Mineral claro | branco ou cinza claro, cobertura alta | sombra de contato tênue | conteúdo e formulários |
-| Glass | vidro neutro translúcido com texto protegido | brilho interior estreito, lente e sombra suave | botões, sliders e superfícies flutuantes |
-| Liquid glass | vidro que responde ao toque | reflexo local, compressão mínima, retorno contínuo | interação pontual sem atrasar a ação |
+| Glass | vidro neutro translúcido com texto protegido | brilho interior estreito, lente e sombra suave | puxadores rígidos dos sliders e superfícies flutuantes |
+| Liquid glass | vidro que responde ao toque | reflexo local, compressão mínima, retorno contínuo | feedback pontual em botões |
 | Relevo skeuomórfico | planos claros encaixados | rebaixo, volume e iluminação coerente | dial, puxador e objeto manipulável |
 
 Não use metal, cromado, alumínio ou Liquid Metal, nem como acabamento. A identidade se apoia em vidro e relevo. O tema inteiro permanece claro, inclusive visor, moldura, base e fundos. Preto/grafite é tinta para a informação.
+
+## Controles e ícones
+
+Switches são pequenos rockers de vidro claro assentados em um trilho rebaixado e macio. Use um thumb facetado de cantos suaves e curso curto; posição, forma e semântica deixam claro o estado. Não use o capsule escuro com esfera branca como tratamento padrão. O relevo deve continuar visível sobre a paleta clara sem depender de uma grande mudança de luminância.
+
+Ícones funcionais podem receber acabamento gravado: tinta cinza legível, brilho superior muito estreito e sombra inferior discreta. Aplique em botões e superfícies que pareçam peças táteis, não indiscriminadamente em toda a navegação. Diminua ou remova o efeito se ele borrar um traço fino, reduzir contraste ou confundir o ícone com estado disabled. SVG continua nítido e estático; a sombra não substitui uma geometria reconhecível.
 
 ## Luz e sombras
 
@@ -32,6 +38,6 @@ Um rebaixo pode usar `inset 0 1px 3px rgb(0 0 0 / .025)` e um brilho inferior br
 
 `Button` usa variantes semânticas primary, secondary e ghost. A resposta começa no pointerdown, mas a ação confirma em click/ativação semântica. Um reflexo nasce no ponto do toque e a face comprime levemente, com retorno amortecido e sem bounce recorrente. Isso é uma aproximação visual em CSS, não refração física.
 
-No slider, use trilha translúcida estreita e um thumb em forma de lente: luz superior, borda interna e transparência. Preserve a parte preenchida e o valor em texto. Durante arraste, o valor acompanha o ponteiro diretamente; uma pequena expansão da lente pode reforçar o toque. Teclado, foco e área de interação de 44px continuam ativos. O mesmo tratamento vale para sliders auxiliares.
+No slider, use trilha translúcida estreita e um puxador rígido de vidro, com luz superior, borda interna e transparência. Preserve a parte preenchida e o valor em texto. Durante o arraste, o valor acompanha o ponteiro diretamente; o puxador não expande, deforma nem fica elástico. Use contato, relevo e luz para comunicar a pega. Teclado, foco e área de interação de 44px continuam ativos. O mesmo tratamento vale para sliders auxiliares.
 
 O pacote opcional `liquid-glass` pode ser investigado para refração especializada. Confira a API e o suporte da versão escolhida; não é uma dependência do exemplo. SVG/WebGL são melhorias opcionais. A ação, a legibilidade e a sensação de volume devem sobreviver sem eles. Movimento reduzido remove deformação e movimento contínuo, preservando a confirmação de estado.

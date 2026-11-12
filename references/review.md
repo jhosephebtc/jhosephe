@@ -8,6 +8,7 @@ Use esta lista conforme o escopo; uma revisão de código não comprova sensaç�
 - Repouso, hover possível, pressionado, foco, selecionado, disabled, carregamento e erro não se confundem. A interface não espera a animação para aceitar outra ação.
 - Teste rótulo longo, conteúdo traduzido, escala de 200%, ausência de dados, valores extremos e superfície estreita.
 - O foco permanece visível sem ser cortado. Controle operável por toque tem alvo suficiente; nomes acessíveis são claros e não duplicados.
+- Switches claros não parecem um capsule escuro com esfera branca; posição do rocker e estado acessível permanecem reconhecíveis. O baixo-relevo dos ícones não reduz a leitura em tamanho real nem em 200%.
 
 ## Material, tipografia e composição
 

@@ -19,7 +19,7 @@ export function DialogContent({ className, children, ...props }: ComponentPropsW
       <DialogPrimitive.Overlay className="jh-dialog-overlay" />
       <DialogPrimitive.Content className={cn('jh-dialog', className)} {...props}>
         {children}
-        <DialogPrimitive.Close className="jh-dialog__close" aria-label="Fechar"><X size={17} aria-hidden="true" /></DialogPrimitive.Close>
+        <DialogPrimitive.Close className="jh-dialog__close" aria-label="Close"><X size={17} aria-hidden="true" /></DialogPrimitive.Close>
       </DialogPrimitive.Content>
     </DialogPrimitive.Portal>
   );

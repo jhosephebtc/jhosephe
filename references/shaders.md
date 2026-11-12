@@ -4,7 +4,7 @@
 
 ## Receita do pacote
 
-`ShaderSurface` usa MeshGradient com `#dedede`, `#f6f6f6`, `#c8c8c8` e `#f1f1f1`, velocidade baixa e ruído mínimo. A camada permanece decorativa, sem receber eventos. O vidro e a ação são HTML/CSS acima dela. A resposta liquid dos botões e sliders é local ao gesto, não exige um canvas por controle e não implica refração física.
+`ShaderSurface` usa MeshGradient com `#dedede`, `#f6f6f6`, `#c8c8c8` e `#f1f1f1`, velocidade baixa e ruído mínimo. A camada permanece decorativa, sem receber eventos. O vidro e a ação são HTML/CSS acima dela. A resposta liquid dos botões é local ao gesto, não exige um canvas por controle e não implica refração física.
 
 ## Degradação progressiva
 

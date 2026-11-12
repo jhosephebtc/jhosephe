@@ -1,6 +1,6 @@
 interface:
   display_name: "jhosephe"
-  short_description: "Interfaces claras com glass, liquid glass e relevo"
-  default_prompt: "Use $jhosephe para construir uma interface React clara e monocromática, com Geist Sans, glass, liquid glass, skeuomorfismo, relevo e sombras suaves em vez de divisórias marcadas, sem metal, com grids precisos e estados acessíveis."
+  short_description: "Interfaces claras com glass tátil e relevo"
+  default_prompt: "Use $jhosephe para construir uma interface React clara e monocromática, com Geist Sans, botões liquid glass, sliders de vidro rígido e tátil, skeuomorfismo, relevo, sombras suaves em vez de divisórias marcadas, sem metal, com grids precisos e estados acessíveis."
 policy:
   allow_implicit_invocation: true
