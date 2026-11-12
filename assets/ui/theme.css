@@ -3895,3 +3895,92 @@ input.jh-input[type=number]::-webkit-inner-spin-button,
   margin: 12px 2px 0;
   padding-inline: 2px;
 }
+
+/* Finance pickers: Soft side margins + opacity-only hover (no fill backgrounds) */
+.jh-picker-overlay {
+  padding: 12px 14px;
+  gap: 10px;
+}
+.jh-picker-overlay .jh-scroll-frame {
+  padding: 0 2px 0 0;
+}
+.jh-picker-overlay .jh-scroll-frame > .jh-scroll-area {
+  padding: 2px 6px 2px 4px;
+}
+.jh-financial-order__type-options,
+.jh-currency-picker__options {
+  gap: 2px;
+  padding: 0 2px;
+}
+.jh-financial-order__type-options button,
+.jh-currency-picker__options button {
+  padding: 10px 14px;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  color: inherit;
+  opacity: .62;
+  transition: opacity 160ms var(--jh-ease), color 160ms var(--jh-ease);
+}
+.jh-financial-order__type-options button strong,
+.jh-currency-picker__options button strong {
+  color: #3a3a3a;
+}
+.jh-financial-order__type-options button small,
+.jh-currency-picker__options button small,
+.jh-currency-picker__options button .jh-currency-picker__rate,
+.jh-currency-picker__options button .jh-currency-picker__option-symbol {
+  color: #6e6e6e;
+}
+.jh-financial-order__type-options button:hover,
+.jh-currency-picker__options button:hover {
+  opacity: 1;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+.jh-financial-order__type-options button[aria-selected="true"],
+.jh-currency-picker__options button[aria-selected="true"] {
+  opacity: .88;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+.jh-financial-order__type-options button[aria-selected="true"]:hover,
+.jh-currency-picker__options button[aria-selected="true"]:hover {
+  opacity: 1;
+}
+[data-jh-material="liquid-glass"] .jh-currency-picker__options button[aria-selected="true"],
+[data-jh-material="liquid-glass"] .jh-financial-order__type-options button[aria-selected="true"],
+body:has(.library-detail .library-preview-object[data-jh-material="liquid-glass"]) .jh-currency-picker__options button[aria-selected="true"] {
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  opacity: .88;
+}
+
+/* Market picker rows — same opacity-only hover language */
+.jh-market-picker__asset {
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  opacity: .62;
+  transition: opacity 160ms var(--jh-ease);
+}
+.jh-market-picker__asset:hover {
+  opacity: 1;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+.jh-market-picker__asset[aria-selected="true"] {
+  opacity: .88;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+.jh-market-picker__asset[aria-selected="true"]:hover {
+  opacity: 1;
+}
