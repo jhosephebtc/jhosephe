@@ -10,6 +10,7 @@ Uma ilustração editorial pode combinar pontos, linhas, tipografia sans-serif c
 
 - `viewBox` estável; `vector-effect: non-scaling-stroke` quando a espessura precisa permanecer constante. Defina comportamento para tamanhos pequenos.
 - Para revelar uma linha, use `pathLength="1"`, `stroke-dasharray="1"` e altere `stroke-dashoffset`; o estado final deve existir sem animação.
+- Reserve o desenho de linha para curvas e marcas significativas. Uma entrada curta revela o traço uma vez; não redesenhe a cada atualização de valor.
 - Para uma escala de barras, mantenha o comprimento máximo fixo e altere a aparência das barras preenchidas. Estabilize o tamanho do valor numérico.
 - Interação pequena: enfatize o marcador ou iconografia, não toda a tela. A escala funcional tem alternativa acessível em texto e controle semântico.
 - SVG decorativo recebe `aria-hidden="true"` e `focusable="false"`. Um gráfico significativo precisa de nome e alternativa textual/tabela, de acordo com sua complexidade.

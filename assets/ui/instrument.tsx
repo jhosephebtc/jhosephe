@@ -10,7 +10,7 @@ export function InstrumentBars({ value }: { value: number }) {
         const height = index % 4 === 0 ? 27 : 16;
         return <rect key={index} x={index * 10} y={60 - height} width="3" height={height} rx="1.5" className={active ? 'jh-instrument__bar is-active' : 'jh-instrument__bar'} />;
       })}
-      <path className="jh-instrument__line" d="M0 12 H70 M260 12 H330" />
+      <path className="jh-instrument__line" pathLength="1" d="M0 12 H70 M260 12 H330" />
     </svg>
   );
 }

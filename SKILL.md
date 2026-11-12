@@ -9,13 +9,13 @@ Construa interfaces que pareçam objetos bem fabricados e sejam simples de opera
 
 ## Regras da identidade
 
-- **Sempre monocromática.** Use branco, cinzas neutros e preto em fundos, canvas, faces, gradientes, texturas, sombras, reflexos, foco, SVG e shaders. Fundos também são sempre monocromáticos. Não introduza azul, dourado ou acentos cromáticos. Estados usam contraste, forma, ícone e texto. Preserve as cores de acessibilidade escolhidas pelo sistema em forced-colors.
+- **Superfícies sempre monocromáticas.** Use branco, cinzas neutros e preto em fundos, canvas, faces, gradientes, texturas, sombras, reflexos, foco, SVG e shaders. Cores só aparecem dentro de um controle feito para editar cor, nos trilhos de espectro e na amostra que representa o valor atual. Estados em outros componentes usam contraste, forma, ícone e texto. Preserve as cores de acessibilidade escolhidas pelo sistema em forced-colors.
 - **Geist Sans em tudo.** Não use serifadas nem fontes mono. Ative o kerning da fonte, ajuste tracking por papel e tamanho e mantenha números de instrumentos estáveis. Confira o texto real, acentos, unidades e quebras antes de acertar a composição.
 - **Grid e espaçamento deliberados.** Defina colunas, margens, gutters e uma escala de espaço antes de posicionar peças. Alinhe rótulos, valores e controles a eixos compartilhados; use ajustes ópticos localizados, sem espaçamentos arbitrários.
 
 - **Tema claro integral.** Fundos, molduras, bases, visores e controles usam branco e cinzas claros. Grafite fica na informação. Não crie blocos escuros para simular instrumentos.
 - **Glass, liquid glass e skeuomorfismo.** Botões são de vidro e podem ter uma pequena resposta liquid à pressão. Sliders usam puxador sólido de vidro, com reflexo localizado e volume coerente: sem deformação liquid, expansão, squash ou elasticidade durante arraste. Não use metal, acabamento cromado nem Liquid Metal, inclusive em detalhes. Paper pode produzir luz acromática suave atrás do vidro. Links ghost podem permanecer sem face. Preserve fallback CSS legível e movimento reduzido.
-- **Switch tátil e ícones em baixo-relevo.** Evite trilho escuro em formato de cápsula com knob circular branco. Prefira um rocker de vidro claro, baixo e facetado, encaixado em um assento suave; o deslocamento comunica o estado sem depender apenas da cor. Ícones podem parecer gravados ou discretamente rebaixados em superfícies claras, com tinta suficiente para manter reconhecimento. Use relevo só em superfícies táteis, nunca como substituto de contraste ou estado.
+- **Switch simples e arredondado; ícones sem relevo.** Use um canal claro de vidro, um thumb pequeno com cantos suaves e espaço visível ao redor. Evite o trilho escuro com esfera branca e evite detalhes decorativos no thumb. Ícones são planos, suaves e semitransparentes: sem baixo-relevo, drop shadow ou contorno de sombra.
 - **Separação por relevo.** Prefira respiro, planos, sombras de contato suaves e brilho interior. Divisórias decorativas são quase imperceptíveis; evite linhas contrastantes, molduras marcadas e grids que pareçam tabelas desenhadas. Foco, limites funcionais e escalas mantêm contraste suficiente.
 
 ## Decida antes de desenhar
@@ -49,19 +49,26 @@ Defina um material dominante e um material secundário. O ponto de partida é mi
 6. **Movimento proporcional.** Faça a frequência e o propósito definirem a intensidade. Entrada rápida, saída curta, repouso estável. Estados de hover dependem da capacidade de hover. Respeite movimento reduzido também no JavaScript.
 7. **Acabamento resiliente.** Valide teclado, toque, zoom, texto longo, disabled, loading, erro, ausência de blur, transparência reduzida e cores forçadas. O sistema deve continuar compreensível sem os efeitos.
 
-Os números sugeridos são pontos de partida ajustáveis à densidade e à matriz de suporte. A paleta monocromática é uma decisão explícita desta identidade; uma referência colorida não altera essa regra.
+Os números sugeridos são pontos de partida ajustáveis à densidade e à matriz de suporte. A base visual monocromática é explícita; um controle de cor pode mostrar a cor que edita sem colorir a página ao redor.
 
 ## Recursos reutilizáveis
 
-[assets/ui](assets/ui) contém CSS e componentes funcionais: Button, SmoothShape, Switch, Slider, Dial, Dialog, InstrumentBars, ShaderSurface, BarSlider, Calendar, DatePicker, Menu, Toast, Gallery, Input, SearchInput e DataForm. Leia [integração](references/react-shadcn.md) antes de copiá-los. A geometria usa uma dependência declarada; não exige outra skill. O laboratório do repositório exercita os mesmos arquivos, sem uma implementação paralela.
+[assets/ui](assets/ui) contém CSS e componentes funcionais: Button, SmoothShape, Switch, Slider, Dial, Dialog, InstrumentBars, ShaderSurface, BarSlider, Calendar, DatePicker, DateTimePicker, Menu, ActionMenu, Toast, Gallery, Input, SearchInput, DataForm, RadioGroup, SegmentedControl, ScrollArea, TactileKey, Compass, SpectrumControl e StepNavigation. Leia [integração](references/react-shadcn.md) antes de copiá-los. A geometria usa uma dependência declarada; não exige outra skill. A home e a página de detalhes usam as mesmas implementações interativas do registro.
 
 ## Interação física e linguagem
 
 - Use inglês americano em todo texto de produto, nomes acessíveis, estados, mensagens e exemplos. Geist Sans também em números e código.
-- Sliders têm puxadores rígidos de vidro e escala legível. Um seletor de barras pode funcionar como slider, com semântica, teclado e valor real.
-- Switches têm curto curso e uma peça de vidro baixa, facetada e claramente separada do assento. Mantenha o conjunto claro; não use o padrão de capsule escura com esfera branca.
-- Em ícones de controles de vidro, um realce fino e uma sombra suave podem sugerir gravação em baixo-relevo. Preserve silhueta, espessura do traço, foco e contraste em tamanhos pequenos.
-- Dials têm assento recuado, lateral visível e sombra de contato. A luz permanece fixa enquanto apenas o indicador gira. Arraste relativo evita saltos ao tocar; limites, step e cancelamento são explícitos.
+- Sliders têm uma trilha um pouco mais larga, quase plana, com pouca sombra. O thumb translúcido parece vidro fosco, mas continua fácil de encontrar. O caminho preenchido é branco semitransparente, com blur e brilho discreto. Barras interativas acompanham arraste e teclado; mostre o valor verdadeiro.
+- Switches têm canal claro, mais arredondado e simples, com respiro ao redor. Uma peça móvel de vidro comunica o estado por posição e forma.
+- Ícones permanecem planos, suaves e semitransparentes, sem sombra ou efeito gravado. Preserve silhueta, espessura do traço e contraste em tamanhos pequenos.
+- Campos de texto usam uma face clara rebaixada como a busca. Ao focar, mude a face e adicione um realce interno muito suave; não desenhe um anel externo escuro. O foco deve continuar perceptível por teclado.
+- Menus de escolha devem compartilhar o material glass dos componentes; não deixe o dropdown padrão do navegador destoar da interface.
+- Variações de hover dão retorno imediato e calmo, com reflexo, pequena mudança de sombra ou deslocamento curto. Evite mover controles sob o ponteiro, saltos entre estados e animação em dispositivos sem hover. Respeite movimento reduzido.
+- O dia selecionado no calendário se distingue por valor e uma face clara quase plana; não use uma sombra escura para forçar a seleção.
+- Dials usam o ângulo real do ponteiro para girar no mesmo lado e direção. Preserve o arco de valores, trate o trecho inferior sem escala como limite e mantenha alternativa de teclado.
+- Modais complexos agrupam contexto, informações e ações em hierarquia legível. Pickers maiores combinam seleção, disponibilidade e confirmação sem esconder cancelar ou limpar.
+- Não use ALL CAPS como estilo de texto de produto. Prefira sentence case em nomes, rótulos, estados, metadados e botões.
+- Dials têm assento recuado, lateral visível e sombra de contato. A luz permanece fixa enquanto apenas o indicador gira. O ponteiro angular segue a posição e o sentido do cursor; limites, step, setor sem escala, teclado e cancelamento são explícitos.
 - Use cursor grab em controles arrastáveis e grabbing durante o gesto. Evite animar o valor atrás do ponteiro.
 - Traduza instrumentos vintage em proporções, escalas, alavancas e volume, mantendo a identidade clara, monocromática e sem metal.
 - Navegação entre componentes mantém a estrutura da página, histórico, foco e rolagem; transições curtas e interrompíveis, removidas com movimento reduzido.

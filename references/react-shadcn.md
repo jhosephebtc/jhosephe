@@ -28,4 +28,4 @@ Se gerar componentes shadcn por CLI, valide o arquivo de configuração, alias d
 
 ## Catálogo instalável
 
-O catálogo em `/components` usa os mesmos 17 componentes de `assets/ui`. `npm run registry:build` gera `/r/<id>.json` com código completo, CSS com prefixo jh e dependências explícitas. O registro não deve instalar resets globais nem trocar o tema da aplicação hospedeira. Verifique uma instalação real com CLI e compilação, além da validade JSON. Menus e notificações incluem o botão usado no exemplo. Calendários respeitam teclado e seleção; formulários usam validação nativa e feedback de operação real.
+O catálogo em `/components` usa os mesmos 26 componentes de `assets/ui` na home, nos detalhes e no registro instalável. `npm run registry:build` gera `/r/<id>.json` com código completo, CSS com prefixo jh e dependências explícitas. O registro não deve instalar resets globais nem trocar o tema da aplicação hospedeira. Menus, modais e pickers mantêm ações claras; controles com estado expõem valor e comportamento por teclado. O calendário deixa a data selecionada legível sem sombra escura. Formulários usam validação nativa e feedback de operação real.

@@ -21,16 +21,16 @@ function ControlDeck() {
   const [ambient, setAmbient] = useState(true);
   return (
     <section className="deck" aria-labelledby="deck-heading">
-      <div className="deck__topline"><span>INTERACTION STUDY</span><span>01 / 03</span></div>
-      <div className="deck__heading"><div><span className="eyebrow">CONTROL / 01</span><h2 id="deck-heading">A precise response.</h2></div><span className="deck__number">J—01</span></div>
+      <div className="deck__topline"><span>Interaction study</span><span>01 / 03</span></div>
+      <div className="deck__heading"><div><span className="eyebrow">Control / 01</span><h2 id="deck-heading">A precise response.</h2></div><span className="deck__number">J—01</span></div>
       <div className={ambient ? 'display display--ambient' : 'display'}>
-        <div className="display__top"><span>DYNAMIC OUTPUT</span><span><i /> SYSTEM ACTIVE</span></div>
+        <div className="display__top"><span>Dynamic output</span><span><i /> System active</span></div>
         <div className="display__value"><output aria-live="off">{level}</output><span>%</span></div>
         <div className="display__meta"><span>Intensity</span><span>0 — 100</span></div>
         <InstrumentBars value={level} />
       </div>
       <div className="deck__control">
-        <div className="deck__control-copy"><span className="eyebrow">MANUAL CONTROL</span><strong>Touch and adjust</strong><p>Drag the control or use the arrow keys.</p></div>
+        <div className="deck__control-copy"><span className="eyebrow">Manual control</span><strong>Touch and adjust</strong><p>Drag the control or use the arrow keys.</p></div>
         <Dial value={level} onChange={setLevel} label="Adjust intensity" />
       </div>
       <div className="deck__slider">
@@ -45,10 +45,10 @@ function ControlDeck() {
       <Dialog>
         <DialogTrigger asChild><Button className="deck__action" variant="primary">Explore the control <ArrowUpRight size={15} aria-hidden="true" /></Button></DialogTrigger>
         <DialogContent>
-          <span className="eyebrow">STUDY / 01</span>
+          <span className="eyebrow">Study / 01</span>
           <DialogTitle className="dialog-title">The feeling is in the details.</DialogTitle>
           <DialogDescription className="dialog-description">The dial, slider, and keyboard control the same value. The display stays readable with reduced motion.</DialogDescription>
-          <div className="dialog-readout"><span>CURRENT INTENSITY</span><strong>{level}%</strong></div>
+          <div className="dialog-readout"><span>Current intensity</span><strong>{level}%</strong></div>
           <DialogClose asChild><Button variant="primary">Got it <Check size={15} aria-hidden="true" /></Button></DialogClose>
         </DialogContent>
       </Dialog>
@@ -60,29 +60,29 @@ function MaterialStudy() {
   const [smoothing, setSmoothing] = useState(60);
   return (
     <section id="materiais" className="materials" aria-labelledby="materials-heading">
-      <div className="section-heading"><div><span className="eyebrow">02 / SURFACES</span><h2 id="materials-heading">Material, with intention.</h2></div><p>Three layers. One language.<br />Designed to work together.</p></div>
+      <div className="section-heading"><div><span className="eyebrow">02 / Surfaces</span><h2 id="materials-heading">Material, with intention.</h2></div><p>Three layers. One language.<br />Designed to work together.</p></div>
       <div className="material-grid">
         <article className="material-card">
           <div className="material-card__art mineral-art" aria-hidden="true"><div className="mineral-block"><span /></div></div>
-          <div className="material-card__copy"><div><span>01 / MINERAL</span><h3>A quiet foundation.</h3><p>Light surfaces for what matters.</p></div><ArrowUpRight size={17} aria-hidden="true" /></div>
+          <div className="material-card__copy"><div><span>01 / Mineral</span><h3>A quiet foundation.</h3><p>Light surfaces for what matters.</p></div><ArrowUpRight size={17} aria-hidden="true" /></div>
         </article>
         <article className="material-card">
           <div className="material-card__art glass-art" aria-hidden="true"><ShaderSurface /><div className="glass-pill"><span className="glass-pill__light" /><span /><span /><span /></div></div>
-          <div className="material-card__copy"><div><span>02 / GLASS</span><h3>Layers of light.</h3><p>Transparency where it makes sense.</p></div><ArrowUpRight size={17} aria-hidden="true" /></div>
+          <div className="material-card__copy"><div><span>02 / Glass</span><h3>Layers of light.</h3><p>Transparency where it makes sense.</p></div><ArrowUpRight size={17} aria-hidden="true" /></div>
         </article>
         <article className="material-card">
           <div className="material-card__art relief-art" aria-hidden="true"><div className="relief-bed"><div className="relief-lens"><span /></div></div></div>
-          <div className="material-card__copy"><div><span>03 / RELIEF</span><h3>Subtle depth.</h3><p>Light and volume shape the touch.</p></div><ArrowUpRight size={17} aria-hidden="true" /></div>
+          <div className="material-card__copy"><div><span>03 / Relief</span><h3>Subtle depth.</h3><p>Light and volume shape the touch.</p></div><ArrowUpRight size={17} aria-hidden="true" /></div>
         </article>
       </div>
       <div className="corner-study">
-        <div className="corner-study__copy"><span className="eyebrow">FORM / 04</span><h3>The detail is in the curve.</h3><p>The radius stays the same as the corner transition changes.</p>
+        <div className="corner-study__copy"><span className="eyebrow">Form / 04</span><h3>The detail is in the curve.</h3><p>The radius stays the same as the corner transition changes.</p>
           <div className="corner-study__label"><span id="smoothing-label">Smoothing</span><output>{smoothing}%</output></div>
           <Slider labelId="smoothing-label" value={[smoothing]} min={0} max={100} step={1} onValueChange={values => setSmoothing(values[0])} />
         </div>
         <div className="corner-study__samples" aria-hidden="true">
-          <div><span className="corner-study__shape"><SmoothShape className="corner-study__face" radius={28} smoothing={0} /></span><span>00% / CURVE</span></div>
-          <div><span className="corner-study__shape"><SmoothShape className="corner-study__face" radius={28} smoothing={smoothing / 100} /></span><span>{String(smoothing).padStart(2, '0')}% / CONTINUOUS</span></div>
+          <div><span className="corner-study__shape"><SmoothShape className="corner-study__face" radius={28} smoothing={0} /></span><span>00% / Curve</span></div>
+          <div><span className="corner-study__shape"><SmoothShape className="corner-study__face" radius={28} smoothing={smoothing / 100} /></span><span>{String(smoothing).padStart(2, '0')}% / Continuous</span></div>
         </div>
       </div>
     </section>
@@ -93,29 +93,29 @@ export function App() {
   return (
     <div className="site" id="inicio">
       <a className="skip-link" href="#conteudo">Skip to content</a>
-      <header className="topbar"><Wordmark /><div className="topbar__middle">INTERFACE LABORATORY</div><a className="topbar__link" href="/solar">Solar panel <ArrowUpRight size={14} aria-hidden="true" /></a><a className="topbar__link" href="#materiais">Explore materials <ArrowDown size={14} aria-hidden="true" /></a></header>
+      <header className="topbar"><Wordmark /><div className="topbar__middle">Interface laboratory</div><a className="topbar__link" href="/solar">Solar panel <ArrowUpRight size={14} aria-hidden="true" /></a><a className="topbar__link" href="#materiais">Explore materials <ArrowDown size={14} aria-hidden="true" /></a></header>
       <main id="conteudo">
         <div className="hero-grid">
           <section className="intro" aria-labelledby="title">
-            <div className="intro__top"><span className="intro__chip"><span /> DESIGN SYSTEM</span><span className="eyebrow">EDITION 001</span></div>
+            <div className="intro__top"><span className="intro__chip"><span /> Design system</span><span className="eyebrow">Edition 001</span></div>
             <div className="intro__body">
-              <div className="intro__kicker"><span className="eyebrow">FORM · FUNCTION · FEELING</span><span className="intro__line" /></div>
+              <div className="intro__kicker"><span className="eyebrow">Form · Function · Feeling</span><span className="intro__line" /></div>
               <h1 id="title">Matter<br /><em>responds.</em></h1>
               <p>A language for interfaces that feel as natural as the objects we touch.</p>
               <a className="intro__link" href="#materiais">Discover the materials <MoveRight size={17} aria-hidden="true" /></a>
             </div>
-            <div className="intro__bottom"><div><CircleDashed size={17} aria-hidden="true" /><span>MADE TO<br />BE FELT</span></div><span>VISUAL STUDY<br />2026 — 01</span></div>
+            <div className="intro__bottom"><div><CircleDashed size={17} aria-hidden="true" /><span>Made to<br />be felt</span></div><span>Visual study<br />2026 — 01</span></div>
           </section>
           <ControlDeck />
         </div>
         <MaterialStudy />
         <section className="button-study" aria-labelledby="button-study-title">
-          <div><span className="eyebrow">MATERIAL / 05</span><h2 id="button-study-title">Glass that responds.</h2><p>A gentle touch. A precise reflection.</p></div>
+          <div><span className="eyebrow">Material / 05</span><h2 id="button-study-title">Glass that responds.</h2><p>A gentle touch. A precise reflection.</p></div>
           <div className="button-study__actions"><a className="jh-button jh-button--glass jh-button--primary" href="/solar"><SmoothShape className="jh-button__face" radius={16} /><span className="jh-button__content">Open solar panel <ArrowUpRight size={15} aria-hidden="true" /></span></a></div>
         </section>
-        <section className="closing"><Sparkles size={18} aria-hidden="true" /><p>An interface is a feeling, too.</p><span>JHOSEPHE / INTERACTION LAB</span></section>
+        <section className="closing"><Sparkles size={18} aria-hidden="true" /><p>An interface is a feeling, too.</p><span>jhosephe / Interaction lab</span></section>
       </main>
-      <footer className="footer"><Wordmark /><span>DESIGNED WITH INTENTION.</span><a href="#inicio">BACK TO TOP ↑</a></footer>
+      <footer className="footer"><Wordmark /><span>Designed with intention.</span><a href="#inicio">Back to top ↑</a></footer>
     </div>
   );
 }

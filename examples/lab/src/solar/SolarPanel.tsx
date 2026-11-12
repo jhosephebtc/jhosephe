@@ -69,7 +69,7 @@ function Instrument({ data, now, zone }: { data: Snapshot | null; now: Date; zon
           <text x="566" y="102" className="instrument__small-value">{hourSpan(data?.dayLengthSeconds)}</text>
           <text x="874" y="77" className="instrument__caption" textAnchor="end">Local time</text>
           <text x="874" y="102" className="instrument__small-value instrument__clock" textAnchor="end">{data ? formatTime(now, zone, true) : '—'}</text>
-          <text x="720" y="144" textAnchor="middle" className="instrument__eyebrow">SOLAR ELEVATION</text>
+          <text x="720" y="144" textAnchor="middle" className="instrument__eyebrow">Solar elevation</text>
           <text x="720" y="246" textAnchor="middle" className="instrument__main">{altitude}<tspan className="instrument__unit" dy="-38">°</tspan></text>
           <text x="720" y="270" textAnchor="middle" className="instrument__caption">{data ? phaseLabels[data.status] : 'Allow location access'}</text>
           <text x="575" y="299" className="instrument__caption">Azimuth</text>
@@ -81,17 +81,17 @@ function Instrument({ data, now, zone }: { data: Snapshot | null; now: Date; zon
           <text x="248" y="210" textAnchor="middle" className="instrument__caption">Sunrise</text>
           <text x="248" y="249" textAnchor="middle" className="instrument__event">{rise}</text>
           <path d="M186 270 h124" className="instrument__bracket" />
-          <text x="248" y="291" textAnchor="middle" className="instrument__eyebrow">HORIZON / EAST</text>
+          <text x="248" y="291" textAnchor="middle" className="instrument__eyebrow">Horizon / East</text>
           <text x="1192" y="210" textAnchor="middle" className="instrument__caption">Sunset</text>
           <text x="1192" y="249" textAnchor="middle" className="instrument__event">{set}</text>
           <path d="M1130 270 h124" className="instrument__bracket" />
-          <text x="1192" y="291" textAnchor="middle" className="instrument__eyebrow">HORIZON / WEST</text>
+          <text x="1192" y="291" textAnchor="middle" className="instrument__eyebrow">Horizon / West</text>
         </g>
       </g>
       <path d="M20 132 Q720 -77 1420 132" fill="none" stroke="#fff" strokeOpacity=".9" strokeWidth="1.5" />
     </svg>
     <div className="instrument-mobile">
-      <span className="solar-label">SOLAR ELEVATION</span>
+      <span className="solar-label">Solar elevation</span>
       <div className="instrument-mobile__value">{altitude}<sup>°</sup></div>
       <span>{data ? phaseLabels[data.status] : 'Waiting for location'}</span>
       <dl><div><dt>Sunrise</dt><dd>{rise}</dd></div><div><dt>Sunset</dt><dd>{set}</dd></div><div><dt>Azimuth</dt><dd>{azimuth}°</dd></div><div><dt>Direction</dt><dd>{data ? compassDirection(data.azimuth) : '—'}</dd></div></dl>
@@ -111,13 +111,13 @@ function DayPath({ now, location, data }: { now: Date; location: Location | null
   const y = (alt: number) => plot.top + (90 - alt) / 180 * (plot.bottom - plot.top);
   const path = samples.map((sample, i) => `${i ? 'L' : 'M'}${x(sample.time.getTime()).toFixed(2)} ${y(sample.altitude).toFixed(2)}`).join(' ');
   return <section className="solar-path" aria-labelledby="path-title">
-    <div className="solar-path__header"><h2 id="path-title">The path of light</h2><span className="solar-label">TODAY / LOCAL DAY</span></div>
+    <div className="solar-path__header"><h2 id="path-title">The path of light</h2><span className="solar-label">Today / local day</span></div>
     <div className="solar-path__plot">
       <svg viewBox="0 0 1100 182" role="img" aria-label={data ? `Daily solar elevation. Now: ${degrees(data.altitude)} degrees above the horizon.` : 'Solar path waiting for location.'}>
         <defs><linearGradient id="path-fill" x1="0" y1="0" x2="0" y2="1"><stop stopColor="#555" stopOpacity=".08" /><stop offset="1" stopColor="#555" stopOpacity="0" /></linearGradient></defs>
         {[90, 0, -90].map(alt => <g key={alt}><line x1={32} x2={1068} y1={y(alt)} y2={y(alt)} className={alt === 0 ? 'solar-path__horizon' : 'solar-path__grid'} /><text x="0" y={y(alt) + 3}>{alt > 0 ? '+' : ''}{alt}°</text></g>)}
         {[0, 1, 2, 3, 4].map(i => <g key={i}><line x1={32 + i * 259} x2={32 + i * 259} y1="20" y2="154" className="solar-path__grid" /><text x={32 + i * 259} y="178" textAnchor="middle">{samples[i * 24] && location ? formatTime(samples[i * 24].time, location.timeZone) : `${pad(i * 6)}:00`}</text></g>)}
-        {path && <><path className="solar-path__area" d={`${path} L1068 154 L32 154 Z`} fill="url(#path-fill)" /><path className="solar-path__curve" d={path} fill="none" stroke="#555" strokeWidth="1.3" vectorEffect="non-scaling-stroke" /></>}
+        {path && <><path className="solar-path__area" d={`${path} L1068 154 L32 154 Z`} fill="url(#path-fill)" /><path className="solar-path__curve" pathLength="1" d={path} fill="none" stroke="#555" strokeWidth="1.3" vectorEffect="non-scaling-stroke" /></>}
         {data && <g><line className="solar-path__now" x1={x(now.getTime())} x2={x(now.getTime())} y1="12" y2="154" stroke="#aaa" strokeWidth=".7" strokeDasharray="2 4" /><circle className="solar-path__halo" cx={x(now.getTime())} cy={y(data.altitude)} r="9" fill="#333" fillOpacity=".08" /><circle className="solar-path__marker" cx={x(now.getTime())} cy={y(data.altitude)} r="3.5" fill="#333" /></g>}
       </svg>
       {!location && <p className="solar-path__empty">Your location reveals today’s path.</p>}
@@ -175,17 +175,17 @@ export function SolarPanel() {
     <a className="skip-link" href="#solar-main">Skip to the panel</a>
     <header className="solar-topbar">
       <a className="solar-brand" href="/" aria-label="jhosephe / solar, back to home"><span className="solar-brand__symbol" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M14 8v8c0 4-2 6-6 6" stroke="currentColor" strokeWidth="1.4"/><circle cx="14" cy="4" r="1" fill="currentColor"/></svg></span><span>jhosephe<span className="solar-brand__suffix"> / solar</span></span></a>
-      <span className="solar-label solar-topbar__edition">INSTRUMENT 002</span>
+      <span className="solar-label solar-topbar__edition">Instrument 002</span>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild><Button className="solar-location"><MapPin size={14} aria-hidden="true" /><span>{location?.name ?? 'Set location'}</span><Settings2 size={14} aria-hidden="true" /></Button></DialogTrigger>
         <DialogContent className="solar-settings">
-          <span className="solar-label">OBSERVATION POINT</span><DialogTitle className="dialog-title">Where are you watching the sun?</DialogTitle>
+          <span className="solar-label">Observation point</span><DialogTitle className="dialog-title">Where are you watching the sun?</DialogTitle>
           <DialogDescription className="dialog-description">Use your device or enter coordinates. Calculations stay here; your location is never sent to a server.</DialogDescription>
           <Button onClick={requestLocation} disabled={geoState === 'pending'}><LocateFixed size={16} aria-hidden="true" /> Use my location</Button>
           <form onSubmit={submit} className="solar-settings__form">
-            <label>Location name<input value={draft.name} required maxLength={60} onChange={e => setDraft({ ...draft, name: e.target.value })} /></label>
-            <div className="solar-settings__coordinates"><label>Latitude<input type="number" min="-90" max="90" step="any" required value={Number.isFinite(draft.latitude) ? draft.latitude : ''} onChange={e => setDraft({ ...draft, latitude: e.target.valueAsNumber })} /></label><label>Longitude<input type="number" min="-180" max="180" step="any" required value={Number.isFinite(draft.longitude) ? draft.longitude : ''} onChange={e => setDraft({ ...draft, longitude: e.target.valueAsNumber })} /></label></div>
-            <label>Time zone<input required value={draft.timeZone} onChange={e => setDraft({ ...draft, timeZone: e.target.value })} /></label>
+            <label>Location name<input className="jh-input" value={draft.name} required maxLength={60} onChange={e => setDraft({ ...draft, name: e.target.value })} /></label>
+            <div className="solar-settings__coordinates"><label>Latitude<input className="jh-input" type="number" min="-90" max="90" step="any" required value={Number.isFinite(draft.latitude) ? draft.latitude : ''} onChange={e => setDraft({ ...draft, latitude: e.target.valueAsNumber })} /></label><label>Longitude<input className="jh-input" type="number" min="-180" max="180" step="any" required value={Number.isFinite(draft.longitude) ? draft.longitude : ''} onChange={e => setDraft({ ...draft, longitude: e.target.valueAsNumber })} /></label></div>
+            <label>Time zone<input className="jh-input" required value={draft.timeZone} onChange={e => setDraft({ ...draft, timeZone: e.target.value })} /></label>
             <Button type="submit" variant="primary">Apply location <ArrowUpRight size={15} aria-hidden="true" /></Button>
           </form>
           <p className="solar-settings__message" role="status">{message}</p>
@@ -193,13 +193,13 @@ export function SolarPanel() {
       </Dialog>
     </header>
     <main id="solar-main">
-      <div className="solar-heading"><div><span className="solar-label">SOLAR OBSERVATORY</span><p>Time, through light.</p></div><div className="solar-live"><i aria-hidden="true" />{location ? 'LIVE' : 'WAITING FOR LOCATION'}<span>{location ? new Intl.DateTimeFormat('en-US', { day: '2-digit', month: 'short', year: 'numeric', timeZone: zone }).format(now) : 'DEVICE LOCATION'}</span></div></div>
+      <div className="solar-heading"><div><span className="solar-label">Solar observatory</span><p>Time, through light.</p></div><div className="solar-live"><i aria-hidden="true" />{location ? 'Live' : 'Waiting for location'}<span>{location ? new Intl.DateTimeFormat('en-US', { day: '2-digit', month: 'short', year: 'numeric', timeZone: zone }).format(now) : 'Device location'}</span></div></div>
       <Instrument data={data} now={now} zone={zone} />
       <div className="solar-console">
-        <div className="solar-console__event"><span className="solar-label">{data?.nextEvent ? (data.nextEvent.kind === 'sunrise' ? 'UNTIL SUNRISE' : 'UNTIL SUNSET') : 'NEXT EVENT'}</span><strong>{remaining}</strong></div>
+        <div className="solar-console__event"><span className="solar-label">{data?.nextEvent ? (data.nextEvent.kind === 'sunrise' ? 'Until sunrise' : 'Until sunset') : 'Next event'}</span><strong>{remaining}</strong></div>
         <div className="solar-console__separator" aria-hidden="true" />
-        <div className="solar-console__day"><Sun size={20} strokeWidth={1.1} aria-hidden="true" /><div><span className="solar-label">SOLAR NOON</span><strong>{formatTime(data?.solarNoon ?? null, zone)}</strong></div></div>
-        <div className="solar-console__day"><Sunrise size={20} strokeWidth={1.1} aria-hidden="true" /><div><span className="solar-label">DAY LENGTH</span><strong>{hourSpan(data?.dayLengthSeconds)}</strong></div></div>
+        <div className="solar-console__day"><Sun size={20} strokeWidth={1.1} aria-hidden="true" /><div><span className="solar-label">Solar noon</span><strong>{formatTime(data?.solarNoon ?? null, zone)}</strong></div></div>
+        <div className="solar-console__day"><Sunrise size={20} strokeWidth={1.1} aria-hidden="true" /><div><span className="solar-label">Day length</span><strong>{hourSpan(data?.dayLengthSeconds)}</strong></div></div>
       </div>
       <div className="solar-bottom">
         <div className="solar-location-status" aria-live="polite"><LocateFixed size={14} aria-hidden="true" /><span>{location ? `${source === 'device' ? 'Device' : 'Manual coordinates'} · ${location.latitude.toFixed(4)}°, ${location.longitude.toFixed(4)}°${accuracy == null ? '' : ` · accuracy ±${Math.ceil(accuracy)} m`}` : message}</span>{geoState === 'error' && <button type="button" onClick={() => setOpen(true)}>Configure location <ArrowUpRight size={14} aria-hidden="true" /></button>}</div>

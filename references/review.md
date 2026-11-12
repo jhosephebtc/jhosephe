@@ -8,7 +8,7 @@ Use esta lista conforme o escopo; uma revisão de código não comprova sensaç�
 - Repouso, hover possível, pressionado, foco, selecionado, disabled, carregamento e erro não se confundem. A interface não espera a animação para aceitar outra ação.
 - Teste rótulo longo, conteúdo traduzido, escala de 200%, ausência de dados, valores extremos e superfície estreita.
 - O foco permanece visível sem ser cortado. Controle operável por toque tem alvo suficiente; nomes acessíveis são claros e não duplicados.
-- Switches claros não parecem um capsule escuro com esfera branca; posição do rocker e estado acessível permanecem reconhecíveis. O baixo-relevo dos ícones não reduz a leitura em tamanho real nem em 200%.
+- Switches claros, arredondados e simples têm respiro; sua posição e estado acessível permanecem reconhecíveis. Ícones ficam sem relevo ou sombra e continuam legíveis no tamanho real e em 200%.
 
 ## Material, tipografia e composição
 
@@ -17,6 +17,8 @@ Use esta lista conforme o escopo; uma revisão de código não comprova sensaç�
 - Teste `forced-colors` e, quando disponível, `prefers-reduced-transparency`.
 - Confirme Geist Sans e fallback sans-serif sem mudança grave de layout, pesos carregados, kerning ativo e números tabulares em medidas voláteis.
 - Confira a paleta acromática também em fundos, canvas, gradientes, texturas, sombras, foco, SVG e shaders. Confira ausência de serifadas e de fontes mono. Estados continuam claros por texto, ícone, forma e contraste. Cores forçadas seguem o sistema.
+- Confira sentence case em todos os textos visíveis, superfícies de input côncavas, foco interno suave e menus de escolha no material do catálogo.
+- Sliders têm trilha larga o suficiente, pouca profundidade, thumb de vidro visível e caminho branco translúcido com brilho sutil.
 - Revise tracking no tamanho final, pares de letras, acentos, alinhamento de unidades e largura reservada para números que mudam. Não aceite espaçamento manual entre caracteres.
 - Confira colunas e eixos comuns, gutters, ritmo de 4px, relações entre espaços internos e entre grupos. Faça ajustes ópticos localizados, sem perder o grid.
 - Compare desktop, largura intermediária, 375px e zoom de 200% com conteúdo real. A adaptação deve reorganizar a composição, mantendo texto legível e ordem de leitura.

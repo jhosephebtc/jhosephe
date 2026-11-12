@@ -13,12 +13,13 @@ const variants = cva('jh-button jh-button--glass', {
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof variants> {
   radius?: number;
+  smoothing?: number;
   liquid?: boolean;
 }
 
 /** Glass face with local liquid feedback; semantics and focus stay on the native button. */
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
-  { className, variant, size, radius = size === 'small' ? 12 : 16, liquid = true, style, children, type = 'button', onPointerDown, ...props }, ref,
+  { className, variant, size, radius = size === 'small' ? 12 : 16, smoothing = 0.6, liquid = true, style, children, type = 'button', onPointerDown, ...props }, ref,
 ) {
   return (
     <button ref={ref} type={type} className={cn(variants({ variant, size }), className)} {...props} data-liquid={liquid} style={{ borderRadius: Number.isFinite(radius) ? Math.max(0, radius) : 16, ...style }}
@@ -28,7 +29,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
         event.currentTarget.style.setProperty('--jh-press-y', `${event.clientY - rect.top}px`);
         onPointerDown?.(event);
       }}>
-      <SmoothShape className="jh-button__face" radius={radius} />
+      <SmoothShape className="jh-button__face" radius={radius} smoothing={smoothing} />
       <span className="jh-button__content">{children}</span>
     </button>
   );
