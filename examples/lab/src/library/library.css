@@ -472,7 +472,6 @@
   inset:56px clamp(18px,4vw,48px) 70px;
 }
 .library-card--financial-chart .library-extra-market-chart,
-.library-card--market-picker .library-extra-market-picker,
 .library-card--astronomy-instrument .library-extra-astronomy,
 .library-card--astrology-wheel .library-extra-astrology,
 .library-card--race-telemetry .library-extra-race {
@@ -480,6 +479,16 @@
   transform-origin:center center;
   width:560px;
   flex:0 0 560px;
+}
+.library-card--market-picker .library-extra-market-picker {
+  transform:scale(.78);
+  transform-origin:center center;
+  width:420px;
+  flex:0 0 420px;
+}
+.library-preview-stage--market-picker .library-extra-market-picker,
+.library-preview-stage--market-picker .jh-market-picker {
+  width: min(100%, 420px);
 }
 .library-card--compass .library-extra-compass,
 .library-card--attitude-indicator .library-extra-attitude {

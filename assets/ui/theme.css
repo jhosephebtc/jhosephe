@@ -3852,3 +3852,46 @@ input.jh-input[type=number]::-webkit-inner-spin-button,
 .jh-currency-picker__options button {
   padding: 8px 10px;
 }
+
+/* Market picker quotes list: Soft-input lateral margins + tighter card width */
+.jh-market-picker {
+  width: min(100%, 420px);
+  padding: 20px 20px 18px;
+  box-sizing: border-box;
+}
+.jh-market-picker .jh-scroll-frame {
+  margin-top: 12px;
+  margin-inline: 0;
+  padding: 8px 6px 8px 8px;
+  border-radius: 14px;
+  box-sizing: border-box;
+}
+.jh-market-picker .jh-scroll-frame > .jh-scroll-area {
+  padding: 4px 10px 4px 8px;
+  box-sizing: border-box;
+}
+.jh-market-picker__list {
+  gap: 4px;
+  padding: 0;
+  margin: 0;
+}
+.jh-market-picker__asset {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 56px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  gap: 12px;
+  grid-template-columns: 36px minmax(0, 1fr) auto 18px;
+}
+.jh-market-picker__search {
+  margin-inline: 0;
+  padding: 0 14px;
+}
+.jh-market-picker .jh-segmented-field {
+  margin-inline: 0;
+}
+.jh-market-picker__footnote {
+  margin: 12px 2px 0;
+  padding-inline: 2px;
+}
