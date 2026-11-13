@@ -2879,6 +2879,29 @@ const DARK_COMPONENT_POLISH = `
   background: rgb(10 10 10 / .78) !important;
   color: #e6e6e6 !important;
 }
+:is([data-jh-theme="dark"], .dark) .jh-vertical-gallery__title { color: #ededed !important; }
+:is([data-jh-theme="dark"], .dark) .jh-vertical-gallery__ratio-menu {
+  background: #0e0e0e !important;
+  box-shadow: inset 0 1px rgb(255 255 255 / .04), inset 0 0 0 1px rgb(255 255 255 / .06), 0 14px 32px -12px rgb(0 0 0 / .95) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-vertical-gallery__ratio-option { color: #9c9c9c !important; }
+:is([data-jh-theme="dark"], .dark) .jh-vertical-gallery__ratio-option:hover { color: #ededed !important; background: rgb(255 255 255 / .045) !important; }
+:is([data-jh-theme="dark"], .dark) .jh-vertical-gallery__ratio-option[aria-selected="true"] {
+  color: #f4f4f4 !important;
+  background: #161616 !important;
+  box-shadow: inset 0 1px rgb(255 255 255 / .05), inset 0 0 0 1px rgb(255 255 255 / .07) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-vertical-gallery__viewport {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-vertical-gallery__item {
+  box-shadow: 0 1px 2px rgb(0 0 0 / .7), 0 4px 10px -5px rgb(0 0 0 / .9), inset 0 1px rgb(255 255 255 / .04) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-accordion.jh-accordion--scroll,
+:is([data-jh-theme="dark"], .dark) .jh-vertical-gallery__viewport {
+  scrollbar-color: #2a2a2a transparent !important;
+}
 `;
 
 const DARK_LAB_POLISH = `

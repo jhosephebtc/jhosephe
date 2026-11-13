@@ -860,6 +860,40 @@ body:has(.jh-financial-order[data-jh-material]) .library-preview-stage--financia
   }
 }
 
+.library-extra-scroll {
+  width: min(100%, 660px);
+}
+.library-card--scroll-area .library-extra-scroll {
+  width: min(100%, 380px);
+}
+.library-extra-simple-scroll {
+  width: min(100%, 440px);
+  display: flex;
+  justify-content: center;
+}
+.library-extra-accordion-scroll {
+  width: min(100%, 480px);
+  display: flex;
+  justify-content: center;
+}
+.library-extra-vertical-gallery {
+  width: min(100%, 560px);
+  display: flex;
+  justify-content: center;
+}
+.library-extra-simple-scroll[data-compact="true"],
+.library-extra-accordion-scroll[data-compact="true"] {
+  width: min(100%, 340px);
+}
+.library-extra-vertical-gallery[data-compact="true"] {
+  width: min(100%, 350px);
+}
+.library-extra-vertical-gallery[data-compact="true"] .jh-vertical-gallery {
+  --jh-vg-row-h: 28px;
+  --jh-vg-gap: 4px;
+  padding: 10px;
+}
+
 /* === JH_BLACK_THEME_START === */
 :is([data-jh-theme="dark"], .dark).library, :is([data-jh-theme="dark"], .dark) .library {
   color: rgb(222 222 222);

@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
+import { ChevronDown } from 'lucide-react';
+import { Button } from './button';
 import { cn } from './utils';
 import { surfaceMaterialAttr, type SurfaceMaterial } from './weather-ephemeris';
 
@@ -202,7 +204,10 @@ function SpecimenArtwork({ item, index }: { item: VerticalGalleryItem; index: nu
   );
 }
 
-/** Vertical scrolling 4×12 contact-sheet image gallery with edge progressive reveal. */
+export const GALLERY_ASPECT_RATIOS = ['1:1', '3:4', '4:5', '9:16', '16:9'] as const;
+export type GalleryAspectRatio = (typeof GALLERY_ASPECT_RATIOS)[number];
+
+/** Vertical scrolling 4-column image gallery with selectable aspect ratio and edge progressive reveal. */
 export function VerticalGallery({
   items = DEFAULT_ITEMS,
   columns = 4,
@@ -211,13 +216,17 @@ export function VerticalGallery({
   defaultSelectedId,
   onSelect,
   label = 'Vertical image gallery',
+  title = 'Gallery',
+  defaultAspectRatio = '1:1',
   material = 'solid',
   className,
   style,
 }: {
   items?: VerticalGalleryItem[];
+  title?: string;
   columns?: number;
   visibleRows?: number;
+  defaultAspectRatio?: GalleryAspectRatio;
   selectedId?: string;
   defaultSelectedId?: string;
   onSelect?: (item: VerticalGalleryItem, index: number) => void;
@@ -234,8 +243,27 @@ export function VerticalGallery({
 
   useScrollItemReveal(viewportRef, [items.length, safeCols, safeRows], '.jh-vertical-gallery__item');
 
-  const selectedIndex = Math.max(0, items.findIndex(item => item.id === activeId));
-  const selectedItem = items[selectedIndex] ?? items[0];
+  const [ratio, setRatio] = useState<GalleryAspectRatio>(defaultAspectRatio);
+  const [ratioOpen, setRatioOpen] = useState(false);
+  const ratioMenuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!ratioOpen) return;
+    const close = (event: MouseEvent) => {
+      if (!ratioMenuRef.current?.contains(event.target as Node)) setRatioOpen(false);
+    };
+    const onKey = (event: KeyboardEvent) => { if (event.key === 'Escape') setRatioOpen(false); };
+    document.addEventListener('mousedown', close);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('mousedown', close);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [ratioOpen]);
+
+  useEffect(() => {
+    if (viewportRef.current) syncScrollItemVisibility(viewportRef.current, '.jh-vertical-gallery__item');
+  }, [ratio]);
 
   return (
     <section
@@ -244,19 +272,42 @@ export function VerticalGallery({
       style={{
         '--jh-vg-cols': safeCols,
         '--jh-vg-rows': safeRows,
+        '--jh-vg-ratio': ratio.replace(':', ' / '),
         ...style,
       } as CSSProperties}
       aria-label={label}
     >
-      <header className="jh-vertical-gallery__header">
-        <div>
-          <span className="jh-vertical-gallery__eyebrow">Contact sheet</span>
-          <strong>{selectedItem?.title ?? label}</strong>
-        </div>
-        <span className="jh-vertical-gallery__meta">
-          {safeCols} × {safeRows} visible · {items.length} plates
-        </span>
-      </header>
+      <div className="jh-vertical-gallery__toolbar" ref={ratioMenuRef}>
+        <strong className="jh-vertical-gallery__title">{title}</strong>
+        <Button
+          variant="secondary"
+          size="small"
+          className="jh-vertical-gallery__ratio-trigger"
+          aria-haspopup="listbox"
+          aria-expanded={ratioOpen}
+          aria-label={`Aspect ratio ${ratio}`}
+          onClick={() => setRatioOpen(open => !open)}
+        >
+          {ratio}
+          <ChevronDown size={13} aria-hidden="true" />
+        </Button>
+        {ratioOpen && (
+          <div className="jh-vertical-gallery__ratio-menu" role="listbox" aria-label="Aspect ratio">
+            {GALLERY_ASPECT_RATIOS.map(option => (
+              <button
+                key={option}
+                type="button"
+                role="option"
+                aria-selected={option === ratio}
+                className="jh-vertical-gallery__ratio-option"
+                onClick={() => { setRatio(option); setRatioOpen(false); }}
+              >
+                {option}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
 
       <div
         ref={viewportRef}
@@ -282,18 +333,12 @@ export function VerticalGallery({
               >
                 <span className="jh-vertical-gallery__thumb">
                   <SpecimenArtwork item={item} index={index} />
-                  <span className="jh-vertical-gallery__index">{item.frame ?? String(index + 1).padStart(2, '0')}</span>
                 </span>
               </button>
             );
           })}
         </div>
       </div>
-
-      <footer className="jh-vertical-gallery__footer">
-        <span>{selectedItem?.subtitle ?? `${selectedIndex + 1} / ${items.length}`}</span>
-        <span>Scroll vertically to reveal remaining frames</span>
-      </footer>
     </section>
   );
 }

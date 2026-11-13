@@ -29,7 +29,7 @@ export function DateTimePicker({ value, onChange, label = 'Schedule a time', dis
     <Popover.Portal><Popover.Content data-jh-material={material} className="jh-date-time-popover" align="start" sideOffset={8} collisionPadding={12} aria-label={label}>
       <div className="jh-date-time-popover__heading"><div><strong>Choose a moment</strong><span>Pick a date and an available time.</span></div><span className="jh-date-time-zone">Local time</span></div>
       <div className="jh-date-time-popover__body"><Calendar mode="single" selected={draftDate} defaultMonth={draftDate} onSelect={setDraftDate} /><section className="jh-date-time-slots" aria-label="Available times"><h3><Clock3 size={14} aria-hidden="true" />Available times</h3><div>{timeSlots.map(time => <button key={time} type="button" aria-pressed={draftTime === time} onClick={() => setDraftTime(time)}>{time}</button>)}</div></section></div>
-      <div className="jh-date-time-popover__footer"><button type="button" onClick={() => { onChange(undefined); setOpen(false); }}>Clear</button><Button size="small" disabled={!draftDate} onClick={commit}>Confirm <Check size={14} aria-hidden="true" /></Button></div>
+      <div className="jh-date-time-popover__footer"><Button variant="secondary" size="small" type="button" onClick={() => { onChange(undefined); setOpen(false); }}>Clear</Button><Button size="small" disabled={!draftDate} onClick={commit}>Confirm <Check size={14} aria-hidden="true" /></Button></div>
     </Popover.Content></Popover.Portal>
   </Popover.Root>{value && <span className="jh-date-time-picker__summary" aria-live="polite">{sameDay(value, new Date()) ? 'Today' : new Intl.DateTimeFormat('en-US', { weekday: 'long', month: 'long', day: 'numeric' }).format(value)}</span>}</div>;
 }
