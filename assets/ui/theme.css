@@ -12456,7 +12456,7 @@ input[type="number"] {
 }
 .jh-scroll-option[aria-pressed="true"] {
   color: #171717;
-  font-weight: 500;
+  font-weight: inherit;
   background: transparent;
   box-shadow: none;
 }
@@ -21697,7 +21697,7 @@ input[type="number"] {
   width: 100%;
 }
 
-/* Scroll lists: selected = bolinha only (no top highlight / raised face) */
+/* Scroll lists: selected = contrast + bolinha only (same weight, no pill) */
 .jh-scroll-option[aria-pressed="true"],
 .jh-simple-scroll__item.is-selected,
 .jh-scroll-frame .jh-scroll-option[aria-pressed="true"],
@@ -21706,7 +21706,7 @@ input[type="number"] {
   background-image: none !important;
   box-shadow: none !important;
   color: #171717 !important;
-  font-weight: 500;
+  font-weight: inherit !important;
 }
 .jh-scroll-option[aria-pressed="true"]:hover,
 .jh-simple-scroll__item.is-selected:hover {
@@ -21730,9 +21730,11 @@ input[type="number"] {
 }
 .jh-simple-scroll__item.is-selected .jh-simple-scroll__copy strong {
   color: #171717;
+  font-weight: 500; /* same as unselected label weight — contrast only */
 }
 .jh-scroll-option[aria-pressed="true"] > span {
   color: #171717;
+  font-weight: inherit;
 }
 
 /* Accordion Scroll open row: no top-light face — keep disclosure chrome quiet */
