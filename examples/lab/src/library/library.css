@@ -117,7 +117,8 @@
 [data-jh-material="solid"] .library-demo-shape { filter: drop-shadow(0 1px 2px rgb(0 0 0 / .055)) drop-shadow(0 3px 8px rgb(0 0 0 / .035)); }
 .library-card-preview .library-demo-shape { flex: none; }
 .library-demo-shape__guides { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
-.library-demo-shape__outer { fill: none; stroke: rgb(0 0 0 / .065); stroke-width: 1; vector-effect: non-scaling-stroke; }
+/* No dark outline around Smooth Corners — face only */
+.library-demo-shape__outer { fill: none; stroke: none; stroke-width: 0; vector-effect: non-scaling-stroke; }
 .library-demo-shape__specular { fill: none; color: #ffffff; stroke-width: 1; vector-effect: non-scaling-stroke; }
 [data-jh-material="liquid-glass"] .library-demo-shape__specular,
 [data-jh-material="liquid"] .library-demo-shape__specular { stroke-width: 1.25; }
@@ -1124,7 +1125,8 @@ body:has(.jh-financial-order[data-jh-material]) .library-preview-stage--financia
   filter: drop-shadow(0 1px 2px rgb(0 0 0 / .6)) drop-shadow(0 3px 8px rgb(0 0 0 / .6));
 }
 :is([data-jh-theme="dark"], .dark).library-demo-shape__outer, :is([data-jh-theme="dark"], .dark) .library-demo-shape__outer {
-  stroke: rgb(255 255 255 / .008);
+  stroke: none;
+  stroke-width: 0;
 }
 :is([data-jh-theme="dark"], .dark).library-demo-shape__specular, :is([data-jh-theme="dark"], .dark) .library-demo-shape__specular {
   color: rgb(224 224 224);
@@ -1673,7 +1675,8 @@ body:has(.jh-financial-order[data-jh-material]) .library-preview-stage--financia
   filter: drop-shadow(0 2px 5px rgb(0 0 0 / .85)) drop-shadow(0 10px 22px rgb(0 0 0 / .92));
 }
 :is([data-jh-theme="dark"], .dark) .library-demo-shape__outer {
-  stroke: rgb(0 0 0 / .72);
+  stroke: none;
+  stroke-width: 0;
 }
 :is([data-jh-theme="dark"], .dark) .library-demo-shape__specular {
   stroke: rgb(255 255 255 / .018);

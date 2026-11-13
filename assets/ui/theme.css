@@ -230,16 +230,14 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid 
 .jh-dialog-title { margin: 0 40px 12px 0; font-size: 24px; line-height: 1.25; font-weight: 500; letter-spacing: -.035em; }
 .jh-dialog-description { margin: 0 0 24px; font-size: 14px; line-height: 1.7; color: #6b6b6b; }
 .jh-dialog__close { border-color: transparent; box-shadow: inset 0 1px #fff, 0 1px 4px -2px #00000010; }
-/* Smooth Corners media face = Glass Button solid face (flat fill + crisp inset rim) */
+/* Smooth Corners media face = Glass Button solid fill, no dark outline/ring */
 .jh-glass-shape {
   position: absolute;
   inset: 0;
   overflow: hidden;
   background: #f7f7f7;
   background-image: none;
-  box-shadow:
-    inset 0 1px #fff,
-    inset 0 0 0 1px #0000000a;
+  box-shadow: inset 0 1px #ffffffd9;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
 }
@@ -250,9 +248,7 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid 
 [data-jh-material="solid"] .jh-glass-shape {
   background: #f7f7f7;
   background-image: none;
-  box-shadow:
-    inset 0 1px #fff,
-    inset 0 0 0 1px #0000000a;
+  box-shadow: inset 0 1px #ffffffd9;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
 }
@@ -13031,7 +13027,7 @@ input[type="number"] {
 :is([data-jh-theme="dark"], .dark) .jh-glass-shape {
   background: #141414;
   background-image: none;
-  box-shadow: inset 0 1px rgb(255 255 255 / .06), inset 0 0 0 1px rgb(255 255 255 / .08);
+  box-shadow: inset 0 1px rgb(255 255 255 / .06);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
 }
@@ -13042,7 +13038,7 @@ input[type="number"] {
 :is([data-jh-theme="dark"], .dark) [data-jh-material="solid"] .jh-glass-shape {
   background: rgb(10 10 10);
   background-image: none;
-  box-shadow: inset 0 1px rgb(255 255 255 / .014),  inset 0 0 0 1px rgb(255 255 255 / .008);
+  box-shadow: inset 0 1px rgb(255 255 255 / .06);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
 }
@@ -21101,16 +21097,15 @@ input[type="number"] {
 }
 :is([data-jh-theme="dark"], .dark) .jh-glass-shape,
 :is([data-jh-theme="dark"], .dark) [data-jh-material="solid"] .jh-glass-shape {
-  background: linear-gradient(175deg, #0e0e0e, #0a0a0a) !important;
-  background-image: linear-gradient(175deg, #0e0e0e, #0a0a0a) !important;
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / .018), inset 0 -1px 1px rgb(0 0 0 / .68) !important;
+  background: #0a0a0a !important;
+  background-image: none !important;
+  box-shadow: inset 0 1px rgb(255 255 255 / .06) !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
 }
 :is([data-jh-theme="dark"], .dark) .jh-glass-shape::before {
-  background: radial-gradient(ellipse at 38% -65%, rgb(255 255 255 / .028) 30%, transparent 72%);
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / .016), inset 0 -1px 1px rgb(0 0 0 / .45);
-  opacity: .75;
+  content: none !important;
+  display: none !important;
 }
 :is([data-jh-theme="dark"], .dark) [data-jh-material="liquid-glass"] .jh-glass-shape {
   background: linear-gradient(175deg, rgb(16 16 16 / .86), rgb(10 10 10 / .78)) !important;
@@ -21129,7 +21124,7 @@ input[type="number"] {
   backdrop-filter: blur(20px) saturate(1.14) !important;
   -webkit-backdrop-filter: blur(20px) saturate(1.14) !important;
 }
-:is([data-jh-theme="dark"], .dark) .library-demo-shape__outer { stroke: rgb(255 255 255 / .07) !important; }
+:is([data-jh-theme="dark"], .dark) .library-demo-shape__outer { stroke: none !important; stroke-width: 0 !important; }
 :is([data-jh-theme="dark"], .dark) .library-demo-shape__specular { color: rgb(255 255 255 / .24) !important; }
 :is([data-jh-theme="dark"], .dark) .library-demo-shape__inner { stroke: rgb(255 255 255 / .12) !important; }
 :is([data-jh-theme="dark"], .dark) .library-demo-shape__readout { color: #b5b5b5 !important; }
