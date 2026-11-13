@@ -81,8 +81,10 @@ export function ScrollArea({
                           aria-pressed={selected}
                           onClick={() => choose(option.value)}
                         >
-                          <span>{option.label}</span>
-                          {option.detail && <small>{option.detail}</small>}
+                          <span>
+                            {option.label}
+                            {option.detail ? <small> {option.detail}</small> : null}
+                          </span>
                         </button>
                       </li>
                     );

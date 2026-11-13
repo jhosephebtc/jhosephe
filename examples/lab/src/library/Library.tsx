@@ -177,7 +177,13 @@ function Header({ path }: { path: string }) {
 }
 
 function Sidebar({ path }: { path: string }) {
-  const entry = (href: string, label: string, icon?: ReactNode) => <a href={href} aria-current={path === href ? 'page' : undefined}>{icon}<span>{label}</span>{path === href && <span className="library-nav-dot" />}</a>;
+  const entry = (href: string, label: string, icon?: ReactNode) => (
+    <a href={href} aria-current={path === href ? 'page' : undefined}>
+      {icon}
+      <span>{label}</span>
+      <span className="library-nav-dot" aria-hidden="true" />
+    </a>
+  );
   return <aside className="library-sidebar"><nav aria-label="Component library">
     <div className="library-nav-group"><p>Getting started</p>{entry('/components', 'Overview', <Grid2X2 {...iconProps} />)}{entry('/installation', 'Installation', <Code2 {...iconProps} />)}</div>
     {categories.filter(category => category !== 'All').map(category => <div className="library-nav-group" key={category}><p>{category}</p>{components.filter(item => item.category === category).map(item => <div key={item.id}>{entry(`/components/${item.id}`, item.name)}</div>)}</div>)}

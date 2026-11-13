@@ -67,55 +67,77 @@ export function Accordion({
     }
   };
 
+  const sections = items.map((item, index) => {
+    const open = openItems.includes(item.value);
+    const triggerId = `${baseId}-trigger-${index}`;
+    const panelId = `${baseId}-panel-${index}`;
+    return (
+      <section className="jh-accordion__item" key={item.value} data-state={open ? 'open' : 'closed'}>
+        <h3 className="jh-accordion__heading">
+          <button
+            ref={el => { triggerRefs.current[index] = el; }}
+            id={triggerId}
+            className="jh-accordion__trigger"
+            type="button"
+            aria-expanded={open}
+            aria-controls={panelId}
+            onClick={() => toggle(item.value)}
+            onKeyDown={event => onTriggerKeyDown(index, event)}
+          >
+            <span>{item.title}</span>
+            <ChevronDown size={15} aria-hidden="true" />
+          </button>
+        </h3>
+        <div
+          id={panelId}
+          className="jh-accordion__panel"
+          role="region"
+          aria-labelledby={triggerId}
+          aria-hidden={!open}
+          inert={!open || undefined}
+        >
+          <div className="jh-accordion__content"><div className="jh-accordion__inner">{item.content}</div></div>
+        </div>
+      </section>
+    );
+  });
+
+  // Match Simple Scroll: outer .jh-scroll-frame padding-right insets the thumb from the border.
+  if (scrollable) {
+    return (
+      <div
+        className={cn(
+          'jh-scroll-frame jh-accordion-scroll',
+          finish === 'liquid' && 'jh-menu--liquid',
+          className,
+        )}
+        data-jh-material={matAttr}
+        style={{ maxHeight }}
+      >
+        <div
+          ref={containerRef}
+          className="jh-accordion jh-accordion--scroll jh-scroll-area"
+          role="region"
+          aria-label={label}
+          tabIndex={0}
+          style={{ maxHeight }}
+        >
+          {sections}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
-      ref={scrollable ? containerRef : undefined}
       className={cn(
         'jh-accordion',
-        scrollable && 'jh-accordion--scroll',
         finish === 'liquid' && 'jh-menu--liquid',
         className,
       )}
       data-jh-material={matAttr}
-      role={scrollable ? 'region' : undefined}
-      aria-label={label}
-      tabIndex={scrollable ? 0 : undefined}
-      style={scrollable ? { maxHeight } : undefined}
     >
-      {items.map((item, index) => {
-        const open = openItems.includes(item.value);
-        const triggerId = `${baseId}-trigger-${index}`;
-        const panelId = `${baseId}-panel-${index}`;
-        return (
-          <section className="jh-accordion__item" key={item.value} data-state={open ? 'open' : 'closed'}>
-            <h3 className="jh-accordion__heading">
-              <button
-                ref={el => { triggerRefs.current[index] = el; }}
-                id={triggerId}
-                className="jh-accordion__trigger"
-                type="button"
-                aria-expanded={open}
-                aria-controls={panelId}
-                onClick={() => toggle(item.value)}
-                onKeyDown={event => onTriggerKeyDown(index, event)}
-              >
-                <span>{item.title}</span>
-                <ChevronDown size={15} aria-hidden="true" />
-              </button>
-            </h3>
-            <div
-              id={panelId}
-              className="jh-accordion__panel"
-              role="region"
-              aria-labelledby={triggerId}
-              aria-hidden={!open}
-              inert={!open || undefined}
-            >
-              <div className="jh-accordion__content"><div className="jh-accordion__inner">{item.content}</div></div>
-            </div>
-          </section>
-        );
-      })}
+      {sections}
     </div>
   );
 }

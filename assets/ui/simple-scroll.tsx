@@ -83,10 +83,12 @@ export function SimpleScroll({
                   onClick={() => selectItem(item.id)}
                 >
                   <span className="jh-simple-scroll__copy">
-                    <strong>{item.label}</strong>
+                    <strong>
+                      {item.label}
+                      {item.meta ? <span className="jh-simple-scroll__meta"> {item.meta}</span> : null}
+                    </strong>
                     {item.subtitle && <span>{item.subtitle}</span>}
                   </span>
-                  {item.meta && <span className="jh-simple-scroll__meta">{item.meta}</span>}
                 </button>
               </li>
             );
