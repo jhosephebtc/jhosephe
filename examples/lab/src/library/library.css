@@ -113,15 +113,46 @@
 .library-demo-dial > div > span { display: block; margin-bottom: 4px; font-size: 9px; color: #686868; letter-spacing: .08em; }
 .library-demo-dial output { display: inline-flex; align-items: baseline; width:auto; min-width:4.8ch; min-height:1.15em; font-size: clamp(28px,5vw,34px); font-weight: 350; letter-spacing: -.015em; font-variant-numeric: tabular-nums; white-space:nowrap; }
 .library-demo-dial small { font-size: 11px; color: #686868; margin-left: 8px; letter-spacing: .04em; }
-.library-demo-shape { position: relative; max-width: 100%; flex: none; filter: drop-shadow(0 1px 3px rgb(0 0 0 / .06)) drop-shadow(0 6px 14px rgb(0 0 0 / .045)); }
-[data-jh-material="solid"] .library-demo-shape { filter: drop-shadow(0 1px 2px rgb(0 0 0 / .055)) drop-shadow(0 3px 8px rgb(0 0 0 / .035)); }
+/*
+  Smooth Corners shadow architecture mirrors Glass Button:
+  - Outer lift on the wrapper (follows squircle via drop-shadow ≈ .jh-button)
+  - Face chrome on .jh-glass-shape (= solid .jh-button__face)
+  No SVG outer stroke, no hard outline/border.
+*/
+.library-demo-shape {
+  position: relative;
+  max-width: 100%;
+  flex: none;
+  border: 0 !important;
+  outline: none !important;
+  /* Do not use rectangular box-shadow — it draws a hard box around the squircle */
+  box-shadow: none !important;
+  background: transparent;
+  /* Sampled live .jh-button outer stack, approximated for filter (no spread) */
+  filter:
+    drop-shadow(0 1px 1.5px rgba(0, 0, 0, 0.047))
+    drop-shadow(0 2px 3px rgba(0, 0, 0, 0.035)) !important;
+}
+[data-jh-material="solid"] .library-demo-shape {
+  filter:
+    drop-shadow(0 1px 1.5px rgba(0, 0, 0, 0.047))
+    drop-shadow(0 2px 3px rgba(0, 0, 0, 0.035)) !important;
+}
+[data-jh-material="liquid-glass"] .library-demo-shape,
+[data-jh-material="liquid"] .library-demo-shape {
+  filter:
+    drop-shadow(0 1px 1.5px rgba(0, 0, 0, 0.04))
+    drop-shadow(0 2px 4px rgba(0, 0, 0, 0.03)) !important;
+}
 .library-card-preview .library-demo-shape { flex: none; }
 .library-demo-shape__guides { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
-/* No dark outline around Smooth Corners — face only */
-.library-demo-shape__outer { fill: none; stroke: none; stroke-width: 0; vector-effect: non-scaling-stroke; }
-.library-demo-shape__specular { fill: none; color: #ffffff; stroke-width: 1; vector-effect: non-scaling-stroke; }
-[data-jh-material="liquid-glass"] .library-demo-shape__specular,
-[data-jh-material="liquid"] .library-demo-shape__specular { stroke-width: 1.25; }
+.library-demo-shape__outer,
+.library-demo-shape__specular {
+  fill: none !important;
+  stroke: none !important;
+  stroke-width: 0 !important;
+  opacity: 0 !important;
+}
 .library-demo-shape__inner { fill: none; stroke: rgb(0 0 0 / .11); stroke-width: 1; stroke-dasharray: 2.5 3.5; vector-effect: non-scaling-stroke; }
 .library-demo-shape__axis { stroke: rgb(0 0 0 / .09); stroke-width: 1; vector-effect: non-scaling-stroke; stroke-linecap: round; }
 .library-demo-shape__readout { position: absolute; inset: 0; display: grid; align-content: center; justify-items: center; gap: 2px; color: #5f5f5f; font-size: 10px; font-weight: 500; letter-spacing: .03em; font-variant-numeric: tabular-nums; pointer-events: none; }
@@ -1119,10 +1150,14 @@ body:has(.jh-financial-order[data-jh-material]) .library-preview-stage--financia
   color: rgb(177 177 177);
 }
 :is([data-jh-theme="dark"], .dark).library-demo-shape, :is([data-jh-theme="dark"], .dark) .library-demo-shape {
-  filter: drop-shadow(0 1px 3px rgb(0 0 0 / .6)) drop-shadow(0 6px 14px rgb(0 0 0 / .6));
+  filter:
+    drop-shadow(0 1px 1.5px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 2px 3px rgba(0, 0, 0, 0.4)) !important;
 }
 :is([data-jh-theme="dark"], .dark) [data-jh-material="solid"] .library-demo-shape {
-  filter: drop-shadow(0 1px 2px rgb(0 0 0 / .6)) drop-shadow(0 3px 8px rgb(0 0 0 / .6));
+  filter:
+    drop-shadow(0 1px 1.5px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 2px 3px rgba(0, 0, 0, 0.4)) !important;
 }
 :is([data-jh-theme="dark"], .dark).library-demo-shape__outer, :is([data-jh-theme="dark"], .dark) .library-demo-shape__outer {
   stroke: none;
@@ -1669,10 +1704,14 @@ body:has(.jh-financial-order[data-jh-material]) .library-preview-stage--financia
   color: #969696;
 }
 :is([data-jh-theme="dark"], .dark) .library-demo-shape {
-  filter: drop-shadow(0 2px 5px rgb(0 0 0 / .85)) drop-shadow(0 12px 26px rgb(0 0 0 / .94));
+  filter:
+    drop-shadow(0 1px 1.5px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 2px 3px rgba(0, 0, 0, 0.4)) !important;
 }
 :is([data-jh-theme="dark"], .dark) [data-jh-material="solid"] .library-demo-shape {
-  filter: drop-shadow(0 2px 5px rgb(0 0 0 / .85)) drop-shadow(0 10px 22px rgb(0 0 0 / .92));
+  filter:
+    drop-shadow(0 1px 1.5px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 2px 3px rgba(0, 0, 0, 0.4)) !important;
 }
 :is([data-jh-theme="dark"], .dark) .library-demo-shape__outer {
   stroke: none;

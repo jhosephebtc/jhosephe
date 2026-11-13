@@ -234,7 +234,6 @@ function SmoothCornerStudy({
   compact?: boolean;
 }) {
   const s = smoothing / 100;
-  const specId = useId().replace(/:/g, '');
   const maxW = compact ? 168 : width;
   const maxH = compact ? 118 : height;
   const scale = compact ? Math.min(1, maxW / Math.max(1, width), maxH / Math.max(1, height)) : 1;
@@ -250,17 +249,10 @@ function SmoothCornerStudy({
   const innerPath = smoothPath({ width: innerW, height: innerH, radius: innerRadius, smoothing: s });
   return (
     <div className="library-demo-shape" style={{ width: renderW, height: renderH }}>
+      {/* Clip-path face so inset Glass-button face chrome follows the squircle */}
       <SmoothShape className="jh-glass-shape" radius={effectiveOuterR} smoothing={s} />
       <svg className="library-demo-shape__guides" viewBox={`0 0 ${renderW} ${renderH}`} aria-hidden="true">
-        <defs>
-          <linearGradient id={specId} x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="currentColor" stopOpacity="0.92" />
-            <stop offset="32%" stopColor="currentColor" stopOpacity="0.24" />
-            <stop offset="100%" stopColor="currentColor" stopOpacity="0.02" />
-          </linearGradient>
-        </defs>
-        {outerPath && <path d={outerPath} transform="translate(0 1)" stroke={`url(#${specId})`} className="library-demo-shape__specular" />}
-        {outerPath && <path d={outerPath} className="library-demo-shape__outer" />}
+        {/* No outer/specular strokes — those read as a black outline */}
         {innerPath && <path d={innerPath} transform={`translate(${inset} ${inset})`} className="library-demo-shape__inner" />}
       </svg>
       <span className="library-demo-shape__readout" aria-hidden="true">
