@@ -12,3 +12,6 @@ examples/lab/public/r/
 examples/lab/public/registry.json
 
 .tmp-shots/
+
+.vercel
+.env*
