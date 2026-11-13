@@ -81,9 +81,6 @@ export function MarketPicker({ onSelect, initialSymbol = 'NOVA' }: { onSelect?: 
                   <strong>{item.price}</strong>
                   <small data-positive={!item.change.includes('−')}>{item.change}</small>
                 </span>
-                <span className="jh-market-picker__check" aria-hidden="true">
-                  {selected === item.symbol ? '✓' : ''}
-                </span>
               </button>
             </li>
           ))}

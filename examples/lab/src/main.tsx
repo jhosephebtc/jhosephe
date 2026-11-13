@@ -1,6 +1,9 @@
 import { StrictMode, lazy, Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
 import '../../../assets/ui/theme.css';
+import { initJhosepheTheme } from './theme';
+
+initJhosepheTheme();
 
 const Library = lazy(() => import('./library/Library').then(module => ({ default: module.Library })));
 const Lab = lazy(() => import('./App').then(module => ({ default: module.App })));

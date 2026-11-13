@@ -64,6 +64,17 @@
 .solar-path__legend span:first-child { display: flex; align-items: center; gap: 7px; }
 .solar-path__legend i { display: inline-block; width: 15px; height: 1px; background: #555; }
 .solar-footer { display: flex; justify-content: space-between; align-items: center; gap: 24px; margin: 8px 4.5% 0; padding: 14px 0 24px; border-top: 1px solid var(--jh-divider); box-shadow: inset 0 1px #fff; color: var(--solar-muted); }
+.solar-telemetry { margin: 18px 0 40px; padding-top: 28px; border-top: 1px solid var(--jh-divider); box-shadow: inset 0 1px #fff; }
+.solar-telemetry__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; margin-bottom: 18px; flex-wrap: wrap; }
+.solar-telemetry__head h2 { margin: 6px 0 0; font-size: 19px; font-weight: 450; letter-spacing: -.025em; color: #2b2b2b; }
+.solar-telemetry__head > div:first-child > span { color: var(--solar-muted); }
+.solar-telemetry__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; align-items: start; }
+.solar-telemetry__grid > *,
+.solar-telemetry__log > * { width: 100%; max-width: none; min-width: 0; }
+.solar-telemetry__log { display: grid; gap: 18px; align-items: start; }
+@media (max-width: 900px) {
+  .solar-telemetry__grid { grid-template-columns: 1fr; }
+}
 .solar-footer a { display: inline-flex; align-items: center; gap: 8px; color: #555; font-size: 11px; text-decoration: none; min-height: 44px; }
 .solar-footer p { margin: 0; font-size: 10px; line-height: 1.6; }
 .solar-settings { max-height: calc(100dvh - 32px); overflow-y: auto; }
@@ -71,7 +82,8 @@
 .solar-settings__form { display: grid; gap: 14px; padding-top: 22px; margin-top: 22px; border-top: 1px solid var(--jh-divider); box-shadow: inset 0 1px #fff; }
 .solar-settings__form label { display: grid; gap: 7px; font-size: 12px; color: #444; }
 .solar-settings__form input.jh-input { width: 100%; min-width: 0; min-height: 44px; height: auto; padding: 11px 13px; border: 0; border-radius: 10px; background: #f1f1f1; color: #2e2e2e; box-shadow: inset 0 1px 4px #0000000c,inset 0 -1px 1px #ffffffb3,0 1px #fff; font: 12px/1.5 var(--jh-font); }
-.solar-settings__form input.jh-input:focus-visible { outline: none; background: #f5f5f5; box-shadow: inset 0 0 0 1px #73737340,inset 0 1px 4px #0000000d,inset 0 -1px 1px #ffffffd1,0 1px #fff; }
+.solar-settings__form input.jh-input:focus,
+.solar-settings__form input.jh-input:focus-visible { outline: none; background: #f3f3f3; box-shadow: inset 0 0 0 1px rgb(0 0 0 / .04),inset 0 1px 3px rgb(0 0 0 / .04),inset 0 -1px 1px rgb(255 255 255 / .85),0 1px #fff; }
 .solar-settings__coordinates { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .solar-settings__message { font-size: 12px; line-height: 1.5; color: #555; }
 @media (min-width:1600px) { .solar-instrument { margin-top: 8px; } }
@@ -134,3 +146,188 @@
   .solar-path__area, .solar-path__halo { display: none; }
   .solar-path__plot svg text { fill: CanvasText; }
 }
+
+/* === JH_BLACK_THEME_START === */
+:is([data-jh-theme="dark"], .dark) .solar-page {
+  color: rgb(223 223 223);
+  background: radial-gradient(ellipse at 50% 28%,rgb(10 10 10) 0%,rgb(10 10 10) 55%,rgb(10 10 10) 100%);
+}
+:is([data-jh-theme="dark"], .dark) .solar-page :focus-visible {
+  outline-color: rgb(18 18 18);
+}
+:is([data-jh-theme="dark"], .dark) .solar-topbar {
+  box-shadow: 0 1px rgb(255 255 255 / .007);
+}
+:is([data-jh-theme="dark"], .dark) .solar-brand {
+  color: rgb(223 223 223);
+}
+:is([data-jh-theme="dark"], .dark) .solar-brand__symbol {
+  border: 1px solid rgb(30 30 30);
+}
+:is([data-jh-theme="dark"], .dark) .solar-brand__suffix {
+  color: rgb(176 176 176);
+}
+:is([data-jh-theme="dark"], .dark) .solar-location.jh-button {
+  color: rgb(223 223 223);
+}
+:is([data-jh-theme="dark"], .dark) .solar-live i {
+  background: rgb(18 18 18);
+  box-shadow: 0 0 0 3px rgb(0 0 0 / .6);
+}
+:is([data-jh-theme="dark"], .dark) .instrument {
+  filter: drop-shadow(0 8px 16px rgb(0 0 0 / .6));
+}
+:is([data-jh-theme="dark"], .dark) .instrument__ink {
+  color: rgb(208 208 208);
+}
+:is([data-jh-theme="dark"], .dark) .instrument__main {
+  fill: rgb(223 223 223) !important;
+}
+:is([data-jh-theme="dark"], .dark) .instrument__event {
+  fill: rgb(214 214 214) !important;
+}
+:is([data-jh-theme="dark"], .dark) .instrument__bracket {
+  stroke: rgb(172 172 172);
+}
+:is([data-jh-theme="dark"], .dark) .instrument__pointer {
+  color: rgb(226 226 226);
+}
+:is([data-jh-theme="dark"], .dark) .instrument-pedestal {
+  background: linear-gradient(100deg,rgb(10 10 10) 10%,rgb(10 10 10) 28%,rgb(10 10 10) 32%,rgb(10 10 10) 34%,rgb(10 10 10) 59%,rgb(10 10 10) 77%,rgb(10 10 10) 81%,rgb(10 10 10));
+}
+:is([data-jh-theme="dark"], .dark) .instrument-pedestal::after {
+  background: linear-gradient(rgb(255 255 255 / .02),transparent 32%,rgb(255 255 255 / .011) 85%,rgb(255 255 255 / .005));
+}
+:is([data-jh-theme="dark"], .dark) .instrument-pedestal__flutes i {
+  background: linear-gradient(rgb(10 10 10) 26%,rgb(10 10 10) 29%,rgb(10 10 10) 32%,rgb(10 10 10) 34%,rgb(10 10 10) 90%);
+  box-shadow: 1px 0 rgb(0 0 0 / .6),  -1px 0 rgb(0 0 0 / .9);
+}
+:is([data-jh-theme="dark"], .dark) .solar-console {
+  border: 1px solid rgb(255 255 255 / .008);
+  color: rgb(222 222 222);
+  background: linear-gradient(165deg,rgb(10 10 10 / .9),rgb(10 10 10 / .9));
+  box-shadow: inset 0 1px rgb(255 255 255 / .014), inset 0 -1px rgb(0 0 0 / .386), 0 10px 28px -16px rgb(0 0 0 / .95);
+}
+:is([data-jh-theme="dark"], .dark) .solar-console .solar-label {
+  color: rgb(191 191 191);
+}
+:is([data-jh-theme="dark"], .dark) .solar-console__separator {
+  background: rgb(255 255 255 / .02);
+  box-shadow: 1px 0 rgb(0 0 0 / .9);
+}
+:is([data-jh-theme="dark"], .dark) .solar-location-status button {
+  color: rgb(185 185 185);
+  background: transparent;
+  border: 0;
+}
+:is([data-jh-theme="dark"], .dark) .solar-path {
+  box-shadow: inset 0 1px rgb(255 255 255 / .014);
+}
+:is([data-jh-theme="dark"], .dark) .solar-path__plot svg text {
+  fill: rgb(176 176 176);
+}
+:is([data-jh-theme="dark"], .dark) .solar-path__grid {
+  stroke: rgb(242 242 242 / .051);
+}
+:is([data-jh-theme="dark"], .dark) .solar-path__horizon {
+  stroke: rgb(54 54 54);
+}
+:is([data-jh-theme="dark"], .dark) .solar-path__legend i {
+  background: rgb(202 202 202);
+}
+:is([data-jh-theme="dark"], .dark) .solar-footer {
+  box-shadow: inset 0 1px rgb(255 255 255 / .014);
+}
+:is([data-jh-theme="dark"], .dark) .solar-telemetry {
+  box-shadow: inset 0 1px rgb(255 255 255 / .014);
+}
+:is([data-jh-theme="dark"], .dark) .solar-telemetry__head h2 {
+  color: rgb(224 224 224);
+}
+:is([data-jh-theme="dark"], .dark) .solar-footer a {
+  color: rgb(206 206 206);
+}
+:is([data-jh-theme="dark"], .dark) .solar-settings .solar-label {
+  color: rgb(191 191 191);
+}
+:is([data-jh-theme="dark"], .dark) .solar-settings__form {
+  box-shadow: inset 0 1px rgb(255 255 255 / .014);
+}
+:is([data-jh-theme="dark"], .dark) .solar-settings__form label {
+  color: rgb(187 187 187);
+}
+:is([data-jh-theme="dark"], .dark) .solar-settings__form input.jh-input {
+  border: 0;
+  background: rgb(7 7 7);
+  color: rgb(223 223 223);
+  box-shadow: inset 0 1px 4px rgb(0 0 0 / .28), inset 0 -1px 1px rgb(255 255 255 / .008), 0 1px rgb(255 255 255 / .01);
+}
+:is([data-jh-theme="dark"], .dark) .solar-settings__form input.jh-input:focus, :is([data-jh-theme="dark"], .dark) .solar-settings__form input.jh-input:focus-visible {
+  outline: none;
+  background: rgb(7 7 7);
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / .32), inset 0 1px 3px rgb(0 0 0 / .28), inset 0 -1px 1px rgb(255 255 255 / .01), 0 1px rgb(255 255 255 / .01);
+}
+:is([data-jh-theme="dark"], .dark) .solar-settings__message {
+  color: rgb(206 206 206);
+}
+@media (hover:hover) and (pointer:fine) {
+  :is([data-jh-theme="dark"], .dark) .solar-footer a:hover {
+    color: rgb(228 228 228);
+  }
+}
+@media (max-width:900px) {
+  :is([data-jh-theme="dark"], .dark) .instrument-mobile {
+    border: 1px solid rgb(28 28 28 / .851);
+    outline: 4px solid rgb(27 27 27);
+    background: linear-gradient(135deg,rgb(10 10 10),rgb(10 10 10));
+    color: rgb(213 213 213);
+    box-shadow: inset 0 1px rgb(255 255 255 / .014), 0 12px 24px -14px rgb(0 0 0 / .816);
+  }
+  :is([data-jh-theme="dark"], .dark) .instrument-mobile__value {
+    color: rgb(227 227 227);
+  }
+  :is([data-jh-theme="dark"], .dark) .instrument-mobile dl {
+    box-shadow: inset 0 1px rgb(255 255 255 / .014);
+  }
+  :is([data-jh-theme="dark"], .dark) .instrument-mobile dt {
+    color: rgb(206 206 206);
+  }
+  :is([data-jh-theme="dark"], .dark) .solar-console__event {
+    box-shadow: 0 1px rgb(255 255 255 / .007);
+  }
+}
+@supports not (backdrop-filter: blur(12px)) {
+  :is([data-jh-theme="dark"], .dark) .solar-console {
+    background: rgb(10 10 10);
+  }
+}
+@media (prefers-reduced-transparency: reduce) {
+  :is([data-jh-theme="dark"], .dark) .solar-console {
+    background: rgb(10 10 10);
+    backdrop-filter: none;
+  }
+}
+:is([data-jh-theme="dark"], .dark) .solar-page {
+  --solar-muted: #8a8a8a;
+  color: #ededed;
+  background: radial-gradient(ellipse at 50% 28%, #0c0c0c 0%, #070707 55%, #040404 100%);
+}
+.solar-topbar__actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+:is([data-jh-theme="dark"], .dark) .solar-console {
+  border-color: rgb(255 255 255 / .015);
+  color: #ededed;
+  background: linear-gradient(165deg, rgb(12 12 12 / .9), rgb(8 8 8 / .84));
+  box-shadow: inset 0 1px rgb(255 255 255 / .018), 0 18px 42px -14px rgb(0 0 0 / .95);
+}
+:is([data-jh-theme="dark"], .dark) .instrument-pedestal {
+  background: linear-gradient(100deg, #070707 10%, #0e0e0e 28%, #0a0a0a 32%, #131313 34%, #0c0c0c 59%, #060606 77%, #101010 81%, #080808);
+}
+:is([data-jh-theme="dark"], .dark) .instrument-pedestal__flutes i {
+  background: linear-gradient(#121212 26%, #242424 29%, #272727 32%, #0e0e0e 34%, #141414 90%);
+  box-shadow: 1px 0 rgb(0 0 0 / .85), -1px 0 rgb(255 255 255 / .015);
+}
+/* === JH_BLACK_THEME_END === */

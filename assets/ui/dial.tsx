@@ -2,11 +2,13 @@ import { useRef, useState, type CSSProperties, type PointerEvent } from 'react';
 
 /** A range input with absolute pointer-angle mapping and native keyboard semantics. */
 export function Dial({ value, onChange, label, min = 0, max = 100, step = 1, disabled = false,
+  ticks = 25, detent = false,
   accentColor = 'oklch(100% 0 0)', accentColorEnd = 'oklch(92% 0.035 250)', accentGradient = false,
   glowIntensity = 68, glowBlur = 5,
 }: {
   value: number; onChange: (value: number) => void; label: string;
   min?: number; max?: number; step?: number; disabled?: boolean;
+  ticks?: number; detent?: boolean;
   accentColor?: string; accentColorEnd?: string; accentGradient?: boolean;
   glowIntensity?: number; glowBlur?: number;
 }) {
@@ -14,7 +16,7 @@ export function Dial({ value, onChange, label, min = 0, max = 100, step = 1, dis
   const drag = useRef<number | null>(null);
   const fraction = max > min ? Math.max(0, Math.min(1, (value - min) / (max - min))) : 0;
   const intensity = Math.max(0, Math.min(100, glowIntensity));
-  const tickCount = 25;
+  const tickCount = Math.max(2, Math.round(ticks));
   const activeTicks = Math.round(fraction * (tickCount - 1));
   const style = {
     '--dial-turn': `${-135 + fraction * 270}deg`,
@@ -55,15 +57,25 @@ export function Dial({ value, onChange, label, min = 0, max = 100, step = 1, dis
   return <span className="jh-dial" style={style} data-dragging={dragging} data-disabled={disabled || undefined} data-accent-gradient={accentGradient || undefined}>
     <svg className="jh-dial__scale" viewBox="0 0 140 140" aria-hidden="true">
       <g transform="translate(70 70)">
-        {Array.from({ length: tickCount }, (_, index) => (
-          <path
-            key={index}
-            className={index <= activeTicks ? 'jh-dial__tick is-active' : 'jh-dial__tick'}
-            d={`M0 -${index % 4 === 0 ? 60 : 58}v-${index % 4 === 0 ? 5 : 3}`}
-            transform={`rotate(${-135 + index * 11.25})`}
-            style={{ '--jh-bar-cell-accent': cellAccent(index) } as CSSProperties}
-          />
-        ))}
+        {Array.from({ length: tickCount }, (_, index) => {
+          const angle = -135 + (tickCount > 1 ? (index / (tickCount - 1)) * 270 : 0);
+          const isActive = detent ? index === activeTicks : index <= activeTicks;
+          const isLead = index === activeTicks;
+          const d = detent
+            ? 'M0 -59v-5.5'
+            : `M0 -${index % 4 === 0 ? 60 : 58}v-${index % 4 === 0 ? 5 : 3}`;
+          return (
+            <path
+              key={index}
+              className={isActive ? 'jh-dial__tick is-active' : 'jh-dial__tick'}
+              data-lead={isLead ? 'true' : undefined}
+              d={d}
+              strokeLinecap={detent ? 'round' : undefined}
+              transform={`rotate(${angle})`}
+              style={{ '--jh-bar-cell-accent': cellAccent(index) } as CSSProperties}
+            />
+          );
+        })}
       </g>
     </svg>
     <span className="jh-dial__bed" aria-hidden="true"><span className="jh-dial__knob"><span className="jh-dial__top"><span className="jh-dial__indicator"><span className="jh-dial__mark" /></span></span></span></span>

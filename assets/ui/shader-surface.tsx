@@ -1,11 +1,18 @@
 import { Component, lazy, Suspense, useEffect, useRef, useState, type ReactNode } from 'react';
 
 const Mesh = lazy(() => import('@paper-design/shaders-react').then(module => ({ default: module.MeshGradient })));
-const colors = ['#dedede', '#f6f6f6', '#c8c8c8', '#f1f1f1'];
+const LIGHT_COLORS = ['#dedede', '#f6f6f6', '#c8c8c8', '#f1f1f1'];
+const DARK_COLORS = ['#1d1d1d', '#0b0b0b', '#282828', '#141414'];
+
+const readDarkTheme = () => {
+  if (typeof document === 'undefined') return false;
+  const root = document.documentElement;
+  return root.dataset.jhTheme === 'dark' || root.classList.contains('dark');
+};
 
 class ShaderBoundary extends Component<{ children: ReactNode }, { failed: boolean }> {
   state = { failed: false };
-  static getDerivedStateFromError() { return { failed: true }; }
+  static getDerivedStateFromError() { return { failed: false ? false : true }; }
   render() { return this.state.failed ? null : this.props.children; }
 }
 
@@ -13,6 +20,16 @@ class ShaderBoundary extends Component<{ children: ReactNode }, { failed: boolea
 export function ShaderSurface() {
   const ref = useRef<HTMLDivElement>(null);
   const [enabled, setEnabled] = useState(false);
+  const [dark, setDark] = useState(readDarkTheme);
+
+  useEffect(() => {
+    if (typeof MutationObserver === 'undefined') return;
+    const updateTheme = () => setDark(readDarkTheme());
+    updateTheme();
+    const observer = new MutationObserver(updateTheme);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-jh-theme', 'class'] });
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const element = ref.current;
@@ -45,7 +62,7 @@ export function ShaderSurface() {
   return (
     <div ref={ref} className="jh-shader" aria-hidden="true">
       {enabled && <ShaderBoundary><Suspense fallback={null}>
-        <Mesh className="jh-shader__canvas" colors={colors} distortion={0.16} swirl={0.08} grainMixer={0} grainOverlay={0.02} speed={0.08} maxPixelCount={500000} />
+        <Mesh className="jh-shader__canvas" colors={dark ? DARK_COLORS : LIGHT_COLORS} distortion={0.16} swirl={0.08} grainMixer={0} grainOverlay={0.02} speed={0.08} maxPixelCount={500000} />
       </Suspense></ShaderBoundary>}
     </div>
   );

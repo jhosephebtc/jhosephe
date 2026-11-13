@@ -5,7 +5,7 @@ import { Calendar } from './calendar';
 import { Button } from './button';
 
 export function DatePicker({ value, onChange, label = 'Choose a date', disabled = false, name, material = 'solid' }: {
-  value?: Date; onChange: (value: Date | undefined) => void; label?: string; disabled?: boolean; name?: string; material?: 'solid' | 'liquid-glass';
+  value?: Date; onChange: (value: Date | undefined) => void; label?: string; disabled?: boolean; name?: string; material?: 'solid' | 'liquid-glass' | 'liquid';
 }) {
   const id = useId();
   const [open, setOpen] = useState(false);

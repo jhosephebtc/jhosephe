@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type ChangeEvent } from 'react';
+import { Button } from './button';
 import { ProgressBar } from './progress-bar';
 
 export function FileTransfer({ label = 'File transfer', onFilesSelected }: {
@@ -8,6 +9,7 @@ export function FileTransfer({ label = 'File transfer', onFilesSelected }: {
   const [progress, setProgress] = useState<number | undefined>(0);
   const [status, setStatus] = useState('Choose a file to prepare it in this browser.');
   const reader = useRef<FileReader | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   useEffect(() => () => reader.current?.abort(), []);
 
   const prepareFile = (event: ChangeEvent<HTMLInputElement>) => {
@@ -42,8 +44,9 @@ export function FileTransfer({ label = 'File transfer', onFilesSelected }: {
 
   return <section className="jh-file-transfer" aria-label={label}>
     <div className="jh-file-transfer__actions">
-      <label className="jh-file-transfer__upload">Upload files<input type="file" onChange={prepareFile} /></label>
-      <button type="button" className="jh-file-transfer__download" onClick={downloadSample}>Download sample</button>
+      <input ref={fileInputRef} type="file" className="jh-visually-hidden" tabIndex={-1} aria-hidden="true" onChange={prepareFile} />
+      <Button type="button" size="small" variant="secondary" onClick={() => fileInputRef.current?.click()}>Upload files</Button>
+      <Button type="button" size="small" variant="secondary" onClick={downloadSample}>Download sample</Button>
     </div>
     {fileName && <p className="jh-file-transfer__filename" title={fileName}>{fileName}</p>}
     <div className="jh-file-transfer__progress"><ProgressBar label="Local file preparation" value={progress} /><output>{progress === undefined ? '—' : `${Math.round(progress)}%`}</output></div>

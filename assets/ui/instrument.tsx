@@ -61,6 +61,7 @@ export function InstrumentBars({ value, orientation = 'horizontal',
         <path className="jh-instrument__baseline" d="M6 0 V330" />
         {bars.map(index => {
           const active = (index + 1) / bars.length <= normalized / 100;
+          const isLead = active && (index + 2) / bars.length > normalized / 100;
           const width = index % 4 === 0 ? 27 : 16;
           return (
             <rect
@@ -71,6 +72,7 @@ export function InstrumentBars({ value, orientation = 'horizontal',
               height="3"
               rx="1.5"
               className={active ? 'jh-instrument__bar is-active' : 'jh-instrument__bar'}
+              data-lead={isLead ? 'true' : undefined}
               style={{ '--jh-bar-cell-accent': cellAccent(index, bars.length, accentColor, accentColorEnd, accentGradient) } as CSSProperties}
             />
           );
@@ -94,6 +96,7 @@ export function InstrumentBars({ value, orientation = 'horizontal',
       <path className="jh-instrument__baseline" d="M0 64 H330" />
       {bars.map(index => {
         const active = (index + 1) / bars.length <= normalized / 100;
+        const isLead = active && (index + 2) / bars.length > normalized / 100;
         const height = index % 4 === 0 ? 27 : 16;
         return (
           <rect
@@ -104,6 +107,7 @@ export function InstrumentBars({ value, orientation = 'horizontal',
             height={height}
             rx="1.5"
             className={active ? 'jh-instrument__bar is-active' : 'jh-instrument__bar'}
+            data-lead={isLead ? 'true' : undefined}
             style={{ '--jh-bar-cell-accent': cellAccent(index, bars.length, accentColor, accentColorEnd, accentGradient) } as CSSProperties}
           />
         );

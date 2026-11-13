@@ -1,19 +1,21 @@
-import { useEffect, useId, useRef, useState, type KeyboardEvent as ReactKeyboardEvent, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react';
-import { ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, Check, ChevronDown, ChevronRight, Code2, Copy, Grid2X2, Menu, Monitor, RotateCcw, Search, Smartphone, Sun, X } from 'lucide-react';
+import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent as ReactKeyboardEvent, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react';
+import { ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, Check, ChevronDown, ChevronRight, Code2, Copy, CornerDownLeft, Grid2X2, Menu, Monitor, RotateCcw, Search, Smartphone, Sun, X } from 'lucide-react';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { Button } from '../../../../assets/ui/button';
 import { Dial } from '../../../../assets/ui/dial';
 import { Slider, Switch } from '../../../../assets/ui/controls';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '../../../../assets/ui/dialog';
+import { Input } from '../../../../assets/ui/input';
 import { InstrumentBars } from '../../../../assets/ui/instrument';
 import { ShaderSurface } from '../../../../assets/ui/shader-surface';
-import { SmoothShape } from '../../../../assets/ui/smooth-shape';
+import { SmoothShape, smoothPath } from '../../../../assets/ui/smooth-shape';
 import { categories, components, defaults, settingsFor, usage, type ComponentId, type ComponentInfo, type Settings } from './data';
 import { ExtraPreview } from './ExtraPreview';
 import { extraComponents } from './extra-data';
 import { SearchInput } from '../../../../assets/ui/search-input';
 import { OklchPalette } from '../../../../assets/ui/oklch-palette';
 import { useLibraryNavigation } from './use-navigation';
+import { ThemeToggle } from '../theme';
 import './library.css';
 
 const iconProps = { size: 16, strokeWidth: 1.6, 'aria-hidden': true } as const;
@@ -27,6 +29,10 @@ function Mark() {
 function SearchDialog() {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
+  const [activeIndex, setActiveIndex] = useState(0);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const listboxId = useId();
+
   useEffect(() => {
     const shortcut = (event: KeyboardEvent) => {
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') { event.preventDefault(); setOpen(old => !old); }
@@ -34,17 +40,117 @@ function SearchDialog() {
     document.addEventListener('keydown', shortcut);
     return () => document.removeEventListener('keydown', shortcut);
   }, []);
-  const results = components.filter(item => matches(item, query));
-  return <Dialog open={open} onOpenChange={setOpen}>
-    <DialogTrigger asChild><button className="library-search-trigger"><Search {...iconProps} /><span>Search components</span><kbd>⌘ K</kbd></button></DialogTrigger>
-    <DialogContent className="library-search-dialog">
-      <DialogTitle>Find a detail.</DialogTitle>
-      <DialogDescription>Search by name, material, or category.</DialogDescription>
-      <label className="library-search"><Search {...iconProps} /><span className="library-sr">Search the library</span><input value={query} onChange={event => setQuery(event.target.value)} placeholder="Buttons, glass, controls…" /></label>
-      <ul className="library-search-results">{results.map(item => <li key={item.id}><a href={`/components/${item.id}`} onClick={() => setOpen(false)}><span>{item.name}<small>{item.category}</small></span><ArrowUpRight {...iconProps} /></a></li>)}</ul>
-      {!results.length && <p role="status">No components found. Try another term.</p>}
-    </DialogContent>
-  </Dialog>;
+
+  const results = useMemo(() => components.filter(item => matches(item, query)), [query]);
+  const grouped = useMemo(() => {
+    const map = new Map<string, Array<{ item: ComponentInfo; flatIndex: number }>>();
+    results.forEach((item, flatIndex) => {
+      const bucket = map.get(item.category) ?? [];
+      bucket.push({ item, flatIndex });
+      map.set(item.category, bucket);
+    });
+    return Array.from(map.entries());
+  }, [results]);
+
+  const safeIndex = results.length ? Math.min(activeIndex, results.length - 1) : -1;
+
+  useEffect(() => {
+    setActiveIndex(0);
+  }, [query, open]);
+
+  const navigateTo = (id: string) => {
+    setOpen(false);
+    setQuery('');
+    window.history.pushState({}, '', `/components/${id}`);
+    window.dispatchEvent(new PopStateEvent('popstate'));
+  };
+
+  const onInputKeyDown = (event: ReactKeyboardEvent<HTMLInputElement>) => {
+    if (!results.length) return;
+    if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      setActiveIndex(index => (index + 1) % results.length);
+    } else if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      setActiveIndex(index => (index - 1 + results.length) % results.length);
+    } else if (event.key === 'Enter' && safeIndex >= 0) {
+      event.preventDefault();
+      navigateTo(results[safeIndex].id);
+    }
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={next => { setOpen(next); if (!next) setQuery(''); }}>
+      <DialogTrigger asChild><button className="library-search-trigger" aria-label="Search components"><Search {...iconProps} /><span>Search components</span><kbd>⌘ K</kbd></button></DialogTrigger>
+      <DialogContent material="solid" className="library-dialog-shell jh-dialog jh-dialog--rich jh-command-dialog library-search-dialog" aria-label="Search components" onOpenAutoFocus={event => { event.preventDefault(); inputRef.current?.focus(); }}>
+        <div className="jh-financial-order">
+          <div className="jh-financial-order__header">
+            <div>
+              <span className="jh-financial-order__eyebrow">Quick search</span>
+              <DialogTitle className="jh-dialog-title">Find a detail.</DialogTitle>
+              <DialogDescription className="library-sr">Search by name, material, or category.</DialogDescription>
+            </div>
+            <DialogClose className="jh-financial-order__close" aria-label="Close search"><X size={15} strokeWidth={1.75} aria-hidden="true" /></DialogClose>
+          </div>
+
+          <div className="jh-financial-order__body jh-command-dialog__body">
+            <div className="jh-command-dialog__search">
+              <Search size={14} strokeWidth={1.75} aria-hidden="true" className="jh-command-dialog__search-icon" />
+              <label className="library-sr" htmlFor="library-search-field">Search components</label>
+              <Input
+                ref={inputRef}
+                id="library-search-field"
+                value={query}
+                onChange={event => setQuery(event.target.value)}
+                onKeyDown={onInputKeyDown}
+                placeholder="Buttons, glass, controls…"
+                aria-controls={listboxId}
+                aria-activedescendant={safeIndex >= 0 ? `${listboxId}-${results[safeIndex].id}` : undefined}
+              />
+            </div>
+
+            <div id={listboxId} role="listbox" aria-label="Components" className="jh-command-dialog__results">
+              {grouped.length === 0 ? (
+                <div className="jh-command-dialog__empty" role="status">No matching component.</div>
+              ) : (
+                grouped.map(([categoryName, entries]) => (
+                  <div key={categoryName} className="jh-command-dialog__group">
+                    <div className="jh-command-dialog__group-label">{categoryName}</div>
+                    {entries.map(({ item, flatIndex }) => {
+                      const isActive = flatIndex === safeIndex;
+                      return (
+                        <a
+                          key={item.id}
+                          id={`${listboxId}-${item.id}`}
+                          href={`/components/${item.id}`}
+                          role="option"
+                          aria-selected={isActive}
+                          className={`jh-command-dialog__item${isActive ? ' is-active' : ''}`}
+                          onMouseEnter={() => setActiveIndex(flatIndex)}
+                          onClick={() => { setOpen(false); setQuery(''); }}
+                        >
+                          <span className="jh-command-dialog__item-copy">
+                            <span className="jh-command-dialog__item-label">{item.name}</span>
+                            <span className="jh-command-dialog__item-hint">{item.tag}</span>
+                          </span>
+                          <CornerDownLeft size={12} strokeWidth={1.75} aria-hidden="true" />
+                        </a>
+                      );
+                    })}
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+
+          <div className="jh-financial-order__footer jh-command-dialog__footer">
+            <span>{results.length} {results.length === 1 ? 'component' : 'components'}</span>
+            <span>↑↓ navigate · ↵ open · Esc close</span>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
 }
 
 function Header({ path }: { path: string }) {
@@ -54,7 +160,7 @@ function Header({ path }: { path: string }) {
     <div className="library-header-inner">
       <a className="library-brand" href="/" aria-label="jhosephe, home"><Mark /><span>jhosephe<span className="library-brand-dot">.</span></span></a>
       <nav className="library-header-nav" aria-label="Main navigation"><a aria-current={path.startsWith('/components') ? 'page' : undefined} href="/components">Components</a><a href="/lab">Laboratory</a><a href="/solar">Solar <ArrowUpRight size={12} aria-hidden="true" /></a></nav>
-      <div className="library-header-actions"><SearchDialog /><button className="library-menu" aria-label={menu ? 'Close navigation' : 'Open navigation'} aria-expanded={menu} aria-controls="library-mobile-nav" onClick={() => setMenu(!menu)}>{menu ? <X {...iconProps} /> : <Menu {...iconProps} />}</button><span className="library-version">v0.1</span></div>
+      <div className="library-header-actions"><SearchDialog /><ThemeToggle /><button className="library-menu" aria-label={menu ? 'Close navigation' : 'Open navigation'} aria-expanded={menu} aria-controls="library-mobile-nav" onClick={() => setMenu(!menu)}>{menu ? <X {...iconProps} /> : <Menu {...iconProps} />}</button><span className="library-version">v0.1</span></div>
     </div>
     {menu && <nav id="library-mobile-nav" className="library-mobile-nav" aria-label="Mobile navigation"><a href="/components">All components</a><a href="/installation">Installation</a><a href="/lab">Laboratory</a><a href="/solar">Solar panel</a>{components.map(item => <a key={item.id} href={`/components/${item.id}`}>{item.name}</a>)}</nav>}
   </header>;
@@ -97,16 +203,53 @@ function InstrumentControl({ value, onChange, labelId, orientation = 'horizontal
   </div>;
 }
 
+function SmoothCornerStudy({ radius, smoothing }: { radius: number; smoothing: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [size, setSize] = useState(164);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const measure = () => setSize(el.offsetWidth || 164);
+    measure();
+    if (typeof ResizeObserver === 'undefined') return;
+    const observer = new ResizeObserver(measure);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+  const s = smoothing / 100;
+  const outerPath = smoothPath({ width: size, height: size, radius, smoothing: s });
+  const inset = Math.round(size * 0.22);
+  const innerSize = Math.max(24, size - inset * 2);
+  const innerRadius = Math.max(4, radius - inset * 0.45);
+  const innerPath = smoothPath({ width: innerSize, height: innerSize, radius: innerRadius, smoothing: s });
+  const r = Math.min(Math.max(4, radius), size / 2);
+  return (
+    <div ref={ref} className="library-demo-shape">
+      <SmoothShape className="jh-glass-shape" radius={radius} smoothing={s} />
+      <svg className="library-demo-shape__guides" viewBox={`0 0 ${size} ${size}`} aria-hidden="true">
+        {outerPath && <path d={outerPath} className="library-demo-shape__specular" />}
+        {outerPath && <path d={outerPath} className="library-demo-shape__outer" />}
+        {innerPath && <path d={innerPath} transform={`translate(${inset} ${inset})`} className="library-demo-shape__inner" />}
+        <line x1={r} y1={0} x2={r} y2={inset} className="library-demo-shape__axis" />
+        <line x1={0} y1={r} x2={inset} y2={r} className="library-demo-shape__axis" />
+        <line x1={size - r} y1={size - inset} x2={size - r} y2={size} className="library-demo-shape__axis" />
+        <line x1={size - inset} y1={size - r} x2={size} y2={size - r} className="library-demo-shape__axis" />
+      </svg>
+      <span className="library-demo-shape__readout" aria-hidden="true">{Math.round(smoothing)}%</span>
+    </div>
+  );
+}
+
 function Preview({ id, settings, onChange, compact = false }: { id: ComponentId; settings: Settings; onChange: (value: Partial<Settings>) => void; compact?: boolean }) {
   const labelId = useId();
   if (extraComponents.some(item => item.id === id)) return <ExtraPreview id={id} settings={settings} onChange={onChange} compact={compact} />;
-  if (id === 'button') return <div className="library-demo-button"><Button variant={settings.variant} radius={settings.radius} smoothing={settings.smoothing / 100} liquid={settings.liquid} disabled={settings.disabled}>{settings.label || 'Your button'}</Button></div>;
+  if (id === 'button') return <div className="library-demo-button"><Button variant={settings.variant} radius={settings.radius} smoothing={settings.smoothing / 100} liquid={settings.liquid} loading={settings.loading} disabled={settings.disabled}>{settings.label || 'Your button'}</Button></div>;
   if (id === 'slider') return <div className="library-demo-slider"><div className="library-demo-label"><span id={labelId}>Intensity</span><output>{settings.value}%</output></div><Slider labelId={labelId} value={[settings.value]} onValueChange={values => onChange({ value: values[0] })} thumbThickness={settings.thumbThickness} thumbHeight={settings.thumbHeight} thumbRadius={settings.thumbRadius} accentColor={settings.accentColor} accentColorEnd={settings.accentColorEnd} accentGradient={settings.accentGradient} glowIntensity={settings.glowIntensity} glowBlur={settings.glowBlur} max={100} step={1} disabled={settings.disabled} /><div className="library-demo-endpoints" aria-hidden="true"><span>0</span><span>100</span></div></div>;
   if (id === 'switch') return <div className="library-demo-switch"><div><label htmlFor={labelId}>Ambient light</label><span>{settings.checked ? 'The light is on' : 'The light is off'}</span></div><Switch id={labelId} checked={settings.checked} onCheckedChange={checked => onChange({ checked })} disabled={settings.disabled} /></div>;
   if (id === 'dial') return <div className="library-demo-dial"><Dial label="Adjust intensity" value={settings.value} onChange={value => onChange({ value })} accentColor={settings.accentColor} accentColorEnd={settings.accentColorEnd} accentGradient={settings.accentGradient} glowIntensity={settings.glowIntensity} glowBlur={settings.glowBlur} /><div><span>Intensity</span><output>{settings.value}<small>%</small></output></div></div>;
   if (id === 'dialog') return <Dialog><DialogTrigger asChild><Button size={compact ? 'small' : 'default'}>Review details <ArrowUpRight size={14} aria-hidden="true" /></Button></DialogTrigger><DialogContent material={settings.material === 'liquid' ? 'liquid-glass' : settings.material} className={`library-example-dialog jh-dialog--rich${settings.material === 'liquid' ? ' jh-surface--liquid' : ''}`}><span className="library-eyebrow">Workspace settings</span><DialogTitle>{settings.title || 'Your title'}</DialogTitle><DialogDescription>{settings.description}</DialogDescription><div className="jh-dialog-summary"><div className="jh-dialog-summary__row"><span>Workspace</span><strong>Northstar Studio</strong></div><div className="jh-dialog-summary__row"><span>Plan</span><strong>Professional</strong></div><div className="jh-dialog-summary__row"><span>Renewal</span><strong>December 1, 2026</strong></div></div><div className="jh-dialog-actions"><DialogClose asChild><Button variant="ghost">Cancel</Button></DialogClose><DialogClose asChild><Button variant="primary">Save changes <Check {...iconProps} /></Button></DialogClose></div></DialogContent></Dialog>;
-  if (id === 'smooth-shape') return <div className="library-demo-shape"><SmoothShape className="jh-glass-shape" radius={settings.radius} smoothing={settings.smoothing / 100} /><div className="library-demo-shape-inner" aria-hidden="true"><span /><span /></div></div>;
-  if (id === 'shader-surface') return <div className="library-demo-shader"><ShaderSurface /><div style={{ background: `rgb(255 255 255 / ${settings.opacity / 100})`, backdropFilter: `blur(${settings.blur}px)` }} className="library-demo-glass">Light in layers<span aria-hidden="true">↗</span></div></div>;
+  if (id === 'smooth-shape') return <SmoothCornerStudy radius={settings.radius} smoothing={settings.smoothing} />;
+  if (id === 'shader-surface') return <div className="library-demo-shader"><ShaderSurface /><div style={{ ['--jh-glass-alpha' as string]: String(settings.opacity / 100), backdropFilter: `blur(${settings.blur}px)` }} className="library-demo-glass">Light in layers<span aria-hidden="true">↗</span></div></div>;
   return <div className={`library-demo-instrument${settings.instrumentOrientation === 'vertical' ? ' is-vertical' : ''}`}><div className="library-demo-label"><span id={labelId}>Intensity</span><span className="library-live-dot">Live</span></div><output>{settings.value}<small>%</small></output><InstrumentControl value={settings.value} onChange={value => onChange({ value })} labelId={labelId} orientation={settings.instrumentOrientation} accentColor={settings.accentColor} accentColorEnd={settings.accentColorEnd} accentGradient={settings.accentGradient} glowIntensity={settings.glowIntensity} glowBlur={settings.glowBlur} /></div>;
 }
 
@@ -123,7 +266,7 @@ function Landing() {
   return <main tabIndex={-1} id="library-main" className="library-landing">
     <section className="library-hero"><div className="library-eyebrow"><span className="library-lens-dot" /> A library for the senses</div><h1>Small details.<br /><span>Lasting impressions.</span></h1><p>Components made of glass, light, and motion.<br />Customize, copy, and shape your next interface.</p><div className="library-hero-actions"><LinkButton href="/components">Explore components <ArrowRight {...iconProps} /></LinkButton><a className="library-text-link" href="/installation">How to install <ArrowUpRight {...iconProps} /></a></div><div className="library-tech-note"><span>React + TypeScript</span><i /><span>CSS you can make your own</span><i /><span>shadcn compatible</span></div></section>
     <section className="library-featured" aria-label="Interactive components"><div className="library-section-head"><div><span className="library-eyebrow">Explore the collection</span><h2>Every detail, ready to use.</h2></div><a className="library-text-link" href="/components">Browse all {components.length} components <ArrowRight {...iconProps} /></a></div><div className="library-card-grid">{components.map((item, index) => <Tile key={item.id} item={item} index={index} />)}</div></section>
-    <section className="library-solar-feature"><div><span className="library-eyebrow">The language in context</span><h2>One interface.<br />The rhythm of a day.</h2><p>A solar instrument that follows the light at your location. Built with the same attention to detail.</p><LinkButton href="/solar">Open solar panel <ArrowUpRight {...iconProps} /></LinkButton></div><a href="/solar" className="library-solar-art"><svg viewBox="0 0 600 250" fill="none" aria-hidden="true"><path className="library-solar-art-horizon" d="M35 190H565" /><path className="library-solar-art-arc" d="M35 190Q300 -110 565 190" /><path className="library-solar-art-ray" d="M300 48v142" strokeDasharray="2 7" /><circle cx="300" cy="40" r="16" className="library-solar-art-sun" /><circle cx="300" cy="40" r="5" fill="#fff" />{Array.from({ length: 47 }, (_, i) => <path key={i} d={`M${47 + i * 11} 206v${i % 4 === 0 ? 14 : 7}`} stroke="#a5a5a5" strokeWidth=".7" />)}<text x="35" y="175">East</text><text x="530" y="175">West</text></svg><span>Solar study / 002</span></a></section>
+    <section className="library-solar-feature"><div><span className="library-eyebrow">The language in context</span><h2>One interface.<br />The rhythm of a day.</h2><p>A solar instrument that follows the light at your location. Built with the same attention to detail.</p><LinkButton href="/solar">Open solar panel <ArrowUpRight {...iconProps} /></LinkButton></div><a href="/solar" className="library-solar-art"><svg viewBox="0 0 600 250" fill="none" aria-hidden="true"><path className="library-solar-art-horizon" d="M35 190H565" /><path className="library-solar-art-arc" d="M35 190Q300 -110 565 190" /><path className="library-solar-art-ray" d="M300 48v142" strokeDasharray="2 7" /><circle cx="300" cy="40" r="16" className="library-solar-art-sun" /><circle cx="300" cy="40" r="5" className="library-solar-art-core" fill="currentColor" />{Array.from({ length: 47 }, (_, i) => <path key={i} className="library-solar-art-ticks" d={`M${47 + i * 11} 206v${i % 4 === 0 ? 14 : 7}`} strokeWidth=".7" />)}<text x="35" y="175">East</text><text x="530" y="175">West</text></svg><span>Solar study / 002</span></a></section>
     <section className="library-principles"><div><span>01</span><h3>Choose a detail.</h3><p>Explore controls and surfaces in a consistent visual language.</p></div><div><span>02</span><h3>Find your balance.</h3><p>Adjust shape, intensity, and behavior. Watch every detail respond.</p></div><div><span>03</span><h3>Make it part of your project.</h3><p>Install with the CLI or copy the code. The implementation is yours.</p></div></section>
   </main>;
 }
@@ -156,18 +299,18 @@ function SelectField({ label, value, options, onChange }: { label: string; value
     <DropdownMenu.Trigger className="library-select-trigger" aria-label={label}><span>{selected.label}</span><ChevronDown size={14} strokeWidth={1.6} aria-hidden="true" /></DropdownMenu.Trigger>
     <DropdownMenu.Portal><DropdownMenu.Content className="library-select-menu" align="start" sideOffset={5}>
       <DropdownMenu.Label className="library-select-label">{label}</DropdownMenu.Label>
-      <DropdownMenu.RadioGroup value={value} onValueChange={onChange}>{options.map(option => <DropdownMenu.RadioItem key={option.value} className="library-select-item" value={option.value}><span>{option.label}</span>{value === option.value && <Check size={13} strokeWidth={1.6} aria-hidden="true" />}</DropdownMenu.RadioItem>)}</DropdownMenu.RadioGroup>
+      <DropdownMenu.RadioGroup value={value} onValueChange={onChange}>{options.map(option => <DropdownMenu.RadioItem key={option.value} className="library-select-item" value={option.value}><span>{option.label}</span></DropdownMenu.RadioItem>)}</DropdownMenu.RadioGroup>
     </DropdownMenu.Content></DropdownMenu.Portal>
   </DropdownMenu.Root></label>;
 }
 
 function Customizer({ id, settings: s, change, reset }: { id: ComponentId; settings: Settings; change: (value: Partial<Settings>) => void; reset: () => void }) {
-  return <section className="library-customizer" aria-labelledby="customizer-title"><div className="library-customizer-head"><h2 id="customizer-title">Make it your own.</h2><button aria-label="Reset settings" title="Reset settings" onClick={reset}><RotateCcw {...iconProps} /></button></div><p>The code follows every adjustment.</p>
+  return <section className="library-customizer" aria-labelledby="customizer-title"><div className="library-customizer-head"><h2 id="customizer-title">Make it your own.</h2><button aria-label="Reset settings" onClick={reset}><RotateCcw {...iconProps} /></button></div><p>The code follows every adjustment.</p>
     <SelectField label="Appearance" value={s.material} options={[{ value: 'solid', label: 'Solid' }, { value: 'liquid-glass', label: 'Glass' }, { value: 'liquid', label: 'Liquid' }]} onChange={material => change({ material: material as Settings['material'] })} />
-    {id === 'button' && <><label className="library-text-field">Label<input value={s.label} maxLength={60} onChange={event => change({ label: event.target.value })} /></label><SelectField label="Variant" value={s.variant} options={[{ value: 'primary', label: 'Primary' }, { value: 'secondary', label: 'Secondary' }, { value: 'ghost', label: 'Ghost' }]} onChange={variant => change({ variant: variant as Settings['variant'] })} /><RangeField label="Corner radius" value={s.radius} max={32} unit=" px" onChange={radius => change({ radius })} /><RangeField label="Corner smoothness" value={s.smoothing} unit="%" onChange={smoothing => change({ smoothing })} /><ToggleField label="Liquid feedback" checked={s.liquid} onChange={liquid => change({ liquid })} /></>}
+    {id === 'button' && <><label className="library-text-field">Label<input value={s.label} maxLength={60} onChange={event => change({ label: event.target.value })} /></label><SelectField label="Variant" value={s.variant} options={[{ value: 'primary', label: 'Primary' }, { value: 'secondary', label: 'Secondary' }, { value: 'ghost', label: 'Ghost' }, { value: 'working', label: 'Working' }]} onChange={variant => change({ variant: variant as Settings['variant'] })} /><RangeField label="Corner radius" value={s.radius} max={32} unit=" px" onChange={radius => change({ radius })} /><RangeField label="Corner smoothness" value={s.smoothing} unit="%" onChange={smoothing => change({ smoothing })} /><ToggleField label="Liquid feedback" checked={s.liquid} onChange={liquid => change({ liquid })} /><ToggleField label="Working / loading" checked={s.loading} onChange={loading => change({ loading })} /></>}
     {['slider', 'dial', 'instrument', 'bar-slider'].includes(id) && <RangeField label="Value" value={s.value} unit="%" onChange={value => change({ value })} />}
     {id === 'instrument' && <SelectField label="Orientation" value={s.instrumentOrientation} options={[{ value: 'horizontal', label: 'Horizontal' }, { value: 'vertical', label: 'Vertical' }]} onChange={instrumentOrientation => change({ instrumentOrientation: instrumentOrientation as Settings['instrumentOrientation'] })} />}
-    {['slider', 'bar-slider', 'dial', 'instrument', 'tactile-lever'].includes(id) && <><div className="library-palette-setting"><span>Accent light</span><OklchPalette label="Choose the accent light color" value={s.accentColor} onValueChange={accentColor => change({ accentColor })} material={s.material === 'liquid' ? 'liquid-glass' : s.material} /></div><ToggleField label="Accent gradient" checked={s.accentGradient} onChange={accentGradient => change({ accentGradient })} />{s.accentGradient && <div className="library-palette-setting"><span>Gradient end</span><OklchPalette label="Choose the gradient end color" value={s.accentColorEnd} onValueChange={accentColorEnd => change({ accentColorEnd })} material={s.material === 'liquid' ? 'liquid-glass' : s.material} /></div>}<RangeField label="Glow intensity" value={s.glowIntensity} unit="%" onChange={glowIntensity => change({ glowIntensity })} /><RangeField label="Glow blur" value={s.glowBlur} max={16} unit=" px" onChange={glowBlur => change({ glowBlur })} /></>}
+    {['slider', 'bar-slider', 'dial', 'instrument', 'tactile-lever'].includes(id) && <><div className="library-palette-setting"><span>Accent light</span><OklchPalette label="Choose the accent light color" value={s.accentColor} onValueChange={accentColor => change({ accentColor })} material={s.material} /></div><ToggleField label="Accent gradient" checked={s.accentGradient} onChange={accentGradient => change({ accentGradient })} />{s.accentGradient && <div className="library-palette-setting"><span>Gradient end</span><OklchPalette label="Choose the gradient end color" value={s.accentColorEnd} onValueChange={accentColorEnd => change({ accentColorEnd })} material={s.material} /></div>}<RangeField label="Glow intensity" value={s.glowIntensity} unit="%" onChange={glowIntensity => change({ glowIntensity })} /><RangeField label="Glow blur" value={s.glowBlur} max={16} unit=" px" onChange={glowBlur => change({ glowBlur })} /></>}
     {['slider', 'bar-slider'].includes(id) && <><RangeField label="Thumb thickness" value={s.thumbThickness} min={8} max={30} unit=" px" onChange={thumbThickness => change({ thumbThickness })} /><RangeField label="Thumb height" value={s.thumbHeight} min={20} max={58} unit=" px" onChange={thumbHeight => change({ thumbHeight })} /><RangeField label="Thumb corner radius" value={s.thumbRadius} min={0} max={18} unit=" px" onChange={thumbRadius => change({ thumbRadius })} /></>}
     {id === 'progress-bar' && <RangeField label="Progress" value={s.progressValue} unit="%" onChange={progressValue => change({ progressValue })} />}
     {id === 'switch' && <ToggleField label="Enabled" checked={s.checked} onChange={checked => change({ checked })} />}
@@ -182,7 +325,7 @@ function Customizer({ id, settings: s, change, reset }: { id: ComponentId; setti
     {id === 'segmented-control' && <SelectField label="Selected view" value={s.segmentValue} options={[{ value: 'map', label: 'Map' }, { value: 'list', label: 'List' }, { value: 'saved', label: 'Saved' }]} onChange={segmentValue => change({ segmentValue })} />}
     {id === 'tactile-key' && <ToggleField label="Pressed" checked={s.keyPressed} onChange={keyPressed => change({ keyPressed })} />}
     {id === 'compass' && <RangeField label="Heading" value={s.compassHeading} max={359} unit="°" onChange={compassHeading => change({ compassHeading })} />}
-    {id === 'spectrum-control' && <><RangeField label="Hue" value={s.spectrumHue} max={360} unit="°" onChange={spectrumHue => change({ spectrumHue })} /><RangeField label="Saturation" value={s.spectrumSaturation} unit="%" onChange={spectrumSaturation => change({ spectrumSaturation })} /><RangeField label="Lightness" value={s.spectrumLightness} min={8} max={92} unit="%" onChange={spectrumLightness => change({ spectrumLightness })} /></>}
+    {id === 'spectrum-control' && <><SelectField label="Opening position" value={s.spectrumSide} options={[{ value: 'bottom', label: 'Bottom' }, { value: 'top', label: 'Top' }, { value: 'left', label: 'Left' }, { value: 'right', label: 'Right' }]} onChange={spectrumSide => change({ spectrumSide: spectrumSide as Settings['spectrumSide'] })} /><RangeField label="Hue" value={s.spectrumHue} max={360} unit="°" onChange={spectrumHue => change({ spectrumHue })} /><RangeField label="Saturation" value={s.spectrumSaturation} unit="%" onChange={spectrumSaturation => change({ spectrumSaturation })} /><RangeField label="Lightness" value={s.spectrumLightness} min={8} max={92} unit="%" onChange={spectrumLightness => change({ spectrumLightness })} /></>}
     {id === 'step-navigation' && <RangeField label="Current step" value={s.stepIndex + 1} min={1} max={3} onChange={step => change({ stepIndex: step - 1 })} />}
     {id === 'toast' && <RangeField label="Duration" value={s.duration / 1000} min={2} max={10} unit=" s" onChange={duration => change({ duration: duration * 1000 })} />}
     {id === 'gallery' && <><ToggleField label="Captions" checked={s.showCaptions} onChange={showCaptions => change({ showCaptions })} /><ToggleField label="Indicators" checked={s.showIndicators} onChange={showIndicators => change({ showIndicators })} /></>}

@@ -16,8 +16,8 @@ export function AttitudeIndicator({ pitch = 0, roll = 0, label = 'Attitude indic
       <circle cx="100" cy="100" r="80" className="jh-attitude__seat" />
       <g clipPath={`url(#${clipId})`}>
         <g transform={`rotate(${-safeRoll} 100 100) translate(0 ${safePitch * 1.65})`}>
-          <rect x="0" y="0" width="200" height="100" fill="#fafafa" />
-          <rect x="0" y="100" width="200" height="100" fill="#dedede" />
+          <rect x="0" y="0" width="200" height="100" className="jh-attitude__sky" fill="#fafafa" />
+          <rect x="0" y="100" width="200" height="100" className="jh-attitude__ground" fill="#dedede" />
           <path d="M12 100H188" className="jh-attitude__horizon" />
           {[-40, -30, -20, -10, 10, 20, 30, 40].map(degree => <g key={degree} transform={`translate(100 ${100 - degree * 1.65})`} className="jh-attitude__pitch-mark">
             <path d={degree % 20 === 0 ? 'M-25 0H25' : 'M-13 0H13'} />

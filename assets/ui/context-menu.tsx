@@ -1,5 +1,6 @@
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { Ellipsis } from 'lucide-react';
+import { Button } from './button';
 import type { MenuMaterial } from './menu';
 
 export interface ContextAction { label: string; onSelect: () => void; disabled?: boolean; destructive?: boolean }
@@ -14,7 +15,18 @@ export function ContextMenu({ label = 'More actions', actions, align = 'end', ma
 }) {
   const finish = normalizeMaterial(material);
   return <DropdownMenu.Root>
-    <DropdownMenu.Trigger className="jh-context-menu__trigger" aria-label={label}><Ellipsis size={17} strokeWidth={1.7} aria-hidden="true" /></DropdownMenu.Trigger>
+    <DropdownMenu.Trigger asChild>
+      <Button
+        type="button"
+        size="icon"
+        variant="secondary"
+        liquid={finish !== 'solid'}
+        className="jh-context-menu__trigger"
+        aria-label={label}
+      >
+        <Ellipsis size={17} strokeWidth={1.7} aria-hidden="true" />
+      </Button>
+    </DropdownMenu.Trigger>
     <DropdownMenu.Portal><DropdownMenu.Content
       data-jh-material={finish === 'glass' ? 'liquid-glass' : finish}
       className={`jh-menu jh-context-menu${finish === 'liquid' ? ' jh-menu--liquid' : ''}`}

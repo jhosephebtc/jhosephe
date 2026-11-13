@@ -35,6 +35,7 @@ export function PickerPanel({
   searchPlaceholder = 'Search',
   label,
   footer,
+  material,
   className,
   children,
   preferredHeight = 280,
@@ -47,6 +48,7 @@ export function PickerPanel({
   searchPlaceholder?: string;
   label: string;
   footer?: ReactNode;
+  material?: string;
   className?: string;
   children: ReactNode;
   preferredHeight?: number;
@@ -93,6 +95,7 @@ export function PickerPanel({
     <div
       ref={panel}
       className={cn('jh-picker-overlay', className)}
+      data-jh-material={material}
       role="presentation"
       style={{
         top: box.top,

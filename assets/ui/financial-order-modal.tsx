@@ -255,9 +255,9 @@ export function FinancialOrderModal({ symbol = 'NOVA', company = 'Nova Systems',
         </div>
         <footer className="jh-financial-order__footer">
           <button type="button" className="jh-financial-order__cancel" onClick={() => setOpen(false)}>Cancel</button>
-          <button type="button" className="jh-financial-order__confirm" onClick={() => setPlaced(true)}>
+          <Button variant="primary" onClick={() => setPlaced(true)}>
             {placed ? 'Demo order placed' : 'Place ' + side.toLowerCase() + ' order'}
-          </button>
+          </Button>
         </footer>
         <span className="jh-visually-hidden" role="status">
           {placed ? 'Demo ' + side.toLowerCase() + ' order for ' + quantity + ' ' + symbol + ' shares recorded locally.' : ''}

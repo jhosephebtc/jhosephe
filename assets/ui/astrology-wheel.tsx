@@ -1,13 +1,19 @@
 import { useMemo, useState, type ReactNode } from 'react';
+import { surfaceMaterialAttr, type SurfaceMaterial } from './weather-ephemeris';
 
 const SIGNS = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'] as const;
 const BODIES = [
-  { name: 'Sun', base: 280, speed: 0.9856 }, { name: 'Moon', base: 102, speed: 13.176 },
-  { name: 'Mercury', base: 318, speed: 4.09 }, { name: 'Venus', base: 24, speed: 1.6 },
-  { name: 'Mars', base: 189, speed: 0.524 }, { name: 'Jupiter', base: 32, speed: 0.083 },
-  { name: 'Saturn', base: 224, speed: 0.033 }, { name: 'Uranus', base: 276, speed: 0.0116 },
+  { name: 'Sun', base: 280, speed: 0.9856 },
+  { name: 'Moon', base: 102, speed: 13.176 },
+  { name: 'Mercury', base: 318, speed: 4.09 },
+  { name: 'Venus', base: 24, speed: 1.6 },
+  { name: 'Mars', base: 189, speed: 0.524 },
+  { name: 'Jupiter', base: 32, speed: 0.083 },
+  { name: 'Saturn', base: 224, speed: 0.033 },
+  { name: 'Uranus', base: 276, speed: 0.0116 },
   { name: 'Neptune', base: 285, speed: 0.0059 },
 ] as const;
+
 const mod = (value: number, length: number) => ((value % length) + length) % length;
 
 function SignIcon({ index }: { index: number }) {
@@ -25,7 +31,11 @@ function SignIcon({ index }: { index: number }) {
     <path key="aq" d="M7 9.2c1.6 1.4 2.8 1.4 5 0s3.4-1.4 5 0M7 13.2c1.6 1.4 2.8 1.4 5 0s3.4-1.4 5 0M7 17.2c1.6 1.4 2.8 1.4 5 0s3.4-1.4 5 0" />,
     <path key="p" d="M12 5.5v13M8.4 9.2a3.6 3.6 0 1 1 7.2 0" />,
   ];
-  return <g className="jh-astrology-wheel__sign-icon" fill="none" stroke="currentColor" strokeWidth="1.35" strokeLinecap="round" strokeLinejoin="round">{icons[index]}</g>;
+  return (
+    <g className="jh-astrology-wheel__sign-icon" fill="none" stroke="currentColor" strokeWidth="1.35" strokeLinecap="round" strokeLinejoin="round">
+      {icons[index]}
+    </g>
+  );
 }
 
 function PlanetIcon({ name }: { name: string }) {
@@ -52,105 +62,147 @@ function PlanetIcon({ name }: { name: string }) {
   }
 }
 
-/** Interactive natal-wheel study with illustrative, low-precision planetary longitudes. */
-export function AstrologyWheel({ birthDate = '1992-08-14', birthTime = '12:00', location = 'Fortaleza', latitude = -3.7319, longitude = -38.5267, onBodySelect }: {
-  birthDate?: string; birthTime?: string; location?: string; latitude?: number; longitude?: number; onBodySelect?: (body: string) => void;
+/** Interactive natal-wheel study aligned with the layered review modal language. */
+export function AstrologyWheel({
+  birthDate = '1992-08-14',
+  birthTime = '12:00',
+  location = 'Fortaleza',
+  latitude = -3.7319,
+  longitude = -38.5267,
+  bodies,
+  onBodySelect,
+  material = 'solid',
+}: {
+  birthDate?: string;
+  birthTime?: string;
+  location?: string;
+  latitude?: number;
+  longitude?: number;
+  bodies?: Array<{ name: string; longitude: number }>;
+  onBodySelect?: (body: string) => void;
+  material?: SurfaceMaterial;
 }) {
   const [selectedBody, setSelectedBody] = useState('Sun');
-  const birth = useMemo(() => new Date(birthDate + 'T' + birthTime + ':00'), [birthDate, birthTime]);
-  const days = Number.isFinite(birth.getTime()) ? (birth.getTime() - new Date('2000-01-01T12:00:00Z').getTime()) / 86400000 : 0;
+  const birth = useMemo(() => new Date(`${birthDate}T${birthTime}:00`), [birthDate, birthTime]);
+  const days = Number.isFinite(birth.getTime())
+    ? (birth.getTime() - new Date('2000-01-01T12:00:00Z').getTime()) / 86400000
+    : 0;
   const ascendant = mod(100 + birth.getHours() * 15 + longitude, 360);
-  const planets = BODIES.map(body => ({ ...body, longitude: mod(body.base + days * body.speed, 360) }));
+  const planets = bodies?.length
+    ? bodies.map(item => ({ name: item.name, longitude: mod(item.longitude, 360) }))
+    : BODIES.map(body => ({ name: body.name, longitude: mod(body.base + days * body.speed, 360) }));
   const selected = planets.find(body => body.name === selectedBody) ?? planets[0];
+
   const polar = (radius: number, angle: number) => ({
-    x: 180 + radius * Math.cos((angle - 90) * Math.PI / 180),
-    y: 180 + radius * Math.sin((angle - 90) * Math.PI / 180),
+    x: 180 + radius * Math.cos(((angle - 90) * Math.PI) / 180),
+    y: 180 + radius * Math.sin(((angle - 90) * Math.PI) / 180),
   });
   const point = (longitudeValue: number, radius: number) => polar(radius, longitudeValue - ascendant);
-  const select = (name: string) => { setSelectedBody(name); onBodySelect?.(name); };
+  const select = (name: string) => {
+    setSelectedBody(name);
+    onBodySelect?.(name);
+  };
+  const matAttr = surfaceMaterialAttr(material);
 
-  return <section className="jh-astrology-wheel" aria-label={'Illustrative natal chart for ' + location}>
-    <header>
-      <div>
-        <span className="jh-astrology-wheel__eyebrow">Birth chart · Demo</span>
-        <strong>{location}</strong>
+  return (
+    <section
+      className="jh-astrology-wheel"
+      data-jh-material={matAttr}
+      aria-label={`Illustrative natal chart for ${location}`}
+    >
+      <header className="jh-astrology-wheel__header">
+        <div>
+          <span className="jh-astrology-wheel__eyebrow">Ephemeris wheel · Chart</span>
+          <h2>{location}</h2>
+          <p>{birthDate} · {birthTime} local · {latitude.toFixed(2)}°, {longitude.toFixed(2)}°</p>
+        </div>
+        <span className="jh-astrology-wheel__badge">
+          Asc {Math.round(ascendant)}°
+        </span>
+      </header>
+
+      <div className="jh-astrology-wheel__stage">
+        <div className="jh-astrology-wheel__bed" aria-hidden="true" />
+        <div className="jh-astrology-wheel__chart">
+          <svg viewBox="0 0 360 360" role="group" aria-label="Astrological chart wheel">
+            <defs>
+              <radialGradient id="jh-astro-face" cx="50%" cy="50%" r="65%">
+                <stop offset="0%" style={{ stopColor: 'var(--jh-wheel-face-1, #ffffff)' }} />
+                <stop offset="100%" style={{ stopColor: 'var(--jh-wheel-face-2, #f5f5f5)' }} />
+              </radialGradient>
+              <radialGradient id="jh-astro-well" cx="50%" cy="50%" r="68%">
+                <stop offset="0%" style={{ stopColor: 'var(--jh-wheel-well-1, #fafafa)' }} />
+                <stop offset="100%" style={{ stopColor: 'var(--jh-wheel-well-2, #efefef)' }} />
+              </radialGradient>
+            </defs>
+
+            <circle cx="180" cy="180" r="168" className="jh-astrology-wheel__bezel" />
+            <circle cx="180" cy="180" r="160" className="jh-astrology-wheel__bezel-edge" />
+            <circle cx="180" cy="180" r="152" className="jh-astrology-wheel__rim" fill="url(#jh-astro-well)" />
+            <circle cx="180" cy="180" r="144" className="jh-astrology-wheel__face" fill="url(#jh-astro-face)" />
+            <circle cx="180" cy="180" r="118" className="jh-astrology-wheel__sign-ring" />
+            <circle cx="180" cy="180" r="86" className="jh-astrology-wheel__house-ring" />
+            <circle cx="180" cy="180" r="54" className="jh-astrology-wheel__inner-well" />
+
+            {Array.from({ length: 12 }, (_, index) => {
+              const start = polar(54, index * 30);
+              const end = polar(144, index * 30);
+              const label = polar(131, index * 30 + 15);
+              const house = polar(100, index * 30 + 15);
+              return (
+                <g key={SIGNS[index]}>
+                  <path d={`M${start.x} ${start.y}L${end.x} ${end.y}`} className="jh-astrology-wheel__radial" />
+                  <g transform={`translate(${label.x - 12} ${label.y - 12})`} className="jh-astrology-wheel__sign" aria-hidden="true">
+                    <SignIcon index={index} />
+                  </g>
+                  <text x={house.x} y={house.y + 3} className="jh-astrology-wheel__house">{String(index + 1).padStart(2, '0')}</text>
+                </g>
+              );
+            })}
+
+            <circle cx="180" cy="180" r="4.5" className="jh-astrology-wheel__center" />
+            <circle cx="180" cy="180" r="2" className="jh-astrology-wheel__hub" />
+
+            {planets.map((body, index) => {
+              const p = point(body.longitude, index % 2 ? 72 : 63);
+              const active = body.name === selectedBody;
+              return (
+                <g
+                  key={body.name}
+                  className="jh-astrology-wheel__planet"
+                  data-selected={active}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`${body.name} at ${body.longitude.toFixed(1)} degrees`}
+                  onClick={() => select(body.name)}
+                  onKeyDown={event => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                      event.preventDefault();
+                      select(body.name);
+                    }
+                  }}
+                >
+                  <circle className="jh-astrology-wheel__planet-halo" cx={p.x} cy={p.y} r="15" />
+                  <circle className="jh-astrology-wheel__planet-face" cx={p.x} cy={p.y} r="12" />
+                  <g transform={`translate(${p.x - 12} ${p.y - 12})`} aria-hidden="true">
+                    <PlanetIcon name={body.name} />
+                  </g>
+                </g>
+              );
+            })}
+          </svg>
+        </div>
       </div>
-      <span>{birthDate} · {birthTime}</span>
-    </header>
 
-    <div className="jh-astrology-wheel__stage">
-      <div className="jh-astrology-wheel__bed" aria-hidden="true" />
-      <div className="jh-astrology-wheel__chart">
-        <svg viewBox="0 0 360 360" role="group" aria-label="Astrological chart wheel">
-          <defs>
-            <radialGradient id="jh-astro-face" cx="32%" cy="22%" r="78%">
-              <stop offset="0%" stopColor="#ffffff" />
-              <stop offset="55%" stopColor="#f5f5f5" />
-              <stop offset="100%" stopColor="#e4e4e4" />
-            </radialGradient>
-            <radialGradient id="jh-astro-well" cx="50%" cy="42%" r="70%">
-              <stop offset="0%" stopColor="#fafafa" />
-              <stop offset="70%" stopColor="#efefef" />
-              <stop offset="100%" stopColor="#dedede" />
-            </radialGradient>
-            <filter id="jh-astro-glow" x="-40%" y="-40%" width="180%" height="180%">
-              <feGaussianBlur stdDeviation="1.2" result="blur" />
-              <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
-            </filter>
-          </defs>
-
-          <circle cx="180" cy="180" r="168" className="jh-astrology-wheel__bezel" />
-          <circle cx="180" cy="180" r="160" className="jh-astrology-wheel__bezel-edge" />
-          <circle cx="180" cy="180" r="152" className="jh-astrology-wheel__rim" fill="url(#jh-astro-well)" />
-          <circle cx="180" cy="180" r="144" className="jh-astrology-wheel__face" fill="url(#jh-astro-face)" filter="url(#jh-astro-glow)" />
-          <circle cx="180" cy="180" r="118" className="jh-astrology-wheel__sign-ring" />
-          <circle cx="180" cy="180" r="86" className="jh-astrology-wheel__house-ring" />
-          <circle cx="180" cy="180" r="54" className="jh-astrology-wheel__inner-well" />
-
-          {Array.from({ length: 12 }, (_, index) => {
-            const start = polar(54, index * 30);
-            const end = polar(144, index * 30);
-            const label = polar(131, index * 30 + 15);
-            const house = polar(100, index * 30 + 15);
-            return <g key={SIGNS[index]}>
-              <path d={`M${start.x} ${start.y}L${end.x} ${end.y}`} className="jh-astrology-wheel__radial" />
-              <g transform={`translate(${label.x - 12} ${label.y - 12})`} className="jh-astrology-wheel__sign" aria-hidden="true">
-                <SignIcon index={index} />
-              </g>
-              <text x={house.x} y={house.y + 3} className="jh-astrology-wheel__house">{String(index + 1).padStart(2, '0')}</text>
-            </g>;
-          })}
-
-          <circle cx="180" cy="180" r="4.5" className="jh-astrology-wheel__center" />
-          <circle cx="180" cy="180" r="2" className="jh-astrology-wheel__hub" />
-
-          {planets.map((body, index) => {
-            const p = point(body.longitude, index % 2 ? 72 : 63);
-            const active = body.name === selectedBody;
-            return <g
-              key={body.name}
-              className="jh-astrology-wheel__planet"
-              data-selected={active}
-              role="button"
-              tabIndex={0}
-              aria-label={`${body.name} at ${body.longitude.toFixed(1)} degrees`}
-              onClick={() => select(body.name)}
-              onKeyDown={event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); select(body.name); } }}
-            >
-              <circle className="jh-astrology-wheel__planet-halo" cx={p.x} cy={p.y} r="15" />
-              <circle className="jh-astrology-wheel__planet-face" cx={p.x} cy={p.y} r="12" />
-              <g transform={`translate(${p.x - 12} ${p.y - 12})`} aria-hidden="true"><PlanetIcon name={body.name} /></g>
-            </g>;
-          })}
-        </svg>
+      <div className="jh-astrology-wheel__details">
+        <div><span>Selected body</span><strong>{selected.name}</strong></div>
+        <div><span>Ecliptic longitude</span><strong>{selected.longitude.toFixed(1)}° · {SIGNS[Math.floor(selected.longitude / 30)]}</strong></div>
+        <div><span>House degree</span><strong>{(selected.longitude % 30).toFixed(1)}°</strong></div>
       </div>
-    </div>
 
-    <div className="jh-astrology-wheel__details">
-      <div><span>Selected body</span><strong>{selected.name}</strong></div>
-      <div><span>Ecliptic longitude</span><strong>{selected.longitude.toFixed(1)}° · {SIGNS[Math.floor(selected.longitude / 30)]}</strong></div>
-      <div><span>Ascendant</span><strong>{ascendant.toFixed(1)}° · {SIGNS[Math.floor(ascendant / 30)]}</strong></div>
-    </div>
-    <footer>Illustrative positions for interface prototyping. Use a verified ephemeris for readings. Lat {latitude.toFixed(2)} · Lon {longitude.toFixed(2)}</footer>
-  </section>;
+      <footer>
+        {bodies?.length ? 'External ephemeris longitudes active.' : 'Illustrative positions for prototyping. Connect an ephemeris API for live longitudes.'}
+      </footer>
+    </section>
+  );
 }

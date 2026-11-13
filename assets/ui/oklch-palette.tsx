@@ -1,6 +1,6 @@
 import { useRef, useState, type CSSProperties, type KeyboardEvent } from 'react';
 import * as Popover from '@radix-ui/react-popover';
-import { Check, ChevronDown } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 
 const hues = [
   ['Red', 20], ['Vermilion', 40], ['Orange', 60], ['Amber', 82],
@@ -27,7 +27,7 @@ const columns = hues.length;
 
 /** A contextual OKLCH palette arranged as a tactile honeycomb of paint swatches. */
 export function OklchPalette({ value, onValueChange, label = 'Choose a color', material = 'solid' }: {
-  value: string; onValueChange: (value: string) => void; label?: string; material?: 'solid' | 'liquid-glass';
+  value: string; onValueChange: (value: string) => void; label?: string; material?: 'solid' | 'liquid-glass' | 'liquid';
 }) {
   const [open, setOpen] = useState(false);
   const [focusIndex, setFocusIndex] = useState(Math.max(0, colors.findIndex(color => color.value === value)));
@@ -71,7 +71,7 @@ export function OklchPalette({ value, onValueChange, label = 'Choose a color', m
             onFocus={() => setFocusIndex(index)}
             onKeyDown={event => moveFocus(index, event)}
             onClick={() => { onValueChange(color.value); setFocusIndex(index); setOpen(false); }}
-          >{value === color.value && <Check size={12} aria-hidden="true" />}</button>)}
+          />)}
         </div>
         <div className="jh-oklch-palette__footer"><span>Selected color</span><span className="jh-oklch-palette__preview" style={{ background: value }} aria-hidden="true" /></div>
       </Popover.Content>

@@ -148,5 +148,323 @@
 .instrument-study__market > .jh-financial-chart { width:100%; max-width:none; min-height:100%; }
 .instrument-study__sky { display:grid; gap:14px; }
 .instrument-study__sky > :where(.jh-astronomy,.jh-astrology-wheel) { width:100%; max-width:none; }
-@media (max-width:900px) { .instrument-study { width:min(100% - 48px,1320px); padding:70px 0; } .instrument-study__grid { grid-template-columns:1fr; } }
-@media (max-width:600px) { .instrument-study { width:calc(100% - 32px); padding:54px 0; } .instrument-study__heading { align-items:flex-start; flex-direction:column; } }
+.instrument-study__workbench { margin-top:24px; }
+.instrument-workbench__grid { display:grid; gap:18px; align-items:start; }
+.instrument-workbench__grid--three { grid-template-columns:repeat(3,minmax(0,1fr)); }
+.instrument-workbench__grid--two { grid-template-columns:repeat(2,minmax(0,1fr)); }
+.instrument-workbench__grid > * { width:100%; max-width:none; min-width:0; }
+.instrument-workbench__telemetry { display:grid; grid-template-columns:minmax(0,1.4fr) minmax(260px,.9fr); gap:18px; align-items:start; }
+.instrument-workbench__side { display:grid; gap:16px; min-width:0; }
+.instrument-workbench__side > * { width:100%; max-width:none; }
+.instrument-workbench__picker-card { display:grid; gap:10px; align-content:start; padding:22px; border-radius:20px; background:#f7f7f7; box-shadow:inset 0 1px #fff,inset 0 0 0 1px rgb(0 0 0 / .045),0 4px 12px -8px rgb(0 0 0 / .08),0 1px 4px -2px rgb(0 0 0 / .03); }
+.instrument-workbench__picker-card strong { color:#262626; font-size:15px; font-weight:500; letter-spacing:-.02em; }
+.instrument-workbench__picker-card p { margin:0 0 6px; color:#6b6b6b; font-size:12px; line-height:1.55; }
+
+.tactile-study { width:min(100% - 80px,1320px); margin:0 auto; padding:78px 0 88px; border-top:1px solid #00000008; }
+.tactile-study__material { display:flex; align-items:flex-end; }
+.tactile-study__stage { position:relative; overflow:hidden; padding:26px; border-radius:28px; background:#f4f4f4; box-shadow:inset 0 1px #fff,inset 0 0 0 1px rgb(0 0 0 / .045); }
+.tactile-study__stage.is-layered { background:transparent; }
+.tactile-study__backdrop { position:absolute; inset:0; z-index:0; overflow:hidden; border-radius:inherit; pointer-events:none; }
+.tactile-study__backdrop .jh-shader-surface { width:100%; height:100%; }
+.tactile-study__grid { position:relative; z-index:1; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px; align-items:start; }
+.tactile-study__panel { display:grid; gap:20px; padding:24px; border-radius:22px; background:#fafafa; box-shadow:inset 0 1px #fff,inset 0 0 0 1px rgb(0 0 0 / .045),0 4px 12px -8px rgb(0 0 0 / .08),0 1px 4px -2px rgb(0 0 0 / .03); min-width:0; }
+.tactile-study__stage[data-jh-material="liquid-glass"] .tactile-study__panel { background:rgb(255 255 255 / .74); backdrop-filter:blur(18px) saturate(1.05); -webkit-backdrop-filter:blur(18px) saturate(1.05); }
+.tactile-study__stage[data-jh-material="liquid"] .tactile-study__panel { background:linear-gradient(165deg,rgb(255 255 255 / .66),rgb(245 245 245 / .38)); backdrop-filter:blur(22px) saturate(1.14); -webkit-backdrop-filter:blur(22px) saturate(1.14); }
+.tactile-study__panel--stack > * { width:100%; max-width:none; }
+.tactile-study__sliders { display:grid; gap:20px; }
+.tactile-study__row { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-around; gap:20px; padding:12px 0 4px; }
+.tactile-study__keys { display:flex; flex-wrap:wrap; align-items:center; gap:14px; padding-top:12px; border-top:1px solid rgb(0 0 0 / .055); }
+
+@media (max-width:1050px) {
+  .instrument-workbench__grid--three { grid-template-columns:1fr; }
+  .instrument-workbench__telemetry { grid-template-columns:1fr; }
+  .tactile-study__grid { grid-template-columns:1fr; }
+}
+@media (max-width:900px) {
+  .instrument-study,.tactile-study { width:min(100% - 48px,1320px); padding:70px 0; }
+  .instrument-study__grid,.instrument-workbench__grid--two { grid-template-columns:1fr; }
+}
+@media (max-width:600px) {
+  .instrument-study,.tactile-study { width:calc(100% - 32px); padding:54px 0; }
+  .instrument-study__heading { align-items:flex-start; flex-direction:column; }
+  .tactile-study__stage { padding:14px; border-radius:20px; }
+  .tactile-study__panel { padding:16px; }
+}
+
+/* === JH_BLACK_THEME_START === */
+:is([data-jh-theme="dark"], .dark) .site {
+  background: radial-gradient(ellipse at 75% 5%, rgb(255 255 255 / .045) 0%, transparent 40%),  var(--background);
+}
+:is([data-jh-theme="dark"], .dark) .skip-link {
+  color: rgb(224 224 224);
+  background: rgb(225 225 225);
+}
+:is([data-jh-theme="dark"], .dark) .topbar {
+  border-bottom: 1px solid rgb(255 255 255 / .005);
+  box-shadow: 0 1px 0 rgb(255 255 255 / .007);
+}
+:is([data-jh-theme="dark"], .dark) .brand {
+  color: rgb(226 226 226);
+}
+:is([data-jh-theme="dark"], .dark) .brand__period {
+  color: rgb(168 168 168);
+}
+:is([data-jh-theme="dark"], .dark) .brand__mark {
+  border: 1px solid rgb(20 20 20);
+}
+:is([data-jh-theme="dark"], .dark) .brand__mark span {
+  background: rgb(214 214 214);
+  box-shadow: 0 0 0 3px rgb(0 0 0 / .9);
+}
+:is([data-jh-theme="dark"], .dark) .topbar__middle {
+  color: rgb(178 178 178);
+}
+:is([data-jh-theme="dark"], .dark) .topbar__link {
+  color: rgb(213 213 213);
+}
+:is([data-jh-theme="dark"], .dark) .intro__chip {
+  border: 1px solid rgb(21 21 21);
+  color: rgb(178 178 178);
+}
+:is([data-jh-theme="dark"], .dark) .intro__chip > span {
+  background: rgb(10 10 10);
+}
+:is([data-jh-theme="dark"], .dark) .intro__line {
+  background: rgb(10 10 10);
+}
+:is([data-jh-theme="dark"], .dark) .intro h1 {
+  color: rgb(225 225 225);
+}
+:is([data-jh-theme="dark"], .dark) .intro h1 em {
+  color: rgb(167 167 167);
+}
+:is([data-jh-theme="dark"], .dark) .intro__body > p {
+  color: rgb(178 178 178);
+}
+:is([data-jh-theme="dark"], .dark) .intro__link {
+  border-bottom: 1px solid rgb(26 26 26);
+  color: rgb(219 219 219);
+}
+:is([data-jh-theme="dark"], .dark) .deck {
+  border: 1px solid rgb(255 255 255 / .009);
+  background: rgb(10 10 10);
+  box-shadow: var(--jh-shadow-surface),  0 14px 36px -24px rgb(0 0 0 / .635);
+}
+:is([data-jh-theme="dark"], .dark) .deck::before {
+  border: 1px solid rgb(255 255 255 / .005);
+}
+:is([data-jh-theme="dark"], .dark) .deck__topline {
+  color: rgb(179 179 179);
+}
+:is([data-jh-theme="dark"], .dark) .deck__heading {
+  box-shadow: inset 0 1px rgb(255 255 255 / .01);
+}
+:is([data-jh-theme="dark"], .dark) .deck__heading h2 {
+  color: rgb(220 220 220);
+}
+:is([data-jh-theme="dark"], .dark) .deck__number {
+  color: rgb(179 179 179);
+}
+:is([data-jh-theme="dark"], .dark) .display {
+  color: rgb(223 223 223);
+  border: 1px solid rgb(255 255 255 / .007);
+  background: linear-gradient(150deg,rgb(10 10 10 / .929),rgb(10 10 10 / .9));
+  box-shadow: inset 0 1px 3px rgb(0 0 0 / .6),  inset 0 -1px rgb(0 0 0 / .55),  0 2px 8px -5px rgb(0 0 0 / .6);
+}
+:is([data-jh-theme="dark"], .dark) .display--ambient {
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / .014),  inset 0 -1px rgb(0 0 0 / .44),  0 5px 18px -8px rgb(0 0 0 / .5);
+}
+:is([data-jh-theme="dark"], .dark) .display__top {
+  color: rgb(176 176 176);
+}
+:is([data-jh-theme="dark"], .dark) .display__top i {
+  background: rgb(21 21 21);
+  box-shadow: 0 0 0 2px rgb(0 0 0 / .9);
+}
+:is([data-jh-theme="dark"], .dark) .display__value > span {
+  color: rgb(176 176 176);
+}
+:is([data-jh-theme="dark"], .dark) .display__meta {
+  color: rgb(176 176 176);
+}
+:is([data-jh-theme="dark"], .dark) .display .jh-instrument {
+  color: rgb(213 213 213);
+}
+:is([data-jh-theme="dark"], .dark) .deck__control-copy strong {
+  color: rgb(219 219 219);
+}
+:is([data-jh-theme="dark"], .dark) .deck__control-copy p {
+  color: rgb(175 175 175);
+}
+:is([data-jh-theme="dark"], .dark) .deck__label {
+  color: rgb(186 186 186);
+}
+:is([data-jh-theme="dark"], .dark) .deck__label output {
+  color: rgb(179 179 179);
+}
+:is([data-jh-theme="dark"], .dark) .deck__footer {
+  box-shadow: inset 0 1px rgb(255 255 255 / .01);
+}
+:is([data-jh-theme="dark"], .dark) .switch-copy label {
+  color: rgb(186 186 186);
+}
+:is([data-jh-theme="dark"], .dark) .switch-copy span {
+  color: rgb(179 179 179);
+}
+:is([data-jh-theme="dark"], .dark) .section-heading h2 {
+  color: rgb(220 220 220);
+}
+:is([data-jh-theme="dark"], .dark) .section-heading p {
+  color: rgb(174 174 174);
+}
+:is([data-jh-theme="dark"], .dark) .material-card {
+  border: 1px solid rgb(255 255 255 / .01);
+  background: rgb(10 10 10);
+}
+:is([data-jh-theme="dark"], .dark) .material-card__art {
+  border-bottom: 1px solid rgb(255 255 255 / .01);
+}
+:is([data-jh-theme="dark"], .dark) .mineral-art {
+  background: linear-gradient(145deg, rgb(10 10 10), rgb(10 10 10));
+}
+:is([data-jh-theme="dark"], .dark) .mineral-block {
+  border: 1px solid rgb(255 255 255 / .01);
+  background: linear-gradient(145deg, rgb(10 10 10), rgb(10 10 10));
+  box-shadow: 0 14px 20px -14px rgb(0 0 0 / .9),  inset 0 1px rgb(255 255 255 / .014);
+}
+:is([data-jh-theme="dark"], .dark) .mineral-block span {
+  border: 1px solid rgb(255 255 255 / .005);
+}
+:is([data-jh-theme="dark"], .dark) .glass-art {
+  background: rgb(10 10 10);
+}
+:is([data-jh-theme="dark"], .dark) .glass-pill {
+  border: 1px solid rgb(255 255 255 / .008);
+  box-shadow: 0 8px 20px rgb(0 0 0 / .5),  inset 0 1px rgb(255 255 255 / .02);
+}
+:is([data-jh-theme="dark"], .dark) .glass-pill span {
+  border: 1.5px solid rgb(18 18 18);
+}
+:is([data-jh-theme="dark"], .dark) .glass-pill .glass-pill__light {
+  background: rgb(12 12 12);
+  box-shadow: inset 0 1px 2px rgb(255 255 255 / .02);
+}
+:is([data-jh-theme="dark"], .dark) .material-card__copy {
+  color: rgb(179 179 179);
+}
+:is([data-jh-theme="dark"], .dark) .material-card__copy h3 {
+  color: rgb(218 218 218);
+}
+:is([data-jh-theme="dark"], .dark) .material-card__copy p {
+  color: rgb(174 174 174);
+}
+:is([data-jh-theme="dark"], .dark) .corner-study {
+  border: 1px solid rgb(255 255 255 / .01);
+  background: rgb(10 10 10);
+}
+:is([data-jh-theme="dark"], .dark) .corner-study__copy h3 {
+  color: rgb(218 218 218);
+}
+:is([data-jh-theme="dark"], .dark) .corner-study__copy p {
+  color: rgb(178 178 178);
+}
+:is([data-jh-theme="dark"], .dark) .corner-study__label {
+  color: rgb(188 188 188);
+}
+:is([data-jh-theme="dark"], .dark) .corner-study__samples > div {
+  color: rgb(179 179 179);
+}
+:is([data-jh-theme="dark"], .dark) .corner-study__shape {
+  box-shadow: 0 8px 15px -10px rgb(0 0 0 / .9);
+}
+:is([data-jh-theme="dark"], .dark) .corner-study__face {
+  background: linear-gradient(145deg, rgb(16 16 16), rgb(14 14 14));
+}
+:is([data-jh-theme="dark"], .dark) .closing {
+  background: rgb(10 10 10 / .9);
+  box-shadow: inset 0 1px rgb(255 255 255 / .014),  0 -8px 24px -24px rgb(0 0 0 / .816);
+  color: rgb(178 178 178);
+}
+:is([data-jh-theme="dark"], .dark) .footer {
+  color: rgb(170 170 170);
+}
+:is([data-jh-theme="dark"], .dark) .footer > a {
+  color: rgb(179 179 179);
+}
+:is([data-jh-theme="dark"], .dark) .dialog-description {
+  color: rgb(179 179 179);
+}
+:is([data-jh-theme="dark"], .dark) .dialog-readout {
+  box-shadow: inset 0 1px rgb(255 255 255 / .02);
+  color: rgb(175 175 175);
+}
+:is([data-jh-theme="dark"], .dark) .dialog-readout strong {
+  color: rgb(218 218 218);
+}
+:is([data-jh-theme="dark"], .dark) .button-study p {
+  color: rgb(176 176 176);
+}
+:is([data-jh-theme="dark"], .dark) .relief-art {
+  background: radial-gradient(ellipse at 50% 20%,rgb(10 10 10),rgb(10 10 10));
+}
+:is([data-jh-theme="dark"], .dark) .relief-bed {
+  background: linear-gradient(145deg,rgb(10 10 10 / .9),rgb(10 10 10 / .9));
+  box-shadow: inset 2px 3px 8px rgb(0 0 0 / .6),  inset -1px -1px 1px rgb(0 0 0 / .55),  0 1px rgb(255 255 255 / .01);
+}
+:is([data-jh-theme="dark"], .dark) .relief-lens {
+  background: radial-gradient(ellipse at 30% 0%,rgb(10 10 10 / .949),rgb(10 10 10 / .9) 65%,rgb(10 10 10 / .9));
+  box-shadow: inset 0 1px 1px rgb(255 255 255 / .014), inset 0 -1px 2px rgb(0 0 0 / .434), 0 8px 14px -7px rgb(0 0 0 / .943);
+}
+:is([data-jh-theme="dark"], .dark) .relief-lens span {
+  background: rgb(16 16 16 / .549);
+  box-shadow: 0 1px 1px rgb(0 0 0 / .9);
+}
+@media (prefers-reduced-transparency: reduce) {
+  :is([data-jh-theme="dark"], .dark) .relief-lens {
+    background: rgb(10 10 10);
+  }
+}
+:is([data-jh-theme="dark"], .dark) .instrument-study {
+  border-top: 1px solid rgb(255 255 255 / .005);
+}
+:is([data-jh-theme="dark"], .dark) .instrument-study__heading h2 {
+  color: rgb(219 219 219);
+}
+:is([data-jh-theme="dark"], .dark) .instrument-workbench__picker-card {
+  background: rgb(10 10 10);
+  box-shadow: inset 0 1px rgb(255 255 255 / .014), inset 0 0 0 1px rgb(255 255 255 / .008), 0 4px 12px -8px rgb(0 0 0 / .6), 0 1px 4px -2px rgb(0 0 0 / .6);
+}
+:is([data-jh-theme="dark"], .dark) .instrument-workbench__picker-card strong {
+  color: rgb(226 226 226);
+}
+:is([data-jh-theme="dark"], .dark) .instrument-workbench__picker-card p {
+  color: rgb(176 176 176);
+}
+:is([data-jh-theme="dark"], .dark) .tactile-study {
+  border-top: 1px solid rgb(255 255 255 / .005);
+}
+:is([data-jh-theme="dark"], .dark) .tactile-study__stage {
+  background: rgb(10 10 10);
+  box-shadow: inset 0 1px rgb(255 255 255 / .014), inset 0 0 0 1px rgb(255 255 255 / .008);
+}
+:is([data-jh-theme="dark"], .dark) .tactile-study__panel {
+  background: rgb(10 10 10);
+  box-shadow: inset 0 1px rgb(255 255 255 / .014), inset 0 0 0 1px rgb(255 255 255 / .008), 0 4px 12px -8px rgb(0 0 0 / .6), 0 1px 4px -2px rgb(0 0 0 / .6);
+}
+:is([data-jh-theme="dark"], .dark) .tactile-study__stage[data-jh-material="liquid-glass"] .tactile-study__panel {
+  background: rgb(10 10 10 / .9);
+}
+:is([data-jh-theme="dark"], .dark) .tactile-study__stage[data-jh-material="liquid"] .tactile-study__panel {
+  background: linear-gradient(165deg,rgb(10 10 10 / .9),rgb(10 10 10 / .9));
+}
+:is([data-jh-theme="dark"], .dark) .tactile-study__keys {
+  border-top: 1px solid rgb(255 255 255 / .007);
+}
+:is([data-jh-theme="dark"], .dark) .site {
+  background: radial-gradient(ellipse at 75% 5%, #0c0c0c 0%, transparent 45%), #060606;
+  color: #ededed;
+}
+:is([data-jh-theme="dark"], .dark) .relief-art {
+  background: radial-gradient(ellipse at 50% 20%, #0d0d0d, #070707);
+}
+/* === JH_BLACK_THEME_END === */

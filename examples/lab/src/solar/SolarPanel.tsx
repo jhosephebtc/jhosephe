@@ -1,8 +1,21 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent } from 'react';
 import { ArrowLeft, ArrowUpRight, LocateFixed, MapPin, Settings2, Sun, Sunrise } from 'lucide-react';
+import { AstronomyInstrument } from '../../../../assets/ui/astronomy-instrument';
 import { Button } from '../../../../assets/ui/button';
+import { Compass } from '../../../../assets/ui/compass';
+import { DataTable, type DataTableColumn } from '../../../../assets/ui/data-table';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '../../../../assets/ui/dialog';
+import { EphemerisPicker, type EphemerisSelection } from '../../../../assets/ui/ephemeris-picker';
+import { Input } from '../../../../assets/ui/input';
+import { LunarEphemeris } from '../../../../assets/ui/lunar-ephemeris';
+import { MetricCard, type MetricPoint } from '../../../../assets/ui/metric-card';
+import { Tabs } from '../../../../assets/ui/tabs';
+import { TideInstrument } from '../../../../assets/ui/tide-instrument';
+import { WeatherConditions } from '../../../../assets/ui/weather-conditions';
+import { WeatherInstrument } from '../../../../assets/ui/weather-instrument';
+import { WindInstrument } from '../../../../assets/ui/wind-instrument';
 import { buildDayPath, buildSolarSnapshot, compassDirection, DEFAULT_LOCATION, formatTime, timezoneForCoordinates, type Location } from './solar';
+import { ThemeToggle } from '../theme';
 import './solar.css';
 
 type Snapshot = ReturnType<typeof buildSolarSnapshot>;
@@ -52,17 +65,17 @@ function Instrument({ data, now, zone }: { data: Snapshot | null; now: Date; zon
     <h1 className="sr-only" id="instrument-title">Real-time sun position</h1>
     <svg className="instrument" viewBox="0 0 1440 440" aria-hidden="true" focusable="false">
       <defs>
-        <linearGradient id="display-glass" x1="0" y1="0" x2="0" y2="1"><stop stopColor="#fafafa" /><stop offset=".45" stopColor="#ededed" /><stop offset="1" stopColor="#f8f8f8" /></linearGradient>
-        <linearGradient id="display-edge"><stop stopColor="#e0e0e0" /><stop offset=".25" stopColor="#f9f9f9" /><stop offset=".5" stopColor="#fff" /><stop offset=".8" stopColor="#f4f4f4" /><stop offset="1" stopColor="#ddd" /></linearGradient>
-        <linearGradient id="wing-fade"><stop stopColor="#b0b0b0" stopOpacity=".22" /><stop offset="1" stopColor="#d6d6d6" stopOpacity="0" /></linearGradient>
+        <linearGradient id="display-glass" x1="0" y1="0" x2="0" y2="1"><stop style={{ stopColor: 'var(--solar-glass-1, #fafafa)' }} /><stop offset=".45" style={{ stopColor: 'var(--solar-glass-2, #ededed)' }} /><stop offset="1" style={{ stopColor: 'var(--solar-glass-3, #f8f8f8)' }} /></linearGradient>
+        <linearGradient id="display-edge"><stop style={{ stopColor: 'var(--solar-edge-1, #e0e0e0)' }} /><stop offset=".25" style={{ stopColor: 'var(--solar-edge-2, #f9f9f9)' }} /><stop offset=".5" style={{ stopColor: 'var(--solar-edge-3, #ffffff)' }} /><stop offset=".8" style={{ stopColor: 'var(--solar-edge-4, #f4f4f4)' }} /><stop offset="1" style={{ stopColor: 'var(--solar-edge-1, #dddddd)' }} /></linearGradient>
+        <linearGradient id="wing-fade"><stop style={{ stopColor: 'var(--solar-wing-fade, #b0b0b0)' }} stopOpacity=".22" /><stop offset="1" style={{ stopColor: 'var(--solar-wing-fade-end, #d6d6d6)' }} stopOpacity="0" /></linearGradient>
         <clipPath id="display-clip"><path d="M18 131 Q720 -80 1422 131 L1422 424 Q720 238 18 424 Z" /></clipPath>
       </defs>
-      <path className="instrument__housing" d="M10 128 Q720 -90 1430 128 L1430 434 Q720 246 10 434 Z" fill="#e4e4e4" stroke="url(#display-edge)" strokeWidth="2" />
+      <path className="instrument__housing" d="M10 128 Q720 -90 1430 128 L1430 434 Q720 246 10 434 Z" style={{ fill: 'var(--solar-housing, #e4e4e4)' }} stroke="url(#display-edge)" strokeWidth="2" />
       <g clipPath="url(#display-clip)">
         <path d="M18 131 Q720 -80 1422 131 L1422 424 Q720 238 18 424 Z" fill="url(#display-glass)" />
         <rect x="18" y="0" width="245" height="440" fill="url(#wing-fade)" />
         <rect x="18" y="0" width="245" height="440" fill="url(#wing-fade)" transform="translate(1440 0) scale(-1 1)" />
-        {[0, 1, 2, 3].map(n => <g key={n} opacity={.1 - n * .02}><rect x={38 + n * 30} width="28" height="440" fill="#8c8c8c" /><rect x={1374 - n * 30} width="28" height="440" fill="#8c8c8c" /></g>)}
+        {[0, 1, 2, 3].map(n => <g key={n} opacity={.1 - n * .02}><rect x={38 + n * 30} width="28" height="440" fill="currentColor" /><rect x={1374 - n * 30} width="28" height="440" fill="currentColor" /></g>)}
         <g className="instrument__ink">
           <path d="M556 67 h-18 v35 M884 67 h18 v35 M568 286 h-18 v35 h28 M872 286 h18 v35 h-28" className="instrument__bracket" />
           <text x="566" y="77" className="instrument__caption">Daylight</text>
@@ -88,7 +101,7 @@ function Instrument({ data, now, zone }: { data: Snapshot | null; now: Date; zon
           <text x="1192" y="291" textAnchor="middle" className="instrument__eyebrow">Horizon / West</text>
         </g>
       </g>
-      <path d="M20 132 Q720 -77 1420 132" fill="none" stroke="#fff" strokeOpacity=".9" strokeWidth="1.5" />
+      <path d="M20 132 Q720 -77 1420 132" fill="none" style={{ stroke: 'var(--solar-edge-spec, #fff)' }} strokeOpacity=".9" strokeWidth="1.5" />
     </svg>
     <div className="instrument-mobile">
       <span className="solar-label">Solar elevation</span>
@@ -114,17 +127,33 @@ function DayPath({ now, location, data }: { now: Date; location: Location | null
     <div className="solar-path__header"><h2 id="path-title">The path of light</h2><span className="solar-label">Today / local day</span></div>
     <div className="solar-path__plot">
       <svg viewBox="0 0 1100 182" role="img" aria-label={data ? `Daily solar elevation. Now: ${degrees(data.altitude)} degrees above the horizon.` : 'Solar path waiting for location.'}>
-        <defs><linearGradient id="path-fill" x1="0" y1="0" x2="0" y2="1"><stop stopColor="#555" stopOpacity=".08" /><stop offset="1" stopColor="#555" stopOpacity="0" /></linearGradient></defs>
+        <defs><linearGradient id="path-fill" x1="0" y1="0" x2="0" y2="1"><stop style={{ stopColor: 'var(--solar-curve, #555)' }} stopOpacity=".08" /><stop offset="1" style={{ stopColor: 'var(--solar-curve, #555)' }} stopOpacity="0" /></linearGradient></defs>
         {[90, 0, -90].map(alt => <g key={alt}><line x1={32} x2={1068} y1={y(alt)} y2={y(alt)} className={alt === 0 ? 'solar-path__horizon' : 'solar-path__grid'} /><text x="0" y={y(alt) + 3}>{alt > 0 ? '+' : ''}{alt}°</text></g>)}
         {[0, 1, 2, 3, 4].map(i => <g key={i}><line x1={32 + i * 259} x2={32 + i * 259} y1="20" y2="154" className="solar-path__grid" /><text x={32 + i * 259} y="178" textAnchor="middle">{samples[i * 24] && location ? formatTime(samples[i * 24].time, location.timeZone) : `${pad(i * 6)}:00`}</text></g>)}
-        {path && <><path className="solar-path__area" d={`${path} L1068 154 L32 154 Z`} fill="url(#path-fill)" /><path className="solar-path__curve" pathLength="1" d={path} fill="none" stroke="#555" strokeWidth="1.3" vectorEffect="non-scaling-stroke" /></>}
-        {data && <g><line className="solar-path__now" x1={x(now.getTime())} x2={x(now.getTime())} y1="12" y2="154" stroke="#aaa" strokeWidth=".7" strokeDasharray="2 4" /><circle className="solar-path__halo" cx={x(now.getTime())} cy={y(data.altitude)} r="9" fill="#333" fillOpacity=".08" /><circle className="solar-path__marker" cx={x(now.getTime())} cy={y(data.altitude)} r="3.5" fill="#333" /></g>}
+        {path && <><path className="solar-path__area" d={`${path} L1068 154 L32 154 Z`} fill="url(#path-fill)" /><path className="solar-path__curve" pathLength="1" d={path} fill="none" style={{ stroke: 'var(--solar-curve, #555)' }} strokeWidth="1.3" vectorEffect="non-scaling-stroke" /></>}
+        {data && <g><line className="solar-path__now" x1={x(now.getTime())} x2={x(now.getTime())} y1="12" y2="154" style={{ stroke: 'var(--solar-now, #aaa)' }} strokeWidth=".7" strokeDasharray="2 4" /><circle className="solar-path__halo" cx={x(now.getTime())} cy={y(data.altitude)} r="9" style={{ fill: 'var(--solar-marker, #333)' }} fillOpacity=".08" /><circle className="solar-path__marker" cx={x(now.getTime())} cy={y(data.altitude)} r="3.5" style={{ fill: 'var(--solar-marker, #333)' }} /></g>}
       </svg>
       {!location && <p className="solar-path__empty">Your location reveals today’s path.</p>}
     </div>
     <div className="solar-path__axis" aria-hidden="true">{[0, 1, 2, 3, 4].map(i => <span key={i}>{samples[i * 24] && location ? formatTime(samples[i * 24].time, location.timeZone) : `${pad(i * 6)}:00`}</span>)}</div><div className="solar-path__legend"><span><i /> Solar elevation</span><span>Dashed line · 0° horizon</span><span>Local time{location ? ` · ${location.timeZone}` : ''}</span></div>
   </section>;
 }
+
+type SolarTimelineRow = {
+  time: string;
+  altitude: string;
+  azimuth: string;
+  bearing: string;
+  phase: string;
+};
+
+const SOLAR_TABLE_COLUMNS: DataTableColumn<SolarTimelineRow>[] = [
+  { key: 'time', label: 'Local time', sortable: true },
+  { key: 'altitude', label: 'Elevation', align: 'right', sortable: true, numeric: true },
+  { key: 'azimuth', label: 'Azimuth', align: 'right', sortable: true, numeric: true },
+  { key: 'bearing', label: 'Bearing', align: 'right', sortable: true },
+  { key: 'phase', label: 'Horizon state', align: 'right', sortable: true },
+];
 
 export function SolarPanel() {
   const now = useClock();
@@ -135,6 +164,7 @@ export function SolarPanel() {
   const [message, setMessage] = useState('Waiting for location permission…');
   const [open, setOpen] = useState(false);
   const [draft, setDraft] = useState(DEFAULT_LOCATION);
+  const [bearingOffset, setBearingOffset] = useState<number | null>(null);
   const requested = useRef(false);
   const requestId = useRef(0);
   const requestLocation = useCallback(() => {
@@ -159,16 +189,64 @@ export function SolarPanel() {
     document.title = 'jhosephe — Solar observatory';
     if (!requested.current) { requested.current = true; requestLocation(); }
   }, [requestLocation]);
+  const activeLocation = location ?? DEFAULT_LOCATION;
   const data = useMemo(() => location ? buildSolarSnapshot(now, location) : null, [now, location]);
   const zone = location?.timeZone ?? 'UTC';
   const nextSeconds = data?.nextEvent ? Math.max(0, Math.floor((data.nextEvent.time.getTime() - now.getTime()) / 1000)) : null;
   const remaining = nextSeconds == null ? '—' : `${pad(Math.floor(nextSeconds / 3600))}:${pad(Math.floor(nextSeconds % 3600 / 60))}:${pad(nextSeconds % 60)}`;
+
+  const elevationSeries = useMemo<MetricPoint[]>(() => {
+    const daySamples = buildDayPath(now, activeLocation);
+    return daySamples
+      .filter((_, index) => index % 8 === 0)
+      .map(sample => ({
+        label: formatTime(sample.time, activeLocation.timeZone),
+        value: Number(sample.altitude.toFixed(1)),
+      }));
+  }, [activeLocation, now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()]);
+
+  const timelineRows = useMemo<SolarTimelineRow[]>(() => {
+    const daySamples = buildDayPath(now, activeLocation);
+    return daySamples
+      .filter((_, index) => index % 16 === 0)
+      .map(sample => {
+        const snap = buildSolarSnapshot(sample.time, activeLocation);
+        return {
+          time: formatTime(sample.time, activeLocation.timeZone),
+          altitude: `${degrees(snap.altitude)}°`,
+          azimuth: `${degrees(snap.azimuth)}°`,
+          bearing: compassDirection(snap.azimuth),
+          phase: phaseLabels[snap.status],
+        };
+      });
+  }, [activeLocation, now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()]);
+
+  const liveAzimuth = Math.round(data?.azimuth ?? 135);
+  const inspectHeading = bearingOffset ?? liveAzimuth;
+
+  const applyEphemeris = (selection: EphemerisSelection) => {
+    const next: Location = {
+      name: selection.location,
+      latitude: selection.latitude,
+      longitude: selection.longitude,
+      timeZone: selection.zone,
+    };
+    requestId.current++;
+    setLocation(next);
+    setDraft(next);
+    setBearingOffset(null);
+    setSource('manual');
+    setAccuracy(null);
+    setGeoState('ready');
+    setMessage(`Synced observatory: ${selection.location} · ${selection.target}`);
+  };
+
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
       new Intl.DateTimeFormat('en-US', { timeZone: draft.timeZone });
       buildSolarSnapshot(now, draft);
-      requestId.current++; setLocation(draft); setSource('manual'); setAccuracy(null); setGeoState('ready'); setMessage('Location set manually.'); setOpen(false);
+      requestId.current++; setLocation(draft); setBearingOffset(null); setSource('manual'); setAccuracy(null); setGeoState('ready'); setMessage('Location set manually.'); setOpen(false);
     } catch { setMessage('Check the coordinates and use a valid time zone, such as America/Fortaleza.'); }
   };
   return <div className="solar-page">
@@ -176,21 +254,24 @@ export function SolarPanel() {
     <header className="solar-topbar">
       <a className="solar-brand" href="/" aria-label="jhosephe / solar, back to home"><span className="solar-brand__symbol" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M14 8v8c0 4-2 6-6 6" stroke="currentColor" strokeWidth="1.4"/><circle cx="14" cy="4" r="1" fill="currentColor"/></svg></span><span>jhosephe<span className="solar-brand__suffix"> / solar</span></span></a>
       <span className="solar-label solar-topbar__edition">Instrument 002</span>
-      <Dialog open={open} onOpenChange={setOpen}>
+      <div className="solar-topbar__actions">
+        <ThemeToggle />
+        <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild><Button className="solar-location"><MapPin size={14} aria-hidden="true" /><span>{location?.name ?? 'Set location'}</span><Settings2 size={14} aria-hidden="true" /></Button></DialogTrigger>
         <DialogContent className="solar-settings">
           <span className="solar-label">Observation point</span><DialogTitle className="dialog-title">Where are you watching the sun?</DialogTitle>
           <DialogDescription className="dialog-description">Use your device or enter coordinates. Calculations stay here; your location is never sent to a server.</DialogDescription>
-          <Button onClick={requestLocation} disabled={geoState === 'pending'}><LocateFixed size={16} aria-hidden="true" /> Use my location</Button>
+          <Button onClick={requestLocation} loading={geoState === 'pending'}><LocateFixed size={16} aria-hidden="true" /> Use my location</Button>
           <form onSubmit={submit} className="solar-settings__form">
-            <label>Location name<input className="jh-input" value={draft.name} required maxLength={60} onChange={e => setDraft({ ...draft, name: e.target.value })} /></label>
-            <div className="solar-settings__coordinates"><label>Latitude<input className="jh-input" type="number" min="-90" max="90" step="any" required value={Number.isFinite(draft.latitude) ? draft.latitude : ''} onChange={e => setDraft({ ...draft, latitude: e.target.valueAsNumber })} /></label><label>Longitude<input className="jh-input" type="number" min="-180" max="180" step="any" required value={Number.isFinite(draft.longitude) ? draft.longitude : ''} onChange={e => setDraft({ ...draft, longitude: e.target.valueAsNumber })} /></label></div>
-            <label>Time zone<input className="jh-input" required value={draft.timeZone} onChange={e => setDraft({ ...draft, timeZone: e.target.value })} /></label>
+            <label>Location name<Input value={draft.name} required maxLength={60} onChange={e => setDraft({ ...draft, name: e.target.value })} /></label>
+            <div className="solar-settings__coordinates"><label>Latitude<Input type="number" min="-90" max="90" step="any" required value={Number.isFinite(draft.latitude) ? draft.latitude : ''} onChange={e => setDraft({ ...draft, latitude: e.target.valueAsNumber })} /></label><label>Longitude<Input type="number" min="-180" max="180" step="any" required value={Number.isFinite(draft.longitude) ? draft.longitude : ''} onChange={e => setDraft({ ...draft, longitude: e.target.valueAsNumber })} /></label></div>
+            <label>Time zone<Input required value={draft.timeZone} onChange={e => setDraft({ ...draft, timeZone: e.target.value })} /></label>
             <Button type="submit" variant="primary">Apply location <ArrowUpRight size={15} aria-hidden="true" /></Button>
           </form>
           <p className="solar-settings__message" role="status">{message}</p>
         </DialogContent>
       </Dialog>
+      </div>
     </header>
     <main id="solar-main">
       <div className="solar-heading"><div><span className="solar-label">Solar observatory</span><p>Time, through light.</p></div><div className="solar-live"><i aria-hidden="true" />{location ? 'Live' : 'Waiting for location'}<span>{location ? new Intl.DateTimeFormat('en-US', { day: '2-digit', month: 'short', year: 'numeric', timeZone: zone }).format(now) : 'Device location'}</span></div></div>
@@ -204,6 +285,89 @@ export function SolarPanel() {
       <div className="solar-bottom">
         <div className="solar-location-status" aria-live="polite"><LocateFixed size={14} aria-hidden="true" /><span>{location ? `${source === 'device' ? 'Device' : 'Manual coordinates'} · ${location.latitude.toFixed(4)}°, ${location.longitude.toFixed(4)}°${accuracy == null ? '' : ` · accuracy ±${Math.ceil(accuracy)} m`}` : message}</span>{geoState === 'error' && <button type="button" onClick={() => setOpen(true)}>Configure location <ArrowUpRight size={14} aria-hidden="true" /></button>}</div>
         <DayPath now={now} location={location} data={data} />
+        <section className="solar-telemetry" aria-labelledby="solar-telemetry-title">
+          <div className="solar-telemetry__head">
+            <div>
+              <span className="solar-label">Connected station instruments</span>
+              <h2 id="solar-telemetry-title">Sky, lunar, and local atmospheric telemetry</h2>
+            </div>
+            <EphemerisPicker label="Switch observatory" onChange={applyEphemeris} />
+          </div>
+          <Tabs
+            label="Observatory instruments"
+            defaultValue="sky"
+            items={[
+              {
+                value: 'sky',
+                label: 'Sky & Lunar',
+                badge: '4',
+                content: (
+                  <div className="solar-telemetry__grid">
+                    <AstronomyInstrument
+                      latitude={activeLocation.latitude}
+                      longitude={activeLocation.longitude}
+                      location={activeLocation.name}
+                      date={now}
+                    />
+                    <LunarEphemeris
+                      location={activeLocation.name}
+                      latitude={activeLocation.latitude}
+                      longitude={activeLocation.longitude}
+                      date={now}
+                    />
+                    <MetricCard
+                      label="Solar altitude curve"
+                      value={data ? degrees(data.altitude, 1) : degrees(elevationSeries[Math.floor(elevationSeries.length / 2)]?.value, 1)}
+                      unit="°"
+                      delta={data ? phaseLabels[data.status] : activeLocation.name}
+                      deltaDirection={data && data.altitude >= 0 ? 'up' : 'neutral'}
+                      caption={`${activeLocation.name} · 24h solar elevation`}
+                      series={elevationSeries}
+                    />
+                    <Compass
+                      heading={inspectHeading}
+                      onHeadingChange={setBearingOffset}
+                      label="Solar azimuth bearing"
+                    />
+                  </div>
+                ),
+              },
+              {
+                value: 'atmosphere',
+                label: 'Atmosphere & Wind',
+                badge: '3',
+                content: (
+                  <div className="solar-telemetry__grid">
+                    <WeatherConditions location={activeLocation.name} />
+                    <WindInstrument
+                      location={activeLocation.name}
+                      direction={inspectHeading}
+                      onDirectionChange={setBearingOffset}
+                    />
+                    <WeatherInstrument windDirection={inspectHeading} label={`${activeLocation.name} atmospheric sensor`} />
+                  </div>
+                ),
+              },
+              {
+                value: 'tides',
+                label: 'Tides & Ephemeris Log',
+                badge: String(timelineRows.length),
+                content: (
+                  <div className="solar-telemetry__log">
+                    <TideInstrument station={`${activeLocation.name} Station`} date={now} />
+                    <DataTable
+                      caption={`${activeLocation.name} daily ephemeris trajectory`}
+                      columns={SOLAR_TABLE_COLUMNS}
+                      rows={timelineRows}
+                      rowKey={row => row.time}
+                      initialSortKey="time"
+                    />
+                  </div>
+                ),
+              },
+            ]}
+          />
+        </section>
       </div>
     </main>
     <footer className="solar-footer"><a href="/lab"><ArrowLeft size={13} aria-hidden="true" /> Laboratory</a><p>Updates every second · calculated position · unobstructed horizon · times depend on atmospheric conditions</p><span className="solar-label">J / 002</span></footer>

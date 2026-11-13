@@ -8,7 +8,7 @@ const timeSlots = ['9:00 AM', '10:30 AM', '12:00 PM', '1:30 PM', '3:00 PM', '4:3
 const sameDay = (a?: Date, b?: Date) => !!a && !!b && a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
 
 export function DateTimePicker({ value, onChange, label = 'Schedule a time', disabled = false, material = 'solid' }: {
-  value?: Date; onChange: (value: Date | undefined) => void; label?: string; disabled?: boolean; material?: 'solid' | 'liquid-glass';
+  value?: Date; onChange: (value: Date | undefined) => void; label?: string; disabled?: boolean; material?: 'solid' | 'liquid-glass' | 'liquid';
 }) {
   const [open, setOpen] = useState(false);
   const [draftDate, setDraftDate] = useState(value);

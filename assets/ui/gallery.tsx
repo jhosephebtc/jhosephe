@@ -1,5 +1,6 @@
 import { useRef, useState, type ReactNode } from 'react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { Button } from './button';
 
 export interface GalleryItem { id: string; title: string; description?: string; content: ReactNode }
 export function Gallery({ items, label = 'Gallery', showCaptions = true, showIndicators = true }: {
@@ -29,6 +30,6 @@ export function Gallery({ items, label = 'Gallery', showCaptions = true, showInd
       onPointerUp={event => { if (!drag.current) return; drag.current = null; setDragging(false); const element = event.currentTarget; requestAnimationFrame(() => move(Math.round(element.scrollLeft / element.clientWidth))); }}
       onPointerCancel={() => { drag.current = null; setDragging(false); }} onLostPointerCapture={() => { drag.current = null; setDragging(false); }}>
       {items.map((item, index) => <div key={item.id} className="jh-gallery__slide" role="group" aria-roledescription="slide" aria-label={`${index + 1} of ${items.length}: ${item.title}`} inert={index !== active || undefined}><div className="jh-gallery__art">{item.content}</div>{showCaptions && <div className="jh-gallery__caption"><strong>{item.title}</strong>{item.description && <p>{item.description}</p>}</div>}</div>)}
-    </div><div className="jh-gallery__footer"><button aria-label="Previous slide" onClick={() => move(active - 1)} disabled={active === 0}><ArrowLeft size={16} aria-hidden="true" /></button>{showIndicators ? <div className="jh-gallery__dots">{items.map((item, index) => <button key={item.id} aria-label={`Go to slide ${index + 1}`} aria-current={active === index ? 'true' : undefined} onClick={() => move(index)}><span /></button>)}</div> : <span className="jh-gallery__count">{active + 1} / {items.length}</span>}<button aria-label="Next slide" onClick={() => move(active + 1)} disabled={active >= items.length - 1}><ArrowRight size={16} aria-hidden="true" /></button></div><span className="jh-visually-hidden" aria-live="polite">Slide {active + 1} of {items.length}</span>
+    </div><div className="jh-gallery__footer"><Button type="button" size="icon" variant="secondary" aria-label="Previous slide" onClick={() => move(active - 1)} disabled={active === 0}><ArrowLeft size={16} aria-hidden="true" /></Button>{showIndicators ? <div className="jh-gallery__dots">{items.map((item, index) => <button type="button" key={item.id} aria-label={`Go to slide ${index + 1}`} aria-current={active === index ? 'true' : undefined} onClick={() => move(index)}><span /></button>)}</div> : <span className="jh-gallery__count">{active + 1} / {items.length}</span>}<Button type="button" size="icon" variant="secondary" aria-label="Next slide" onClick={() => move(active + 1)} disabled={active >= items.length - 1}><ArrowRight size={16} aria-hidden="true" /></Button></div><span className="jh-visually-hidden" aria-live="polite">Slide {active + 1} of {items.length}</span>
   </section>;
 }

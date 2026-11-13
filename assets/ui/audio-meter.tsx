@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
+import { Button } from './button';
 
 export type AudioMeterOrientation = 'horizontal' | 'vertical';
 export type AudioMeterColorScale = 'accent' | 'heat' | 'pastel';
@@ -106,10 +107,38 @@ export function AudioMeter({ label = 'Audio level', orientation = 'horizontal', 
       }))}
     </div>
     <div className="jh-audio-meter__actions">
-      <button type="button" aria-pressed={mode === 'demo'} onClick={() => { releaseCapture(); setMode('demo'); setStatus('Demo pulse'); }}>Demo pulse</button>
-      {mode === 'microphone'
-        ? <button type="button" onClick={() => { releaseCapture(); setMode('demo'); setStatus('Demo pulse'); }}>Stop microphone</button>
-        : <button type="button" onClick={() => void startMicrophone()}>Use microphone</button>}
+      <Button
+        type="button"
+        size="small"
+        variant="secondary"
+        className={mode === 'demo' ? 'is-active' : undefined}
+        aria-pressed={mode === 'demo'}
+        onClick={() => { releaseCapture(); setMode('demo'); setStatus('Demo pulse'); }}
+      >
+        Demo pulse
+      </Button>
+      {mode === 'microphone' ? (
+        <Button
+          type="button"
+          size="small"
+          variant="secondary"
+          className="is-active"
+          aria-pressed={true}
+          onClick={() => { releaseCapture(); setMode('demo'); setStatus('Demo pulse'); }}
+        >
+          Stop microphone
+        </Button>
+      ) : (
+        <Button
+          type="button"
+          size="small"
+          variant="secondary"
+          aria-pressed={false}
+          onClick={() => void startMicrophone()}
+        >
+          Use microphone
+        </Button>
+      )}
     </div>
     <span className="jh-visually-hidden" role="status">{status}</span>
   </section>;
