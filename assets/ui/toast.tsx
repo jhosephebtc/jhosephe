@@ -17,9 +17,12 @@ export function Toast({ open, onOpenChange, title, description, duration = 5000,
   return <ToastPrimitive.Provider duration={duration} swipeDirection="right" label="Notification">{createPortal(<>
     <ToastPrimitive.Root data-jh-material={matAttr} className={`jh-toast${finish === 'liquid' ? ' jh-toast--liquid' : ''}`} open={open} onOpenChange={onOpenChange}>
       {finish === 'liquid' ? <ShaderSurface /> : null}
-      <span className="jh-toast__icon" aria-hidden="true"><Check size={18} strokeWidth={1.5} /></span>
-      <div><ToastPrimitive.Title className="jh-toast__title">{title}</ToastPrimitive.Title>{description && <ToastPrimitive.Description className="jh-toast__description">{description}</ToastPrimitive.Description>}</div>
-      <ToastPrimitive.Close className="jh-toast__close" aria-label="Dismiss notification"><X size={15} aria-hidden="true" /></ToastPrimitive.Close>
+      <span className="jh-toast__icon" aria-hidden="true"><Check size={16} strokeWidth={1.65} /></span>
+      <div className="jh-toast__body">
+        <ToastPrimitive.Title className="jh-toast__title">{title}</ToastPrimitive.Title>
+        {description ? <ToastPrimitive.Description className="jh-toast__description">{description}</ToastPrimitive.Description> : null}
+      </div>
+      <ToastPrimitive.Close className="jh-toast__close" aria-label="Dismiss notification"><X size={14} aria-hidden="true" /></ToastPrimitive.Close>
     </ToastPrimitive.Root><ToastPrimitive.Viewport className="jh-toast-viewport" label="Notifications ({hotkey})" />
   </>, document.body)}</ToastPrimitive.Provider>;
 }

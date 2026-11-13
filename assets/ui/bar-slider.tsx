@@ -9,7 +9,7 @@ export interface BarSliderProps {
   accentColor?: string; accentColorEnd?: string; accentGradient?: boolean; glowIntensity?: number; glowBlur?: number;
 }
 
-export function BarSlider({ value, onValueChange, label, min = 0, max = 100, step = 1, disabled = false, thumbThickness = 15, thumbHeight = 44, thumbRadius = 7, accentColor = 'oklch(100% 0 0)', accentColorEnd = 'oklch(92% 0.035 250)', accentGradient = false, glowIntensity = 68, glowBlur = 5 }: BarSliderProps) {
+export function BarSlider({ value, onValueChange, label, min = 0, max = 100, step = 1, disabled = false, thumbThickness = 15, thumbHeight = 44, thumbRadius = 7, accentColor = 'oklch(100% 0 0)', accentColorEnd = 'oklch(88% 0 0)', accentGradient = false, glowIntensity = 68, glowBlur = 5 }: BarSliderProps) {
   const id = useId();
   const [dragging, setDragging] = useState(false);
   const fraction = max > min ? Math.max(0, Math.min(1, (value - min) / (max - min))) : 0;

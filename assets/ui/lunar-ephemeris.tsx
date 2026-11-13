@@ -1,4 +1,4 @@
-import { useId, useMemo, useState } from 'react';
+import { useEffect, useId, useMemo, useState } from 'react';
 import { Slider } from './controls';
 import {
   computeLunarEphemeris,
@@ -106,12 +106,26 @@ export function LunarEphemeris({
     return `M ${cx} ${cy - r} A ${r} ${r} 0 0 ${outerSweep} ${cx} ${cy + r} A ${rx.toFixed(2)} ${r} 0 0 ${termSweep} ${cx} ${cy - r} Z`;
   }, [phaseAngle]);
 
+  const [scrubbing, setScrubbing] = useState(false);
+
+  useEffect(() => {
+    if (!scrubbing) return;
+    const stop = () => setScrubbing(false);
+    window.addEventListener('pointerup', stop);
+    window.addEventListener('pointercancel', stop);
+    return () => {
+      window.removeEventListener('pointerup', stop);
+      window.removeEventListener('pointercancel', stop);
+    };
+  }, [scrubbing]);
+
   const matAttr = surfaceMaterialAttr(material);
 
   return (
     <section
       className="jh-lunar-ephemeris"
       data-jh-material={matAttr}
+      data-dragging={scrubbing ? 'true' : undefined}
       aria-labelledby={`${id}-title`}
     >
       <header className="jh-lunar-ephemeris__header">
@@ -134,12 +148,20 @@ export function LunarEphemeris({
               <clipPath id={discClipId}>
                 <circle cx="70" cy="70" r="38" />
               </clipPath>
+              <mask id={`${discClipId}-scale`} maskUnits="userSpaceOnUse" x="0" y="0" width="140" height="140">
+                <rect width="140" height="140" fill="black" />
+                <circle cx="70" cy="70" r="66.5" fill="white" />
+                <circle cx="70" cy="70" r="54.2" fill="black" />
+              </mask>
+              <filter id={`${discClipId}-soft`} x="-22%" y="-22%" width="144%" height="144%">
+                <feGaussianBlur stdDeviation="2.1" />
+              </filter>
               <linearGradient id={bezelGradId} x1="20%" y1="10%" x2="80%" y2="90%">
                 <stop offset="0%" style={{ stopColor: 'var(--jh-lunar-bezel-1, #fdfdfd)' }} />
                 <stop offset="52%" style={{ stopColor: 'var(--jh-lunar-bezel-2, #e8e8e8)' }} />
                 <stop offset="100%" style={{ stopColor: 'var(--jh-lunar-bezel-3, #f5f5f5)' }} />
               </linearGradient>
-              <radialGradient id={nightGradId} cx={`${nightHighlightX}%`} cy={`${nightHighlightY}%`} r="74%">
+              <radialGradient id={nightGradId} cx={`${nightHighlightX}%`} cy={`${nightHighlightY}%`} r="76%">
                 <stop offset="0%" style={{ stopColor: 'var(--jh-lunar-night-1, #dcdcdc)' }} />
                 <stop offset="68%" style={{ stopColor: 'var(--jh-lunar-night-2, #cacaca)' }} />
                 <stop offset="100%" style={{ stopColor: 'var(--jh-lunar-night-3, #bcbcbc)' }} />
@@ -149,15 +171,17 @@ export function LunarEphemeris({
                 <stop offset="58%" style={{ stopColor: 'var(--jh-lunar-lit-2, #f4f4f4)' }} />
                 <stop offset="100%" style={{ stopColor: 'var(--jh-lunar-lit-3, #e1e1e1)' }} />
               </radialGradient>
-              <radialGradient id={domeGradId} cx={`${litHighlightX}%`} cy={`${litHighlightY}%`} r="65%">
-                <stop offset="0%" style={{ stopColor: 'var(--jh-lunar-dome-hi, #ffffff)' }} stopOpacity="0.48" />
-                <stop offset="48%" style={{ stopColor: 'var(--jh-lunar-dome-hi, #ffffff)' }} stopOpacity="0.08" />
-                <stop offset="100%" stopColor="#000000" stopOpacity="0.08" />
+              <radialGradient id={domeGradId} cx={`${litHighlightX}%`} cy={`${litHighlightY}%`} r="66%">
+                <stop offset="0%" style={{ stopColor: 'var(--jh-lunar-dome-hi, #ffffff)' }} stopOpacity="0.54" />
+                <stop offset="46%" style={{ stopColor: 'var(--jh-lunar-dome-hi, #ffffff)' }} stopOpacity="0.12" />
+                <stop offset="84%" stopColor="#000000" stopOpacity="0.04" />
+                <stop offset="100%" stopColor="#000000" stopOpacity="0.14" />
               </radialGradient>
             </defs>
 
-            {/* Outer 28-day synodic dial scale matching Tactile Dial ticks */}
-            <g transform="translate(70 70)">
+            {/* Recessed orbital scale channel + 28-day synodic dial scale */}
+            <circle cx="70" cy="70" r="61" fill="none" strokeWidth="11.5" className="jh-lunar-ephemeris__trough" />
+            <g transform="translate(70 70)" mask={`url(#${discClipId}-scale)`}>
               {Array.from({ length: synodicTicks }, (_, i) => {
                 const major = i % 7 === 0;
                 const active = i <= activeTickCount;
@@ -177,39 +201,30 @@ export function LunarEphemeris({
             <circle cx="70" cy="70" r="46" fill={`url(#${bezelGradId})`} className="jh-lunar-ephemeris__bezel" />
             <circle cx="70" cy="70" r="40" className="jh-lunar-ephemeris__seat" />
 
-            {/* Subtle light-incidence ray axis behind/around bezel */}
+            {/* Subtle light-incidence ray axis sheltered inside bezel lip */}
             <g transform={`translate(70 70) rotate(${lightDialDeg.toFixed(1)})`}>
               <line x1="0" y1="-55" x2="0" y2="-40" className="jh-lunar-ephemeris__light-ray" />
               <circle cx="0" cy="-56.5" r="2.2" className="jh-lunar-ephemeris__light-source" />
             </g>
 
-            {/* Textured monochrome Moon globe inside disc clip */}
+            {/* Smooth illuminated Moon sphere inside disc clip */}
             <g clipPath={`url(#${discClipId})`}>
               <circle cx="70" cy="70" r="38" fill={`url(#${nightGradId})`} className="jh-lunar-ephemeris__night" />
-              {/* Subtle lunar maria (seas) */}
-              <g className="jh-lunar-ephemeris__maria">
-                <ellipse cx="56" cy="57" rx="13" ry="10" transform="rotate(-18 56 57)" />
-                <ellipse cx="78" cy="58" rx="9" ry="7" transform="rotate(14 78 58)" />
-                <ellipse cx="86" cy="70" rx="7" ry="10" transform="rotate(-8 86 70)" />
-                <ellipse cx="58" cy="80" rx="10" ry="6" transform="rotate(12 58 80)" />
-                <circle cx="71" cy="71" r="6" />
-              </g>
-              {/* Dynamic tilted lit phase surface over 28-day cycle */}
+              <path
+                d={litPath}
+                fill={`url(#${litGradId})`}
+                transform={`rotate(${limbTiltDeg} 70 70)`}
+                filter={`url(#${discClipId}-soft)`}
+                className="jh-lunar-ephemeris__lit-penumbra"
+              />
               <path
                 d={litPath}
                 fill={`url(#${litGradId})`}
                 transform={`rotate(${limbTiltDeg} 70 70)`}
                 className="jh-lunar-ephemeris__lit"
               />
-              {/* Fine lunar craters */}
-              <g className="jh-lunar-ephemeris__craters">
-                <circle cx="53" cy="64" r="3.2" />
-                <circle cx="82" cy="84" r="4.1" />
-                <circle cx="74" cy="48" r="2.5" />
-                <circle cx="62" cy="91" r="2.2" />
-              </g>
               {/* Spherical dome specular & limb shading aligned with sunlight angle */}
-              <circle cx="70" cy="70" r="38" fill={`url(#${domeGradId})`} />
+              <circle cx="70" cy="70" r="38" fill={`url(#${domeGradId})`} className="jh-lunar-ephemeris__dome" />
             </g>
 
             {/* Crisp lunar rim & orbital age indicator pip */}
@@ -249,6 +264,7 @@ export function LunarEphemeris({
             thumbThickness={14}
             thumbHeight={24}
             thumbRadius={7}
+            onDraggingChange={setScrubbing}
             onValueChange={([offset]) => setDayOffset(offset)}
           />
           <output>{dayOffset === 0 ? 'Today' : `+${dayOffset}d`}</output>

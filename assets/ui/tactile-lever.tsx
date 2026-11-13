@@ -1,4 +1,4 @@
-import type { CSSProperties } from 'react';
+import { useEffect, useState, type CSSProperties } from 'react';
 import * as SliderPrimitive from '@radix-ui/react-slider';
 
 export interface TactileLeverProps {
@@ -28,7 +28,7 @@ export function TactileLever({
   disabled = false,
   unit = '',
   accentColor = 'oklch(100% 0 0)',
-  accentColorEnd = 'oklch(92% 0.035 250)',
+  accentColorEnd = 'oklch(88% 0 0)',
   accentGradient = false,
   glowIntensity = 68,
   glowBlur = 5,
@@ -46,8 +46,21 @@ export function TactileLever({
     '--jh-slider-glow-blur': `${Math.max(0, Math.min(16, glowBlur))}px`,
   } as CSSProperties;
 
+  const [dragging, setDragging] = useState(false);
+
+  useEffect(() => {
+    if (!dragging) return;
+    const stop = () => setDragging(false);
+    window.addEventListener('pointerup', stop);
+    window.addEventListener('pointercancel', stop);
+    return () => {
+      window.removeEventListener('pointerup', stop);
+      window.removeEventListener('pointercancel', stop);
+    };
+  }, [dragging]);
+
   return (
-    <section className="jh-tactile-lever">
+    <section className="jh-tactile-lever" data-dragging={dragging ? 'true' : undefined}>
       <div className="jh-tactile-lever__heading">
         <span>{label}</span>
         <output>{value}{unit}</output>
@@ -56,10 +69,21 @@ export function TactileLever({
         <SliderPrimitive.Root
           className="jh-tactile-lever__slider"
           data-accent-gradient={accentGradient || undefined}
+          data-dragging={dragging ? 'true' : undefined}
           style={style}
           orientation="vertical"
           value={[value]}
           onValueChange={values => onValueChange(values[0])}
+          onPointerDown={event => {
+            if (!disabled && event.button === 0) setDragging(true);
+          }}
+          onPointerUp={() => setDragging(false)}
+          onPointerCancel={() => setDragging(false)}
+          onKeyDown={event => {
+            if (!disabled && /^(Arrow|Page|Home|End)/.test(event.key)) setDragging(true);
+          }}
+          onKeyUp={() => setDragging(false)}
+          onBlur={() => setDragging(false)}
           min={min}
           max={max}
           step={step}

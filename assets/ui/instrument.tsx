@@ -29,12 +29,13 @@ const cellAccent = (index: number, total: number, accentColor: string, accentCol
 };
 
 /** The visible text outside this SVG carries the value. */
-export function InstrumentBars({ value, orientation = 'horizontal',
-  accentColor = 'oklch(100% 0 0)', accentColorEnd = 'oklch(92% 0.035 250)', accentGradient = false,
+export function InstrumentBars({ value, orientation = 'horizontal', dragging = false,
+  accentColor = 'oklch(100% 0 0)', accentColorEnd = 'oklch(88% 0 0)', accentGradient = false,
   glowIntensity = 68, glowBlur = 5,
 }: {
   value: number;
   orientation?: InstrumentBarsOrientation;
+  dragging?: boolean;
   accentColor?: string;
   accentColorEnd?: string;
   accentGradient?: boolean;
@@ -55,6 +56,7 @@ export function InstrumentBars({ value, orientation = 'horizontal',
         aria-hidden="true"
         focusable="false"
         data-orientation="vertical"
+        data-dragging={dragging ? 'true' : undefined}
         data-accent-gradient={accentGradient || undefined}
         style={style}
       >
@@ -90,6 +92,7 @@ export function InstrumentBars({ value, orientation = 'horizontal',
       aria-hidden="true"
       focusable="false"
       data-orientation="horizontal"
+      data-dragging={dragging ? 'true' : undefined}
       data-accent-gradient={accentGradient || undefined}
       style={style}
     >

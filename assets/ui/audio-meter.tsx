@@ -5,8 +5,26 @@ export type AudioMeterOrientation = 'horizontal' | 'vertical';
 export type AudioMeterColorScale = 'accent' | 'heat' | 'pastel';
 
 /** Animated matrix of square dB segments. Microphone access starts only after an explicit click. */
-export function AudioMeter({ label = 'Audio level', orientation = 'horizontal', barCount = 32, colorScale = 'accent', accentColor = 'oklch(72% 0.018 250)' }: {
-  label?: string; orientation?: AudioMeterOrientation; barCount?: number; colorScale?: AudioMeterColorScale; accentColor?: string;
+export function AudioMeter({
+  label = 'Audio level',
+  orientation = 'horizontal',
+  barCount = 32,
+  colorScale = 'accent',
+  accentColor = 'oklch(100% 0 0)',
+  accentColorEnd = 'oklch(88% 0 0)',
+  accentGradient = false,
+  glowIntensity = 68,
+  glowBlur = 5,
+}: {
+  label?: string;
+  orientation?: AudioMeterOrientation;
+  barCount?: number;
+  colorScale?: AudioMeterColorScale;
+  accentColor?: string;
+  accentColorEnd?: string;
+  accentGradient?: boolean;
+  glowIntensity?: number;
+  glowBlur?: number;
 }) {
   const count = Math.max(8, Math.min(64, Math.round(barCount)));
   const cellCount = 12;
@@ -90,12 +108,27 @@ export function AudioMeter({ label = 'Audio level', orientation = 'horizontal', 
 
   const amplitude = Math.max(.001, Math.sqrt(levels.reduce((total, level) => total + level * level, 0) / levels.length));
   const decibels = Math.max(-60, Math.min(0, Math.round(20 * Math.log10(amplitude))));
+  const intensity = Math.max(0, Math.min(100, glowIntensity));
+  const blur = Math.max(0, Math.min(16, glowBlur));
+  const meterStyle = {
+    '--jh-slider-accent-color': accentColor,
+    '--jh-slider-accent-color-end': accentColorEnd,
+    '--jh-slider-glow-color': accentGradient ? `color-mix(in oklch, ${accentColor} 50%, ${accentColorEnd} 50%)` : accentColor,
+    '--jh-slider-glow-strength': `${intensity}%`,
+    '--jh-slider-glow-strength-mid': `${Math.round(intensity * .62)}%`,
+    '--jh-slider-glow-strength-edge': `${Math.round(intensity * .3)}%`,
+    '--jh-slider-glow-blur': `${blur}px`,
+  } as CSSProperties;
   const colorFor = (position: number) => {
-    if (colorScale === 'accent') return accentColor;
+    if (colorScale === 'accent') {
+      return accentGradient
+        ? `color-mix(in oklch, ${accentColor} ${Math.round((1 - position) * 100)}%, ${accentColorEnd} ${Math.round(position * 100)}%)`
+        : accentColor;
+    }
     if (colorScale === 'heat') return `oklch(70% 0.19 ${Math.round(220 - position * 190)})`;
     return `oklch(82% 0.105 ${Math.round(275 - position * 115)})`;
   };
-  return <section className="jh-audio-meter" data-orientation={orientation} aria-label={label}>
+  return <section className="jh-audio-meter" data-orientation={orientation} data-scale={colorScale} data-accent-gradient={accentGradient || undefined} style={meterStyle} aria-label={label}>
     <div className="jh-audio-meter__heading"><span>{label}</span><output>{decibels} <small>dBFS</small></output></div>
     <div className="jh-audio-meter__segments" data-orientation={orientation} data-scale={colorScale} style={{ gridTemplateColumns: `repeat(${columns}, 3px)`, gridTemplateRows: `repeat(${rows}, 3px)` } as CSSProperties} role="img" aria-label={`${label}, ${decibels} decibels full scale`}>
       {levels.flatMap((level, band) => Array.from({ length: cellCount }, (_, cell) => {

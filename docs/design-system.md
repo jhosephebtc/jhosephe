@@ -207,11 +207,23 @@ A iluminação em ambos os temas parte de **luz superior contida**, evitando lin
 | `liquid-glass` | Vidro fosco translúcido com `backdrop-filter: blur(...) saturate(...)`. Light: `rgb(255 255 255 / .772)`–`.952`; Dark atual: `rgb(10 10 10 / .84)`–`.95` + `.jh-glass-shape` em `rgb(12 12 12 / .82)`. | Preserva o mesmo posicionamento cromático do Solid, preparando a camada translúcida. |
 | `liquid` | Camada especular com `backdrop-filter` ampliado e ponto de luz dinâmico (`--jh-press-x`, `--jh-press-y` no `Button` quando `data-liquid="true"`). | Clique usa compressão sutil sem alterar bruscamente a cor da face. |
 
-### 6.2 Luzes Emissoras OKLCH (Semitransparentes)
+### 6.2 Luzes Emissoras OKLCH, Profundidade Física & Hardware Tátil (`Light` + `Black/Dark`)
 
-Controles com indicador luminoso (`Slider`, `Dial`, `Bar Slider`, `Tactile Lever`, `Instrument`, `Audio Meter`) usam variáveis OKLCH com mistura transparente (`color-mix(in oklch, ...)`):
-- Variáveis: `--jh-slider-accent-color` (padrão `oklch(100% 0 0)`), `--jh-slider-accent-color-end`, `--jh-bar-cell-accent`, `--jh-slider-glow-color`, `--jh-slider-glow-strength` (`68%`), `--jh-slider-glow-strength-mid` (`42%`), `--jh-slider-glow-strength-edge` (`20%`), `--jh-slider-glow-blur` (`5px`).
-- Suporte a modo gradiente (`data-accent-gradient="true"`) entre cor inicial e final sem opacidade chapada (`70%–76%` de mistura transparente + halo discreto no tema escuro).
+Controles emissivos (`Dial`, `Detent Dial`, `Slider`, `Bar Slider`, `Tactile Lever`, `Instrument Bars`, `Audio Meter`, `Tactile Key`, `Tactile Keypad`, `Tactile Console` e `Lunar Ephemeris`) operam em dois regimes físicos sincronizados entre **Light** e **Black/Dark**:
+
+- **Profundidade & Contenção de Luz**: todos os emissores habitam canaletas em baixo-relevo (`overflow: hidden`, máscaras SVG `<mask>`/`<clipPath>` nas ranhuras orbitais `.jh-dial__trough` e `.jh-lunar-ephemeris__trough`, poços `.jh-instrument__well` / `.jh-audio-meter__segments`, ou fendas fresadas `.jh-dial__mark::after` e pinholes `.jh-tactile-key__face::after`), abaixo de `thumbs` e faces (`z-index: 3`), evitando vazamento de desfoque no fundo ou sobre máscaras superiores.
+- **Estado Estacionário (Repouso) vs. Ativo (Arraste / Pressão / Teclado)**:
+  - Em repouso (sem `[data-dragging="true"]` nem `:active`), inclusive as luzes de topo de botão (`.jh-dial__mark::after`, `.jh-tactile-key[aria-pressed="true"] .jh-tactile-key__face::after`) esmaecem em standby suave (`opacity: .64–.72`), eliminando halos contínuos fora das cavidades.
+  - Durante giro, arraste (`[data-dragging="true"]`) ou clique/tecla ativa (`:active` / `[data-pressed="true"]`), o emissor assume preenchimento opaco intenso (`color-mix` saturado com núcleo claro e brilho interno estritamente contido).
+- **Edições do Tactile Dial (`variant`)**: `'classic'` (ranhura orbital radial de 37 ticks), `'arc'` (anel contínuo de fibra óptica), `'vernier'` (colar serrilhado de precisão com pip de referência) e `'monolith'` (puck embutido com fenda perimetral oculta).
+- **Instrumento Lunar (`Lunar Ephemeris`)**: renderizado como esfera iluminada limpa com terminador suave por penumbra, livre de texturas internas de crateras ou mares lunares, com ranhura de escala sensível ao scrub.
+- **Linha Hardware Tátil (`OP-XY` Inspired)**:
+  - `TactileKey` suporta `shape` (`'pad' | 'dish' | 'circle' | 'pill'`), `tone` (`'surface' | 'contrast'`), `ledPosition` (`'bottom' | 'top-left' | 'top-right' | 'center' | 'none'`) e `accentColor`.
+  - `TactileKeypad` entrega decks (`'keyboard' | 'sequencer' | 'command'`) em chassis usinado com poços quadrados, pratos côncavos circulares e pinhole LEDs.
+  - `TactileConsole` reúne grade de alto-falante perfurada, visor OLED monocromático de telemetria, 4 encoders rotativos graduados em rampa tonal e faixa de 8 steps tateis.
+- **Ótica Fotográfica, Filmstrip & Grade Tipográfica Suíça (`Light` + `Black/Dark`)**:
+  - `CameraWheel` (anel serrilhado em alumínio anodizado/magnésio + régua de exposição de 1/3 EV em baixo-relevo com hierarquia de inteiros dominantes `-2 · -1 · ○ · 1 · 2` e frações recessivas `⅓` / `⅔`) e `CameraDial` (torre GF670 com janela ISO perfurada em baixo-relevo e colar `-2..+2` EV, além do seletor `FILM`).
+  - `FilmstripGallery` (poço de inspeção em baixo-relevo com fita deslizante de papel 120 saindo pela fenda direita) e `ImageInspector` (grade editorial tabular com micro-cabeçalhos em filetes e verificação local de arquivo).
 
 ### 6.3 Scrollbars (Dark Mode) & Preferências de Acessibilidade
 

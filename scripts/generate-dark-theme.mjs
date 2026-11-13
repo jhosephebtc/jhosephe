@@ -100,11 +100,11 @@ function replaceColorsInValue(value, mapper) {
   return changed ? out : null;
 }
 
-const CONTROL_FACE_RE = /(__face|__thumb|__knob|__top|__handle|__cap|__key-face|__tile|__symbol|__toast__icon|button|badge|key|pill|tab\b|switch__thumb|accordion__trigger|context-menu__trigger|option\[aria-checked|aria-selected="?true"?|menu\b|dialog\b|popover\b|tooltip\b|toast\b)/i;
-const WELL_SURFACE_RE = /(__track|__rail|__well|__bed|__seat|__tray|__slot|__channel|input|textarea|select(?!-trigger)|search-input|segmented\b|tabs__list|scroll-area|hex-row|tactile-key(?!__face)|audio-meter__segments|slider(?!__thumb))/i;
-const INPUT_WELL_RE = /(?:__fields\s+(?:input|select)|\.jh-input\b|\.jh-textarea\b|\.jh-search-input\b|__search\s+\.jh-input|__search\s+input|__type-trigger\b|currency-picker__trigger\b|ephemeris-picker__trigger\b|market-picker__trigger\b|date-picker__trigger\b|date-time-picker__trigger\b|combobox__trigger\b|spectrum-trigger\b|oklch-trigger\b|command-trigger\b)/i;
-const SPECULAR_RE = /(::before|::after|__glow|ripple|__glass\b|shine|glare)/i;
-const LIGHT_EMITTER_RE = /(\.jh-slider__range\b|\.jh-tactile-lever__range\b|\.jh-bar-slider__bars\s+span\[data-active|\.jh-audio-meter__segments\s+span\[data-active|\.jh-audio-meter__bars\s+rect\[data-active|\.jh-dial(?!.*detent).*__tick\.is-active|\.jh-dial__mark\b|\.jh-instrument__bar\.is-active|\.jh-progress__fill\b)/i;
+const CONTROL_FACE_RE = /(__face|__thumb|__knob|__top|__handle|__cap|__key-face|__tile|__symbol|__toast__icon|button|badge|key\b|pill|tab\b|switch__thumb|accordion__trigger|context-menu__trigger|option\[aria-checked|aria-selected="?true"?|menu\b|dialog\b|popover\b|tooltip\b|toast\b)/i;
+const WELL_SURFACE_RE = /(__track|__rail|__well|__bed|__seat|__tray|__slot|__channel|__trough|__bars|__arc-bed|__chassis|input|textarea|select(?!-trigger)|search-input|segmented\b|tabs__list|scroll-area|hex-row|tactile-key(?!__face|pad)|audio-meter__segments|slider(?!__thumb))/i;
+const INPUT_WELL_RE = /(?:__fields\s+(?:input|select)|\.jh-input\b|\.jh-textarea\b|\.jh-search-input\b|\.jh-market-picker__search\b|\.jh-currency-picker__search\b|\.jh-finance-nav__search\b|__search\s+\.jh-input|__search\s+input|__type-trigger\b|currency-picker__trigger\b|ephemeris-picker__trigger\b|market-picker__trigger\b|date-picker__trigger\b|date-time-picker__trigger\b|combobox__trigger\b|spectrum-trigger\b|oklch-trigger\b|command-trigger\b)/i;
+const SPECULAR_RE = /(?:(?<!__face)::before|(?<!__face)::after|__glow|ripple|__glass\b|shine|glare)/i;
+const LIGHT_EMITTER_RE = /(\.jh-slider__range\b|\.jh-tactile-lever__range\b|\.jh-bar-slider__bars\s+span\[data-active|\.jh-audio-meter__segments\s+span\[data-active|\.jh-audio-meter__bars\s+rect\[data-active|\.jh-dial(?!.*detent).*__tick\.is-active|\.jh-dial__arc-fill\b|\.jh-dial__mark\b|\.jh-tactile-key.*__face::after|\.jh-tactile-keypad__led\b|\.jh-tactile-console__led\b|\.jh-instrument__bar\.is-active|\.jh-progress__fill\b|\.jh-lunar-ephemeris__tick\.is-active|\.jh-lunar-ephemeris__light-source|\.jh-lunar-ephemeris__age-pip)/i;
 const DETENT_NOTCH_RE = /\.jh-detent-dial\s+\.jh-dial__tick/i;
 const DYNAMIC_ACCENT_VAL_RE = /(--jh-slider-|--jh-bar-cell-|--jh-audio-cell-|color-mix\()/i;
 
@@ -134,7 +134,7 @@ function mapBackgroundColor(lum, a, selector, rawValue = '') {
     return toCssColor(15, Math.min(0.95, Math.max(0.92, a)));
   }
 
-  if (SPECULAR_RE.test(selector) || (/rgb\([^)]*\/\s*0?\.\d+\s*\)/i.test(rawValue) && /transparent|#ffffff00|#00000000/i.test(rawValue))) {
+  if (!LIGHT_EMITTER_RE.test(selector) && (SPECULAR_RE.test(selector) || (/rgb\([^)]*\/\s*0?\.\d+\s*\)/i.test(rawValue) && /transparent|#ffffff00|#00000000/i.test(rawValue)))) {
     if (lum >= 180) {
       return toCssColor(255, Math.min(0.032, Math.max(0.005, a * 0.032)));
     }
@@ -797,7 +797,7 @@ const DARK_COMPONENT_POLISH = `
 }
 
 /* Tracks stay flat deep obsidian slots without harsh outlines or vertical gradients */
-:is([data-jh-theme="dark"], .dark) .jh-slider__track,
+:is([data-jh-theme="dark"], .dark) .jh-slider__track:not(.jh-spectrum__hue .jh-slider__track, .jh-spectrum__saturation .jh-slider__track, .jh-spectrum__lightness .jh-slider__track),
 :is([data-jh-theme="dark"], .dark) .jh-tactile-lever__track,
 :is([data-jh-theme="dark"], .dark) .jh-progress__track {
   border: 0 !important;
@@ -805,244 +805,527 @@ const DARK_COMPONENT_POLISH = `
   background-image: none !important;
   box-shadow: inset 0 1px 2px rgb(0 0 0 / .52), inset 0 -1px 0 rgb(255 255 255 / .012) !important;
 }
+:is([data-jh-theme="dark"], .dark) .jh-spectrum__hue .jh-slider__track {
+  background: linear-gradient(90deg,
+    oklch(72% .19 0),
+    oklch(75% .19 60),
+    oklch(74% .19 120),
+    oklch(72% .19 180),
+    oklch(68% .19 240),
+    oklch(70% .19 300),
+    oklch(72% .19 360)
+  ) !important;
+  box-shadow: inset 0 1px 2px rgb(0 0 0 / .55), inset 0 0 0 1px rgb(255 255 255 / .08) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-spectrum__saturation .jh-slider__track,
+:is([data-jh-theme="dark"], .dark) .jh-spectrum__lightness .jh-slider__track {
+  background: var(--jh-spectrum-track, linear-gradient(90deg, #1b1b1e, #f4f4f6)) !important;
+  box-shadow: inset 0 1px 2px rgb(0 0 0 / .55), inset 0 0 0 1px rgb(255 255 255 / .08) !important;
+}
+:is([data-jh-theme="dark"], .dark) :where(.jh-spectrum__hue, .jh-spectrum__saturation, .jh-spectrum__lightness) .jh-slider__range {
+  border: 0 !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
 :is([data-jh-theme="dark"], .dark) .jh-slider:not(.jh-spectrum__hue .jh-slider):not(.jh-spectrum__saturation .jh-slider):not(.jh-spectrum__lightness .jh-slider) .jh-slider__track,
 :is([data-jh-theme="dark"], .dark) .jh-tactile-lever__track {
-  overflow: visible;
+  position: relative;
+  z-index: 0 !important;
+  overflow: visible !important;
+  box-shadow: inset 0 1.5px 3px rgb(0 0 0 / .84), inset 0 -1px rgb(255 255 255 / .045);
+}
+:is([data-jh-theme="dark"], .dark) :where(.jh-slider > span:not(.jh-slider__track), .jh-tactile-lever__slider > span:not(.jh-tactile-lever__track), .jh-bar-slider > span:not(.jh-bar-slider__track)) {
+  z-index: 4 !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-slider__thumb,
+:is([data-jh-theme="dark"], .dark) .jh-tactile-lever__thumb,
+:is([data-jh-theme="dark"], .dark) .jh-bar-slider__thumb {
+  z-index: 4 !important;
 }
 :is([data-jh-theme="dark"], .dark) .jh-bar-slider__track {
   background: transparent !important;
   background-image: none !important;
   box-shadow: none !important;
-  overflow: visible;
+  overflow: visible !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-bar-slider__bars {
+  overflow: visible !important;
+  padding: 0;
+  background: transparent !important;
+  border-radius: inherit;
+  box-shadow: none !important;
 }
 
-/* Thumbs: contour-free obsidian relief with whisper-subtle catchlight and deep drop shadow */
+/* Thumbs: pure achromatic obsidian relief + frosted obsidian capsule for Bar Slider */
 :is([data-jh-theme="dark"], .dark) :where(.jh-slider__thumb, .jh-bar-slider__thumb, .jh-tactile-lever__thumb),
 :is([data-jh-theme="dark"], .dark) [data-jh-material="solid"] :where(.jh-slider__thumb, .jh-bar-slider__thumb, .jh-tactile-lever__thumb) {
   border: 0 !important;
-  background: linear-gradient(175deg, #101010, #0b0b0b) !important;
-  background-image: linear-gradient(175deg, #101010, #0b0b0b) !important;
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / .018), inset 0 -1px 1px rgb(0 0 0 / .72), 0 3px 8px -2px rgb(0 0 0 / .95) !important;
+  background: linear-gradient(175deg, #252527, #171719) !important;
+  background-image: linear-gradient(175deg, #252527, #171719) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / .12), inset 0 0 0 1px rgb(255 255 255 / .08), 0 3px 8px -2px rgb(0 0 0 / .95) !important;
 }
 :is([data-jh-theme="dark"], .dark) [data-jh-material="liquid-glass"] :where(.jh-slider__thumb, .jh-bar-slider__thumb, .jh-tactile-lever__thumb) {
   border: 0 !important;
-  background: rgb(16 16 16 / .88) !important;
+  background: rgb(26 26 28 / .92) !important;
   background-image: none !important;
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / .022), 0 3px 8px -2px rgb(0 0 0 / .9) !important;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / .14), inset 0 0 0 1px rgb(255 255 255 / .09), 0 3px 8px -2px rgb(0 0 0 / .9) !important;
 }
 :is([data-jh-theme="dark"], .dark) [data-jh-material="liquid"] :where(.jh-slider__thumb, .jh-bar-slider__thumb, .jh-tactile-lever__thumb) {
   border: 0 !important;
-  background: linear-gradient(175deg, rgb(18 18 18 / .82), rgb(11 11 11 / .74)) !important;
-  background-image: linear-gradient(175deg, rgb(18 18 18 / .82), rgb(11 11 11 / .74)) !important;
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / .024), 0 3px 8px -2px rgb(0 0 0 / .9) !important;
+  background: linear-gradient(175deg, rgb(20 20 22 / .84), rgb(12 12 14 / .78)) !important;
+  background-image: linear-gradient(175deg, rgb(20 20 22 / .84), rgb(12 12 14 / .78)) !important;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / .03), 0 3px 8px -2px rgb(0 0 0 / .9) !important;
 }
 :is([data-jh-theme="dark"], .dark) :where(.jh-slider__thumb, .jh-bar-slider__thumb, .jh-tactile-lever__thumb)::after {
   border: 0 !important;
-  background: linear-gradient(180deg, rgb(255 255 255 / .024), transparent) !important;
-  opacity: .35 !important;
+  background: linear-gradient(180deg, rgb(255 255 255 / .03), transparent) !important;
+  opacity: .3 !important;
 }
 :is([data-jh-theme="dark"], .dark) :where(.jh-slider__thumb, .jh-bar-slider__thumb, .jh-tactile-lever__thumb):active {
   box-shadow: inset 0 1px 2px rgb(0 0 0 / .85), 0 1px 3px rgb(0 0 0 / .92) !important;
 }
 
-/* Active accent light emitters: genuinely translucent frosted glass over dark tracks with vivid OKLCH halo glow */
-:is([data-jh-theme="dark"], .dark) .jh-slider__range,
-:is([data-jh-theme="dark"], .dark) [data-jh-material="liquid-glass"] :where(.jh-slider__range),
-:is([data-jh-theme="dark"], .dark) [data-jh-material="liquid"] :where(.jh-slider__range) {
-  background: color-mix(in oklch, var(--jh-slider-accent-color, oklch(100% 0 0)) 42%, transparent);
-  backdrop-filter: blur(2px);
+/* Active accent light emitters: clean semi-opaque illumination (zero white top gel stripe) + customizer halo at rest & drag */
+:is([data-jh-theme="dark"], .dark) .jh-slider:not(.jh-spectrum__hue .jh-slider):not(.jh-spectrum__saturation .jh-slider):not(.jh-spectrum__lightness .jh-slider) .jh-slider__range,
+:is([data-jh-theme="dark"], .dark) [data-jh-material="liquid-glass"] :where(.jh-slider:not(.jh-spectrum__hue .jh-slider):not(.jh-spectrum__saturation .jh-slider):not(.jh-spectrum__lightness .jh-slider) .jh-slider__range),
+:is([data-jh-theme="dark"], .dark) [data-jh-material="liquid"] :where(.jh-slider:not(.jh-spectrum__hue .jh-slider):not(.jh-spectrum__saturation .jh-slider):not(.jh-spectrum__lightness .jh-slider) .jh-slider__range) {
+  opacity: .92;
+  border-radius: 999px !important;
+  background: color-mix(in oklch, var(--jh-slider-accent-color, oklch(100% 0 0)) 88%, #161616);
+  backdrop-filter: none;
   box-shadow:
-    inset 0 1px rgb(255 255 255 / .24),
-    0 0 1px color-mix(in oklch, var(--jh-slider-glow-color, var(--jh-slider-accent-color, oklch(100% 0 0))) var(--jh-slider-glow-strength, 68%), transparent),
-    0 0 2.5px color-mix(in oklch, var(--jh-slider-glow-color, var(--jh-slider-accent-color, oklch(100% 0 0))) var(--jh-slider-glow-strength-mid, 42%), transparent),
-    0 0 var(--jh-slider-glow-blur, 5px) color-mix(in oklch, var(--jh-slider-glow-color, var(--jh-slider-accent-color, oklch(100% 0 0))) var(--jh-slider-glow-strength-edge, 20%), transparent);
+    0 0 calc(var(--jh-slider-glow-blur, 5px) * .5) color-mix(in oklch, var(--jh-slider-glow-color, var(--jh-slider-accent-color, oklch(100% 0 0))) var(--jh-slider-glow-strength-mid, 48%), transparent),
+    0 0 var(--jh-slider-glow-blur, 5px) color-mix(in oklch, var(--jh-slider-glow-color, var(--jh-slider-accent-color, oklch(100% 0 0))) var(--jh-slider-glow-strength-edge, 24%), transparent) !important;
+  transition: opacity 160ms var(--jh-ease), background-color 160ms var(--jh-ease), box-shadow 160ms var(--jh-ease);
+}
+:is([data-jh-theme="dark"], .dark) .jh-slider:not(.jh-spectrum__hue .jh-slider):not(.jh-spectrum__saturation .jh-slider):not(.jh-spectrum__lightness .jh-slider):is([data-dragging="true"], :active) .jh-slider__range,
+:is([data-jh-theme="dark"], .dark) [data-jh-material="liquid-glass"] :where(.jh-slider:not(.jh-spectrum__hue .jh-slider):not(.jh-spectrum__saturation .jh-slider):not(.jh-spectrum__lightness .jh-slider):is([data-dragging="true"], :active) .jh-slider__range),
+:is([data-jh-theme="dark"], .dark) [data-jh-material="liquid"] :where(.jh-slider:not(.jh-spectrum__hue .jh-slider):not(.jh-spectrum__saturation .jh-slider):not(.jh-spectrum__lightness .jh-slider):is([data-dragging="true"], :active) .jh-slider__range) {
+  opacity: 1;
+  background: color-mix(in oklch, var(--jh-slider-accent-color, oklch(100% 0 0)) 96%, white 4%);
+  box-shadow:
+    0 0 calc(var(--jh-slider-glow-blur, 5px) * .7) color-mix(in oklch, var(--jh-slider-glow-color, var(--jh-slider-accent-color, oklch(100% 0 0))) var(--jh-slider-glow-strength, 68%), transparent),
+    0 0 calc(var(--jh-slider-glow-blur, 5px) * 1.45) color-mix(in oklch, var(--jh-slider-glow-color, var(--jh-slider-accent-color, oklch(100% 0 0))) var(--jh-slider-glow-strength-mid, 48%), transparent) !important;
 }
 :is([data-jh-theme="dark"], .dark) .jh-slider[data-accent-gradient="true"] .jh-slider__range,
 :is([data-jh-theme="dark"], .dark) [data-jh-material="liquid-glass"] .jh-slider[data-accent-gradient="true"] .jh-slider__range,
 :is([data-jh-theme="dark"], .dark) [data-jh-material="liquid"] .jh-slider[data-accent-gradient="true"] .jh-slider__range {
-  background: linear-gradient(90deg, color-mix(in oklch, var(--jh-slider-accent-color, oklch(100% 0 0)) 30%, transparent), color-mix(in oklch, var(--jh-slider-accent-color-end, oklch(92% 0.035 250)) 52%, transparent));
+  opacity: .92;
+  background: linear-gradient(90deg, color-mix(in oklch, var(--jh-slider-accent-color, oklch(100% 0 0)) 84%, #141414), color-mix(in oklch, var(--jh-slider-accent-color-end, oklch(88% 0 0)) 92%, #141414));
+}
+:is([data-jh-theme="dark"], .dark) .jh-slider[data-accent-gradient="true"]:is([data-dragging="true"], :active) .jh-slider__range,
+:is([data-jh-theme="dark"], .dark) [data-jh-material="liquid-glass"] .jh-slider[data-accent-gradient="true"]:is([data-dragging="true"], :active) .jh-slider__range,
+:is([data-jh-theme="dark"], .dark) [data-jh-material="liquid"] .jh-slider[data-accent-gradient="true"]:is([data-dragging="true"], :active) .jh-slider__range {
+  opacity: 1;
+  background: linear-gradient(90deg, color-mix(in oklch, var(--jh-slider-accent-color, oklch(100% 0 0)) 94%, #141414), color-mix(in oklch, var(--jh-slider-accent-color-end, oklch(88% 0 0)) 98%, white 4%));
 }
 :is([data-jh-theme="dark"], .dark) .jh-tactile-lever__range,
 :is([data-jh-theme="dark"], .dark) [data-jh-material="liquid-glass"] .jh-tactile-lever__range,
 :is([data-jh-theme="dark"], .dark) [data-jh-material="liquid"] .jh-tactile-lever__range {
-  background: color-mix(in oklch, var(--jh-slider-accent-color, oklch(100% 0 0)) 42%, transparent);
-  backdrop-filter: blur(2px);
+  opacity: .92;
+  border-radius: 999px !important;
+  background: color-mix(in oklch, var(--jh-slider-accent-color, oklch(100% 0 0)) 88%, #161616);
+  backdrop-filter: none;
   box-shadow:
-    inset 0 1px rgb(255 255 255 / .24),
-    0 0 1px color-mix(in oklch, var(--jh-slider-glow-color, var(--jh-slider-accent-color, oklch(100% 0 0))) var(--jh-slider-glow-strength, 68%), transparent),
-    0 0 2.5px color-mix(in oklch, var(--jh-slider-glow-color, var(--jh-slider-accent-color, oklch(100% 0 0))) var(--jh-slider-glow-strength-mid, 42%), transparent),
-    0 0 var(--jh-slider-glow-blur, 5px) color-mix(in oklch, var(--jh-slider-glow-color, var(--jh-slider-accent-color, oklch(100% 0 0))) var(--jh-slider-glow-strength-edge, 20%), transparent);
+    0 0 calc(var(--jh-slider-glow-blur, 5px) * .5) color-mix(in oklch, var(--jh-slider-glow-color, var(--jh-slider-accent-color, oklch(100% 0 0))) var(--jh-slider-glow-strength-mid, 48%), transparent),
+    0 0 var(--jh-slider-glow-blur, 5px) color-mix(in oklch, var(--jh-slider-glow-color, var(--jh-slider-accent-color, oklch(100% 0 0))) var(--jh-slider-glow-strength-edge, 24%), transparent) !important;
+  transition: opacity 160ms var(--jh-ease), background-color 160ms var(--jh-ease), box-shadow 160ms var(--jh-ease);
+}
+:is([data-jh-theme="dark"], .dark) :is(.jh-tactile-lever[data-dragging="true"], .jh-tactile-lever__slider[data-dragging="true"], .jh-tactile-lever__slider:active) .jh-tactile-lever__range,
+:is([data-jh-theme="dark"], .dark) [data-jh-material="liquid-glass"] :is(.jh-tactile-lever[data-dragging="true"], .jh-tactile-lever__slider[data-dragging="true"], .jh-tactile-lever__slider:active) .jh-tactile-lever__range,
+:is([data-jh-theme="dark"], .dark) [data-jh-material="liquid"] :is(.jh-tactile-lever[data-dragging="true"], .jh-tactile-lever__slider[data-dragging="true"], .jh-tactile-lever__slider:active) .jh-tactile-lever__range {
+  opacity: 1;
+  background: color-mix(in oklch, var(--jh-slider-accent-color, oklch(100% 0 0)) 96%, white 4%);
+  box-shadow:
+    0 0 calc(var(--jh-slider-glow-blur, 5px) * .7) color-mix(in oklch, var(--jh-slider-glow-color, var(--jh-slider-accent-color, oklch(100% 0 0))) var(--jh-slider-glow-strength, 68%), transparent),
+    0 0 calc(var(--jh-slider-glow-blur, 5px) * 1.45) color-mix(in oklch, var(--jh-slider-glow-color, var(--jh-slider-accent-color, oklch(100% 0 0))) var(--jh-slider-glow-strength-mid, 48%), transparent) !important;
 }
 :is([data-jh-theme="dark"], .dark) .jh-tactile-lever__slider[data-accent-gradient="true"] .jh-tactile-lever__range,
 :is([data-jh-theme="dark"], .dark) [data-jh-material="liquid-glass"] .jh-tactile-lever__slider[data-accent-gradient="true"] .jh-tactile-lever__range,
 :is([data-jh-theme="dark"], .dark) [data-jh-material="liquid"] .jh-tactile-lever__slider[data-accent-gradient="true"] .jh-tactile-lever__range {
-  background: linear-gradient(180deg, color-mix(in oklch, var(--jh-slider-accent-color-end, oklch(92% 0.035 250)) 52%, transparent), color-mix(in oklch, var(--jh-slider-accent-color, oklch(100% 0 0)) 30%, transparent));
+  opacity: .92;
+  background: linear-gradient(180deg, color-mix(in oklch, var(--jh-slider-accent-color-end, oklch(88% 0 0)) 92%, #141414), color-mix(in oklch, var(--jh-slider-accent-color, oklch(100% 0 0)) 84%, #141414));
+}
+:is([data-jh-theme="dark"], .dark) :is(.jh-tactile-lever[data-dragging="true"], .jh-tactile-lever__slider[data-dragging="true"], .jh-tactile-lever__slider:active)[data-accent-gradient="true"] .jh-tactile-lever__range,
+:is([data-jh-theme="dark"], .dark) .jh-tactile-lever[data-dragging="true"] .jh-tactile-lever__slider[data-accent-gradient="true"] .jh-tactile-lever__range,
+:is([data-jh-theme="dark"], .dark) [data-jh-material="liquid-glass"] .jh-tactile-lever[data-dragging="true"] .jh-tactile-lever__slider[data-accent-gradient="true"] .jh-tactile-lever__range,
+:is([data-jh-theme="dark"], .dark) [data-jh-material="liquid"] .jh-tactile-lever[data-dragging="true"] .jh-tactile-lever__slider[data-accent-gradient="true"] .jh-tactile-lever__range {
+  opacity: 1;
+  background: linear-gradient(180deg, color-mix(in oklch, var(--jh-slider-accent-color-end, oklch(88% 0 0)) 98%, white 4%), color-mix(in oklch, var(--jh-slider-accent-color, oklch(100% 0 0)) 94%, #141414));
 }
 :is([data-jh-theme="dark"], .dark) .jh-bar-slider__bars span {
-  background: #141414;
-  box-shadow: inset 0 1px 2px rgb(0 0 0 / .6), inset 0 -1px rgb(255 255 255 / .012);
+  background: #242424;
+  box-shadow: none;
+  transition: opacity 150ms var(--jh-ease), background-color 150ms var(--jh-ease), box-shadow 150ms var(--jh-ease);
 }
 :is([data-jh-theme="dark"], .dark) .jh-bar-slider__bars span[data-active="true"],
 :is([data-jh-theme="dark"], .dark) [data-jh-material="liquid-glass"] .jh-bar-slider__bars span[data-active="true"],
 :is([data-jh-theme="dark"], .dark) [data-jh-material="liquid"] .jh-bar-slider__bars span[data-active="true"] {
-  background: color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0))) 44%, transparent);
+  opacity: .9;
+  background: color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0))) 88%, #1a1a1a);
   box-shadow:
-    inset 0 1px rgb(255 255 255 / .22),
-    0 0 1px color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0))) var(--jh-slider-glow-strength, 68%), transparent),
-    0 0 2.5px color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0))) var(--jh-slider-glow-strength-mid, 42%), transparent),
-    0 0 var(--jh-slider-glow-blur, 5px) color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0))) var(--jh-slider-glow-strength-edge, 20%), transparent);
+    0 0 calc(var(--jh-slider-glow-blur, 5px) * .45) color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-glow-color, oklch(100% 0 0))) var(--jh-slider-glow-strength-mid, 48%), transparent),
+    0 0 var(--jh-slider-glow-blur, 5px) color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-glow-color, oklch(100% 0 0))) var(--jh-slider-glow-strength-edge, 24%), transparent) !important;
 }
 :is([data-jh-theme="dark"], .dark) .jh-bar-slider__bars span[data-active="true"][data-lead="true"] {
-  background: color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0))) 60%, transparent);
+  opacity: .96;
+  background: color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0))) 94%, #202020);
   box-shadow:
-    inset 0 1px rgb(255 255 255 / .36),
-    0 0 1px color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0))) var(--jh-slider-glow-strength, 68%), transparent),
-    0 0 3px color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0))) var(--jh-slider-glow-strength-mid, 42%), transparent),
-    0 0 calc(var(--jh-slider-glow-blur, 5px) + 1.5px) color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0))) var(--jh-slider-glow-strength-edge, 20%), transparent);
+    0 0 calc(var(--jh-slider-glow-blur, 5px) * .6) color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-glow-color, oklch(100% 0 0))) var(--jh-slider-glow-strength, 68%), transparent),
+    0 0 calc(var(--jh-slider-glow-blur, 5px) * 1.15) color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-glow-color, oklch(100% 0 0))) var(--jh-slider-glow-strength-mid, 48%), transparent) !important;
+}
+:is([data-jh-theme="dark"], .dark) :is(.jh-bar-slider[data-dragging="true"], .jh-bar-slider__slider[data-dragging="true"], .jh-bar-slider:active) .jh-bar-slider__bars span[data-active="true"],
+:is([data-jh-theme="dark"], .dark) [data-jh-material="liquid-glass"] :is(.jh-bar-slider[data-dragging="true"], .jh-bar-slider__slider[data-dragging="true"], .jh-bar-slider:active) .jh-bar-slider__bars span[data-active="true"],
+:is([data-jh-theme="dark"], .dark) [data-jh-material="liquid"] :is(.jh-bar-slider[data-dragging="true"], .jh-bar-slider__slider[data-dragging="true"], .jh-bar-slider:active) .jh-bar-slider__bars span[data-active="true"] {
+  opacity: 1;
+  background: color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0))) 96%, white 4%);
+  box-shadow:
+    0 0 calc(var(--jh-slider-glow-blur, 5px) * .68) color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-glow-color, oklch(100% 0 0))) var(--jh-slider-glow-strength, 68%), transparent),
+    0 0 calc(var(--jh-slider-glow-blur, 5px) * 1.35) color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-glow-color, oklch(100% 0 0))) var(--jh-slider-glow-strength-mid, 48%), transparent) !important;
+}
+:is([data-jh-theme="dark"], .dark) :is(.jh-bar-slider[data-dragging="true"], .jh-bar-slider__slider[data-dragging="true"], .jh-bar-slider:active) .jh-bar-slider__bars span[data-active="true"][data-lead="true"] {
+  opacity: 1;
+  background: color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0))) 100%, white 6%);
+  box-shadow:
+    0 0 calc(var(--jh-slider-glow-blur, 5px) * .88) color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-glow-color, oklch(100% 0 0))) var(--jh-slider-glow-strength, 68%), transparent),
+    0 0 calc(var(--jh-slider-glow-blur, 5px) * 1.6) color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-glow-color, oklch(100% 0 0))) var(--jh-slider-glow-strength, 68%), transparent) !important;
 }
 
-/* Dial relief & translucent accent tick/mark emitters */
+/* Dial relief & opaque accent tick/mark emitters (shallow bed, open scale, zero gel stripe or dark smudge) */
 :is([data-jh-theme="dark"], .dark) .jh-dial__bed {
-  background: #060606;
+  background: #080808;
   background-image: none;
-  box-shadow: inset 0 1px 3px rgb(0 0 0 / .58), inset 0 -1px 0 rgb(255 255 255 / .012);
+  box-shadow: inset 0 1px 3px rgb(0 0 0 / .56), inset 0 -1px 0 rgb(255 255 255 / .02);
 }
 :is([data-jh-theme="dark"], .dark) .jh-dial__knob {
-  background: linear-gradient(125deg, #0f0f0f, #0a0a0a 48%, #0d0d0d 75%);
-  box-shadow: 0 5px 0 #030303, 2px 10px 14px -3px rgb(0 0 0 / .95), inset 0 1px rgb(255 255 255 / .018);
+  background: linear-gradient(125deg, #101010, #0a0a0a 48%, #0e0e0e 75%);
+  box-shadow: 0 5px 0 #030303, 2px 10px 14px -3px rgb(0 0 0 / .95), inset 0 1px rgb(255 255 255 / .022);
 }
 :is([data-jh-theme="dark"], .dark) .jh-dial__top {
-  background: radial-gradient(ellipse at 30% 15%, #101010, #0b0b0b 55%, #080808);
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / .018), 0 1px 3px rgb(0 0 0 / .75);
+  background: radial-gradient(ellipse at 30% 15%, #111111, #0b0b0b 55%, #080808);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / .02), 0 1px 3px rgb(0 0 0 / .75);
 }
 :is([data-jh-theme="dark"], .dark) [data-jh-material="liquid-glass"] .jh-dial__bed {
-  background: rgb(6 6 6 / .86);
+  background: rgb(8 8 8 / .86);
   background-image: none;
-  box-shadow: inset 0 1px 3px rgb(0 0 0 / .55), inset 0 -1px rgb(255 255 255 / .012);
+  box-shadow: inset 0 1px 3px rgb(0 0 0 / .54), inset 0 -1px rgb(255 255 255 / .02);
 }
 :is([data-jh-theme="dark"], .dark) [data-jh-material="liquid-glass"] .jh-dial__knob {
   background: rgb(14 14 14 / .9);
-  box-shadow: 0 5px 0 #030303, inset 0 1px rgb(255 255 255 / .02), 0 8px 16px rgb(0 0 0 / .9);
+  box-shadow: 0 5px 0 #030303, inset 0 1px rgb(255 255 255 / .022), 0 8px 16px rgb(0 0 0 / .9);
 }
 :is([data-jh-theme="dark"], .dark) [data-jh-material="liquid-glass"] .jh-dial__top {
   background: rgb(16 16 16 / .92);
-  box-shadow: inset 0 1px rgb(255 255 255 / .02);
+  box-shadow: inset 0 1px rgb(255 255 255 / .022);
 }
 :is([data-jh-theme="dark"], .dark) .jh-dial__tick {
-  stroke: #222222;
+  stroke: #2a2a2a;
+  filter: none !important;
+  transition: opacity 130ms var(--jh-ease), stroke 130ms var(--jh-ease);
 }
 :is([data-jh-theme="dark"], .dark) .jh-dial:not(.jh-detent-dial) .jh-dial__tick.is-active {
-  stroke: color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0))) 56%, transparent);
-  filter:
-    drop-shadow(0 0 1px color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0))) var(--jh-slider-glow-strength, 68%), transparent))
-    drop-shadow(0 0 2.5px color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0))) var(--jh-slider-glow-strength-mid, 42%), transparent))
-    drop-shadow(0 0 var(--jh-slider-glow-blur, 5px) color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0))) var(--jh-slider-glow-strength-edge, 20%), transparent));
+  opacity: .92;
+  stroke: color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0))) 90%, #242424);
+  filter: drop-shadow(0 0 calc(var(--jh-slider-glow-blur, 5px) * .52) color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-glow-color, oklch(100% 0 0))) var(--jh-slider-glow-strength-mid, 48%), transparent)) !important;
 }
 :is([data-jh-theme="dark"], .dark) .jh-dial:not(.jh-detent-dial) .jh-dial__tick.is-active[data-lead="true"] {
-  stroke: color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0))) 72%, transparent);
-  filter:
-    brightness(1.03)
-    drop-shadow(0 0 1px color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0))) var(--jh-slider-glow-strength, 68%), transparent))
-    drop-shadow(0 0 3px color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0))) var(--jh-slider-glow-strength-mid, 42%), transparent))
-    drop-shadow(0 0 calc(var(--jh-slider-glow-blur, 5px) + 1.5px) color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0))) var(--jh-slider-glow-strength-edge, 20%), transparent));
+  opacity: .97;
+  animation: none;
+  stroke: color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0))) 96%, white 4%);
+  filter: drop-shadow(0 0 calc(var(--jh-slider-glow-blur, 5px) * .75) color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-glow-color, oklch(100% 0 0))) var(--jh-slider-glow-strength, 68%), transparent)) !important;
 }
+:is([data-jh-theme="dark"], .dark) .jh-dial:not(.jh-detent-dial):is([data-dragging="true"], :active) .jh-dial__tick.is-active,
+:is([data-jh-theme="dark"], .dark) [data-jh-material="liquid-glass"] .jh-dial:not(.jh-detent-dial):is([data-dragging="true"], :active) .jh-dial__tick.is-active,
+:is([data-jh-theme="dark"], .dark) [data-jh-material="liquid"] .jh-dial:not(.jh-detent-dial):is([data-dragging="true"], :active) .jh-dial__tick.is-active {
+  opacity: 1;
+  stroke: color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0))) 96%, white 4%);
+  filter: drop-shadow(0 0 calc(var(--jh-slider-glow-blur, 5px) * .85) color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-glow-color, oklch(100% 0 0))) var(--jh-slider-glow-strength, 68%), transparent)) !important;
+  transition-duration: 35ms;
+}
+:is([data-jh-theme="dark"], .dark) .jh-dial:not(.jh-detent-dial):is([data-dragging="true"], :active) .jh-dial__tick.is-active[data-lead="true"] {
+  opacity: 1;
+  stroke: color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0))) 100%, white 8%);
+  filter: drop-shadow(0 0 calc(var(--jh-slider-glow-blur, 5px) * 1.1) color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-glow-color, oklch(100% 0 0))) var(--jh-slider-glow-strength, 68%), transparent)) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-dial__arc-bed {
+  stroke: #1b1b1b;
+}
+:is([data-jh-theme="dark"], .dark) .jh-dial__arc-fill {
+  opacity: .92;
+  stroke: color-mix(in oklch, var(--jh-slider-accent-color, oklch(100% 0 0)) 92%, #242424);
+  filter: drop-shadow(0 0 calc(var(--jh-slider-glow-blur, 5px) * .55) color-mix(in oklch, var(--jh-slider-glow-color, var(--jh-slider-accent-color, oklch(100% 0 0))) var(--jh-slider-glow-strength-mid, 48%), transparent)) !important;
+  transition: opacity 140ms var(--jh-ease), stroke 140ms var(--jh-ease);
+}
+:is([data-jh-theme="dark"], .dark) .jh-dial:is([data-dragging="true"], :active) .jh-dial__arc-fill {
+  opacity: 1;
+  stroke: color-mix(in oklch, var(--jh-slider-accent-color, oklch(100% 0 0)) 98%, white 4%);
+  filter: drop-shadow(0 0 calc(var(--jh-slider-glow-blur, 5px) * .9) color-mix(in oklch, var(--jh-slider-glow-color, var(--jh-slider-accent-color, oklch(100% 0 0))) var(--jh-slider-glow-strength, 68%), transparent)) !important;
+  transition-duration: 35ms;
+}
+:is([data-jh-theme="dark"], .dark) .jh-dial[data-variant="vernier"] .jh-dial__knob::after {
+  background: repeating-conic-gradient(from 0deg, rgb(255 255 255 / .085) 0deg 2deg, transparent 2deg 5deg);
+}
+:is([data-jh-theme="dark"], .dark) .jh-dial[data-variant="monolith"] .jh-dial__bed {
+  background: #080808;
+  box-shadow: inset 0 1.5px 3.5px rgb(0 0 0 / .62), inset 0 -1px 1px rgb(255 255 255 / .02);
+}
+:is([data-jh-theme="dark"], .dark) .jh-dial[data-variant="monolith"] .jh-dial__knob {
+  background: radial-gradient(circle at 38% 32%, #222222 0%, #151515 62%, #0e0e0e 100%) !important;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / .1),
+    inset 0 -2px 4px rgb(0 0 0 / .85),
+    0 2px 6px rgb(0 0 0 / .72) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-dial__datum-marks path {
+  stroke: rgb(255 255 255 / .24);
+}
+:is([data-jh-theme="dark"], .dark) .jh-dial__datum-pip {
+  fill: rgb(255 255 255 / .46);
+  opacity: .72;
+  transition: opacity 150ms var(--jh-ease), fill 150ms var(--jh-ease);
+}
+:is([data-jh-theme="dark"], .dark) .jh-dial:is([data-dragging="true"], :active) .jh-dial__datum-pip {
+  opacity: 1;
+  fill: color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0))) 96%, white 6%);
+}
+/* Flush cap indicator light — clean emissive pill without recessed pit or white top gel line */
 :is([data-jh-theme="dark"], .dark) .jh-dial__mark,
 :is([data-jh-theme="dark"], .dark) [data-jh-material="liquid-glass"] .jh-dial__mark,
 :is([data-jh-theme="dark"], .dark) [data-jh-material="liquid"] .jh-dial__mark {
-  background: color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0))) 52%, transparent);
+  opacity: .92;
+  border: 0 !important;
+  background: color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0))) 90%, #202020) !important;
   box-shadow:
-    inset 0 1px rgb(255 255 255 / .24),
-    0 0 1px color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0))) var(--jh-slider-glow-strength, 68%), transparent),
-    0 0 2.5px color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0))) var(--jh-slider-glow-strength-mid, 42%), transparent),
-    0 0 var(--jh-slider-glow-blur, 5px) color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0))) var(--jh-slider-glow-strength-edge, 20%), transparent);
+    0 0 calc(var(--jh-slider-glow-blur, 5px) * .5) color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-glow-color, oklch(100% 0 0))) var(--jh-slider-glow-strength-mid, 48%), transparent),
+    0 0 var(--jh-slider-glow-blur, 5px) color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-glow-color, oklch(100% 0 0))) var(--jh-slider-glow-strength-edge, 24%), transparent) !important;
+  filter: none !important;
+  overflow: visible;
+  transition: opacity 150ms var(--jh-ease), background-color 150ms var(--jh-ease), box-shadow 150ms var(--jh-ease);
+}
+:is([data-jh-theme="dark"], .dark) .jh-dial:is([data-dragging="true"], :active) .jh-dial__mark,
+:is([data-jh-theme="dark"], .dark) [data-jh-material="liquid-glass"] .jh-dial:is([data-dragging="true"], :active) .jh-dial__mark,
+:is([data-jh-theme="dark"], .dark) [data-jh-material="liquid"] .jh-dial:is([data-dragging="true"], :active) .jh-dial__mark {
+  opacity: 1;
+  background: color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0))) 98%, white 4%) !important;
+  box-shadow:
+    0 0 calc(var(--jh-slider-glow-blur, 5px) * .8) color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-glow-color, oklch(100% 0 0))) var(--jh-slider-glow-strength, 68%), transparent),
+    0 0 calc(var(--jh-slider-glow-blur, 5px) * 1.45) color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-glow-color, oklch(100% 0 0))) var(--jh-slider-glow-strength-mid, 48%), transparent) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-dial__mark::after {
+  content: none !important;
+  display: none !important;
 }
 :is([data-jh-theme="dark"], .dark) .jh-detent-dial .jh-dial__tick {
-  stroke: #222222;
+  stroke: #2a2a2a;
+  filter: none !important;
+  transition: opacity 150ms var(--jh-ease), stroke 150ms var(--jh-ease);
 }
 :is([data-jh-theme="dark"], .dark) .jh-detent-dial .jh-dial__tick.is-active {
-  stroke: #e2e2e2;
-  filter: drop-shadow(0 0 2.5px rgb(255 255 255 / .36));
+  opacity: .92;
+  stroke: color-mix(in oklch, var(--jh-slider-glow-color, #d8d8dc) 90%, #2a2a2a);
+  filter: drop-shadow(0 0 calc(var(--jh-slider-glow-blur, 5px) * .5) color-mix(in oklch, var(--jh-slider-glow-color, oklch(100% 0 0)) var(--jh-slider-glow-strength-mid, 48%), transparent)) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-detent-dial:is([data-dragging="true"], :active) .jh-dial__tick.is-active {
+  opacity: 1;
+  stroke: color-mix(in oklch, var(--jh-slider-glow-color, #ffffff) 98%, white 4%);
+  filter: drop-shadow(0 0 calc(var(--jh-slider-glow-blur, 5px) * .85) color-mix(in oklch, var(--jh-slider-glow-color, oklch(100% 0 0)) var(--jh-slider-glow-strength, 68%), transparent)) !important;
 }
 
-/* Instrument arcs & AudioMeter keep translucent accent light cells and halo */
+/* Instrument arcs, AudioMeter & TactileKey in pure obsidian (open scale, zero filter transition, zero white gel stripe) */
 :is([data-jh-theme="dark"], .dark) .jh-instrument__bar {
-  fill: #1b1b1b;
+  fill: #242424;
   stroke: none;
+  filter: none !important;
+  transition: opacity 130ms var(--jh-ease), fill 130ms var(--jh-ease);
 }
 :is([data-jh-theme="dark"], .dark) .jh-instrument__bar.is-active,
 :is([data-jh-theme="dark"], .dark) [data-jh-material="liquid-glass"] .jh-instrument__bar.is-active,
 :is([data-jh-theme="dark"], .dark) [data-jh-material="liquid"] .jh-instrument__bar.is-active {
-  fill: color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0))) 50%, transparent);
-  filter:
-    drop-shadow(0 0 1px color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0))) var(--jh-slider-glow-strength, 68%), transparent))
-    drop-shadow(0 0 2.5px color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0))) var(--jh-slider-glow-strength-mid, 42%), transparent));
+  opacity: .92;
+  fill: color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0))) 90%, #202020);
+  filter: drop-shadow(0 0 calc(var(--jh-slider-glow-blur, 5px) * .5) color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-glow-color, oklch(100% 0 0))) var(--jh-slider-glow-strength-mid, 48%), transparent)) !important;
 }
 :is([data-jh-theme="dark"], .dark) .jh-instrument__bar.is-active[data-lead="true"],
 :is([data-jh-theme="dark"], .dark) [data-jh-material="liquid-glass"] .jh-instrument__bar.is-active[data-lead="true"],
 :is([data-jh-theme="dark"], .dark) [data-jh-material="liquid"] .jh-instrument__bar.is-active[data-lead="true"] {
-  fill: color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0))) 68%, transparent);
-  filter:
-    brightness(1.03)
-    drop-shadow(0 0 1px color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0))) var(--jh-slider-glow-strength, 68%), transparent))
-    drop-shadow(0 0 2.5px color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0))) var(--jh-slider-glow-strength-mid, 42%), transparent))
-    drop-shadow(0 0 calc(var(--jh-slider-glow-blur, 5px) + 1.5px) color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0))) var(--jh-slider-glow-strength-edge, 20%), transparent));
+  opacity: .97;
+  fill: color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0))) 96%, white 4%);
+  filter: drop-shadow(0 0 calc(var(--jh-slider-glow-blur, 5px) * .72) color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-glow-color, oklch(100% 0 0))) var(--jh-slider-glow-strength, 68%), transparent)) !important;
+}
+:is([data-jh-theme="dark"], .dark) :is(.jh-instrument[data-dragging="true"], .jh-instrument__svg[data-dragging="true"], .jh-instrument__svg:active, .library-instrument-control[data-dragging="true"], .library-instrument-control:active) .jh-instrument__bar.is-active,
+:is([data-jh-theme="dark"], .dark) [data-jh-material="liquid-glass"] :is(.jh-instrument[data-dragging="true"], .jh-instrument__svg[data-dragging="true"], .jh-instrument__svg:active, .library-instrument-control[data-dragging="true"], .library-instrument-control:active) .jh-instrument__bar.is-active,
+:is([data-jh-theme="dark"], .dark) [data-jh-material="liquid"] :is(.jh-instrument[data-dragging="true"], .jh-instrument__svg[data-dragging="true"], .jh-instrument__svg:active, .library-instrument-control[data-dragging="true"], .library-instrument-control:active) .jh-instrument__bar.is-active,
+:is([data-jh-theme="dark"], .dark) .deck:has(.jh-dial[data-dragging="true"], .jh-slider[data-dragging="true"]) .jh-instrument__bar.is-active {
+  opacity: 1;
+  fill: color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0))) 96%, white 4%);
+  filter: drop-shadow(0 0 calc(var(--jh-slider-glow-blur, 5px) * .82) color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-glow-color, oklch(100% 0 0))) var(--jh-slider-glow-strength, 68%), transparent)) !important;
+  transition-duration: 35ms;
+}
+:is([data-jh-theme="dark"], .dark) :is(.jh-instrument[data-dragging="true"], .jh-instrument__svg[data-dragging="true"], .jh-instrument__svg:active, .library-instrument-control[data-dragging="true"], .library-instrument-control:active) .jh-instrument__bar.is-active[data-lead="true"],
+:is([data-jh-theme="dark"], .dark) .deck:has(.jh-dial[data-dragging="true"], .jh-slider[data-dragging="true"]) .jh-instrument__bar.is-active[data-lead="true"] {
+  opacity: 1;
+  fill: color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0))) 100%, white 8%);
+  filter: drop-shadow(0 0 calc(var(--jh-slider-glow-blur, 5px) * 1.1) color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-glow-color, oklch(100% 0 0))) var(--jh-slider-glow-strength, 68%), transparent)) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-audio-meter__segments {
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-audio-meter__actions .jh-button {
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-audio-meter__actions .jh-button.is-active .jh-button__face,
+:is([data-jh-theme="dark"], .dark) .jh-audio-meter__actions .jh-button[aria-pressed="true"] .jh-button__face,
+:is([data-jh-theme="dark"], .dark) .jh-audio-meter__actions .jh-button:active:not(:disabled) .jh-button__face {
+  background: #070707 !important;
+  background-image: none !important;
+  box-shadow:
+    inset 0 1.5px 3.5px rgb(0 0 0 / .9),
+    inset 0 -0.5px 0 rgb(255 255 255 / .025),
+    inset 0 0 0 1px rgb(255 255 255 / .05) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-audio-meter__actions .jh-button.is-active .jh-button__content,
+:is([data-jh-theme="dark"], .dark) .jh-audio-meter__actions .jh-button[aria-pressed="true"] .jh-button__content {
+  color: #f4f4f4 !important;
 }
 :is([data-jh-theme="dark"], .dark) .jh-audio-meter__segments span {
   background: #141414;
-  box-shadow: inset 0 1px 2px rgb(0 0 0 / .6), inset 0 -1px rgb(255 255 255 / .012);
+  box-shadow: inset 0 1.5px 2px rgb(0 0 0 / .72), inset 0 -1px rgb(255 255 255 / .018);
 }
-:is([data-jh-theme="dark"], .dark) .jh-audio-meter__segments span[data-active="true"] {
-  background: color-mix(in oklch, var(--jh-audio-cell-color, oklch(92% 0.02 250)) 52%, transparent);
+:is([data-jh-theme="dark"], .dark) .jh-audio-meter__segments span[data-active="true"],
+:is([data-jh-theme="dark"], .dark) [data-jh-material] .jh-audio-meter__segments span[data-active="true"] {
+  opacity: clamp(.35, calc(.35 + var(--jh-slider-glow-strength, 68%) * .0065), 1);
+  background: color-mix(in oklch, var(--jh-audio-cell-color, oklch(100% 0 0)) clamp(55%, calc(42% + var(--jh-slider-glow-strength, 68%) * .58), 100%), #181818);
   box-shadow:
-    inset 0 1px rgb(255 255 255 / .24),
-    0 0 1px color-mix(in oklch, var(--jh-audio-cell-color, oklch(92% 0.02 250)) 85%, transparent),
-    0 0 3.5px color-mix(in oklch, var(--jh-audio-cell-color, oklch(92% 0.02 250)) 46%, transparent);
+    inset 0 1px rgb(255 255 255 / .18),
+    0 0 1.5px color-mix(in oklch, var(--jh-audio-cell-color, oklch(100% 0 0)) var(--jh-slider-glow-strength, 68%), transparent),
+    0 0 calc(var(--jh-slider-glow-blur, 5px) * .6) color-mix(in oklch, var(--jh-audio-cell-color, oklch(100% 0 0)) var(--jh-slider-glow-strength-mid, 42%), transparent),
+    0 0 var(--jh-slider-glow-blur, 5px) color-mix(in oklch, var(--jh-audio-cell-color, oklch(100% 0 0)) var(--jh-slider-glow-strength-edge, 20%), transparent) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-lunar-ephemeris {
+  --jh-lunar-sky: #070709;
+  --jh-lunar-sphere-dark: #111216;
+  --jh-lunar-sphere-lit: #e8eaef;
+  --jh-lunar-sphere-lim: #b2b7c2;
+}
+:is([data-jh-theme="dark"], .dark) .jh-lunar-ephemeris__trough {
+  stroke: #09090b;
+}
+:is([data-jh-theme="dark"], .dark) .jh-lunar-ephemeris__tick {
+  opacity: .64;
+  stroke: #26262a;
+}
+:is([data-jh-theme="dark"], .dark) .jh-lunar-ephemeris__tick.is-active {
+  opacity: .68;
+  stroke: color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0))) 76%, #181818);
+  filter: none;
+}
+:is([data-jh-theme="dark"], .dark) .jh-lunar-ephemeris[data-dragging="true"] .jh-lunar-ephemeris__tick.is-active {
+  opacity: 1;
+  stroke: color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0))) 98%, white 6%);
+  filter: drop-shadow(0 0 1.4px color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0))) 62%, transparent));
+}
+:is([data-jh-theme="dark"], .dark) .jh-lunar-ephemeris__lit,
+:is([data-jh-theme="dark"], .dark) .jh-lunar-ephemeris__lit-penumbra {
+  opacity: .88;
+  transition: opacity .22s ease;
+}
+:is([data-jh-theme="dark"], .dark) .jh-lunar-ephemeris[data-dragging="true"] .jh-lunar-ephemeris__lit,
+:is([data-jh-theme="dark"], .dark) .jh-lunar-ephemeris[data-dragging="true"] .jh-lunar-ephemeris__lit-penumbra {
+  opacity: 1;
 }
 :is([data-jh-theme="dark"], .dark) .jh-progress__fill {
   background: linear-gradient(180deg, rgb(228 228 228 / .58), rgb(168 168 168 / .42));
   box-shadow: inset 0 1px rgb(255 255 255 / .28), 0 0 4px rgb(255 255 255 / .16);
 }
 
-/* Inputs & Search wells: flat solid baixo-relevo (no gradient), darker than #0a0a0a card background */
+/* Inputs & Search wells: sculpted dark baixo-relevo well (#040404 trough + top shadow + subtle bottom rim catch-light) */
 :is([data-jh-theme="dark"], .dark) .jh-input,
-:is([data-jh-theme="dark"], .dark) .jh-search-input {
-  background: #070707;
-  background-image: none;
+:is([data-jh-theme="dark"], .dark) .jh-search-input,
+:is([data-jh-theme="dark"], .dark) .jh-market-picker__search,
+:is([data-jh-theme="dark"], .dark) .jh-currency-picker__search:not(.jh-picker-overlay__search),
+:is([data-jh-theme="dark"], .dark) .jh-command-dialog__search .jh-input {
+  background: #040404 !important;
+  background-image: none !important;
   color: #e8e8e8;
-  border: 0;
+  border: 0 !important;
   outline: none !important;
-  box-shadow: inset 0 1px 2px rgb(0 0 0 / .52), inset 0 -1px 0 rgb(255 255 255 / .012);
+  box-shadow:
+    inset 0 2px 5px rgb(0 0 0 / .96),
+    inset 0 1px 1px rgb(0 0 0 / .95),
+    inset 0 0 0 1px rgb(0 0 0 / .72),
+    inset 0 -1px 0 rgb(255 255 255 / .055),
+    0 1px 0 rgb(255 255 255 / .04) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-search-input input,
+:is([data-jh-theme="dark"], .dark) .jh-market-picker__search .jh-input,
+:is([data-jh-theme="dark"], .dark) .jh-market-picker__search input {
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  border: 0 !important;
 }
 :is([data-jh-theme="dark"], .dark) .jh-input:focus,
 :is([data-jh-theme="dark"], .dark) .jh-input:focus-visible,
 :is([data-jh-theme="dark"], .dark) .jh-search-input:focus-within,
-:is([data-jh-theme="dark"], .dark) .jh-search-input input:focus,
-:is([data-jh-theme="dark"], .dark) .jh-search-input input:focus-visible {
+:is([data-jh-theme="dark"], .dark) .jh-market-picker__search:focus-within,
+:is([data-jh-theme="dark"], .dark) .jh-currency-picker__search:not(.jh-picker-overlay__search):focus-within,
+:is([data-jh-theme="dark"], .dark) .jh-command-dialog__search .jh-input:focus,
+:is([data-jh-theme="dark"], .dark) .jh-command-dialog__search .jh-input:focus-visible {
   outline: none !important;
   outline-offset: 0 !important;
-  background: #090909;
-  background-image: none;
-  box-shadow: inset 0 1px 2px rgb(0 0 0 / .48), inset 0 0 0 1px rgb(255 255 255 / .02);
+  background: #060606 !important;
+  background-image: none !important;
+  box-shadow:
+    inset 0 2px 5px rgb(0 0 0 / .95),
+    inset 0 0 0 1px rgb(255 255 255 / .11),
+    inset 0 -1px 0 rgb(255 255 255 / .075),
+    0 1px 0 rgb(255 255 255 / .045) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-search-input input:focus,
+:is([data-jh-theme="dark"], .dark) .jh-search-input input:focus-visible,
+:is([data-jh-theme="dark"], .dark) .jh-market-picker__search .jh-input:focus,
+:is([data-jh-theme="dark"], .dark) .jh-market-picker__search input:focus,
+:is([data-jh-theme="dark"], .dark) .jh-market-picker__search input:focus-visible {
+  outline: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
 }
 :is([data-jh-theme="dark"], .dark) .jh-currency-picker__trigger,
 :is([data-jh-theme="dark"], .dark) .jh-financial-order .jh-currency-picker__trigger,
 :is([data-jh-theme="dark"], .dark) .jh-financial-order__type-trigger,
 :is([data-jh-theme="dark"], .dark) .jh-financial-order__fields .jh-input {
-  background: #070707 !important;
+  background: #040404 !important;
   background-image: none !important;
   color: #e8e8e8;
   border: 0 !important;
   outline: none !important;
-  box-shadow: inset 0 1px 2px rgb(0 0 0 / .52), inset 0 -1px 0 rgb(255 255 255 / .012) !important;
+  box-shadow:
+    inset 0 2px 5px rgb(0 0 0 / .96),
+    inset 0 1px 1px rgb(0 0 0 / .95),
+    inset 0 0 0 1px rgb(0 0 0 / .72),
+    inset 0 -1px 0 rgb(255 255 255 / .055),
+    0 1px 0 rgb(255 255 255 / .04) !important;
 }
 :is([data-jh-theme="dark"], .dark) .jh-currency-picker__trigger:focus-visible,
 :is([data-jh-theme="dark"], .dark) .jh-financial-order__type-trigger:focus-visible,
 :is([data-jh-theme="dark"], .dark) .jh-financial-order__fields .jh-input:focus,
 :is([data-jh-theme="dark"], .dark) .jh-financial-order__fields .jh-input:focus-visible {
-  background: #090909 !important;
+  background: #060606 !important;
   background-image: none !important;
   outline: none !important;
-  box-shadow: inset 0 1px 2px rgb(0 0 0 / .48), inset 0 0 0 1px rgb(255 255 255 / .02) !important;
+  box-shadow:
+    inset 0 2px 5px rgb(0 0 0 / .95),
+    inset 0 0 0 1px rgb(255 255 255 / .11),
+    inset 0 -1px 0 rgb(255 255 255 / .075),
+    0 1px 0 rgb(255 255 255 / .045) !important;
 }
 :is([data-jh-theme="dark"], .dark) .jh-currency-picker__symbol {
   background: linear-gradient(175deg, #131313, #0d0d0d) !important;
@@ -1180,12 +1463,17 @@ const DARK_COMPONENT_POLISH = `
 }
 :is([data-jh-theme="dark"], .dark) .jh-picker-overlay__search .jh-input,
 :is([data-jh-theme="dark"], .dark) .jh-picker-overlay__search input {
-  background: #070707 !important;
+  background: #040404 !important;
   background-image: none !important;
   color: #e8e8e8;
   border: 0 !important;
   outline: none !important;
-  box-shadow: inset 0 1px 2px rgb(0 0 0 / .52), inset 0 -1px 0 rgb(255 255 255 / .012) !important;
+  box-shadow:
+    inset 0 2px 5px rgb(0 0 0 / .96),
+    inset 0 1px 1px rgb(0 0 0 / .95),
+    inset 0 0 0 1px rgb(0 0 0 / .72),
+    inset 0 -1px 0 rgb(255 255 255 / .055),
+    0 1px 0 rgb(255 255 255 / .04) !important;
 }
 :is([data-jh-theme="dark"], .dark) .jh-picker-overlay__search input:focus,
 :is([data-jh-theme="dark"], .dark) .jh-picker-overlay__search input:focus-visible,
@@ -1193,9 +1481,13 @@ const DARK_COMPONENT_POLISH = `
 :is([data-jh-theme="dark"], .dark) .jh-picker-overlay__search .jh-input:focus-visible {
   outline: none !important;
   outline-offset: 0 !important;
-  background: #090909 !important;
+  background: #060606 !important;
   background-image: none !important;
-  box-shadow: inset 0 1px 2px rgb(0 0 0 / .48), inset 0 0 0 1px rgb(255 255 255 / .02) !important;
+  box-shadow:
+    inset 0 2px 5px rgb(0 0 0 / .95),
+    inset 0 0 0 1px rgb(255 255 255 / .11),
+    inset 0 -1px 0 rgb(255 255 255 / .075),
+    0 1px 0 rgb(255 255 255 / .045) !important;
 }
 
 /* Strip phantom nested boxes inside DatePopover, DateTimePopover, PickerOverlay & ScrollFrames */
@@ -1216,19 +1508,95 @@ const DARK_COMPONENT_POLISH = `
   box-shadow: inset 0 1px rgb(255 255 255 / .015), 0 14px 36px -12px rgb(0 0 0 / .95);
 }
 :is([data-jh-theme="dark"], .dark) .jh-calendar__previous,
-:is([data-jh-theme="dark"], .dark) .jh-calendar__next {
-  color: #8a8a8a;
-  background: transparent;
+:is([data-jh-theme="dark"], .dark) .jh-calendar__next,
+:is([data-jh-theme="dark"], .dark) [data-jh-material] .jh-calendar__previous,
+:is([data-jh-theme="dark"], .dark) [data-jh-material] .jh-calendar__next {
+  color: #9a9a9a !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
 :is([data-jh-theme="dark"], .dark) .jh-calendar__previous:hover,
-:is([data-jh-theme="dark"], .dark) .jh-calendar__next:hover {
-  background: #141414;
-  color: #ededed;
+:is([data-jh-theme="dark"], .dark) .jh-calendar__next:hover,
+:is([data-jh-theme="dark"], .dark) [data-jh-material] .jh-calendar__previous:hover,
+:is([data-jh-theme="dark"], .dark) [data-jh-material] .jh-calendar__next:hover {
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #ffffff !important;
+  opacity: .78;
 }
-:is([data-jh-theme="dark"], .dark) .jh-calendar__selected .jh-calendar__day-button {
-  background: #0e0e0e;
-  color: #ededed;
-  box-shadow: inset 0 1px rgb(255 255 255 / .018), 0 2px 6px rgb(0 0 0 / .88);
+:is([data-jh-theme="dark"], .dark) .jh-calendar__day-button:hover:not(:disabled) {
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #f4f4f4 !important;
+  opacity: 1 !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-calendar__day-button:not([aria-selected="true"]):not(:disabled):hover::after {
+  background: #ededed !important;
+  opacity: .32 !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-calendar__selected .jh-calendar__day-button,
+:is([data-jh-theme="dark"], .dark) .jh-calendar__day-button[aria-selected="true"],
+:is([data-jh-theme="dark"], .dark) [data-jh-material] .jh-calendar__selected .jh-calendar__day-button,
+:is([data-jh-theme="dark"], .dark) [data-jh-material] .jh-calendar__day-button[aria-selected="true"] {
+  background: transparent !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-calendar__selected .jh-calendar__day-button::after,
+:is([data-jh-theme="dark"], .dark) .jh-calendar__day-button[aria-selected="true"]::after {
+  background: #ededed !important;
+  opacity: .92 !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-date-time-zone,
+:is([data-jh-theme="dark"], .dark) [data-jh-material] .jh-date-time-zone {
+  padding: 0 !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  color: #8a8a8a !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-date-time-slots {
+  border-left-color: rgb(255 255 255 / .07) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-date-time-slots h3 {
+  color: #d0d0d0 !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-date-time-slots button,
+:is([data-jh-theme="dark"], .dark) [data-jh-material] .jh-date-time-slots button {
+  color: #969696 !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-date-time-slots button::after {
+  background: #f0f0f0 !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-date-time-slots button:hover:not([aria-pressed="true"]):not(:active) {
+  background: rgb(255 255 255 / .05) !important;
+  box-shadow: none !important;
+  color: #efefef !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-date-time-slots button[aria-pressed="true"],
+:is([data-jh-theme="dark"], .dark) .jh-date-time-slots button:active,
+:is([data-jh-theme="dark"], .dark) [data-jh-material] .jh-date-time-slots button[aria-pressed="true"],
+:is([data-jh-theme="dark"], .dark) [data-jh-material] .jh-date-time-slots button:active {
+  color: #f4f4f4 !important;
+  background: #141414 !important;
+  background-image: none !important;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / .045), inset 0 -1px 0 rgb(0 0 0 / .65) !important;
+}
+@media (max-width: 560px) {
+  :is([data-jh-theme="dark"], .dark) .jh-date-time-slots {
+    border-left-color: transparent !important;
+    border-top-color: rgb(255 255 255 / .07) !important;
+  }
 }
 :is([data-jh-theme="dark"], .dark) .jh-picker-overlay .jh-scroll-frame,
 :is([data-jh-theme="dark"], .dark) .jh-picker-overlay .jh-scroll-area,
@@ -1271,18 +1639,18 @@ const DARK_COMPONENT_POLISH = `
   scrollbar-color: auto !important;
 }
 :is([data-jh-theme="dark"], .dark)::-webkit-scrollbar,
-:is([data-jh-theme="dark"], .dark) :where(*:not(.jh-gallery__viewport):not(.jh-command-dialog__results))::-webkit-scrollbar {
+:is([data-jh-theme="dark"], .dark) :where(*:not(.jh-gallery__viewport):not(.jh-command-dialog__results):not(.jh-data-table__scroll):not(.jh-scroll-area))::-webkit-scrollbar {
   width: 9px !important;
   height: 9px !important;
 }
 :is([data-jh-theme="dark"], .dark)::-webkit-scrollbar-track,
-:is([data-jh-theme="dark"], .dark) :where(*:not(.jh-gallery__viewport):not(.jh-command-dialog__results))::-webkit-scrollbar-track {
+:is([data-jh-theme="dark"], .dark) :where(*:not(.jh-gallery__viewport):not(.jh-command-dialog__results):not(.jh-data-table__scroll):not(.jh-scroll-area))::-webkit-scrollbar-track {
   background: transparent !important;
   border: 0 !important;
   box-shadow: none !important;
 }
 :is([data-jh-theme="dark"], .dark)::-webkit-scrollbar-thumb,
-:is([data-jh-theme="dark"], .dark) :where(*:not(.jh-gallery__viewport):not(.jh-command-dialog__results))::-webkit-scrollbar-thumb {
+:is([data-jh-theme="dark"], .dark) :where(*:not(.jh-gallery__viewport):not(.jh-command-dialog__results):not(.jh-data-table__scroll):not(.jh-scroll-area))::-webkit-scrollbar-thumb {
   min-height: 28px !important;
   border: 2.5px solid transparent !important;
   border-radius: 99px !important;
@@ -1290,18 +1658,25 @@ const DARK_COMPONENT_POLISH = `
   box-shadow: none !important;
 }
 :is([data-jh-theme="dark"], .dark)::-webkit-scrollbar-thumb:hover,
-:is([data-jh-theme="dark"], .dark) :where(*:not(.jh-gallery__viewport):not(.jh-command-dialog__results))::-webkit-scrollbar-thumb:hover {
+:is([data-jh-theme="dark"], .dark) :where(*:not(.jh-gallery__viewport):not(.jh-command-dialog__results):not(.jh-data-table__scroll):not(.jh-scroll-area))::-webkit-scrollbar-thumb:hover {
   background: #3d3d3d padding-box !important;
 }
 :is([data-jh-theme="dark"], .dark)::-webkit-scrollbar-button,
-:is([data-jh-theme="dark"], .dark) :where(*:not(.jh-gallery__viewport):not(.jh-command-dialog__results))::-webkit-scrollbar-button {
+:is([data-jh-theme="dark"], .dark) :where(*:not(.jh-gallery__viewport):not(.jh-command-dialog__results):not(.jh-data-table__scroll):not(.jh-scroll-area))::-webkit-scrollbar-button {
   display: none !important;
   width: 0 !important;
   height: 0 !important;
 }
 :is([data-jh-theme="dark"], .dark)::-webkit-scrollbar-corner,
-:is([data-jh-theme="dark"], .dark) :where(*:not(.jh-gallery__viewport):not(.jh-command-dialog__results))::-webkit-scrollbar-corner {
+:is([data-jh-theme="dark"], .dark) :where(*:not(.jh-gallery__viewport):not(.jh-command-dialog__results):not(.jh-data-table__scroll):not(.jh-scroll-area))::-webkit-scrollbar-corner {
   background: transparent !important;
+}
+:is([data-jh-theme="dark"], .dark) :where(.jh-data-table__scroll, .jh-scroll-area)::-webkit-scrollbar-thumb {
+  border-color: transparent !important;
+  background: #2c2c2c padding-box !important;
+}
+:is([data-jh-theme="dark"], .dark) :where(.jh-data-table__scroll, .jh-scroll-area)::-webkit-scrollbar-thumb:hover {
+  background: #424242 padding-box !important;
 }
 @supports not selector(::-webkit-scrollbar) {
   :is([data-jh-theme="dark"], .dark),
@@ -1515,9 +1890,12 @@ const DARK_COMPONENT_POLISH = `
   box-shadow: inset 0 1px rgb(255 255 255 / .02), 0 2px 5px rgb(0 0 0 / .9) !important;
 }
 :is([data-jh-theme="dark"], .dark) .jh-step-navigation__step[data-state="current"] .jh-step-navigation__marker {
-  background: #e6e6e6 !important;
-  color: #090909 !important;
-  box-shadow: 0 2px 8px -2px rgb(0 0 0 / .88) !important;
+  background: linear-gradient(175deg, #222225, #18181b) !important;
+  color: #f2f2f2 !important;
+  box-shadow:
+    inset 0 1px rgb(255 255 255 / .08),
+    inset 0 0 0 1px rgb(255 255 255 / .12),
+    0 2px 6px -1px rgb(0 0 0 / .92) !important;
 }
 :is([data-jh-theme="dark"], .dark) .jh-icon-soft {
   color: #b4b4b4;
@@ -1569,6 +1947,397 @@ const DARK_COMPONENT_POLISH = `
   color: #dedede !important;
   box-shadow: inset 0 1px rgb(255 255 255 / .02), 0 2px 6px rgb(0 0 0 / .92) !important;
 }
+:is([data-jh-theme="dark"], .dark) .jh-toast__title {
+  color: #f0f0f0 !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-toast__description {
+  color: #969696 !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-toast__close {
+  color: #a0a0a0 !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-toast__close:hover {
+  background: rgb(255 255 255 / .08) !important;
+  color: #ffffff !important;
+}
+/* Tactile Key — Input-matched #070707 Key-Well + Lifted/Depressed Cap + Optical Pill LED */
+:is([data-jh-theme="dark"], .dark) .jh-tactile-key,
+:is([data-jh-theme="dark"], .dark) [data-jh-material="solid"] .jh-tactile-key,
+:is([data-jh-theme="dark"], .dark) .jh-tactile-key[data-jh-material="solid"] {
+  background: #070707 !important;
+  background-image: none !important;
+  box-shadow:
+    inset 0 1px 2px rgb(0 0 0 / .62),
+    inset 0 -1px 0 rgb(255 255 255 / .014) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-key__face,
+:is([data-jh-theme="dark"], .dark) [data-jh-material="solid"] .jh-tactile-key__face,
+:is([data-jh-theme="dark"], .dark) .jh-tactile-key[data-jh-material="solid"] .jh-tactile-key__face {
+  background: #171717 !important;
+  background-image: none !important;
+  color: #b8b8b8 !important;
+  box-shadow:
+    inset 0 1px rgb(255 255 255 / .045),
+    inset 0 0 0 1px rgb(255 255 255 / .045),
+    0 3px 6px -1px rgb(0 0 0 / .88),
+    0 1.5px 2px -0.5px rgb(0 0 0 / .72) !important;
+}
+:is([data-jh-theme="dark"], .dark) [data-jh-material="liquid-glass"] .jh-tactile-key,
+:is([data-jh-theme="dark"], .dark) .jh-tactile-key[data-jh-material="liquid-glass"] {
+  background: rgb(6 6 6 / .82) !important;
+  background-image: none !important;
+  box-shadow:
+    inset 0 1px 2px rgb(0 0 0 / .68),
+    inset 0 0 0 1px rgb(255 255 255 / .035) !important;
+}
+:is([data-jh-theme="dark"], .dark) [data-jh-material="liquid-glass"] .jh-tactile-key__face,
+:is([data-jh-theme="dark"], .dark) .jh-tactile-key[data-jh-material="liquid-glass"] .jh-tactile-key__face {
+  background: rgb(26 26 26 / .88) !important;
+  background-image: none !important;
+  box-shadow:
+    inset 0 1px rgb(255 255 255 / .055),
+    inset 0 0 0 1px rgb(255 255 255 / .05),
+    0 3px 6px -1px rgb(0 0 0 / .86) !important;
+}
+:is([data-jh-theme="dark"], .dark) [data-jh-material="liquid"] .jh-tactile-key,
+:is([data-jh-theme="dark"], .dark) .jh-tactile-key[data-jh-material="liquid"] {
+  background: rgb(7 7 7 / .84) !important;
+  box-shadow:
+    inset 0 1px 2px rgb(0 0 0 / .68),
+    inset 0 0 0 1px rgb(255 255 255 / .04) !important;
+}
+:is([data-jh-theme="dark"], .dark) [data-jh-material="liquid"] .jh-tactile-key__face,
+:is([data-jh-theme="dark"], .dark) .jh-tactile-key[data-jh-material="liquid"] .jh-tactile-key__face {
+  background: linear-gradient(175deg, rgb(30 30 30 / .9), rgb(18 18 18 / .84)) !important;
+  box-shadow:
+    inset 0 1px rgb(255 255 255 / .06),
+    inset 0 0 0 1px rgb(255 255 255 / .05),
+    0 3px 6px -1px rgb(0 0 0 / .88) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-key:hover:not([aria-pressed="true"]):not(:active) .jh-tactile-key__face {
+  background: #1d1d1d !important;
+  color: #ededed !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-key[aria-pressed="true"] .jh-tactile-key__face,
+:is([data-jh-theme="dark"], .dark) [data-jh-material="solid"] .jh-tactile-key[aria-pressed="true"] .jh-tactile-key__face,
+:is([data-jh-theme="dark"], .dark) [data-jh-material="liquid-glass"] .jh-tactile-key[aria-pressed="true"] .jh-tactile-key__face,
+:is([data-jh-theme="dark"], .dark) [data-jh-material="liquid"] .jh-tactile-key[aria-pressed="true"] .jh-tactile-key__face {
+  transform: translateY(1.75px) scale(.972);
+  background: #0d0d0d !important;
+  background-image: none !important;
+  color: #f4f4f4 !important;
+  font-weight: 560;
+  box-shadow:
+    inset 0 2px 4px rgb(0 0 0 / .88),
+    inset 0 -0.5px 0 rgb(255 255 255 / .025),
+    inset 0 0 0 1px color-mix(in oklch, var(--jh-tactile-led-color, var(--jh-slider-accent-color, oklch(100% 0 0))) 42%, rgb(255 255 255 / .1)),
+    0 .5px 0 rgb(255 255 255 / .025) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-key:active .jh-tactile-key__face,
+:is([data-jh-theme="dark"], .dark) .jh-tactile-key[aria-pressed="true"]:active .jh-tactile-key__face {
+  transform: translateY(2.25px) scale(.962);
+  background: #0a0a0a !important;
+  color: #ffffff !important;
+  box-shadow:
+    inset 0 2px 5px rgb(0 0 0 / .92),
+    inset 0 0 0 1px color-mix(in oklch, var(--jh-tactile-led-color, var(--jh-slider-accent-color, oklch(100% 0 0))) 50%, rgb(255 255 255 / .14)),
+    0 .5px 0 rgb(255 255 255 / .02) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-key__face::after {
+  width: 10px;
+  height: 3.5px;
+  background: rgb(255 255 255 / .16) !important;
+  box-shadow: inset 0 .8px 1px rgb(0 0 0 / .9), 0 .5px 0 rgb(255 255 255 / .05) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-key[data-size="compact"] .jh-tactile-key__face::after {
+  width: 8px;
+  height: 3px;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-key[aria-pressed="true"]:not(:active) .jh-tactile-key__face::after {
+  background: var(--jh-tactile-led-color, var(--jh-slider-accent-color, oklch(100% 0 0))) !important;
+  opacity: 1 !important;
+  box-shadow:
+    inset 0 0 0 .5px rgb(0 0 0 / .24),
+    0 0 0 1px rgb(0 0 0 / .42),
+    0 0 calc(var(--jh-slider-glow-blur, 5px) * .65) color-mix(in oklch, var(--jh-tactile-led-color, var(--jh-slider-glow-color, oklch(100% 0 0))) var(--jh-slider-glow-strength-mid, 52%), transparent) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-key:active .jh-tactile-key__face::after,
+:is([data-jh-theme="dark"], .dark) .jh-tactile-key[aria-pressed="true"]:active .jh-tactile-key__face::after {
+  background: color-mix(in oklch, var(--jh-tactile-led-color, var(--jh-slider-accent-color, oklch(100% 0 0))) 98%, white 2%) !important;
+  opacity: 1 !important;
+  box-shadow:
+    inset 0 0 0 .5px rgb(0 0 0 / .25),
+    0 0 0 1px rgb(0 0 0 / .48),
+    0 0 calc(var(--jh-slider-glow-blur, 5px) * .9) color-mix(in oklch, var(--jh-tactile-led-color, var(--jh-slider-glow-color, oklch(100% 0 0))) var(--jh-slider-glow-strength, 72%), transparent) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-key[data-shape="dish"] .jh-tactile-key__face {
+  border-radius: 13px;
+  background: radial-gradient(circle at 50% 56%, #1d1d1d 0%, #161616 62%, #111111 100%) !important;
+  box-shadow:
+    inset 0 1.5px 4px rgb(0 0 0 / .68),
+    inset 0 -1px 1.5px rgb(255 255 255 / .035),
+    0 3px 6px -1px rgb(0 0 0 / .88),
+    0 1.5px 2px -0.5px rgb(0 0 0 / .72) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-key[data-shape="dish"][aria-pressed="true"] .jh-tactile-key__face,
+:is([data-jh-theme="dark"], .dark) .jh-tactile-key[data-shape="dish"]:active .jh-tactile-key__face {
+  transform: translateY(1.75px) scale(.972);
+  background: radial-gradient(circle at 50% 54%, #121212 0%, #0d0d0d 62%, #080808 100%) !important;
+  color: #f4f4f4 !important;
+  font-weight: 560;
+  box-shadow:
+    inset 0 2px 5px rgb(0 0 0 / .9),
+    inset 0 -0.5px 1px rgb(255 255 255 / .02),
+    inset 0 0 0 1px color-mix(in oklch, var(--jh-tactile-led-color, var(--jh-slider-accent-color, oklch(100% 0 0))) 42%, rgb(255 255 255 / .12)),
+    0 .5px 0 rgb(255 255 255 / .02) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-key[data-tone="contrast"] .jh-tactile-key__face {
+  color: #e8e8e8 !important;
+  background: radial-gradient(circle at 50% 56%, #242424 0%, #1c1c1c 70%, #151515 100%) !important;
+  box-shadow:
+    inset 0 1px 1.5px rgb(255 255 255 / .055),
+    inset 0 -1px 1.5px rgb(0 0 0 / .72),
+    0 3px 6px -1px rgb(0 0 0 / .9),
+    0 1.5px 2px -0.5px rgb(0 0 0 / .74) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-key[data-tone="contrast"][aria-pressed="true"] .jh-tactile-key__face,
+:is([data-jh-theme="dark"], .dark) .jh-tactile-key[data-tone="contrast"]:active .jh-tactile-key__face {
+  transform: translateY(1.75px) scale(.972);
+  color: #ffffff !important;
+  background: radial-gradient(circle at 50% 54%, #151515 0%, #0e0e0e 72%, #080808 100%) !important;
+  box-shadow:
+    inset 0 2px 4px rgb(0 0 0 / .92),
+    inset 0 0 0 1px color-mix(in oklch, var(--jh-tactile-led-color, var(--jh-slider-accent-color, oklch(100% 0 0))) 46%, rgb(255 255 255 / .14)),
+    0 .5px 0 rgb(255 255 255 / .025) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-key[data-tone="accent"] .jh-tactile-key__face {
+  color: #e4e4e4 !important;
+  background: color-mix(in oklch, var(--jh-tactile-led-color, var(--jh-slider-accent-color, oklch(100% 0 0))) 14%, #171717) !important;
+  box-shadow:
+    inset 0 1px 1px rgb(255 255 255 / .05),
+    inset 0 0 0 1px rgb(255 255 255 / .05),
+    0 3px 6px -1px rgb(0 0 0 / .88),
+    0 1.5px 2px -0.5px rgb(0 0 0 / .72) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-key[data-tone="accent"][aria-pressed="true"] .jh-tactile-key__face,
+:is([data-jh-theme="dark"], .dark) .jh-tactile-key[data-tone="accent"]:active .jh-tactile-key__face {
+  transform: translateY(1.75px) scale(.972);
+  color: #ffffff !important;
+  background: color-mix(in oklch, var(--jh-tactile-led-color, var(--jh-slider-accent-color, oklch(100% 0 0))) 22%, #0d0d0d) !important;
+  box-shadow:
+    inset 0 2px 4px rgb(0 0 0 / .88),
+    inset 0 0 0 1px color-mix(in oklch, var(--jh-tactile-led-color, var(--jh-slider-accent-color, oklch(100% 0 0))) 48%, rgb(255 255 255 / .14)),
+    0 .5px 0 rgb(255 255 255 / .025) !important;
+}
+
+/* Tactile Keypad & Tactile Console — Monochrome Obsidian */
+:is([data-jh-theme="dark"], .dark) .jh-tactile-keypad,
+:is([data-jh-theme="dark"], .dark) .jh-tactile-console {
+  --jh-tactile-led-color: var(--jh-slider-accent-color, var(--jh-accent, oklch(100% 0 0)));
+  background: #0a0a0a !important;
+  background-image: none !important;
+  box-shadow:
+    inset 0 1px rgb(255 255 255 / .015),
+    0 12px 28px -12px rgb(0 0 0 / .95) !important;
+  color: #b4b4b4;
+}
+:is([data-jh-theme="dark"], .dark) [data-jh-material="liquid-glass"] :where(.jh-tactile-keypad, .jh-tactile-console),
+:is([data-jh-theme="dark"], .dark) :where(.jh-tactile-keypad, .jh-tactile-console)[data-jh-material="liquid-glass"] {
+  background: rgb(12 12 12 / .82) !important;
+  background-image: none !important;
+  box-shadow:
+    inset 0 1px rgb(255 255 255 / .028),
+    inset 0 0 0 1px rgb(255 255 255 / .035),
+    0 12px 28px -12px rgb(0 0 0 / .95) !important;
+}
+:is([data-jh-theme="dark"], .dark) [data-jh-material="liquid"] :where(.jh-tactile-keypad, .jh-tactile-console),
+:is([data-jh-theme="dark"], .dark) :where(.jh-tactile-keypad, .jh-tactile-console)[data-jh-material="liquid"] {
+  background:
+    linear-gradient(130deg, rgb(255 255 255 / .045), rgb(255 255 255 / .018) 45%, rgb(255 255 255 / .05)),
+    linear-gradient(175deg, rgb(14 14 14 / .86), rgb(9 9 9 / .84)) !important;
+  box-shadow:
+    inset 0 1px rgb(255 255 255 / .04),
+    inset 0 0 0 1px rgb(255 255 255 / .04),
+    0 14px 30px -12px rgb(0 0 0 / .95) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-keypad__header {
+  border-bottom-color: rgb(255 255 255 / .06) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-keypad__header,
+:is([data-jh-theme="dark"], .dark) .jh-tactile-encoder-label {
+  color: #828282;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-keypad__readout {
+  color: #e6e6e6;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-keypad__grid,
+:is([data-jh-theme="dark"], .dark) .jh-tactile-console__bottom {
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-pad {
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #a8a8a8;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-console__util-col .jh-tactile-pad {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-pad__cap {
+  background: #171717 !important;
+  box-shadow:
+    inset 0 1px rgb(255 255 255 / .045),
+    inset 0 0 0 .5px rgb(255 255 255 / .045),
+    0 2px 4px -0.5px rgb(0 0 0 / .88),
+    0 1px 1.5px rgb(0 0 0 / .72) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-pad[data-shape="dish"] .jh-tactile-pad__cap::before {
+  background: radial-gradient(circle at 50% 60%, #1d1d1d 0%, #161616 60%, #111111 100%) !important;
+  box-shadow:
+    inset 0 1.25px 2.5px rgb(0 0 0 / .72),
+    inset 0 -0.5px 1px rgb(255 255 255 / .03) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-pad[data-tone="contrast"] .jh-tactile-pad__cap {
+  background: #202020 !important;
+  color: #e8e8e8 !important;
+  box-shadow:
+    inset 0 1px rgb(255 255 255 / .055),
+    inset 0 0 0 .5px rgb(255 255 255 / .05),
+    0 2px 4px -0.5px rgb(0 0 0 / .9),
+    0 1px 1.5px rgb(0 0 0 / .74) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-pad[data-tone="contrast"][data-shape="dish"] .jh-tactile-pad__cap::before {
+  background: radial-gradient(circle at 50% 60%, #242424 0%, #1c1c1c 62%, #151515 100%) !important;
+  box-shadow:
+    inset 0 1.25px 2px rgb(0 0 0 / .68),
+    inset 0 -0.5px 1px rgb(255 255 255 / .035) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-pad__pin {
+  background: rgb(255 255 255 / .16) !important;
+  box-shadow: inset 0 .8px 1px #000, 0 .5px 0 rgb(255 255 255 / .045) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-pad[data-tone="contrast"] .jh-tactile-pad__pin {
+  background: rgb(255 255 255 / .22) !important;
+  box-shadow: inset 0 .8px 1px #000, 0 .5px 0 rgb(255 255 255 / .06) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-pad[aria-pressed="true"] .jh-tactile-pad__pin,
+:is([data-jh-theme="dark"], .dark) .jh-tactile-pad[data-led="crimson"][aria-pressed="true"] .jh-tactile-pad__pin {
+  opacity: 1 !important;
+  background: var(--jh-tactile-led-color, oklch(100% 0 0)) !important;
+  box-shadow:
+    inset 0 0 0 .5px rgb(0 0 0 / .24),
+    0 0 0 1px rgb(0 0 0 / .42),
+    0 0 calc(var(--jh-slider-glow-blur, 5px) * .55) color-mix(in oklch, var(--jh-tactile-led-color, oklch(100% 0 0)) var(--jh-slider-glow-strength-mid, 52%), transparent) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-pad:is(:active, [data-pressed="true"], [data-playhead="true"]) .jh-tactile-pad__pin,
+:is([data-jh-theme="dark"], .dark) .jh-tactile-pad[data-led="crimson"]:is(:active, [data-pressed="true"]) .jh-tactile-pad__pin {
+  opacity: 1 !important;
+  background: color-mix(in oklch, var(--jh-tactile-led-color, oklch(100% 0 0)) 98%, white 2%) !important;
+  box-shadow:
+    inset 0 0 0 .5px rgb(0 0 0 / .25),
+    0 0 0 1px rgb(0 0 0 / .48),
+    0 0 calc(var(--jh-slider-glow-blur, 5px) * .85) color-mix(in oklch, var(--jh-tactile-led-color, oklch(100% 0 0)) var(--jh-slider-glow-strength, 70%), transparent) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-pad:is(:active, [data-pressed="true"], [aria-pressed="true"]) .jh-tactile-pad__cap {
+  transform: translateY(1.25px) scale(.965);
+  background: #0d0d0d !important;
+  color: #f4f4f4 !important;
+  box-shadow:
+    inset 0 1.5px 3px rgb(0 0 0 / .9),
+    inset 0 0 0 1px color-mix(in oklch, var(--jh-tactile-led-color, oklch(100% 0 0)) 38%, rgb(255 255 255 / .12)),
+    0 .5px 0 rgb(255 255 255 / .02) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-pad:is(:active, [data-pressed="true"], [aria-pressed="true"])[data-shape="dish"] .jh-tactile-pad__cap::before {
+  background: radial-gradient(circle at 50% 56%, #131313 0%, #0d0d0d 62%, #080808 100%) !important;
+  box-shadow:
+    inset 0 1.5px 3px rgb(0 0 0 / .88),
+    inset 0 -0.5px 1px rgb(255 255 255 / .02) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-pad[data-tone="contrast"]:is(:active, [data-pressed="true"], [aria-pressed="true"]) .jh-tactile-pad__cap {
+  background: #121212 !important;
+  color: #ffffff !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-console__speaker {
+  background: #070707 !important;
+  box-shadow: inset 0 1px 2px rgb(0 0 0 / .58), inset 0 -1px 0 rgb(255 255 255 / .012) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-console__speaker span {
+  background: #030303 !important;
+  box-shadow: inset 0 .5px 1px #000, 0 .5px 0 rgb(255 255 255 / .03) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-console__oled {
+  background: #070707 !important;
+  color: #ededed !important;
+  box-shadow: inset 0 1px 2px rgb(0 0 0 / .58), inset 0 0 0 1px rgb(255 255 255 / .03), inset 0 -1px 0 rgb(255 255 255 / .012) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-console__oled-head {
+  color: #828282 !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-oled__curve {
+  stroke: color-mix(in oklch, var(--jh-tactile-led-color, oklch(100% 0 0)) 85%, #d0d0d0) !important;
+  opacity: .72 !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-oled__rail {
+  stroke: rgb(255 255 255 / .12) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-oled__bar {
+  fill: rgb(255 255 255 / .14) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-oled__bar.is-active {
+  fill: rgb(255 255 255 / .56) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-oled__bar.is-hit {
+  fill: color-mix(in oklch, var(--jh-tactile-led-color, oklch(100% 0 0)) 95%, white 5%) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-encoder {
+  background: #060606 !important;
+  box-shadow:
+    inset 0 1.5px 3px rgb(0 0 0 / .88),
+    inset 0 -0.5px 0 rgb(255 255 255 / .02),
+    0 1px 0 rgb(255 255 255 / .015) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-encoder__tick {
+  stroke: rgb(255 255 255 / .18) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-encoder__tick.is-active {
+  stroke: color-mix(in oklch, var(--jh-tactile-led-color, oklch(100% 0 0)) 92%, #ffffff) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-encoder__ring {
+  border-color: color-mix(in oklch, var(--jh-tactile-led-color, oklch(100% 0 0)) 42%, #242424) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-encoder[data-dragging="true"] .jh-tactile-encoder__ring,
+:is([data-jh-theme="dark"], .dark) .jh-tactile-encoder:active .jh-tactile-encoder__ring {
+  opacity: 1 !important;
+  border-color: var(--jh-tactile-led-color, #e6e6e6) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-encoder__cap {
+  box-shadow: inset 0 1px rgb(255 255 255 / .06), 0 2px 6px rgb(0 0 0 / .92) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-encoder[data-encoder-tone="0"] .jh-tactile-encoder__cap {
+  background: radial-gradient(circle at 40% 34%, #1e1e1e 0%, #141414 72%, #0c0c0c 100%) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-encoder[data-encoder-tone="1"] .jh-tactile-encoder__cap {
+  background: radial-gradient(circle at 40% 34%, #3c3c3c 0%, #2b2b2b 72%, #1f1f1f 100%) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-encoder[data-encoder-tone="2"] .jh-tactile-encoder__cap {
+  background: radial-gradient(circle at 40% 34%, #6a6a6a 0%, #525252 72%, #3f3f3f 100%) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-encoder[data-encoder-tone="3"] .jh-tactile-encoder__cap {
+  background: radial-gradient(circle at 40% 34%, #a8a8a8 0%, #8e8e8e 72%, #767676 100%) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-encoder__notch {
+  background: rgb(255 255 255 / .64) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-encoder[data-encoder-tone="3"] .jh-tactile-encoder__notch {
+  background: rgb(0 0 0 / .55) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tactile-encoder[data-dragging="true"] .jh-tactile-encoder__notch,
+:is([data-jh-theme="dark"], .dark) .jh-tactile-encoder:active .jh-tactile-encoder__notch {
+  opacity: 1 !important;
+  background: var(--jh-tactile-led-color, #ffffff) !important;
+}
 :is([data-jh-theme="dark"], .dark) .jh-glass-shape,
 :is([data-jh-theme="dark"], .dark) [data-jh-material="solid"] .jh-glass-shape {
   background: linear-gradient(175deg, #0e0e0e, #0a0a0a) !important;
@@ -1579,6 +2348,417 @@ const DARK_COMPONENT_POLISH = `
 :is([data-jh-theme="dark"], .dark) [data-jh-material="liquid"] .jh-glass-shape {
   background: linear-gradient(130deg, rgb(255 255 255 / .045), rgb(255 255 255 / .018) 45%, rgb(255 255 255 / .05)), linear-gradient(175deg, rgb(14 14 14 / .86), rgb(9 9 9 / .84)) !important;
 }
+
+/* Camera Scroll Wheel — Flat Obsidian Deck */
+:is([data-jh-theme="dark"], .dark) .jh-camera-wheel {
+  --jh-camera-accent: var(--jh-slider-accent-color, var(--jh-accent, oklch(100% 0 0)));
+  background: #0a0a0a !important;
+  background-image: none !important;
+  box-shadow:
+    inset 0 1px rgb(255 255 255 / .015),
+    0 12px 28px -12px rgb(0 0 0 / .95) !important;
+  color: #ededed !important;
+}
+:is([data-jh-theme="dark"], .dark) [data-jh-material="liquid-glass"] .jh-camera-wheel,
+:is([data-jh-theme="dark"], .dark) .jh-camera-wheel[data-jh-material="liquid-glass"] {
+  background: rgb(12 12 12 / .82) !important;
+  background-image: none !important;
+  box-shadow:
+    inset 0 1px rgb(255 255 255 / .028),
+    inset 0 0 0 1px rgb(255 255 255 / .035),
+    0 12px 28px -12px rgb(0 0 0 / .95) !important;
+}
+:is([data-jh-theme="dark"], .dark) [data-jh-material="liquid"] .jh-camera-wheel,
+:is([data-jh-theme="dark"], .dark) .jh-camera-wheel[data-jh-material="liquid"] {
+  background:
+    linear-gradient(130deg, rgb(255 255 255 / .045), rgb(255 255 255 / .018) 45%, rgb(255 255 255 / .05)),
+    linear-gradient(175deg, rgb(14 14 14 / .86), rgb(9 9 9 / .84)) !important;
+  box-shadow:
+    inset 0 1px rgb(255 255 255 / .04),
+    inset 0 0 0 1px rgb(255 255 255 / .04),
+    0 14px 30px -12px rgb(0 0 0 / .95) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-camera-wheel__meta {
+  border-bottom-color: rgb(255 255 255 / .06) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-camera-wheel__title { color: #ededed !important; }
+:is([data-jh-theme="dark"], .dark) .jh-camera-wheel__subtitle { color: #828282 !important; }
+:is([data-jh-theme="dark"], .dark) .jh-camera-wheel__readout {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-camera-wheel__readout small { color: #828282 !important; }
+:is([data-jh-theme="dark"], .dark) .jh-camera-wheel__readout strong { color: #f2f2f2 !important; }
+:is([data-jh-theme="dark"], .dark) .jh-camera-wheel__body {
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-camera-wheel__body:focus-visible {
+  box-shadow: 0 0 0 2px var(--jh-camera-accent) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-camera-wheel__window {
+  background: rgb(255 255 255 / .018) !important;
+  background-image: none !important;
+  border-color: rgb(255 255 255 / .055) !important;
+  box-shadow: none !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-camera-wheel__window-glass {
+  background:
+    linear-gradient(90deg, #0a0a0a 0%, rgb(10 10 10 / .7) 12%, transparent 26%, transparent 74%, rgb(10 10 10 / .7) 88%, #0a0a0a 100%) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-camera-wheel--vertical .jh-camera-wheel__window-glass {
+  background:
+    linear-gradient(180deg, #0a0a0a 0%, rgb(10 10 10 / .7) 12%, transparent 26%, transparent 74%, rgb(10 10 10 / .7) 88%, #0a0a0a 100%) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-camera-wheel__needle::before,
+:is([data-jh-theme="dark"], .dark) .jh-camera-wheel__needle::after {
+  background: var(--jh-camera-accent) !important;
+  box-shadow: 0 0 calc(var(--jh-slider-glow-blur, 5px) * .6) color-mix(in oklch, var(--jh-camera-accent) 52%, transparent) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-camera-wheel__stop { color: rgb(255 255 255 / .36) !important; }
+:is([data-jh-theme="dark"], .dark) .jh-camera-wheel__stop[data-near="true"] { color: rgb(255 255 255 / .62) !important; }
+:is([data-jh-theme="dark"], .dark) .jh-camera-wheel__stop.is-active { color: #f5f5f5 !important; }
+:is([data-jh-theme="dark"], .dark) .jh-camera-wheel__stop.is-zero .jh-camera-wheel__val {
+  border-color: rgb(255 255 255 / .34) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-camera-wheel__stop.is-active.is-fraction .jh-camera-wheel__val {
+  color: var(--jh-camera-accent) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-camera-wheel__stop.is-active.is-zero .jh-camera-wheel__val {
+  border-color: var(--jh-camera-accent) !important;
+  color: #ffffff !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-camera-wheel__knurl {
+  background-color: #161616 !important;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / .055),
+    inset 0 -1px 1px rgb(0 0 0 / .75),
+    0 0 0 1px rgb(255 255 255 / .045),
+    0 2px 6px rgb(0 0 0 / .92) !important;
+  background-image:
+    linear-gradient(90deg, rgb(0 0 0 / .58) 0%, rgb(0 0 0 / .16) 8%, transparent 20%, transparent 80%, rgb(0 0 0 / .16) 92%, rgb(0 0 0 / .58) 100%),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 4.5px,
+      rgb(0 0 0 / .48) 4.5px 5.5px,
+      rgb(255 255 255 / .065) 5.5px 6.5px,
+      transparent 6.5px 7px
+    ),
+    linear-gradient(180deg, #141414 0%, #242424 28%, #2c2c2c 45%, #1e1e1e 74%, #111111 100%) !important;
+  background-size: 100% 100%, 28px 100%, 100% 100% !important;
+  background-position: 0 0, var(--jh-knurl-offset, 0px) 0, 0 0 !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-camera-wheel--vertical .jh-camera-wheel__knurl {
+  background-image:
+    linear-gradient(180deg, rgb(0 0 0 / .58) 0%, rgb(0 0 0 / .16) 8%, transparent 20%, transparent 80%, rgb(0 0 0 / .16) 92%, rgb(0 0 0 / .58) 100%),
+    repeating-linear-gradient(
+      180deg,
+      transparent 0 4.5px,
+      rgb(0 0 0 / .48) 4.5px 5.5px,
+      rgb(255 255 255 / .065) 5.5px 6.5px,
+      transparent 6.5px 7px
+    ),
+    linear-gradient(90deg, #141414 0%, #242424 28%, #2c2c2c 45%, #1e1e1e 74%, #111111 100%) !important;
+  background-size: 100% 100%, 100% 28px, 100% 100% !important;
+  background-position: 0 0, 0 var(--jh-knurl-offset, 0px), 0 0 !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-camera-wheel__knurl-seam,
+:is([data-jh-theme="dark"], .dark) .jh-camera-wheel--vertical .jh-camera-wheel__knurl-seam {
+  display: none !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-camera-wheel__pip { background: rgb(255 255 255 / .14) !important; box-shadow: none !important; }
+:is([data-jh-theme="dark"], .dark) .jh-camera-wheel__pip:hover { background: rgb(255 255 255 / .34) !important; }
+:is([data-jh-theme="dark"], .dark) .jh-camera-wheel__pip.is-active {
+  background: var(--jh-camera-accent) !important;
+  box-shadow: 0 0 calc(var(--jh-slider-glow-blur, 5px) * .5) color-mix(in oklch, var(--jh-camera-accent) 52%, transparent) !important;
+}
+
+/* Camera Dial Turret — Flat Obsidian Deck + Tactile Dial Precision */
+:is([data-jh-theme="dark"], .dark) .jh-camera-dial {
+  --jh-camera-accent: var(--jh-slider-accent-color, var(--jh-accent, oklch(100% 0 0)));
+  color: #ededed !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-camera-dial__plate {
+  background: #0a0a0a !important;
+  background-image: none !important;
+  box-shadow:
+    inset 0 1px rgb(255 255 255 / .015),
+    0 12px 28px -12px rgb(0 0 0 / .95) !important;
+}
+:is([data-jh-theme="dark"], .dark) [data-jh-material="liquid-glass"] .jh-camera-dial__plate,
+:is([data-jh-theme="dark"], .dark) .jh-camera-dial[data-jh-material="liquid-glass"] .jh-camera-dial__plate {
+  background: rgb(12 12 12 / .82) !important;
+  background-image: none !important;
+  box-shadow:
+    inset 0 1px rgb(255 255 255 / .028),
+    inset 0 0 0 1px rgb(255 255 255 / .035),
+    0 12px 28px -12px rgb(0 0 0 / .95) !important;
+}
+:is([data-jh-theme="dark"], .dark) [data-jh-material="liquid"] .jh-camera-dial__plate,
+:is([data-jh-theme="dark"], .dark) .jh-camera-dial[data-jh-material="liquid"] .jh-camera-dial__plate {
+  background:
+    linear-gradient(130deg, rgb(255 255 255 / .045), rgb(255 255 255 / .018) 45%, rgb(255 255 255 / .05)),
+    linear-gradient(175deg, rgb(14 14 14 / .86), rgb(9 9 9 / .84)) !important;
+  box-shadow:
+    inset 0 1px rgb(255 255 255 / .04),
+    inset 0 0 0 1px rgb(255 255 255 / .04),
+    0 14px 30px -12px rgb(0 0 0 / .95) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-camera-dial__head { border-bottom-color: rgb(255 255 255 / .06) !important; }
+:is([data-jh-theme="dark"], .dark) .jh-camera-dial__label,
+:is([data-jh-theme="dark"], .dark) .jh-camera-dial__status { color: #ededed !important; }
+:is([data-jh-theme="dark"], .dark) .jh-camera-dial__sublabel { color: #828282 !important; }
+:is([data-jh-theme="dark"], .dark) .jh-camera-dial__bezel-ticks line {
+  stroke: rgb(255 255 255 / .16) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-camera-dial__bezel-ticks line.is-major {
+  stroke: rgb(255 255 255 / .38) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-camera-dial__datum-pip {
+  background: var(--jh-camera-accent) !important;
+  box-shadow: 0 0 calc(var(--jh-slider-glow-blur, 5px) * .55) color-mix(in oklch, var(--jh-camera-accent) 52%, transparent) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-camera-dial[data-dragging="true"] .jh-camera-dial__datum-pip {
+  box-shadow: 0 0 calc(var(--jh-slider-glow-blur, 5px) * .9) color-mix(in oklch, var(--jh-camera-accent) 78%, transparent) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-camera-dial__ev-step {
+  background: #141414 !important;
+  box-shadow: inset 0 1px rgb(255 255 255 / .04), inset 0 0 0 1px rgb(255 255 255 / .055), 0 1.5px 3px rgb(0 0 0 / .7) !important;
+  color: rgb(255 255 255 / .64) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-camera-dial__ev-step:hover {
+  color: #ededed !important;
+  background: #1a1a1a !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-camera-dial__ev-step.is-active {
+  background: linear-gradient(175deg, #212121, #171717) !important;
+  color: #f4f4f4 !important;
+  box-shadow:
+    inset 0 1px rgb(255 255 255 / .06),
+    inset 0 0 0 1px color-mix(in oklch, var(--jh-camera-accent) 45%, rgb(255 255 255 / .14)),
+    0 2px 6px rgb(0 0 0 / .88) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-camera-dial__turret-wrap {
+  background: transparent !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-camera-dial__turret-wrap:focus-visible {
+  box-shadow: 0 0 0 2px var(--jh-camera-accent) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-camera-dial__knurled-rim {
+  background: radial-gradient(circle at 38% 30%, #202020 0%, #151515 52%, #0e0e0e 88%, #090909 100%) !important;
+  box-shadow: inset 0 1px rgb(255 255 255 / .03), inset 0 0 0 1px rgb(255 255 255 / .04), 0 4px 12px rgb(0 0 0 / .88) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-camera-dial__knurled-rim::before {
+  border-color: rgb(255 255 255 / .14) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-camera-dial__stop-mark b { color: rgb(255 255 255 / .54) !important; }
+:is([data-jh-theme="dark"], .dark) .jh-camera-dial__stop-mark.is-auto b { color: var(--jh-camera-accent) !important; }
+:is([data-jh-theme="dark"], .dark) .jh-camera-dial__stop-mark.is-active b {
+  color: #ffffff !important;
+  text-shadow: none !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-camera-dial__hub {
+  background: radial-gradient(circle at 36% 28%, #1e1e1e 0%, #131313 64%, #0c0c0c 100%) !important;
+  box-shadow: inset 0 1px rgb(255 255 255 / .035), inset 0 0 0 1px rgb(255 255 255 / .04), 0 4px 12px rgb(0 0 0 / .86) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-camera-dial__cutout {
+  background: #171717 !important;
+  color: #ededed !important;
+  box-shadow:
+    inset 0 1px rgb(255 255 255 / .05),
+    inset 0 0 0 1px rgb(255 255 255 / .06),
+    0 2px 4px rgb(0 0 0 / .72) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-camera-dial__cutout:hover {
+  background: #1d1d1d !important;
+  box-shadow:
+    inset 0 1px rgb(255 255 255 / .07),
+    inset 0 0 0 1px rgb(255 255 255 / .09),
+    0 2px 6px rgb(0 0 0 / .78) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-camera-dial__cutout[data-scrolling="true"] {
+  background: #131313 !important;
+  box-shadow:
+    inset 0 1px rgb(255 255 255 / .04),
+    inset 0 0 0 1px color-mix(in oklch, var(--jh-camera-accent) 45%, rgb(255 255 255 / .14)),
+    0 1px 2px rgb(0 0 0 / .7) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-camera-dial__cutout-label { color: #828282 !important; }
+:is([data-jh-theme="dark"], .dark) .jh-camera-dial__cutout-value { color: #f2f2f2 !important; }
+:is([data-jh-theme="dark"], .dark) .jh-camera-dial__film-tag { color: #828282 !important; }
+:is([data-jh-theme="dark"], .dark) .jh-camera-dial__film-active { color: #ffffff !important; }
+:is([data-jh-theme="dark"], .dark) .jh-camera-dial__spindle {
+  background: radial-gradient(circle at 35% 30%, #4d4d4d, #262626 72%, #141414 100%) !important;
+  box-shadow: inset 0 1px rgb(255 255 255 / .08), inset 0 0 0 1px rgb(255 255 255 / .06), 0 1px 3px rgb(0 0 0 / .9) !important;
+}
+
+/* Debossed 120 Filmstrip Gallery — Flat Obsidian Light-Table */
+:is([data-jh-theme="dark"], .dark) .jh-filmstrip {
+  --jh-camera-accent: var(--jh-slider-accent-color, var(--jh-accent, oklch(100% 0 0)));
+}
+:is([data-jh-theme="dark"], .dark) .jh-filmstrip__chassis {
+  background: #0a0a0a !important;
+  background-image: none !important;
+  box-shadow:
+    inset 0 1px rgb(255 255 255 / .015),
+    0 12px 28px -12px rgb(0 0 0 / .95) !important;
+}
+:is([data-jh-theme="dark"], .dark) [data-jh-material="liquid-glass"] .jh-filmstrip__chassis,
+:is([data-jh-theme="dark"], .dark) .jh-filmstrip[data-jh-material="liquid-glass"] .jh-filmstrip__chassis {
+  background: rgb(12 12 12 / .82) !important;
+  background-image: none !important;
+  box-shadow:
+    inset 0 1px rgb(255 255 255 / .028),
+    inset 0 0 0 1px rgb(255 255 255 / .035),
+    0 12px 28px -12px rgb(0 0 0 / .95) !important;
+}
+:is([data-jh-theme="dark"], .dark) [data-jh-material="liquid"] .jh-filmstrip__chassis,
+:is([data-jh-theme="dark"], .dark) .jh-filmstrip[data-jh-material="liquid"] .jh-filmstrip__chassis {
+  background:
+    linear-gradient(130deg, rgb(255 255 255 / .045), rgb(255 255 255 / .018) 45%, rgb(255 255 255 / .05)),
+    linear-gradient(175deg, rgb(14 14 14 / .86), rgb(9 9 9 / .84)) !important;
+  box-shadow:
+    inset 0 1px rgb(255 255 255 / .04),
+    inset 0 0 0 1px rgb(255 255 255 / .04),
+    0 14px 30px -12px rgb(0 0 0 / .95) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-filmstrip__header { border-bottom-color: rgb(255 255 255 / .06) !important; }
+:is([data-jh-theme="dark"], .dark) .jh-filmstrip__brand { color: #ededed !important; }
+:is([data-jh-theme="dark"], .dark) .jh-filmstrip__emulsion { color: #828282 !important; }
+:is([data-jh-theme="dark"], .dark) .jh-filmstrip__counter {
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #ededed !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-filmstrip__well {
+  padding: 2px 2px 0;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-image: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  color: #ededed !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-filmstrip__frame-badge,
+:is([data-jh-theme="dark"], .dark) .jh-filmstrip__exif-pills { color: #828282 !important; }
+:is([data-jh-theme="dark"], .dark) .jh-filmstrip__frame-meta { border-top-color: rgb(255 255 255 / .06) !important; }
+:is([data-jh-theme="dark"], .dark) .jh-filmstrip__frame-meta strong { color: #ededed !important; }
+:is([data-jh-theme="dark"], .dark) .jh-filmstrip__artwork {
+  background: #0e0e0e !important;
+  border: 0 !important;
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / .07),
+    0 2px 8px -2px rgb(0 0 0 / .75) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-filmstrip__crosshair { color: rgb(255 255 255 / .24) !important; }
+:is([data-jh-theme="dark"], .dark) .jh-filmstrip__gate {
+  background: #040404 !important;
+  box-shadow: inset 2px 0 5px rgb(0 0 0 / .95), 1px 0 0 rgb(255 255 255 / .03) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-filmstrip__gate-led {
+  background: var(--jh-camera-accent) !important;
+  box-shadow: none !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-filmstrip[data-dragging="true"] .jh-filmstrip__gate-led {
+  box-shadow: 0 0 calc(var(--jh-slider-glow-blur, 5px) * .9) var(--jh-camera-accent) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-filmstrip__ribbon {
+  background: linear-gradient(180deg, #161616 0%, #101010 55%, #151515 100%) !important;
+  color: #e4e4e4 !important;
+  box-shadow:
+    inset 18px 0 18px -10px rgb(0 0 0 / .9),
+    inset 0 1px 0 rgb(255 255 255 / .035),
+    0 12px 24px -12px rgb(0 0 0 / .92) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-filmstrip__start-tag { color: #828282 !important; }
+:is([data-jh-theme="dark"], .dark) .jh-filmstrip__num-step {
+  color: rgb(255 255 255 / .52) !important;
+  background: transparent !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-filmstrip__num-step:hover {
+  color: #ededed !important;
+  background: rgb(255 255 255 / .04) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-filmstrip__num-step.is-active {
+  color: #ffffff !important;
+  background: linear-gradient(175deg, #1d1d1d, #141414) !important;
+  border-color: color-mix(in oklch, var(--jh-camera-accent) 45%, rgb(255 255 255 / .14)) !important;
+  box-shadow: 0 1px 3px rgb(0 0 0 / .85) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-filmstrip__ribbon-badge {
+  background: #0d0d0d !important;
+  border-left-color: rgb(255 255 255 / .16) !important;
+  box-shadow: inset 1px 0 0 rgb(255 255 255 / .025) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-filmstrip__exposed { color: #888888 !important; }
+:is([data-jh-theme="dark"], .dark) .jh-filmstrip[data-exposed="true"] .jh-filmstrip__exposed { color: #f0f0f0 !important; }
+:is([data-jh-theme="dark"], .dark) .jh-filmstrip__tab-seal {
+  background: #191919 !important;
+  border-color: rgb(255 255 255 / .12) !important;
+  color: #ededed !important;
+}
+
+/* Image Inspector — Flat Obsidian Proofing Sheet */
+:is([data-jh-theme="dark"], .dark) .jh-image-inspector {
+  background: #0a0a0a !important;
+  background-image: none !important;
+  box-shadow:
+    inset 0 1px rgb(255 255 255 / .015),
+    0 12px 28px -12px rgb(0 0 0 / .95) !important;
+  color: #ededed !important;
+}
+:is([data-jh-theme="dark"], .dark) [data-jh-material="liquid-glass"] .jh-image-inspector,
+:is([data-jh-theme="dark"], .dark) .jh-image-inspector[data-jh-material="liquid-glass"] {
+  background: rgb(12 12 12 / .82) !important;
+  background-image: none !important;
+  box-shadow:
+    inset 0 1px rgb(255 255 255 / .028),
+    inset 0 0 0 1px rgb(255 255 255 / .035),
+    0 12px 28px -12px rgb(0 0 0 / .95) !important;
+}
+:is([data-jh-theme="dark"], .dark) [data-jh-material="liquid"] .jh-image-inspector,
+:is([data-jh-theme="dark"], .dark) .jh-image-inspector[data-jh-material="liquid"] {
+  background:
+    linear-gradient(130deg, rgb(255 255 255 / .045), rgb(255 255 255 / .018) 45%, rgb(255 255 255 / .05)),
+    linear-gradient(175deg, rgb(14 14 14 / .86), rgb(9 9 9 / .84)) !important;
+  box-shadow:
+    inset 0 1px rgb(255 255 255 / .04),
+    inset 0 0 0 1px rgb(255 255 255 / .04),
+    0 14px 30px -12px rgb(0 0 0 / .95) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-image-inspector__left {
+  background: transparent !important;
+  border-right-color: rgb(255 255 255 / .06) !important;
+  border-bottom-color: rgb(255 255 255 / .06) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-image-inspector__topbar { color: #8a8a8a !important; }
+:is([data-jh-theme="dark"], .dark) .jh-image-inspector__exifbar { color: #e2e2e2 !important; }
+:is([data-jh-theme="dark"], .dark) .jh-image-inspector__cycle:hover {
+  background: rgb(255 255 255 / .06) !important;
+  color: #ffffff !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-image-inspector__well {
+  background: #0e0e0e !important;
+  border: 0 !important;
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / .07),
+    0 2px 8px -2px rgb(0 0 0 / .75) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-image-inspector__eyebrow,
+:is([data-jh-theme="dark"], .dark) .jh-image-inspector__key { color: #8a8a8a !important; }
+:is([data-jh-theme="dark"], .dark) .jh-image-inspector__frame-row,
+:is([data-jh-theme="dark"], .dark) .jh-image-inspector__row { border-top-color: rgb(255 255 255 / .07) !important; }
+:is([data-jh-theme="dark"], .dark) .jh-image-inspector__frame-id,
+:is([data-jh-theme="dark"], .dark) .jh-image-inspector__val strong { color: #ededed !important; }
+:is([data-jh-theme="dark"], .dark) .jh-image-inspector__val strong.jh-image-inspector__status { color: #f2f2f2 !important; }
+:is([data-jh-theme="dark"], .dark) .jh-image-inspector__plate-index,
+:is([data-jh-theme="dark"], .dark) .jh-image-inspector__val p,
+:is([data-jh-theme="dark"], .dark) .jh-image-inspector__sub,
+:is([data-jh-theme="dark"], .dark) .jh-image-inspector__footnote { color: #808080 !important; }
 `;
 
 const DARK_LAB_POLISH = `

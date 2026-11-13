@@ -91,7 +91,7 @@ export function Accordion({
               aria-hidden={!open}
               inert={!open || undefined}
             >
-              <div className="jh-accordion__content">{item.content}</div>
+              <div className="jh-accordion__content"><div className="jh-accordion__inner">{item.content}</div></div>
             </div>
           </section>
         );

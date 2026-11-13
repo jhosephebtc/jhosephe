@@ -81,6 +81,14 @@ export function DataTable<T extends Record<string, unknown>>({
       data-jh-material={matAttr}
     >
       {finish === 'liquid' ? <ShaderSurface /> : null}
+      {caption ? (
+        <div id={captionId} className="jh-data-table__caption">
+          <span className="jh-data-table__caption-inner">
+            <span>{caption}</span>
+            <span className="jh-data-table__count">{rows.length} rows</span>
+          </span>
+        </div>
+      ) : null}
       <div
         className="jh-data-table__scroll"
         role="region"
@@ -88,15 +96,10 @@ export function DataTable<T extends Record<string, unknown>>({
         aria-labelledby={caption ? captionId : undefined}
         aria-label={caption ? undefined : label}
       >
-        <table className="jh-data-table__table">
-          {caption ? (
-            <caption id={captionId} className="jh-data-table__caption">
-              <span className="jh-data-table__caption-inner">
-                <span>{caption}</span>
-                <span className="jh-data-table__count">{rows.length} rows</span>
-              </span>
-            </caption>
-          ) : null}
+        <table
+          className="jh-data-table__table"
+          aria-labelledby={caption ? captionId : undefined}
+        >
           <thead>
             <tr>
               {columns.map(col => {
