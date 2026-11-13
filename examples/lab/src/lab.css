@@ -4,10 +4,10 @@
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 .topbar, .footer { display: flex; align-items: center; justify-content: space-between; max-width: min(1760px, 100%); margin: auto; padding: 0 clamp(20px, 4.5vw, 68px); }
 .topbar { min-height: 92px; border-bottom: 1px solid #00000005; box-shadow: 0 1px 0 #ffffffb3; }
-.brand { display: inline-flex; align-items: center; gap: 10px; color: #262626; text-decoration: none; font-size: 18px; font-weight: 650; letter-spacing: -.03em; }
-.brand__period { color: #848484; }
-.brand__mark { display: grid; place-items: center; width: 28px; height: 28px; border: 1px solid #727272; border-radius: 50%; }
-.brand__mark span { width: 9px; height: 9px; border-radius: 50%; background: #383838; box-shadow: 0 0 0 3px #dcdcdc; }
+.brand { display: inline-flex; align-items: center; gap: 9px; color: #262626; text-decoration: none; font-size: 18px; font-weight: 560; letter-spacing: -.028em; line-height: 1; }
+.brand__period { color: #8c8c8c; margin-left: .015em; font-weight: 500; }
+.brand__mark { display: grid; place-items: center; width: 24px; height: 24px; border: 1px solid rgb(0 0 0 / .16); border-radius: 7.5px; background: linear-gradient(155deg, #fff, #efefef); box-shadow: inset 0 1px #fff, 0 1px 3px #00000010; }
+.brand__mark span { width: 7px; height: 7px; border-radius: 50%; background: #303030; box-shadow: 0 0 0 2.5px #e2e2e2; }
 .topbar__middle, .eyebrow, .topbar__link, .footer > span, .footer > a { font-family: var(--jh-font); font-size: 11px; font-weight: 500; letter-spacing: var(--jh-tracking-label); }
 .topbar__middle { color: #676767; }
 .topbar__link { display: inline-flex; align-items: center; gap: 8px; color: #454545; text-decoration: none; }
@@ -207,14 +207,16 @@
   color: rgb(226 226 226);
 }
 :is([data-jh-theme="dark"], .dark) .brand__period {
-  color: rgb(168 168 168);
+  color: rgb(165 165 165);
 }
 :is([data-jh-theme="dark"], .dark) .brand__mark {
-  border: 1px solid rgb(20 20 20);
+  border: 1px solid rgb(255 255 255 / .012);
+  background: linear-gradient(155deg, rgb(10 10 10), rgb(10 10 10));
+  box-shadow: inset 0 1px rgb(255 255 255 / .014),  0 1px 3px rgb(0 0 0 / .6);
 }
 :is([data-jh-theme="dark"], .dark) .brand__mark span {
-  background: rgb(214 214 214);
-  box-shadow: 0 0 0 3px rgb(0 0 0 / .9);
+  background: rgb(218 218 218);
+  box-shadow: 0 0 0 2.5px rgb(0 0 0 / .9);
 }
 :is([data-jh-theme="dark"], .dark) .topbar__middle {
   color: rgb(178 178 178);

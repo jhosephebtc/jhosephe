@@ -321,7 +321,12 @@ function InstrumentWorkbench() {
                   initialSortKey="station"
                 />
                 <div className="instrument-workbench__side">
-                  <AudioMeter label="Acoustic input" barCount={28} />
+                  <AudioMeter
+                    label="Acoustic input"
+                    barCount={28}
+                    accentColor={accentColor}
+                    glowIntensity={muted ? 18 : 68}
+                  />
                   <div className="instrument-workbench__picker-card">
                     <span className="eyebrow">Command interface</span>
                     <strong>Keyboard runner</strong>

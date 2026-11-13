@@ -16,6 +16,7 @@ import { SearchInput } from '../../../../assets/ui/search-input';
 import { OklchPalette } from '../../../../assets/ui/oklch-palette';
 import { useLibraryNavigation } from './use-navigation';
 import { ThemeToggle } from '../theme';
+import { useScrollItemReveal } from '../../../../assets/ui/vertical-gallery';
 import './library.css';
 
 const iconProps = { size: 16, strokeWidth: 1.6, 'aria-hidden': true } as const;
@@ -23,7 +24,13 @@ const normalise = (value: string) => value.normalize('NFD').replace(/[\u0300-\u0
 const matches = (component: ComponentInfo, query: string) => normalise(`${component.name} ${component.category} ${component.tag} ${component.description}`).includes(normalise(query));
 
 function Mark() {
-  return <svg width="22" height="26" viewBox="0 0 22 26" fill="none" aria-hidden="true"><path d="M14 8v9c0 4-2.3 6-6 6H5" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" /><circle cx="14" cy="3" r="1.6" fill="currentColor" /></svg>;
+  return (
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" className="library-brand-mark" aria-hidden="true">
+      <rect x="1.75" y="1.75" width="18.5" height="18.5" rx="5.6" fill="currentColor" fillOpacity=".045" stroke="currentColor" strokeOpacity=".22" strokeWidth="1.25" />
+      <path d="M12.25 8.5v5.15c0 1.95-1.15 3.1-3.1 3.1H7.75" stroke="currentColor" strokeWidth="1.85" strokeLinecap="round" />
+      <circle cx="12.25" cy="5.5" r="1.2" fill="currentColor" />
+    </svg>
+  );
 }
 
 function SearchDialog() {
@@ -31,6 +38,7 @@ function SearchDialog() {
   const [query, setQuery] = useState('');
   const [activeIndex, setActiveIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
+  const resultsRef = useRef<HTMLDivElement>(null);
   const listboxId = useId();
 
   useEffect(() => {
@@ -53,6 +61,8 @@ function SearchDialog() {
   }, [results]);
 
   const safeIndex = results.length ? Math.min(activeIndex, results.length - 1) : -1;
+
+  useScrollItemReveal(resultsRef, [open, query, results.length], '.jh-command-dialog__item, .jh-command-dialog__group-label');
 
   useEffect(() => {
     setActiveIndex(0);
@@ -109,7 +119,7 @@ function SearchDialog() {
               />
             </div>
 
-            <div id={listboxId} role="listbox" aria-label="Components" className="jh-command-dialog__results">
+            <div ref={resultsRef} id={listboxId} role="listbox" aria-label="Components" className="jh-command-dialog__results">
               {grouped.length === 0 ? (
                 <div className="jh-command-dialog__empty" role="status">No matching component.</div>
               ) : (
@@ -204,39 +214,53 @@ function InstrumentControl({ value, onChange, labelId, orientation = 'horizontal
   </div>;
 }
 
-function SmoothCornerStudy({ radius, smoothing }: { radius: number; smoothing: number }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [size, setSize] = useState(164);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const measure = () => setSize(el.offsetWidth || 164);
-    measure();
-    if (typeof ResizeObserver === 'undefined') return;
-    const observer = new ResizeObserver(measure);
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
+function SmoothCornerStudy({
+  radius,
+  smoothing,
+  width,
+  height,
+  compact = false,
+}: {
+  radius: number;
+  smoothing: number;
+  width: number;
+  height: number;
+  compact?: boolean;
+}) {
   const s = smoothing / 100;
-  const outerPath = smoothPath({ width: size, height: size, radius, smoothing: s });
-  const inset = Math.round(size * 0.22);
-  const innerSize = Math.max(24, size - inset * 2);
-  const innerRadius = Math.max(4, radius - inset * 0.45);
-  const innerPath = smoothPath({ width: innerSize, height: innerSize, radius: innerRadius, smoothing: s });
-  const r = Math.min(Math.max(4, radius), size / 2);
+  const specId = useId().replace(/:/g, '');
+  const maxW = compact ? 168 : width;
+  const maxH = compact ? 118 : height;
+  const scale = compact ? Math.min(1, maxW / Math.max(1, width), maxH / Math.max(1, height)) : 1;
+  const renderW = Math.max(48, Math.round(width * scale));
+  const renderH = Math.max(48, Math.round(height * scale));
+  const effectiveOuterR = Math.min(Math.round(radius * scale), renderW / 2, renderH / 2);
+  const outerPath = smoothPath({ width: renderW, height: renderH, radius: effectiveOuterR, smoothing: s });
+  // True concentric geometry: inner corner radius equals max(0, outerRadius - inset)
+  const inset = Math.max(12, Math.min(28, Math.round(Math.min(renderW, renderH) * 0.14)));
+  const innerW = Math.max(24, renderW - inset * 2);
+  const innerH = Math.max(24, renderH - inset * 2);
+  const innerRadius = Math.max(0, effectiveOuterR - inset);
+  const innerPath = smoothPath({ width: innerW, height: innerH, radius: innerRadius, smoothing: s });
   return (
-    <div ref={ref} className="library-demo-shape">
-      <SmoothShape className="jh-glass-shape" radius={radius} smoothing={s} />
-      <svg className="library-demo-shape__guides" viewBox={`0 0 ${size} ${size}`} aria-hidden="true">
-        {outerPath && <path d={outerPath} className="library-demo-shape__specular" />}
+    <div className="library-demo-shape" style={{ width: renderW, height: renderH }}>
+      <SmoothShape className="jh-glass-shape" radius={effectiveOuterR} smoothing={s} />
+      <svg className="library-demo-shape__guides" viewBox={`0 0 ${renderW} ${renderH}`} aria-hidden="true">
+        <defs>
+          <linearGradient id={specId} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="currentColor" stopOpacity="0.92" />
+            <stop offset="32%" stopColor="currentColor" stopOpacity="0.24" />
+            <stop offset="100%" stopColor="currentColor" stopOpacity="0.02" />
+          </linearGradient>
+        </defs>
+        {outerPath && <path d={outerPath} transform="translate(0 1)" stroke={`url(#${specId})`} className="library-demo-shape__specular" />}
         {outerPath && <path d={outerPath} className="library-demo-shape__outer" />}
         {innerPath && <path d={innerPath} transform={`translate(${inset} ${inset})`} className="library-demo-shape__inner" />}
-        <line x1={r} y1={0} x2={r} y2={inset} className="library-demo-shape__axis" />
-        <line x1={0} y1={r} x2={inset} y2={r} className="library-demo-shape__axis" />
-        <line x1={size - r} y1={size - inset} x2={size - r} y2={size} className="library-demo-shape__axis" />
-        <line x1={size - inset} y1={size - r} x2={size} y2={size - r} className="library-demo-shape__axis" />
       </svg>
-      <span className="library-demo-shape__readout" aria-hidden="true">{Math.round(smoothing)}%</span>
+      <span className="library-demo-shape__readout" aria-hidden="true">
+        <span>{Math.round(smoothing)}%</span>
+        <small>{width} × {height}</small>
+      </span>
     </div>
   );
 }
@@ -249,7 +273,7 @@ function Preview({ id, settings, onChange, compact = false }: { id: ComponentId;
   if (id === 'switch') return <div className="library-demo-switch"><div><label htmlFor={labelId}>Ambient light</label><span>{settings.checked ? 'The light is on' : 'The light is off'}</span></div><Switch id={labelId} checked={settings.checked} onCheckedChange={checked => onChange({ checked })} disabled={settings.disabled} /></div>;
   if (id === 'dial') return <div className="library-demo-dial"><Dial label="Adjust intensity" variant={settings.dialVariant} value={settings.value} onChange={value => onChange({ value })} accentColor={settings.accentColor} accentColorEnd={settings.accentColorEnd} accentGradient={settings.accentGradient} glowIntensity={settings.glowIntensity} glowBlur={settings.glowBlur} /><div><span>Intensity</span><output>{settings.value}<small>%</small></output></div></div>;
   if (id === 'dialog') return <Dialog><DialogTrigger asChild><Button size={compact ? 'small' : 'default'}>Review details <ArrowUpRight size={14} aria-hidden="true" /></Button></DialogTrigger><DialogContent material={settings.material === 'liquid' ? 'liquid-glass' : settings.material} className={`library-example-dialog jh-dialog--rich${settings.material === 'liquid' ? ' jh-surface--liquid' : ''}`}><span className="library-eyebrow">Workspace settings</span><DialogTitle>{settings.title || 'Your title'}</DialogTitle><DialogDescription>{settings.description}</DialogDescription><div className="jh-dialog-summary"><div className="jh-dialog-summary__row"><span>Workspace</span><strong>Northstar Studio</strong></div><div className="jh-dialog-summary__row"><span>Plan</span><strong>Professional</strong></div><div className="jh-dialog-summary__row"><span>Renewal</span><strong>December 1, 2026</strong></div></div><div className="jh-dialog-actions"><DialogClose asChild><Button variant="ghost">Cancel</Button></DialogClose><DialogClose asChild><Button variant="primary">Save changes <Check {...iconProps} /></Button></DialogClose></div></DialogContent></Dialog>;
-  if (id === 'smooth-shape') return <SmoothCornerStudy radius={settings.radius} smoothing={settings.smoothing} />;
+  if (id === 'smooth-shape') return <SmoothCornerStudy radius={settings.radius} smoothing={settings.smoothing} width={settings.shapeWidth} height={settings.shapeHeight} compact={compact} />;
   if (id === 'shader-surface') return <div className="library-demo-shader"><ShaderSurface /><div style={{ ['--jh-glass-alpha' as string]: String(settings.opacity / 100), backdropFilter: `blur(${settings.blur}px)` }} className="library-demo-glass">Light in layers<span aria-hidden="true">↗</span></div></div>;
   return <div className={`library-demo-instrument${settings.instrumentOrientation === 'vertical' ? ' is-vertical' : ''}`}><div className="library-demo-label"><span id={labelId}>Intensity</span><span className="library-live-dot">Live</span></div><output>{settings.value}<small>%</small></output><InstrumentControl value={settings.value} onChange={value => onChange({ value })} labelId={labelId} orientation={settings.instrumentOrientation} accentColor={settings.accentColor} accentColorEnd={settings.accentColorEnd} accentGradient={settings.accentGradient} glowIntensity={settings.glowIntensity} glowBlur={settings.glowBlur} /></div>;
 }
@@ -296,7 +320,7 @@ function ToggleField({ label, checked, onChange }: { label: string; checked: boo
 
 function SelectField({ label, value, options, onChange }: { label: string; value: string; options: { value: string; label: string }[]; onChange: (value: string) => void }) {
   const selected = options.find(option => option.value === value) ?? options[0];
-  return <label className="library-text-field">{label}<DropdownMenu.Root>
+  return <label className="library-text-field">{label}<DropdownMenu.Root modal={false}>
     <DropdownMenu.Trigger className="library-select-trigger" aria-label={label}><span>{selected.label}</span><ChevronDown size={14} strokeWidth={1.6} aria-hidden="true" /></DropdownMenu.Trigger>
     <DropdownMenu.Portal><DropdownMenu.Content className="library-select-menu" align="start" sideOffset={5}>
       <DropdownMenu.Label className="library-select-label">{label}</DropdownMenu.Label>
@@ -318,7 +342,79 @@ function Customizer({ id, settings: s, change, reset }: { id: ComponentId; setti
     {id === 'switch' && <ToggleField label="Enabled" checked={s.checked} onChange={checked => change({ checked })} />}
     {['button', 'slider', 'switch', 'bar-slider', 'date-picker', 'input', 'search-input'].includes(id) && <ToggleField label="Disabled" checked={s.disabled} onChange={disabled => change({ disabled })} />}
     {['dialog', 'toast', 'data-form'].includes(id) && <><label className="library-text-field">Title<input value={s.title} maxLength={80} onChange={event => change({ title: event.target.value })} /></label><label className="library-text-field">Description<textarea rows={4} value={s.description} maxLength={240} onChange={event => change({ description: event.target.value })} /></label></>}
-    {id === 'smooth-shape' && <><RangeField label="Radius" value={s.radius} max={90} unit=" px" onChange={radius => change({ radius })} /><RangeField label="Smoothing" value={s.smoothing} unit="%" onChange={smoothing => change({ smoothing })} /></>}
+    {id === 'smooth-shape' && (
+      <>
+        <RangeField label="Radius" value={s.radius} max={90} unit=" px" onChange={radius => change({ radius })} />
+        <RangeField label="Smoothing" value={s.smoothing} unit="%" onChange={smoothing => change({ smoothing })} />
+        <SelectField
+          label="Aspect ratio"
+          value={s.shapeAspect}
+          options={[
+            { value: 'custom', label: 'Custom' },
+            { value: '1:1', label: '1:1 Square' },
+            { value: '4:3', label: '4:3 Studio' },
+            { value: '16:9', label: '16:9 Wide' },
+            { value: '3:4', label: '3:4 Portrait' },
+          ]}
+          onChange={value => {
+            const aspect = value as Settings['shapeAspect'];
+            if (aspect === 'custom') { change({ shapeAspect: aspect }); return; }
+            const [rw, rh] = aspect.split(':').map(Number);
+            const nextHeight = Math.max(96, Math.min(260, Math.round((s.shapeWidth * rh) / rw)));
+            change({ shapeAspect: aspect, shapeHeight: nextHeight });
+          }}
+        />
+        <RangeField
+          label="Width"
+          value={s.shapeWidth}
+          min={96}
+          max={320}
+          unit=" px"
+          onChange={shapeWidth => {
+            if (s.shapeAspect === 'custom') { change({ shapeWidth }); return; }
+            const [rw, rh] = s.shapeAspect.split(':').map(Number);
+            const shapeHeight = Math.max(96, Math.min(260, Math.round((shapeWidth * rh) / rw)));
+            change({ shapeWidth, shapeHeight });
+          }}
+        />
+        <RangeField
+          label="Height"
+          value={s.shapeHeight}
+          min={96}
+          max={260}
+          unit=" px"
+          onChange={shapeHeight => {
+            if (s.shapeAspect === 'custom') { change({ shapeHeight }); return; }
+            const [rw, rh] = s.shapeAspect.split(':').map(Number);
+            const shapeWidth = Math.max(96, Math.min(320, Math.round((shapeHeight * rw) / rh)));
+            change({ shapeWidth, shapeHeight });
+          }}
+        />
+      </>
+    )}
+    {id === 'scroll-area' && (
+      <SelectField
+        label="Columns"
+        value={String(s.scrollColumns)}
+        options={[
+          { value: '1', label: '1 column' },
+          { value: '2', label: '2 columns' },
+          { value: '3', label: '3 columns' },
+        ]}
+        onChange={value => change({ scrollColumns: Number(value) as 1 | 2 | 3 })}
+      />
+    )}
+    {id === 'financial-order-modal' && (
+      <SelectField
+        label="Variant"
+        value={s.orderVariant}
+        options={[
+          { value: 'order', label: 'Order review' },
+          { value: 'image-generation', label: 'Image generation' },
+        ]}
+        onChange={orderVariant => change({ orderVariant: orderVariant as Settings['orderVariant'] })}
+      />
+    )}
     {id === 'shader-surface' && <><RangeField label="Glass opacity" value={s.opacity} min={15} max={95} unit="%" onChange={opacity => change({ opacity })} /><RangeField label="Blur" value={s.blur} max={32} unit=" px" onChange={blur => change({ blur })} /></>}
     {['calendar', 'date-picker'].includes(id) && <label className="library-text-field">Selected date<input type="date" value={s.date} onChange={event => change({ date: event.target.value })} /></label>}
     {id === 'calendar' && <><ToggleField label="Outside days" checked={s.showOutsideDays} onChange={showOutsideDays => change({ showOutsideDays })} /><ToggleField label="Monday first" checked={s.mondayFirst} onChange={mondayFirst => change({ mondayFirst })} /></>}
@@ -472,5 +568,5 @@ export function Library() {
   const item = components.find(component => path === `/components/${component.id}`);
   const landing = path === '/';
   useEffect(() => { document.title = `${item ? item.name : landing ? 'Interfaces to feel' : path === '/components' ? 'Components' : path === '/installation' ? 'Installation' : 'Page not found'} — jhosephe`; }, [item, path, landing]);
-  return <div className="library" onClick={navigate}><a className="library-skip" href="#library-main">Skip to content</a><Header path={path} /><div className={landing ? '' : 'library-layout'}>{!landing && <Sidebar path={path} />}<div className="library-route" key={path}>{landing ? <Landing /> : path === '/components' ? <Catalog /> : path === '/installation' ? <Installation /> : item ? <ComponentPage key={item.id} item={item} /> : <NotFound />}</div></div><footer className="library-footer"><a className="library-brand" href="/"><Mark /><span>jhosephe.</span></a><p>Interfaces made of small details.</p><a href="/components">Explore the collection <ArrowUpRight {...iconProps} /></a><span>React · CSS · MIT</span></footer></div>;
+  return <div className="library" onClick={navigate}><a className="library-skip" href="#library-main">Skip to content</a><Header path={path} /><div className={landing ? '' : 'library-layout'}>{!landing && <Sidebar path={path} />}<div className="library-route" key={path}>{landing ? <Landing /> : path === '/components' ? <Catalog /> : path === '/installation' ? <Installation /> : item ? <ComponentPage key={item.id} item={item} /> : <NotFound />}</div></div><footer className="library-footer"><a className="library-brand" href="/"><Mark /><span>jhosephe<span className="library-brand-dot">.</span></span></a><p>Interfaces made of small details.</p><a href="/components">Explore the collection <ArrowUpRight {...iconProps} /></a><span>React · CSS · MIT</span></footer></div>;
 }

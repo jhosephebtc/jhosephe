@@ -4,6 +4,7 @@ import { CornerDownLeft, Search, X } from 'lucide-react';
 import { Input } from './input';
 import { ShaderSurface } from './shader-surface';
 import { cn } from './utils';
+import { useScrollItemReveal } from './vertical-gallery';
 import { normalizeSurfaceMaterial, surfaceMaterialAttr, type SurfaceMaterial } from './weather-ephemeris';
 
 export interface CommandItem {
@@ -47,8 +48,11 @@ export function CommandPalette({
   const [lastExecuted, setLastExecuted] = useState<string | null>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
+  const resultsRef = useRef<HTMLDivElement>(null);
   const titleId = `jh-command-title-${useId().replace(/[^a-zA-Z0-9_-]/g, '')}`;
   const listboxId = `jh-command-list-${useId().replace(/[^a-zA-Z0-9_-]/g, '')}`;
+
+  useScrollItemReveal(resultsRef, [open, query, items.length], '.jh-command-dialog__item');
 
   const finish = normalizeSurfaceMaterial(material);
   const matAttr = surfaceMaterialAttr(material);
@@ -206,6 +210,7 @@ export function CommandPalette({
                     </div>
 
                     <div
+                      ref={resultsRef}
                       id={listboxId}
                       role="listbox"
                       aria-label={label}

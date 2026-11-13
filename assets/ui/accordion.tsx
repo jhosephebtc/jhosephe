@@ -2,6 +2,7 @@ import { useId, useRef, useState, type KeyboardEvent, type ReactNode } from 'rea
 import { ChevronDown } from 'lucide-react';
 import { cn } from './utils';
 import { normalizeSurfaceMaterial, surfaceMaterialAttr, type SurfaceMaterial } from './weather-ephemeris';
+import { useScrollItemReveal } from './vertical-gallery';
 
 export interface AccordionItem {
   value: string;
@@ -9,12 +10,13 @@ export interface AccordionItem {
   content: ReactNode;
 }
 
-/** A keyboard-operable accordion styled after Glass Menu surfaces. */
+/** A keyboard-operable accordion styled after Glass Menu surfaces, optionally scrolling across its full height. */
 export function Accordion({
   items,
   label = 'Details',
   type = 'single',
   defaultValue,
+  maxHeight,
   material = 'solid',
   className,
 }: {
@@ -22,6 +24,7 @@ export function Accordion({
   label?: string;
   type?: 'single' | 'multiple';
   defaultValue?: string | string[];
+  maxHeight?: number;
   material?: SurfaceMaterial;
   className?: string;
 }) {
@@ -30,8 +33,16 @@ export function Accordion({
     defaultValue === undefined ? [] : Array.isArray(defaultValue) ? defaultValue : [defaultValue],
   );
   const triggerRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const containerRef = useRef<HTMLDivElement>(null);
   const finish = normalizeSurfaceMaterial(material);
   const matAttr = surfaceMaterialAttr(material);
+  const scrollable = typeof maxHeight === 'number' && maxHeight > 0;
+
+  useScrollItemReveal(
+    containerRef,
+    [scrollable, items.length, maxHeight, finish, openItems.join(',')],
+    scrollable ? '.jh-accordion__item' : undefined,
+  );
 
   const toggle = (value: string) =>
     setOpenItems(current =>
@@ -58,9 +69,18 @@ export function Accordion({
 
   return (
     <div
-      className={cn('jh-accordion', finish === 'liquid' && 'jh-menu--liquid', className)}
+      ref={scrollable ? containerRef : undefined}
+      className={cn(
+        'jh-accordion',
+        scrollable && 'jh-accordion--scroll',
+        finish === 'liquid' && 'jh-menu--liquid',
+        className,
+      )}
       data-jh-material={matAttr}
+      role={scrollable ? 'region' : undefined}
       aria-label={label}
+      tabIndex={scrollable ? 0 : undefined}
+      style={scrollable ? { maxHeight } : undefined}
     >
       {items.map((item, index) => {
         const open = openItems.includes(item.value);

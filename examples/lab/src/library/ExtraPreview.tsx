@@ -13,6 +13,9 @@ import { DataForm } from '../../../../assets/ui/data-form';
 import { RadioGroup } from '../../../../assets/ui/radio-group';
 import { SegmentedControl } from '../../../../assets/ui/segmented-control';
 import { ScrollArea } from '../../../../assets/ui/scroll-area';
+import { SimpleScroll } from '../../../../assets/ui/simple-scroll';
+import { AccordionScroll } from '../../../../assets/ui/accordion-scroll';
+import { VerticalGallery } from '../../../../assets/ui/vertical-gallery';
 import { ContextMenu } from '../../../../assets/ui/context-menu';
 import { TactileKey } from '../../../../assets/ui/tactile-key';
 import { TactileKeypad } from '../../../../assets/ui/tactile-keypad';
@@ -79,7 +82,75 @@ export function ExtraPreview({ id, settings: s, onChange, compact }: { id: Compo
   if (id === 'data-form') return <div className="library-extra-form"><DataForm title={s.title} description={s.description} onSubmit={async () => { /* Local preview: no data is sent or stored. */ }} />{!compact && <p className="library-form-disclaimer">Local demo. No data is sent or stored.</p>}</div>;
   if (id === 'radio-group') return <div className="library-extra-radio"><RadioGroup label="Billing frequency" value={s.radioValue} onValueChange={radioValue => onChange({ radioValue })} options={[{ value: 'monthly', label: 'Monthly', description: 'Billed each month.' }, { value: 'yearly', label: 'Yearly', description: 'Two months included.' }]} />{s.radioValue && <span className="library-control-status" role="status">{s.radioValue === 'yearly' ? 'Yearly billing selected' : 'Monthly billing selected'}</span>}</div>;
   if (id === 'segmented-control') return <div className="library-extra-segment"><SegmentedControl label="Map views" value={s.segmentValue} onValueChange={segmentValue => onChange({ segmentValue })} options={[{ value: 'map', label: 'Map' }, { value: 'list', label: 'List' }, { value: 'saved', label: 'Saved' }]} /><span className="library-control-status" role="status">Showing {s.segmentValue}</span></div>;
-  if (id === 'scroll-area') return <div className="library-extra-scroll"><ScrollArea label="Recent locations" maxHeight={compact ? 135 : 220}><ul>{['North Shore', 'Stonebridge', 'West Market', 'Lake Road', 'Old Town', 'Harbor Point', 'Pine Terrace', 'South Ridge', 'Cedar Walk', 'Riverbend', 'Elmwood', 'Glassworks', 'East Pier', 'Highland Park', 'Observatory Hill', 'South Quay'].map(place => <li key={place}>{place}</li>)}</ul></ScrollArea></div>;
+  if (id === 'scroll-area') {
+    const categories = [
+      {
+        title: 'Surfaces',
+        options: [
+          { value: 'solid', label: 'Porcelain matte', detail: '100%' },
+          { value: 'glass', label: 'Diffused glass', detail: '22px' },
+          { value: 'liquid', label: 'Liquid specular', detail: 'Sheen' },
+          { value: 'obsidian', label: 'Obsidian slab', detail: 'Dark' },
+        ],
+      },
+      {
+        title: 'Optics',
+        options: [
+          { value: 'squircle', label: 'Continuous corner', detail: '60%' },
+          { value: 'specular', label: 'Edge highlight', detail: '1px' },
+          { value: 'recess', label: 'Inner trough', detail: 'Subtle' },
+          { value: 'bloom', label: 'Light halo', detail: 'OKLCH' },
+        ],
+      },
+      {
+        title: 'Typography',
+        options: [
+          { value: 'display', label: 'Headline scale', detail: '48px' },
+          { value: 'body', label: 'Interface copy', detail: '13px' },
+          { value: 'tabular', label: 'Tabular readout', detail: 'Num' },
+          { value: 'micro', label: 'Micro caption', detail: '10px' },
+        ],
+      },
+      {
+        title: 'Motion',
+        options: [
+          { value: 'static-type', label: 'Static labels', detail: '0px' },
+          { value: 'detent', label: 'Tactile detent', detail: '90ms' },
+          { value: 'scrub', label: 'Direct scrub', detail: '1:1' },
+          { value: 'reduced', label: 'Reduced motion', detail: 'Safe' },
+        ],
+      },
+      {
+        title: 'Audio & Light',
+        options: [
+          { value: 'accent-led', label: 'Pure LED emission', detail: 'OKLCH' },
+          { value: 'heat-band', label: 'Thermal gradient', detail: 'dBFS' },
+          { value: 'key-cap', label: 'Keycap dish', detail: 'Glow' },
+          { value: 'needle', label: 'Vernier needle', detail: 'Precision' },
+        ],
+      },
+      {
+        title: 'Export',
+        options: [
+          { value: 'ratio-1-1', label: '1:1 Square', detail: '1024' },
+          { value: 'ratio-4-3', label: '4:3 Studio', detail: '2048' },
+          { value: 'ratio-16-9', label: '16:9 Cinema', detail: '4K' },
+          { value: 'png-raw', label: 'PNG Lossless', detail: 'sRGB' },
+        ],
+      },
+    ];
+    return (
+      <div className="library-extra-scroll" data-compact={compact ? 'true' : undefined}>
+        <ScrollArea
+          label="Design options by category"
+          categories={categories}
+          columns={s.scrollColumns}
+          defaultValue="glass"
+          maxHeight={compact ? 148 : 244}
+        />
+      </div>
+    );
+  }
   if (id === 'context-menu') return <div className="library-extra-context"><ContextMenu material={menuMaterial} actions={[{ label: 'Rename', onSelect: () => setMenuStatus('Rename selected') }, { label: 'Duplicate', onSelect: () => setMenuStatus('Duplicate selected') }, { label: 'Archive', onSelect: () => setMenuStatus('Archive selected') }]} /><span className="library-control-status" role="status">{menuStatus || 'More actions'}</span></div>;
   if (id === 'tactile-key') return <div className="library-extra-key"><TactileKey size={compact ? 'compact' : 'large'} shape={s.keyShape} tone={s.keyTone} ledPosition={s.keyLedPosition} accentColor={s.keyAccentColor} material={s.material} pressed={s.keyPressed} onPressedChange={keyPressed => onChange({ keyPressed })}>{s.keyPressed ? 'Active' : 'Press'}</TactileKey><span className="library-control-status" role="status">{s.keyPressed ? 'Key held' : 'Ready'}</span></div>;
   if (id === 'tactile-keypad') return <div className="library-extra-keypad" data-compact={compact ? 'true' : undefined}><TactileKeypad layout={compact ? 'command' : s.keypadLayout} accentColor={s.keyAccentColor} material={s.material} /></div>;
@@ -156,5 +227,8 @@ export function ExtraPreview({ id, settings: s, onChange, compact }: { id: Compo
   );
   if (id === 'command-palette') return <div className="library-extra-command"><CommandPalette material={s.material} /></div>;
   if (id === 'metric-card') return <div className="library-extra-metric"><MetricCard material={s.material} /></div>;
+  if (id === 'simple-scroll') return <div className="library-extra-simple-scroll" data-compact={compact ? 'true' : undefined}><SimpleScroll material={s.material} maxHeight={compact ? 148 : 236} /></div>;
+  if (id === 'accordion-scroll') return <div className="library-extra-accordion-scroll" data-compact={compact ? 'true' : undefined}><AccordionScroll material={s.material} maxHeight={compact ? 154 : 264} /></div>;
+  if (id === 'vertical-gallery') return <div className="library-extra-vertical-gallery" data-compact={compact ? 'true' : undefined}><VerticalGallery columns={4} visibleRows={compact ? 4 : 12} material={s.material} /></div>;
   return null;
 }

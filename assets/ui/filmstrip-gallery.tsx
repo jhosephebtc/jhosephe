@@ -140,6 +140,7 @@ export function FilmstripGallery({
   const [pullOffsetPx, setPullOffsetPx] = useState(0);
   const [dragging, setDragging] = useState(false);
 
+  const rootRef = useRef<HTMLElement>(null);
   const dragRef = useRef<{ startX: number; startIndex: number } | null>(null);
   const wheelTimerRef = useRef<number | null>(null);
 
@@ -166,8 +167,25 @@ export function FilmstripGallery({
     }, 260);
   }, []);
 
+  const wheelAdvanceRef = useRef<(delta: number) => void>(() => {});
+  wheelAdvanceRef.current = (delta: number) => {
+    const dir = delta > 0 ? 1 : -1;
+    selectFrame(activeIndex + dir);
+    pulseScroll();
+  };
+
   useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+    const onNativeWheel = (event: WheelEvent) => {
+      event.preventDefault();
+      event.stopPropagation();
+      const delta = Math.abs(event.deltaY) >= Math.abs(event.deltaX) ? event.deltaY : event.deltaX;
+      if (delta !== 0) wheelAdvanceRef.current(delta);
+    };
+    root.addEventListener('wheel', onNativeWheel, { passive: false });
     return () => {
+      root.removeEventListener('wheel', onNativeWheel);
       if (wheelTimerRef.current !== null) window.clearTimeout(wheelTimerRef.current);
     };
   }, []);
@@ -181,6 +199,7 @@ export function FilmstripGallery({
 
   return (
     <section
+      ref={rootRef}
       className={cn('jh-filmstrip', className)}
       data-dragging={dragging ? 'true' : undefined}
       data-exposed={isExposedEnd ? 'true' : undefined}
@@ -199,15 +218,7 @@ export function FilmstripGallery({
           </span>
         </div>
 
-        <div
-          className="jh-filmstrip__well"
-          onWheel={event => {
-            event.preventDefault();
-            const dir = (event.deltaY || event.deltaX) > 0 ? 1 : -1;
-            selectFrame(activeIndex + dir);
-            pulseScroll();
-          }}
-        >
+        <div className="jh-filmstrip__well">
           <div className="jh-filmstrip__frame-track">
             <div className="jh-filmstrip__frame-badge">
               <span>◀ {String(activeIndex + 1).padStart(2, '0')}</span>
@@ -276,12 +287,6 @@ export function FilmstripGallery({
             dragRef.current = null;
             setPullOffsetPx(0);
             setDragging(false);
-          }}
-          onWheel={event => {
-            event.preventDefault();
-            const dir = (event.deltaY || event.deltaX) > 0 ? 1 : -1;
-            selectFrame(activeIndex + dir);
-            pulseScroll();
           }}
           onKeyDown={event => {
             if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {

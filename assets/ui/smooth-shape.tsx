@@ -16,10 +16,11 @@ export function smoothPath({ width, height, radius, smoothing = 0.6 }: SmoothGeo
 }
 
 /** Decoration only. Keep focus, hit area, and shadows on the parent. */
-export function SmoothShape({ radius = 18, smoothing = 0.6, className = '' }: {
+export function SmoothShape({ radius = 18, smoothing = 0.6, className = '', style: styleProp }: {
   radius?: number;
   smoothing?: number;
   className?: string;
+  style?: CSSProperties;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
   const [size, setSize] = useState({ width: 0, height: 0 });
@@ -43,6 +44,6 @@ export function SmoothShape({ radius = 18, smoothing = 0.6, className = '' }: {
 
   const path = useMemo(() => smoothPath({ ...size, radius, smoothing }), [size, radius, smoothing]);
   const fallbackRadius = Number.isFinite(radius) ? Math.max(0, radius) : 0;
-  const style: CSSProperties = { borderRadius: fallbackRadius, ...(path ? { clipPath: `path("${path}")` } : {}) };
+  const style: CSSProperties = { ...styleProp, borderRadius: fallbackRadius, ...(path ? { clipPath: `path("${path}")` } : {}) };
   return <span ref={ref} className={className} style={style} aria-hidden="true" />;
 }

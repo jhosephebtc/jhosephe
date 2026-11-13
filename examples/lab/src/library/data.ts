@@ -19,12 +19,15 @@ export interface Settings extends ExtraSettings {
   label: string; variant: 'primary' | 'secondary' | 'ghost' | 'working'; dialVariant: 'classic' | 'arc' | 'vernier' | 'monolith';
   disabled: boolean; loading: boolean;
   liquid: boolean; value: number; checked: boolean; radius: number; smoothing: number;
+  shapeAspect: 'custom' | '1:1' | '4:3' | '16:9' | '3:4'; shapeWidth: number; shapeHeight: number;
   opacity: number; blur: number; title: string; description: string;
 }
 export const defaults: Settings = {
   ...extraDefaults,
   label: 'Get started', variant: 'primary', dialVariant: 'classic', disabled: false, loading: false, liquid: true,
-  value: 64, checked: true, radius: 24, smoothing: 60, opacity: 72, blur: 16,
+  value: 64, checked: true, radius: 24, smoothing: 60,
+  shapeAspect: '4:3', shapeWidth: 208, shapeHeight: 156,
+  opacity: 72, blur: 16,
   title: 'Everything in place.', description: 'A quiet surface for your next decision.',
 };
 
@@ -52,7 +55,7 @@ export function usage(id: ComponentId, state: Settings) {
   if (id === 'switch') return withMaterial(`${heading}import { useId, useState } from "react";\nimport { Switch } from ${quote(source)};\n\nexport function Example() {\n  const id = useId();\n  const [checked, setChecked] = useState(${state.checked});\n  return (\n    <div style={{ display: "flex", alignItems: "center", gap: 24 }}>\n      <label htmlFor={id}>Ambient light</label>\n      <Switch id={id} checked={checked} onCheckedChange={setChecked}\n        disabled={${state.disabled}} />\n    </div>\n  );\n}`);
   if (id === 'dial') return withMaterial(`${heading}import { useState } from "react";\nimport { Dial } from ${quote(source)};\n\nexport function Example() {\n  const [value, setValue] = useState(${state.value});\n  return (\n    <div>\n      <Dial label="Intensity" variant="${state.dialVariant}" value={value} onChange={setValue}\n        accentColor=${quote(state.accentColor)} accentColorEnd=${quote(state.accentColorEnd)}\n        accentGradient={${state.accentGradient}} glowIntensity={${state.glowIntensity}}\n        glowBlur={${state.glowBlur}} />\n      <p>Intensity: {value}%</p>\n    </div>\n  );\n}`);
   if (id === 'dialog') return withMaterial(`${heading}import { Button } from "@/components/jhosephe/button";\nimport { Dialog, DialogTrigger, DialogContent, DialogTitle,\n  DialogDescription, DialogClose } from ${quote(source)};\n\nexport function Example() {\n  return (\n    <Dialog>\n      <DialogTrigger asChild><Button>Open dialog</Button></DialogTrigger>\n      <DialogContent material="${state.material}">\n        <DialogTitle>{${quote(state.title)}}</DialogTitle>\n        <DialogDescription>{${quote(state.description)}}</DialogDescription>\n        <DialogClose asChild><Button>Got it</Button></DialogClose>\n      </DialogContent>\n    </Dialog>\n  );\n}`);
-  if (id === 'smooth-shape') return withMaterial(`${heading}import { SmoothShape } from ${quote(source)};\n\nexport function Example() {\n  return (\n    <div style={{ position: "relative", width: 180, height: 180 }}>\n      <SmoothShape radius={${state.radius}} smoothing={${state.smoothing / 100}}\n        className="jh-glass-shape" />\n    </div>\n  );\n}`);
+  if (id === 'smooth-shape') return withMaterial(`${heading}import { SmoothShape } from ${quote(source)};\n\nexport function Example() {\n  return (\n    <div style={{ position: "relative", width: ${state.shapeWidth}, height: ${state.shapeHeight} }}>\n      <SmoothShape radius={${state.radius}} smoothing={${state.smoothing / 100}}\n        className="jh-glass-shape" />\n    </div>\n  );\n}`);
   if (id === 'shader-surface') return withMaterial(`${heading}import { ShaderSurface } from ${quote(source)};\n\nexport function Example() {\n  return (\n    <div style={{ position: "relative", height: 280, overflow: "hidden", borderRadius: 24 }}>\n      <ShaderSurface />\n      <div style={{ position: "absolute", inset: "35% 20%", borderRadius: 24,\n        display: "grid", placeItems: "center", color: "#2e2e2e",\n        background: "rgb(255 255 255 / ${state.opacity / 100})",\n        backdropFilter: "blur(${state.blur}px)", boxShadow: "inset 0 1px #fff, 0 8px 20px #0000000a" }}>\n        Light in layers\n      </div>\n    </div>\n  );\n}`);
   return withMaterial(`${heading}import { InstrumentBars } from ${quote(source)};\n\nexport function Example() {\n  const value = ${state.value};\n  return (\n    <div style={{ width: "min(100%, ${state.instrumentOrientation === 'vertical' ? '120px' : '360px'})", color: "#454545" }}>\n      <p>Intensity: {value}%</p>\n      <InstrumentBars value={value} orientation="${state.instrumentOrientation}"\n        accentColor=${quote(state.accentColor)} accentColorEnd=${quote(state.accentColorEnd)}\n        accentGradient={${state.accentGradient}} glowIntensity={${state.glowIntensity}}\n        glowBlur={${state.glowBlur}} />\n    </div>\n  );\n}`);
 }

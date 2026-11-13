@@ -9,7 +9,9 @@ const normalizeMaterial = (material: MenuMaterial) => {
   return material;
 };
 
-export const Menu = MenuPrimitive.Root;
+export function Menu({ modal = false, ...props }: ComponentPropsWithoutRef<typeof MenuPrimitive.Root>) {
+  return <MenuPrimitive.Root modal={modal} {...props} />;
+}
 export const MenuTrigger = MenuPrimitive.Trigger;
 export function MenuContent({ className, sideOffset = 8, material = 'solid', ...props }: ComponentPropsWithoutRef<typeof MenuPrimitive.Content> & { material?: MenuMaterial }) {
   const finish = normalizeMaterial(material);
