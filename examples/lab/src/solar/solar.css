@@ -7,6 +7,7 @@
 .solar-brand__suffix { color: #6b6b6b; font-size: 14px; font-weight: 400; letter-spacing: -.01em; }
 .solar-label { font: 450 10px/1.5 var(--jh-font); letter-spacing: .025em; }
 .solar-topbar__edition { color: var(--solar-muted); }
+.solar-topbar__actions { display: flex; align-items: center; gap: 10px; }
 .solar-location.jh-button { display: flex; align-items: center; gap: 10px; padding: 0 12px; min-height: 44px; max-width: 280px; color: #2e2e2e; font-size: 12px; }
 .solar-location .jh-button__content { max-width: 100%; }
 .solar-location .jh-button__content > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -91,6 +92,7 @@
 @media (max-width:900px) { .solar-heading { margin-top: 34px; } .solar-topbar__edition { display: none; } .solar-console { gap: 20px; padding: 20px 24px; } .instrument__caption { font-size: 14px; } .instrument__tick { font-size: 10px; } .instrument__eyebrow { font-size: 10px; } }
 @media (max-width:900px) {
   .solar-topbar { margin: 0 20px; min-height: 80px; gap: 12px; }
+  .solar-topbar__actions { gap: 8px; }
   .solar-brand { font-size: 16px; gap: 8px; }
   .solar-brand__suffix { display: none; }
   .solar-location { max-width: 190px; font-size: 11px; padding-inline: 9px; gap: 7px; }
@@ -136,6 +138,10 @@
   .solar-path__axis { display: flex; }
   .solar-path__plot svg { min-height: 120px; }
   .solar-settings__form input { font-size: 16px; }
+}
+@media (max-width:680px) {
+  .solar-topbar .jh-github-star { padding-inline: 10px; }
+  .solar-topbar .jh-github-star span { display: none; }
 }
 
 @supports not (backdrop-filter: blur(12px)) { .solar-console { background: #fafafa; } }

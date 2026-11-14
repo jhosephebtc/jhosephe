@@ -1,5 +1,6 @@
 import { useId, useMemo, useState, type PointerEvent } from 'react';
 import { SegmentedControl } from './segmented-control';
+import { instrumentAccentStyle } from './utils';
 
 type Period = '1D' | '1W' | '1M' | '1Y';
 type ChartMode = 'line' | 'bars';
@@ -18,16 +19,28 @@ function valuesFor(period: Period) {
 }
 
 /** Interactive, caller-fed market chart. Default values are static demo data. */
-export function FinancialChart({ symbol = 'NOVA', company = 'Nova Systems', currency = 'USD', initialPeriod = '1D' }: {
-  symbol?: string; company?: string; currency?: string; initialPeriod?: Period;
+export function FinancialChart({
+  symbol = 'NOVA',
+  company = 'Nova Systems',
+  currency = 'USD',
+  initialPeriod = '1D',
+  accentColor,
+}: {
+  symbol?: string;
+  company?: string;
+  currency?: string;
+  initialPeriod?: Period;
+  accentColor?: string;
 }) {
   const gradientId = useId();
   const [period, setPeriod] = useState<Period>(initialPeriod);
   const [mode, setMode] = useState<ChartMode>('line');
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const values = useMemo(() => valuesFor(period), [period]);
-  const low = Math.min(...values) - 1.5;
-  const high = Math.max(...values) + 1.5;
+  const rawLow = Math.min(...values);
+  const rawHigh = Math.max(...values);
+  const low = rawLow - 1.5;
+  const high = rawHigh + 1.5;
   const points = values.map((value, index) => ({
     x: 20 + (index / (values.length - 1)) * 960,
     y: 18 + (1 - (value - low) / (high - low)) * 212,
@@ -48,7 +61,11 @@ export function FinancialChart({ symbol = 'NOVA', company = 'Nova Systems', curr
   };
 
   return (
-    <section className="jh-financial-chart" aria-label={company + ' ' + symbol + ' market chart'}>
+    <section
+      className="jh-financial-chart"
+      aria-label={`${company} ${symbol} market chart`}
+      style={instrumentAccentStyle(accentColor)}
+    >
       <header className="jh-financial-chart__header">
         <div className="jh-financial-chart__identity">
           <span className="jh-financial-chart__mark" aria-hidden="true">{symbol.slice(0, 1)}</span>
@@ -57,6 +74,7 @@ export function FinancialChart({ symbol = 'NOVA', company = 'Nova Systems', curr
         <div className="jh-financial-chart__quote">
           <output>{format(selected)}</output>
           <span data-positive={changePercent >= 0}>
+            <i className="jh-financial-chart__delta-pip" aria-hidden="true" />
             {changePercent >= 0 ? '+' : ''}{changePercent.toFixed(2)}% <small>today</small>
           </span>
         </div>
@@ -103,8 +121,8 @@ export function FinancialChart({ symbol = 'NOVA', company = 'Nova Systems', curr
         >
           <defs>
             <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stopColor="currentColor" stopOpacity=".14" />
-              <stop offset="1" stopColor="currentColor" stopOpacity="0" />
+              <stop offset="0" stopColor="var(--jh-instrument-accent)" stopOpacity=".20" />
+              <stop offset="1" stopColor="var(--jh-instrument-accent)" stopOpacity="0" />
             </linearGradient>
           </defs>
           {[62, 126, 190, 252].map(y => <path key={y} d={'M0 ' + y + 'H1000'} className="jh-financial-chart__gridline" />)}
@@ -120,7 +138,7 @@ export function FinancialChart({ symbol = 'NOVA', company = 'Nova Systems', curr
           {activeIndex !== null && selectedPoint && (
             <>
               <path d={'M' + selectedPoint.x + ' 0V252'} className="jh-financial-chart__crosshair" />
-              <circle cx={selectedPoint.x} cy={selectedPoint.y} r="6" className="jh-financial-chart__point-halo" />
+              <circle cx={selectedPoint.x} cy={selectedPoint.y} r="6.5" className="jh-financial-chart__point-halo" />
               <circle cx={selectedPoint.x} cy={selectedPoint.y} r="3" className="jh-financial-chart__point" />
             </>
           )}
@@ -129,9 +147,15 @@ export function FinancialChart({ symbol = 'NOVA', company = 'Nova Systems', curr
       <div className="jh-financial-chart__timeline" aria-hidden="true">
         {LABELS[period].map(label => <span key={label}>{label}</span>)}
       </div>
+      <div className="jh-financial-chart__stats">
+        <div><span>Open</span><strong>{format(first)}</strong></div>
+        <div><span>High</span><strong>{format(rawHigh)}</strong></div>
+        <div><span>Low</span><strong>{format(rawLow)}</strong></div>
+        <div><span>Volume</span><strong>2.48M</strong></div>
+      </div>
       <div className="jh-financial-chart__footer">
         <span>Market data · Demo</span>
-        <span>Volume <strong>2.48M</strong></span>
+        <span>Last <strong>{format(last)}</strong></span>
       </div>
     </section>
   );

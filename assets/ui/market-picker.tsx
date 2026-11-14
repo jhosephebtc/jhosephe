@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { ScrollArea } from './scroll-area';
 import { SegmentedControl } from './segmented-control';
+import { instrumentAccentStyle } from './utils';
 
 const MARKETS = {
   Stocks: [
@@ -23,7 +24,15 @@ const MARKETS = {
 type MarketKind = keyof typeof MARKETS;
 
 /** Searchable mock market picker. Supply your own instrument catalog in production. */
-export function MarketPicker({ onSelect, initialSymbol = 'NOVA' }: { onSelect?: (symbol: string) => void; initialSymbol?: string }) {
+export function MarketPicker({
+  onSelect,
+  initialSymbol = 'NOVA',
+  accentColor,
+}: {
+  onSelect?: (symbol: string) => void;
+  initialSymbol?: string;
+  accentColor?: string;
+}) {
   const [kind, setKind] = useState<MarketKind>('Stocks');
   const [query, setQuery] = useState('');
   const [selected, setSelected] = useState(initialSymbol);
@@ -37,7 +46,11 @@ export function MarketPicker({ onSelect, initialSymbol = 'NOVA' }: { onSelect?: 
   };
 
   return (
-    <section className="jh-market-picker" aria-label="Choose an asset">
+    <section
+      className="jh-market-picker"
+      aria-label="Choose an asset"
+      style={instrumentAccentStyle(accentColor)}
+    >
       <div className="jh-market-picker__heading">
         <div>
           <span>Market</span>
@@ -79,7 +92,10 @@ export function MarketPicker({ onSelect, initialSymbol = 'NOVA' }: { onSelect?: 
                 </span>
                 <span className="jh-market-picker__price">
                   <strong>{item.price}</strong>
-                  <small data-positive={!item.change.includes('−')}>{item.change}</small>
+                  <small data-positive={!item.change.includes('−')}>
+                    <i className="jh-market-picker__delta-pip" aria-hidden="true" />
+                    {item.change}
+                  </small>
                 </span>
               </button>
             </li>

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent } from 'react';
-import { ArrowLeft, ArrowUpRight, LocateFixed, MapPin, Settings2, Sun, Sunrise } from 'lucide-react';
+import { ArrowLeft, ArrowUpRight, LocateFixed, MapPin, Settings2, Star, Sun, Sunrise } from 'lucide-react';
 import { AstronomyInstrument } from '../../../../assets/ui/astronomy-instrument';
 import { Button } from '../../../../assets/ui/button';
 import { Compass } from '../../../../assets/ui/compass';
@@ -255,6 +255,7 @@ export function SolarPanel() {
       <a className="solar-brand" href="/" aria-label="jhosephe / solar, back to home"><span className="solar-brand__symbol" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M14 8v8c0 4-2 6-6 6" stroke="currentColor" strokeWidth="1.4"/><circle cx="14" cy="4" r="1" fill="currentColor"/></svg></span><span>jhosephe<span className="solar-brand__suffix"> / solar</span></span></a>
       <span className="solar-label solar-topbar__edition">Instrument 002</span>
       <div className="solar-topbar__actions">
+        <a className="jh-github-star" href="https://github.com/jhosephebtc/jhosephe" target="_blank" rel="noreferrer" aria-label="Star jhosephe on GitHub"><Star size={14} strokeWidth={1.75} aria-hidden="true" /><span>Star on GitHub</span></a>
         <ThemeToggle />
         <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild><Button className="solar-location"><MapPin size={14} aria-hidden="true" /><span>{location?.name ?? 'Set location'}</span><Settings2 size={14} aria-hidden="true" /></Button></DialogTrigger>

@@ -98,7 +98,7 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid 
 .skip-link:focus { transform: none; }
 
 .jh-button {
-  isolation: isolate; position: relative; display: inline-flex; align-items: center; justify-content: center;
+  position: relative; display: inline-flex; align-items: center; justify-content: center;
   min-height: 44px; gap: 8px; padding: 0 20px; border: 0; border-radius: 16px;
   color: #2e2e2e; background: transparent; cursor: pointer; font-weight: 500; font-size: var(--jh-type-control); letter-spacing: 0;
   font-kerning: normal; font-optical-sizing: auto; font-variant-numeric: lining-nums;
@@ -106,7 +106,7 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid 
   transition: transform 220ms var(--jh-ease), box-shadow 180ms var(--jh-ease);
 }
 .jh-button__face {
-  z-index: -1; pointer-events: none; position: absolute; inset: 0; overflow: hidden;
+  z-index: 0; pointer-events: none; position: absolute; inset: 0; overflow: hidden;
   background: linear-gradient(175deg, #fff, #efefef);
   box-shadow: inset 0 1px 1px #fff, inset 0 0 0 1px #0000000a, inset 0 -1px 1px #ffffffc9;
   transition: transform 260ms cubic-bezier(.16,1,.3,1);
@@ -129,7 +129,7 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid 
     backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
   }
 }
-.jh-button__content { display: inline-flex; justify-content: center; align-items: center; gap: 8px; position: relative; }
+.jh-button__content { display: inline-flex; justify-content: center; align-items: center; gap: 8px; position: relative; z-index: 1; }
 .jh-icon-soft { color: #626262; opacity: .76; }
 .jh-button__content > svg, .jh-menu__item > svg, .jh-dialog__close > svg, .jh-calendar__previous > svg, .jh-calendar__next > svg, .jh-gallery__footer > button > svg { opacity: .76; }
 .jh-button--primary { color:#2e2e2e; font-weight:550; }
@@ -598,7 +598,7 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid 
 .jh-attitude__glass { fill:#ffffff14; stroke:#fff; stroke-width:1.6; }
 .jh-attitude__readout { display:flex; justify-content:space-between; width:100%; gap:12px; padding:8px 10px; border-radius:12px; color:#737373; font-size:var(--jh-type-meta,12px); background:linear-gradient(155deg,#f6f6f6,#fbfbfb); box-shadow:inset 0 1px #fff,inset 0 0 0 1px #ffffffb8; }
 .jh-attitude__readout output { margin-left:5px; color:#333; font-size:var(--jh-type-control,14px); font-weight:500; font-variant-numeric:tabular-nums; }
-.jh-navigation-instrument { display:grid; grid-template-columns:minmax(100px,.8fr) minmax(0,1.2fr); align-items:center; gap:clamp(12px,3vw,24px); }
+.jh-navigation-instrument { display:grid; grid-template-columns:minmax(0,1fr); align-items:stretch; gap:14px; }
 .jh-navigation-instrument__dial { position:relative; min-width:0; }
 .jh-navigation-instrument__dial svg { display:block; width:100%; overflow:visible; }
 .jh-navigation-instrument__rim { fill:#f7f7f7; stroke:#d9d9d9; stroke-width:1.5; }
@@ -712,7 +712,7 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid 
   .jh-tactile-key:hover { color:#303030; }
 }
 @media (max-width:520px) {
-  .jh-weather__main,.jh-navigation-instrument { grid-template-columns:minmax(88px,.75fr) minmax(0,1.25fr); gap:12px; }
+  .jh-weather__main { grid-template-columns:minmax(88px,.75fr) minmax(0,1.25fr); gap:12px; }
   .jh-file-transfer,.jh-weather,.jh-navigation-instrument { border-radius:16px; }
   .jh-image-frame { padding:5px; border-radius:16px; }
   .jh-image-frame__viewport { border-radius:11px; }
@@ -1110,7 +1110,7 @@ body:has(.library-detail .library-preview-object[data-jh-material="liquid-glass"
 .jh-astronomy__sky { width:100%; }
 .jh-astronomy__sky svg { display:block; width:100%; height:auto; overflow:visible; }
 .jh-astronomy__arc-bed { fill:none; stroke:#e1e1e1; stroke-width:1.2; }
-.jh-astronomy__arc { fill:none; stroke:#777; stroke-width:1.25; stroke-linecap:round; stroke-dasharray:1; stroke-dashoffset:0; vector-effect:non-scaling-stroke; }
+.jh-astronomy__arc { fill:none; stroke:var(--jh-instrument-accent,#222222); stroke-width:1.65; stroke-linecap:round; stroke-dasharray:none; stroke-dashoffset:0; vector-effect:non-scaling-stroke; }
 .jh-astronomy__horizon { fill:none; stroke:#777; stroke-opacity:.16; stroke-width:1; }
 .jh-astronomy__tick { stroke:#858585; stroke-opacity:.38; stroke-width:1; }
 .jh-astronomy__guide { fill:none; stroke:#888; stroke-opacity:.3; stroke-dasharray:2 5; }
@@ -5886,7 +5886,7 @@ body:has(.library-detail .library-preview-object[data-jh-material="liquid-glass"
 }
 
 /* Wind Instrument */
-.jh-wind-instrument__body {
+.jh-wind-instrument__stage {
   display: grid;
   grid-template-columns: 164px minmax(0, 1fr);
   gap: 14px;
@@ -6716,7 +6716,7 @@ body:has(.library-detail .library-preview-object[data-jh-material="liquid-glass"
 }
 
 @media (max-width: 520px) {
-  .jh-wind-instrument__body,
+  .jh-wind-instrument__stage,
   .jh-lunar-ephemeris__stage {
     grid-template-columns: 1fr;
     justify-items: center;
@@ -12577,50 +12577,33 @@ input[type="number"] {
   white-space: nowrap;
 }
 
-/* Accordion Scroll: the Accordion itself scrolls (scrollbar identical to Simple Scroll / .jh-scroll-frame) */
-.jh-accordion.jh-accordion--scroll,
-.jh-accordion.jh-accordion-scroll {
+/* Accordion Scroll: reuses .jh-scroll-frame > .jh-scroll-area so elevation & scrollbar match Simple Scroll */
+.jh-accordion-scroll {
+  width: min(100%, 480px);
+}
+.jh-accordion-scroll > .jh-scroll-area {
+  padding: 8px 3px 8px 10px !important;
+}
+.jh-accordion-scroll > .jh-scroll-area > .jh-accordion {
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  width: 100% !important;
+  max-width: none !important;
+  padding: 2px 6px 2px 2px !important;
+}
+.jh-accordion.jh-accordion--scroll {
   width: min(100%, 480px);
   overflow-y: auto;
   overflow-x: hidden;
   overscroll-behavior: contain;
-  scrollbar-gutter: stable;
-  scrollbar-color: #cecece transparent;
-  scrollbar-width: thin;
   grid-auto-rows: max-content;
   align-content: start;
   padding: 6px clamp(4px, .75vw, 6px) 6px 6px;
 }
-.jh-accordion.jh-accordion--scroll:focus-visible {
-  outline: none;
-  box-shadow:
-    inset 0 1px #fff,
-    inset 0 0 0 1px rgb(0 0 0 / .16),
-    0 8px 22px -14px rgb(0 0 0 / .11) !important;
-}
-.jh-accordion.jh-accordion--scroll::-webkit-scrollbar,
-.jh-vertical-gallery__viewport::-webkit-scrollbar { width: 12px; }
-.jh-accordion.jh-accordion--scroll::-webkit-scrollbar-track,
-.jh-vertical-gallery__viewport::-webkit-scrollbar-track {
-  margin: 10px 0;
-  border: 4px solid transparent;
-  border-radius: 99px;
-  background: transparent;
-  background-clip: content-box;
-}
-.jh-accordion.jh-accordion--scroll::-webkit-scrollbar-thumb,
-.jh-vertical-gallery__viewport::-webkit-scrollbar-thumb {
-  min-height: 28px;
-  border: 3px solid transparent;
-  border-radius: 99px;
-  background: linear-gradient(180deg, #d7d7d7, #c6c6c6) padding-box;
-  box-shadow: none;
-}
-.jh-accordion.jh-accordion--scroll::-webkit-scrollbar-thumb:hover,
-.jh-vertical-gallery__viewport::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #c9c9c9, #bdbdbd) padding-box;
-}
-.jh-accordion.jh-accordion--scroll .jh-accordion__item {
+.jh-accordion.jh-accordion--scroll .jh-accordion__item,
+.jh-accordion-scroll .jh-accordion__item {
   flex-shrink: 0;
   width: 100%;
 }
@@ -12727,22 +12710,31 @@ input[type="number"] {
   background: #ffffff;
   box-shadow: inset 0 1px #fff, inset 0 0 0 1px rgb(0 0 0 / .045), 0 1px 3px -1px rgb(0 0 0 / .08);
 }
-.jh-vertical-gallery__viewport {
+.jh-vertical-gallery__frame,
+.jh-scroll-frame.jh-vertical-gallery__frame {
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  padding: 0 clamp(4px, .75vw, 6px) 0 0 !important;
+}
+.jh-vertical-gallery__viewport,
+.jh-scroll-frame > .jh-scroll-area.jh-vertical-gallery__viewport {
   height: calc(12 * 36px + 11 * 5px + 8px);
-  padding: var(--jh-vg-pad, 4px) 2px var(--jh-vg-pad, 4px) var(--jh-vg-pad, 4px);
+  padding: var(--jh-vg-pad, 4px) 2px var(--jh-vg-pad, 4px) var(--jh-vg-pad, 4px) !important;
   border-radius: 12px;
   overflow-y: auto;
   overflow-x: hidden;
   overscroll-behavior: contain;
-  scrollbar-gutter: stable;
-  scrollbar-color: #cecece transparent;
-  scrollbar-width: thin;
-  background: transparent;
-  box-shadow: none;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
 }
 .jh-vertical-gallery__viewport:focus-visible {
   outline: none;
-  box-shadow: inset 0 0 0 1px rgb(0 0 0 / .14);
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / .14) !important;
 }
 .jh-vertical-gallery__grid {
   display: grid;
@@ -12822,52 +12814,1609 @@ input[type="number"] {
   }
 }
 
-/* Scrollbars identical to Simple Scroll (.jh-scroll-frame > .jh-scroll-area final rules) */
-.jh-accordion.jh-accordion--scroll,
-.jh-vertical-gallery__viewport {
-  scrollbar-gutter: stable;
-  scrollbar-width: auto !important;
-  scrollbar-color: auto !important;
+/* Top-bar GitHub Star button across routes */
+.jh-github-star {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 10px;
+  background: linear-gradient(175deg, #ffffff, #f2f2f2);
+  color: #3a3a3a;
+  font-family: var(--jh-font);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -.01em;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  box-shadow:
+    inset 0 1px #ffffff,
+    inset 0 0 0 1px rgb(0 0 0 / .055),
+    0 2px 5px -2px rgb(0 0 0 / .1);
+  transition: color 160ms var(--jh-ease), transform 140ms var(--jh-ease), box-shadow 160ms var(--jh-ease);
 }
-.jh-accordion.jh-accordion--scroll::-webkit-scrollbar,
-.jh-vertical-gallery__viewport::-webkit-scrollbar {
-  width: 7px !important;
+.jh-github-star svg {
+  flex: none;
+  color: #5a5a5a;
+  transition: color 160ms var(--jh-ease);
 }
-.jh-accordion.jh-accordion--scroll::-webkit-scrollbar-track,
-.jh-vertical-gallery__viewport::-webkit-scrollbar-track {
-  margin: 28px 0 !important;
-  background: transparent !important;
-  border: 0 !important;
-  box-shadow: none !important;
+.jh-github-star:hover {
+  color: #161616;
+  box-shadow:
+    inset 0 1px #ffffff,
+    inset 0 0 0 1px rgb(0 0 0 / .08),
+    0 3px 8px -3px rgb(0 0 0 / .14);
 }
-.jh-accordion.jh-accordion--scroll::-webkit-scrollbar-thumb,
-.jh-vertical-gallery__viewport::-webkit-scrollbar-thumb {
-  min-height: 20px !important;
-  border: 2px solid transparent !important;
-  border-radius: 99px !important;
-  background: #c8c8c8cc padding-box !important;
-  background-clip: padding-box !important;
-  box-shadow: none !important;
+.jh-github-star:hover svg {
+  color: #161616;
 }
-.jh-accordion.jh-accordion--scroll::-webkit-scrollbar-thumb:hover,
-.jh-vertical-gallery__viewport::-webkit-scrollbar-thumb:hover {
-  background: #aaaaaa padding-box !important;
+.jh-github-star:active {
+  transform: translateY(1px);
+  box-shadow:
+    inset 0 1px 2px rgb(0 0 0 / .06),
+    inset 0 0 0 1px rgb(0 0 0 / .06),
+    0 1px 2px -1px rgb(0 0 0 / .08);
 }
-.jh-accordion.jh-accordion--scroll::-webkit-scrollbar-button,
-.jh-vertical-gallery__viewport::-webkit-scrollbar-button {
-  display: none !important;
-  width: 0 !important;
-  height: 0 !important;
+
+/* —— Wave 2 Part 1: Monochrome + OKLCH Light Accent (15 Instrument Components) —— */
+:root {
+  --jh-instrument-accent: #222222;
 }
-.jh-accordion.jh-accordion--scroll::-webkit-scrollbar-corner,
-.jh-vertical-gallery__viewport::-webkit-scrollbar-corner {
+.jh-instrument-accent {
+  stop-color: var(--jh-instrument-accent, #222222);
+}
+
+/* AttitudeIndicator */
+.jh-attitude {
+  width: min(100%, 336px);
+  gap: 12px;
+}
+.jh-attitude__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+}
+.jh-attitude__header > div {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.jh-attitude__eyebrow {
+  color: #7a7a7a;
+  font-size: 10px;
+  letter-spacing: .02em;
+}
+.jh-attitude__title {
+  color: #242424;
+  font-size: 13px;
+  font-weight: 540;
+  letter-spacing: -.015em;
+}
+.jh-attitude__pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: #efefef;
+  box-shadow: inset 0 1px 2px #0000000b, inset 0 -1px #ffffffd9, 0 1px #fff;
+  color: #323232;
+  font-size: 10.5px;
+  font-weight: 530;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.jh-attitude__well {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  padding: 12px;
+  border-radius: 16px;
+  background: #efefef;
+  box-shadow: inset 0 1px 4px #0000000e, inset 0 -1px 1px #ffffffc4, 0 1px #fff;
+}
+.jh-attitude__well .jh-attitude__dial {
+  width: min(100%, 224px);
+}
+.jh-attitude__sky {
+  fill: #f5f5f5;
+}
+.jh-attitude__ground {
+  fill: #e3e3e3;
+}
+.jh-attitude__horizon {
+  stroke: #666666;
+  stroke-width: 1.35;
+}
+.jh-attitude__pitch-mark path,
+.jh-attitude__bank-ticks path,
+.jh-attitude__ticks path {
+  stroke: #747474;
+  stroke-width: 1.15;
+  stroke-linecap: round;
+  fill: none;
+}
+.jh-attitude__pitch-mark text {
+  fill: #646464;
+  font: 7px var(--jh-font);
+  font-weight: 520;
+  font-variant-numeric: tabular-nums;
+}
+.jh-attitude__bank-indicator {
+  fill: var(--jh-instrument-accent, #222222);
+  stroke: #ffffff;
+  stroke-width: .7;
+}
+.jh-attitude__aircraft path {
+  fill: none;
+  stroke: var(--jh-instrument-accent, #222222);
+  stroke-width: 2.15;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.jh-attitude__aircraft-pip {
+  fill: var(--jh-instrument-accent, #222222);
+  stroke: #ffffff;
+  stroke-width: .85;
+}
+.jh-attitude__readout {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  width: 100%;
+  padding: 0;
+  border-radius: 0;
   background: transparent;
+  box-shadow: none;
 }
-@supports not selector(::-webkit-scrollbar) {
-  .jh-accordion.jh-accordion--scroll,
-  .jh-vertical-gallery__viewport {
-    scrollbar-width: thin !important;
-    scrollbar-color: #c8c8c8cc transparent !important;
+.jh-attitude__readout > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 6px;
+  min-width: 0;
+  padding: 8px 10px;
+  border-radius: 11px;
+  background: #efefef;
+  box-shadow: inset 0 1px 2px #0000000a, inset 0 -1px #ffffffd4, 0 1px #fff;
+}
+.jh-attitude__readout span {
+  color: #777777;
+  font-size: 10.5px;
+}
+.jh-attitude__readout output {
+  margin: 0;
+  color: #242424;
+  font-size: 12px;
+  font-weight: 540;
+  font-variant-numeric: tabular-nums;
+}
+
+/* NavigationInstrument */
+.jh-navigation-instrument__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding-bottom: 10px;
+  box-shadow: inset 0 -1px #00000008;
+}
+.jh-navigation-instrument__header > div {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.jh-navigation-instrument__eyebrow {
+  color: #7a7a7a;
+  font-size: 10px;
+  letter-spacing: .02em;
+}
+.jh-navigation-instrument__title {
+  color: #242424;
+  font-size: 13px;
+  font-weight: 540;
+  letter-spacing: -.015em;
+}
+.jh-navigation-instrument__mode {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: #efefef;
+  box-shadow: inset 0 1px 2px #0000000a, inset 0 -1px #ffffffd9, 0 1px #fff;
+  color: #363636;
+  font-size: 10.5px;
+  font-weight: 520;
+  white-space: nowrap;
+}
+.jh-navigation-instrument__mode-dot {
+  width: 6px;
+  height: 6px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--jh-instrument-accent, #222222);
+}
+.jh-navigation-instrument__stage {
+  display: grid;
+  grid-template-columns: minmax(128px, .9fr) minmax(0, 1.1fr);
+  align-items: center;
+  gap: clamp(12px, 2.5vw, 20px);
+  width: 100%;
+}
+.jh-navigation-instrument__well {
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  padding: 10px;
+  border-radius: 16px;
+  background: #efefef;
+  box-shadow: inset 0 1px 4px #0000000e, inset 0 -1px 1px #ffffffc4, 0 1px #fff;
+}
+.jh-navigation-instrument__cdi {
+  stroke: var(--jh-instrument-accent, #222222);
+  stroke-opacity: .72;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+.jh-navigation-instrument__lubber {
+  fill: var(--jh-instrument-accent, #222222);
+}
+.jh-navigation-instrument__needle-north {
+  fill: var(--jh-instrument-accent, #222222);
+}
+.jh-navigation-instrument__readings {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  min-width: 0;
+}
+.jh-navigation-instrument__readings > div,
+.jh-navigation-instrument__readings > div:last-of-type {
+  display: grid;
+  gap: 3px;
+  align-content: center;
+  min-width: 0;
+  padding: 9px 10px;
+  border-radius: 11px;
+  background: #efefef;
+  box-shadow: inset 0 1px 2px #0000000a, inset 0 -1px #ffffffd4, 0 1px #fff;
+}
+.jh-navigation-instrument__readings span {
+  color: #777777;
+  font-size: 10px;
+}
+.jh-navigation-instrument__readings strong {
+  color: #242424;
+  font-size: 13px;
+  font-weight: 540;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Compass */
+.jh-compass {
+  width: min(100%, 336px);
+  gap: 12px;
+}
+.jh-compass__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+}
+.jh-compass__header > div {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.jh-compass__eyebrow {
+  color: #7a7a7a;
+  font-size: 10px;
+  letter-spacing: .02em;
+}
+.jh-compass__title {
+  color: #242424;
+  font-size: 13px;
+  font-weight: 540;
+  letter-spacing: -.015em;
+}
+.jh-compass__cardinal-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: #efefef;
+  box-shadow: inset 0 1px 2px #0000000a, inset 0 -1px #ffffffd9, 0 1px #fff;
+  color: #323232;
+  font-size: 10.5px;
+  font-weight: 540;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.jh-compass__well {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  padding: 12px;
+  border-radius: 16px;
+  background: #efefef;
+  box-shadow: inset 0 1px 4px #0000000e, inset 0 -1px 1px #ffffffc4, 0 1px #fff;
+}
+.jh-compass__arc {
+  fill: none;
+  stroke: var(--jh-instrument-accent, #222222);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+.jh-compass__needle i {
+  background: var(--jh-instrument-accent, #222222);
+}
+.jh-compass__readout {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 8px 11px;
+  border-radius: 11px;
+  background: #efefef;
+  box-shadow: inset 0 1px 2px #0000000a, inset 0 -1px #ffffffd4, 0 1px #fff;
+}
+
+/* RaceTelemetry */
+.jh-race-telemetry__cell {
+  min-width: 0;
+  padding: 10px 12px;
+  border-radius: 13px;
+  background: #efefef;
+  box-shadow: inset 0 1px 3px #0000000b, inset 0 -1px #ffffffd4, 0 1px #fff;
+}
+.jh-race-telemetry__grid {
+  fill: none;
+  stroke: #777;
+  stroke-opacity: .12;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+.jh-race-telemetry__line {
+  stroke: var(--jh-instrument-accent, #222222);
+}
+.jh-race-telemetry__dot {
+  fill: var(--jh-instrument-accent, #222222);
+  stroke: #ffffff;
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+}
+.jh-race-telemetry__track span {
+  background: var(--jh-instrument-accent, #333333);
+}
+
+/* WeatherInstrument */
+.jh-weather__header > div {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.jh-weather__eyebrow {
+  color: #7a7a7a;
+  font-size: 10px;
+  letter-spacing: .02em;
+}
+.jh-weather__title {
+  color: #242424;
+  font-size: 13px;
+  font-weight: 540;
+  letter-spacing: -.015em;
+}
+.jh-weather__temp {
+  color: #242424;
+  font-size: clamp(22px, 1.25rem + .45vw, 28px);
+  font-weight: 520;
+  letter-spacing: -.035em;
+  font-variant-numeric: tabular-nums;
+}
+.jh-weather__main {
+  grid-template-columns: minmax(112px, .82fr) minmax(0, 1.18fr);
+  gap: clamp(12px, 2.5vw, 18px);
+  padding-top: 14px;
+}
+.jh-weather__well {
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  padding: 10px;
+  border-radius: 16px;
+  background: #efefef;
+  box-shadow: inset 0 1px 4px #0000000e, inset 0 -1px 1px #ffffffc4, 0 1px #fff;
+}
+.jh-weather__arc {
+  fill: none;
+  stroke: var(--jh-instrument-accent, #222222);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+.jh-weather__needle {
+  fill: var(--jh-instrument-accent, #222222);
+}
+.jh-weather__readings {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  min-width: 0;
+}
+.jh-weather__readings > div,
+.jh-weather__readings > div:last-child {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+  padding: 9px 10px;
+  border-radius: 11px;
+  background: #efefef;
+  box-shadow: inset 0 1px 2px #0000000a, inset 0 -1px #ffffffd4, 0 1px #fff;
+}
+
+/* WeatherConditions */
+.jh-weather-conditions__spark-line {
+  stroke: var(--jh-instrument-accent, #222222) !important;
+}
+.jh-weather-conditions__spark-halo {
+  fill: color-mix(in oklch, var(--jh-instrument-accent, #222222) 22%, transparent);
+  stroke: color-mix(in oklch, var(--jh-instrument-accent, #222222) 55%, transparent);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+.jh-weather-conditions__spark-dot {
+  fill: var(--jh-instrument-accent, #222222);
+  stroke: #ffffff;
+  stroke-width: 1.25;
+  vector-effect: non-scaling-stroke;
+}
+.jh-weather-conditions__slot {
+  cursor: pointer;
+  transition: background-color 140ms var(--jh-ease), box-shadow 140ms var(--jh-ease), color 140ms var(--jh-ease);
+}
+.jh-weather-conditions__slot[data-active="true"] {
+  background: #f7f7f7 !important;
+  box-shadow: inset 0 1px #fff, inset 0 0 0 1px color-mix(in oklch, var(--jh-instrument-accent, #222222) 32%, transparent), 0 2px 5px -2px #00000014 !important;
+  color: #222222;
+}
+
+/* WindInstrument */
+.jh-wind-instrument__beaufort-arc {
+  fill: none;
+  stroke: var(--jh-instrument-accent, #222222);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+.jh-wind-instrument__head {
+  fill: var(--jh-instrument-accent, #222222) !important;
+}
+.jh-wind-instrument__shaft {
+  stroke: var(--jh-instrument-accent, #222222) !important;
+}
+.jh-wind-instrument__scale-track span[data-active="true"] {
+  background: var(--jh-instrument-accent, #222222) !important;
+}
+
+/* TideInstrument */
+.jh-tide-instrument__curve {
+  stroke: var(--jh-instrument-accent, #222222) !important;
+}
+.jh-tide-instrument__cursor {
+  stroke: color-mix(in oklch, var(--jh-instrument-accent, #222222) 48%, transparent) !important;
+}
+.jh-tide-instrument__marker-halo {
+  fill: color-mix(in oklch, var(--jh-instrument-accent, #222222) 20%, transparent) !important;
+  stroke: color-mix(in oklch, var(--jh-instrument-accent, #222222) 52%, transparent) !important;
+}
+.jh-tide-instrument__marker {
+  fill: var(--jh-instrument-accent, #222222) !important;
+  stroke: #ffffff !important;
+}
+
+/* FinancialChart */
+.jh-financial-chart__delta-pip,
+.jh-market-picker__delta-pip,
+.jh-currency-picker__pip,
+.jh-metric-card__delta-pip {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  flex: none;
+  margin-right: 5px;
+  border-radius: 50%;
+  vertical-align: middle;
+  background: var(--jh-instrument-accent, #222222);
+}
+.jh-metric-card__delta-pip {
+  margin-right: 0;
+}
+.jh-financial-chart__plot-wrap {
+  padding: 12px 12px 10px 10px;
+  border-radius: 15px;
+  background: #efefef;
+  box-shadow: inset 0 1px 3px #0000000c, inset 0 -1px #ffffffd4, 0 1px #fff;
+}
+.jh-financial-chart__line {
+  stroke: var(--jh-instrument-accent, #222222);
+}
+.jh-financial-chart__point-halo {
+  fill: color-mix(in oklch, var(--jh-instrument-accent, #222222) 18%, transparent);
+  stroke: color-mix(in oklch, var(--jh-instrument-accent, #222222) 55%, transparent);
+}
+.jh-financial-chart__point {
+  fill: var(--jh-instrument-accent, #222222);
+  stroke: #ffffff;
+  stroke-width: 1.25;
+}
+.jh-financial-chart__bar[data-selected="true"] {
+  fill: var(--jh-instrument-accent, #222222);
+  opacity: .72;
+}
+.jh-financial-chart__stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 12px;
+}
+.jh-financial-chart__stats > div {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+  padding: 9px 10px;
+  border-radius: 11px;
+  background: #efefef;
+  box-shadow: inset 0 1px 2px #0000000a, inset 0 -1px #ffffffd4, 0 1px #fff;
+}
+.jh-financial-chart__stats span {
+  color: #7c7c7c;
+  font-size: 9.5px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+.jh-financial-chart__stats strong {
+  color: #242424;
+  font-size: 12px;
+  font-weight: 540;
+  font-variant-numeric: tabular-nums;
+}
+
+/* MarketPicker & CurrencyPicker */
+.jh-market-picker__live i {
+  background: var(--jh-instrument-accent, #222222);
+}
+.jh-market-picker__check {
+  color: var(--jh-instrument-accent, #222222);
+  font-weight: 600;
+}
+.jh-market-picker__asset[aria-selected="true"] {
+  box-shadow: inset 0 1px #fff, inset 0 0 0 1px color-mix(in oklch, var(--jh-instrument-accent, #222222) 24%, transparent), 0 1px 3px #0000000a !important;
+}
+
+/* MetricCard */
+.jh-metric-card__well {
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: #efefef;
+  box-shadow: inset 0 1px 3px #0000000b, inset 0 -1px #ffffffd4, 0 1px #fff;
+}
+.jh-metric-card__line {
+  fill: none;
+  stroke: var(--jh-instrument-accent, #222222);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+.jh-metric-card__point-halo {
+  fill: color-mix(in oklch, var(--jh-instrument-accent, #222222) 20%, transparent);
+  stroke: color-mix(in oklch, var(--jh-instrument-accent, #222222) 55%, transparent);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+.jh-metric-card__point {
+  fill: var(--jh-instrument-accent, #222222);
+  stroke: #ffffff;
+  stroke-width: 1.25;
+  vector-effect: non-scaling-stroke;
+}
+
+/* AstronomyInstrument */
+.jh-astronomy__sky {
+  display: grid;
+  gap: 10px;
+  padding: 14px 12px 10px !important;
+  border-radius: 16px !important;
+  background: #efefef !important;
+  box-shadow: inset 0 1px 4px #0000000e, inset 0 -1px 1px #ffffffc4, 0 1px #fff !important;
+}
+.jh-astronomy__arc {
+  stroke: var(--jh-instrument-accent, #222222);
+  stroke-width: 1.65;
+  stroke-dasharray: none;
+}
+.jh-astronomy__sun-halo {
+  fill: color-mix(in oklch, var(--jh-instrument-accent, #222222) 20%, transparent);
+  stroke: color-mix(in oklch, var(--jh-instrument-accent, #222222) 55%, transparent);
+}
+.jh-astronomy__sun {
+  fill: var(--jh-instrument-accent, #222222);
+}
+.jh-astronomy__scrubber {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 8px 10px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: #f5f5f5;
+  box-shadow: inset 0 1px #fff, 0 1px 2px #0000000c;
+  color: #666666;
+  font-size: 10.5px;
+}
+.jh-astronomy__scrubber output {
+  color: #242424;
+  font-weight: 540;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.jh-astronomy__readouts > div {
+  padding: 9px 10px !important;
+  border-radius: 11px;
+  background: #efefef !important;
+  box-shadow: inset 0 1px 2px #0000000a, inset 0 -1px #ffffffd4, 0 1px #fff !important;
+}
+
+/* AstrologyWheel */
+.jh-astrology-wheel__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.jh-astrology-wheel__badge-dot {
+  width: 6px;
+  height: 6px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--jh-instrument-accent, #222222);
+}
+.jh-astrology-wheel__ascendant {
+  fill: var(--jh-instrument-accent, #222222);
+  stroke: #ffffff;
+  stroke-width: 1;
+}
+.jh-astrology-wheel__ascendant-axis {
+  stroke: var(--jh-instrument-accent, #222222);
+  stroke-opacity: .65;
+  stroke-width: 1.2;
+  stroke-dasharray: 2 3;
+}
+.jh-astrology-wheel__planet[data-selected="true"] .jh-astrology-wheel__planet-halo {
+  fill: color-mix(in oklch, var(--jh-instrument-accent, #222222) 18%, transparent);
+  stroke: var(--jh-instrument-accent, #222222);
+  stroke-width: 1.1;
+}
+.jh-astrology-wheel__planet[data-selected="true"] circle.jh-astrology-wheel__planet-face {
+  stroke: var(--jh-instrument-accent, #222222);
+  stroke-width: 1.5;
+}
+
+/* LunarEphemeris */
+.jh-lunar-ephemeris__pill-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-right: 6px;
+  border-radius: 50%;
+  vertical-align: middle;
+  background: var(--jh-instrument-accent, #222222);
+}
+.jh-lunar-ephemeris__tick.is-active,
+.jh-lunar-ephemeris[data-dragging="true"] .jh-lunar-ephemeris__tick.is-active {
+  stroke: var(--jh-instrument-accent, #222222);
+}
+.jh-lunar-ephemeris__age-pip {
+  fill: var(--jh-instrument-accent, #222222);
+  stroke: #ffffff;
+}
+.jh-lunar-ephemeris__light-source {
+  fill: #ffffff;
+  stroke: var(--jh-instrument-accent, #222222);
+}
+
+/* —— Wave 2 Part 2: Global Responsiveness & Anti-Overlap (375px Mobile & .is-narrow Stage) —— */
+@container jh-stage (max-width: 460px) {
+  .jh-attitude,
+  .jh-compass,
+  .jh-weather,
+  .jh-navigation-instrument,
+  .jh-weather-conditions,
+  .jh-wind-instrument,
+  .jh-tide-instrument,
+  .jh-lunar-ephemeris,
+  .jh-astronomy,
+  .jh-astrology-wheel,
+  .jh-financial-chart,
+  .jh-market-picker,
+  .jh-race-telemetry,
+  .jh-metric-card,
+  .jh-tabs,
+  .jh-data-table,
+  .jh-data-form,
+  .jh-file-transfer,
+  .jh-vertical-gallery,
+  .jh-image-inspector,
+  .jh-tactile-keypad,
+  .jh-tactile-console,
+  .jh-camera-dial,
+  .jh-camera-wheel,
+  .jh-spectrum,
+  .jh-accordion,
+  .jh-scroll-frame,
+  .jh-step-navigation,
+  .jh-combobox,
+  .jh-date-time-picker,
+  .jh-ephemeris-picker {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0;
+  }
+  .jh-financial-chart__header,
+  .jh-financial-chart__toolbar,
+  .jh-financial-chart__footer,
+  .jh-market-picker__heading,
+  .jh-astronomy__header,
+  .jh-astrology-wheel > header,
+  .jh-astrology-wheel__header,
+  .jh-race-telemetry > header,
+  .jh-race-telemetry > footer,
+  .jh-weather__header,
+  .jh-weather-conditions__header,
+  .jh-wind-instrument__header,
+  .jh-tide-instrument__header,
+  .jh-lunar-ephemeris__header,
+  .jh-navigation-instrument__header,
+  .jh-attitude__header,
+  .jh-compass__header,
+  .jh-vertical-gallery__header,
+  .jh-finance-nav--header,
+  .jh-camera-dial__head,
+  .jh-tactile-keypad__header {
+    flex-wrap: wrap;
+    gap: 8px 10px;
+  }
+  .jh-financial-chart__quote {
+    justify-items: start;
+  }
+  .jh-navigation-instrument__stage,
+  .jh-weather__main,
+  .jh-wind-instrument__stage,
+  .jh-lunar-ephemeris__stage,
+  .jh-image-inspector {
+    grid-template-columns: 1fr;
+    justify-items: stretch;
+    gap: 12px;
+  }
+  .jh-image-inspector__row {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+  .jh-scroll-columns {
+    grid-template-columns: 1fr !important;
+  }
+  .jh-financial-chart__plot-wrap {
+    grid-template-columns: 40px minmax(0, 1fr);
+    gap: 6px;
+    padding: 10px 8px 8px;
+  }
+  .jh-financial-chart__timeline {
+    margin-left: 46px;
+    font-size: 8px;
+  }
+  .jh-financial-chart__modes {
+    display: none;
+  }
+  .jh-financial-chart__stats,
+  .jh-metric-card__stats,
+  .jh-weather-conditions__metrics,
+  .jh-astronomy__readouts,
+  .jh-vertical-gallery__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+  .jh-weather-conditions__strip {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+  }
+  .jh-astrology-wheel__details,
+  .jh-race-telemetry__sectors,
+  .jh-spectrum__channels,
+  .jh-tactile-console__bottom {
+    grid-template-columns: 1fr;
+  }
+  .jh-race-telemetry__readout {
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+  }
+  .jh-astronomy__scrubber {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    gap: 6px 8px;
+  }
+  .jh-astronomy__scrubber > span:first-child {
+    grid-column: 1 / -1;
+  }
+  .jh-wind-instrument__bearing-control,
+  .jh-tide-instrument__scrubber,
+  .jh-lunar-ephemeris__scrubber {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 6px 10px;
+  }
+  .jh-wind-instrument__bearing-control > span:first-child,
+  .jh-tide-instrument__scrubber > span:first-child,
+  .jh-lunar-ephemeris__scrubber > span:first-child {
+    grid-column: 1 / -1;
+  }
+  .jh-tactile-console__top {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+  }
+  .jh-camera-dial__collar {
+    width: min(100%, 248px);
+  }
+  .jh-filmstrip {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+  .jh-filmstrip__chassis {
+    width: 100%;
+    padding: 14px;
+  }
+  .jh-filmstrip__exit-port {
+    margin-left: 0;
+    margin-top: -10px;
+    padding-right: 0;
+    width: 100%;
+    overflow: hidden;
+  }
+  .jh-filmstrip__ribbon {
+    width: 100%;
+    height: auto;
+    border-radius: 0 0 11px 11px;
+  }
+  .jh-filmstrip__ribbon-dots {
+    width: 100%;
+    padding: 16px 12px 12px;
+  }
+  .jh-filmstrip__dots-row {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .jh-finance-nav--sidebar {
+    width: 100%;
+    min-height: 0;
+  }
+  .jh-finance-nav__header-links {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+  .jh-market-picker__tabs {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+  .jh-data-table__th,
+  .jh-data-table__cell {
+    padding: 8px 8px;
+  }
+}
+
+@media (max-width: 560px) {
+  .jh-attitude,
+  .jh-compass,
+  .jh-weather,
+  .jh-navigation-instrument,
+  .jh-weather-conditions,
+  .jh-wind-instrument,
+  .jh-tide-instrument,
+  .jh-lunar-ephemeris,
+  .jh-astronomy,
+  .jh-astrology-wheel,
+  .jh-financial-chart,
+  .jh-market-picker,
+  .jh-race-telemetry,
+  .jh-metric-card,
+  .jh-tabs,
+  .jh-data-table,
+  .jh-data-form,
+  .jh-file-transfer,
+  .jh-vertical-gallery,
+  .jh-image-inspector,
+  .jh-tactile-keypad,
+  .jh-tactile-console,
+  .jh-camera-dial,
+  .jh-camera-wheel,
+  .jh-spectrum,
+  .jh-accordion,
+  .jh-scroll-frame,
+  .jh-step-navigation,
+  .jh-combobox,
+  .jh-date-time-picker,
+  .jh-ephemeris-picker {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+  .jh-financial-chart__header,
+  .jh-financial-chart__toolbar,
+  .jh-financial-chart__footer,
+  .jh-market-picker__heading,
+  .jh-astronomy__header,
+  .jh-astrology-wheel > header,
+  .jh-astrology-wheel__header,
+  .jh-race-telemetry > header,
+  .jh-race-telemetry > footer,
+  .jh-weather__header,
+  .jh-weather-conditions__header,
+  .jh-wind-instrument__header,
+  .jh-tide-instrument__header,
+  .jh-lunar-ephemeris__header,
+  .jh-navigation-instrument__header,
+  .jh-attitude__header,
+  .jh-compass__header,
+  .jh-vertical-gallery__header,
+  .jh-finance-nav--header,
+  .jh-camera-dial__head,
+  .jh-tactile-keypad__header {
+    flex-wrap: wrap;
+    gap: 8px 10px;
+  }
+  .jh-financial-chart__quote {
+    justify-items: start;
+  }
+  .jh-navigation-instrument__stage,
+  .jh-weather__main,
+  .jh-wind-instrument__stage,
+  .jh-lunar-ephemeris__stage,
+  .jh-image-inspector {
+    grid-template-columns: 1fr;
+    justify-items: stretch;
+    gap: 12px;
+  }
+  .jh-image-inspector__row {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+  .jh-scroll-columns {
+    grid-template-columns: 1fr !important;
+  }
+  .jh-financial-chart__stats,
+  .jh-metric-card__stats,
+  .jh-weather-conditions__metrics,
+  .jh-astronomy__readouts,
+  .jh-vertical-gallery__grid,
+  .jh-ephemeris-picker__targets.jh-segmented {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+  .jh-weather-conditions__strip {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+  }
+  .jh-astrology-wheel__details,
+  .jh-race-telemetry__sectors,
+  .jh-spectrum__channels,
+  .jh-tactile-console__bottom,
+  .jh-ephemeris-picker__fields,
+  .jh-financial-order__fields {
+    grid-template-columns: 1fr;
+  }
+  .jh-race-telemetry__readout {
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+  }
+  .jh-astronomy__scrubber {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    gap: 6px 8px;
+  }
+  .jh-astronomy__scrubber > span:first-child {
+    grid-column: 1 / -1;
+  }
+  .jh-wind-instrument__bearing-control,
+  .jh-tide-instrument__scrubber,
+  .jh-lunar-ephemeris__scrubber {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 6px 10px;
+  }
+  .jh-wind-instrument__bearing-control > span:first-child,
+  .jh-tide-instrument__scrubber > span:first-child,
+  .jh-lunar-ephemeris__scrubber > span:first-child {
+    grid-column: 1 / -1;
+  }
+  .jh-tactile-console__top {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+  }
+  .jh-filmstrip {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+  .jh-filmstrip__chassis {
+    width: 100%;
+    padding: 14px;
+  }
+  .jh-filmstrip__exit-port {
+    margin-left: 0;
+    margin-top: -10px;
+    padding-right: 0;
+    width: 100%;
+    overflow: hidden;
+  }
+  .jh-filmstrip__ribbon {
+    width: 100%;
+    height: auto;
+    border-radius: 0 0 11px 11px;
+  }
+  .jh-filmstrip__ribbon-dots {
+    width: 100%;
+    padding: 16px 12px 12px;
+  }
+  .jh-filmstrip__dots-row {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .jh-finance-nav__header-links {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+  .jh-ephemeris-picker__panel {
+    padding: 14px;
+  }
+}
+
+/* Theme + Surface Picker Popover (opened from .jh-theme-toggle) */
+.jh-theme-toggle__dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  background: currentColor;
+  opacity: .72;
+}
+.jh-theme-picker-popover {
+  z-index: 230;
+  display: grid;
+  gap: 14px;
+  width: min(296px, calc(100vw - 24px));
+  padding: 14px;
+  border-radius: 18px;
+  color: #2e2e2e;
+  background: #f7f7f7;
+  box-shadow:
+    inset 0 1px #fff,
+    inset 0 0 0 1px rgb(0 0 0 / .055),
+    0 18px 48px -22px #00000055;
+  animation: jh-layer-in 150ms var(--jh-ease);
+  transform-origin: var(--radix-popover-content-transform-origin);
+}
+.jh-theme-picker-popover__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.jh-theme-picker-popover__head > div {
+  display: grid;
+  gap: 2px;
+}
+.jh-theme-picker-popover__eyebrow {
+  font-size: 10px;
+  letter-spacing: .04em;
+  color: #7c7c7c;
+  text-transform: uppercase;
+}
+.jh-theme-picker-popover__head strong {
+  font-size: 13px;
+  font-weight: 530;
+  letter-spacing: -.015em;
+  color: #2e2e2e;
+}
+.jh-theme-picker-popover__reset {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 28px;
+  padding: 0 9px;
+  border: 0;
+  border-radius: 9px;
+  background: linear-gradient(175deg, #fff, #f2f2f2);
+  color: #555;
+  font-family: var(--jh-font);
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: inset 0 1px #fff, inset 0 0 0 1px rgb(0 0 0 / .05), 0 1px 3px -2px rgb(0 0 0 / .14);
+}
+.jh-theme-picker-popover__reset:hover {
+  color: #222;
+}
+.jh-theme-picker-popover__section {
+  display: grid;
+  gap: 7px;
+}
+.jh-theme-picker-popover__section-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: #6b6b6b;
+}
+.jh-theme-picker-popover__modes {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px;
+  padding: 4px;
+  border-radius: 13px;
+  background: #ededed;
+  box-shadow: inset 0 1px 3px rgb(0 0 0 / .06), 0 1px #fff;
+}
+.jh-theme-picker-popover__modes button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 32px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: #707070;
+  font-family: var(--jh-font);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 140ms var(--jh-ease), background-color 140ms var(--jh-ease), box-shadow 140ms var(--jh-ease);
+}
+.jh-theme-picker-popover__modes button[aria-pressed="true"] {
+  background: linear-gradient(175deg, #ffffff, #f3f3f3);
+  color: #222;
+  box-shadow: inset 0 1px #fff, inset 0 0 0 1px rgb(0 0 0 / .045), 0 2px 6px -3px rgb(0 0 0 / .16);
+}
+.jh-theme-picker-popover__sliders {
+  display: grid;
+  gap: 12px;
+}
+.jh-theme-picker-popover__field {
+  display: grid;
+  gap: 6px;
+}
+.jh-theme-picker-popover__label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 11px;
+  color: #6b6b6b;
+}
+.jh-theme-picker-popover__label-row output {
+  color: #2e2e2e;
+  font-weight: 520;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Continuous custom surface transparency & backdrop blur (keeps outer shadows, text & SVG icons 100% sharp) */
+:is(
+  [data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"],
+  :root[data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"]
+) :is(
+  .jh-dialog,
+  .jh-dialog.jh-command-dialog,
+  .jh-dialog__content,
+  .jh-command-dialog,
+  .jh-date-popover,
+  .jh-date-popover.jh-picker-overlay,
+  .jh-date-time-popover,
+  .jh-date-time-popover.jh-picker-overlay,
+  .jh-date-time-picker,
+  .jh-picker-overlay,
+  [data-jh-material].jh-picker-overlay,
+  .jh-combobox__popover,
+  .jh-currency-picker__popover,
+  .jh-ephemeris-picker__panel,
+  .jh-menu,
+  .jh-context-menu,
+  .jh-toast,
+  .jh-oklch-palette,
+  .jh-oklch-palette[data-jh-material],
+  .jh-spectrum-popover,
+  .jh-spectrum,
+  .jh-vertical-gallery__ratio-menu,
+  .jh-theme-picker-popover,
+  .jh-theme-picker-popover.jh-picker-overlay,
+  .jh-calendar:not(.jh-date-popover .jh-calendar):not(.jh-date-time-popover .jh-calendar),
+  .jh-data-form,
+  .jh-data-table,
+  .jh-metric-card,
+  .jh-tabs,
+  .jh-accordion:not(.jh-scroll-area > .jh-accordion),
+  .jh-step-navigation,
+  .jh-radio-group__options,
+  .jh-scroll-frame:not(.jh-vertical-gallery__frame):not(.jh-picker-overlay .jh-scroll-frame):not(.jh-currency-picker .jh-scroll-frame):not(.jh-financial-order .jh-scroll-frame):not(.jh-market-picker .jh-scroll-frame),
+  .jh-gallery,
+  .jh-gallery__caption,
+  .jh-image-frame,
+  .jh-file-transfer,
+  .jh-vertical-gallery,
+  .jh-filmstrip__chassis,
+  .jh-image-inspector,
+  .jh-financial-chart,
+  .jh-market-picker,
+  .jh-financial-order:not(.jh-command-dialog > .jh-financial-order),
+  .jh-financial-order[data-jh-material]:not(.jh-command-dialog > .jh-financial-order),
+  .jh-finance-nav--sidebar,
+  .jh-finance-nav--header,
+  .jh-weather,
+  .jh-weather-conditions,
+  .jh-wind-instrument,
+  .jh-tide-instrument,
+  .jh-lunar-ephemeris,
+  .jh-astronomy,
+  .jh-astrology-wheel,
+  .jh-navigation-instrument,
+  .jh-attitude,
+  .jh-compass,
+  .jh-compass__dial,
+  .jh-race-telemetry,
+  .jh-tactile-keypad,
+  .jh-tactile-console,
+  .jh-camera-wheel,
+  .jh-camera-dial__plate
+),
+:root:is([data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"]) ~ :is(
+  .jh-picker-overlay,
+  .jh-date-popover,
+  .jh-date-time-popover,
+  .jh-menu,
+  .jh-context-menu,
+  .jh-oklch-palette,
+  .jh-spectrum-popover,
+  .jh-theme-picker-popover,
+  .jh-dialog,
+  .jh-dialog__content,
+  .jh-toast
+),
+[data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"]:is(
+  .jh-dialog,
+  .jh-dialog__content,
+  .jh-command-dialog,
+  .jh-date-popover,
+  .jh-date-time-popover,
+  .jh-date-time-picker,
+  .jh-picker-overlay,
+  [data-jh-material].jh-picker-overlay,
+  .jh-currency-picker__popover,
+  .jh-ephemeris-picker__panel,
+  .jh-menu,
+  .jh-context-menu,
+  .jh-toast,
+  .jh-oklch-palette,
+  .jh-spectrum-popover,
+  .jh-spectrum,
+  .jh-vertical-gallery__ratio-menu,
+  .jh-theme-picker-popover,
+  .jh-calendar,
+  .jh-data-form,
+  .jh-data-table,
+  .jh-metric-card,
+  .jh-tabs,
+  .jh-accordion:not(.jh-scroll-area > .jh-accordion),
+  .jh-step-navigation,
+  .jh-radio-group__options,
+  .jh-scroll-frame:not(.jh-vertical-gallery__frame):not(.jh-picker-overlay .jh-scroll-frame):not(.jh-currency-picker .jh-scroll-frame):not(.jh-financial-order .jh-scroll-frame):not(.jh-market-picker .jh-scroll-frame),
+  .jh-gallery,
+  .jh-gallery__caption,
+  .jh-image-frame,
+  .jh-file-transfer,
+  .jh-vertical-gallery,
+  .jh-filmstrip__chassis,
+  .jh-image-inspector,
+  .jh-financial-chart,
+  .jh-market-picker,
+  .jh-financial-order:not(.jh-command-dialog > .jh-financial-order),
+  .jh-finance-nav--sidebar,
+  .jh-finance-nav--header,
+  .jh-weather,
+  .jh-weather-conditions,
+  .jh-wind-instrument,
+  .jh-tide-instrument,
+  .jh-lunar-ephemeris,
+  .jh-astronomy,
+  .jh-astrology-wheel,
+  .jh-navigation-instrument,
+  .jh-attitude,
+  .jh-compass,
+  .jh-compass__dial,
+  .jh-race-telemetry,
+  .jh-tactile-keypad,
+  .jh-tactile-console,
+  .jh-camera-wheel,
+  .jh-camera-dial__plate
+) {
+  background-color: rgb(247 247 247 / var(--jh-surface-alpha, 1)) !important;
+  background-image: none !important;
+  backdrop-filter: blur(var(--jh-surface-blur, 0px)) !important;
+  -webkit-backdrop-filter: blur(var(--jh-surface-blur, 0px)) !important;
+}
+:is(
+  [data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"],
+  :root[data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"]
+) :is(
+  .jh-button:not(.jh-button--ghost) .jh-button__face,
+  .jh-button--glass:not(.jh-button--ghost) .jh-button__face,
+  .jh-button--ghost:not(:disabled):is(:hover, :active) .jh-button__face,
+  .jh-date-picker__trigger .jh-button__face,
+  .jh-date-time-picker__trigger .jh-button__face,
+  .jh-financial-order__launch .jh-button__face,
+  .jh-slider__thumb,
+  .jh-bar-slider__thumb,
+  .jh-switch__thumb,
+  .jh-tactile-lever__thumb,
+  .jh-tactile-key__face,
+  .jh-tactile-pad__cap,
+  .jh-tactile-encoder__cap,
+  .jh-dial__knob,
+  .jh-radio-option,
+  .jh-segmented__option[aria-checked="true"] span,
+  .jh-segmented__thumb,
+  .jh-tabs__thumb,
+  .jh-context-menu__trigger,
+  .jh-combobox__trigger,
+  .jh-command-trigger,
+  .jh-currency-picker__trigger,
+  .jh-ephemeris-picker__trigger,
+  .jh-oklch-trigger,
+  .jh-oklch-trigger[data-jh-material],
+  .jh-spectrum-trigger,
+  .jh-dialog__close,
+  .jh-toast__close,
+  .jh-date-time-slots button,
+  .jh-calendar__day-button[aria-selected="true"],
+  .jh-calendar__selected .jh-calendar__day-button,
+  .jh-financial-order__close,
+  .jh-financial-order__confirm,
+  .jh-financial-order[data-jh-material] .jh-financial-order__confirm,
+  .jh-ephemeris-picker__panel-head > button,
+  .jh-ephemeris-picker__submit,
+  .jh-vertical-gallery__aspect-btn,
+  .jh-github-star,
+  .jh-theme-toggle,
+  .jh-theme-picker-popover__modes button[aria-pressed="true"],
+  .jh-theme-picker-popover__reset,
+  .jh-financial-chart__periods button[aria-pressed="true"],
+  .jh-financial-chart__modes button[aria-pressed="true"],
+  .jh-market-picker__tabs button[aria-selected="true"],
+  .jh-ephemeris-picker__targets button[aria-pressed="true"],
+  .jh-step-navigation__step,
+  .jh-spectrum__steppers button,
+  .jh-combobox__option[aria-selected="true"],
+  .jh-currency-picker__options button[aria-selected="true"],
+  .jh-vertical-gallery__ratio-option[aria-selected="true"],
+  .jh-glass-shape,
+  [data-jh-material].jh-glass-shape
+),
+[data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"]:is(
+  .jh-slider__thumb,
+  .jh-bar-slider__thumb,
+  .jh-switch__thumb,
+  .jh-tactile-lever__thumb,
+  .jh-dial__knob,
+  .jh-radio-option,
+  .jh-context-menu__trigger,
+  .jh-combobox__trigger,
+  .jh-command-trigger,
+  .jh-currency-picker__trigger,
+  .jh-ephemeris-picker__trigger,
+  .jh-oklch-trigger,
+  .jh-spectrum-trigger,
+  .jh-dialog__close,
+  .jh-toast__close,
+  .jh-financial-order__confirm,
+  .jh-step-navigation__step,
+  .jh-glass-shape
+) {
+  background-color: rgb(255 255 255 / var(--jh-surface-alpha, 1)) !important;
+  background-image: none !important;
+  backdrop-filter: blur(var(--jh-surface-blur, 0px)) !important;
+  -webkit-backdrop-filter: blur(var(--jh-surface-blur, 0px)) !important;
+}
+:is(
+  [data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"],
+  :root[data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"]
+) :is(.jh-dial__top, .jh-date-popover .jh-calendar, .jh-date-time-popover .jh-calendar) {
+  background: transparent !important;
+  background-image: none !important;
+}
+:is(
+  [data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"],
+  :root[data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"]
+) :is(
+  .jh-input,
+  .jh-search-input,
+  .jh-slider__track,
+  .jh-bar-slider__track,
+  .jh-tactile-lever__track,
+  .jh-progress__track,
+  .jh-switch::before,
+  .jh-segmented,
+  .jh-tabs__list,
+  .jh-dial__bed,
+  .jh-compass__bed,
+  .jh-compass__well,
+  .jh-compass__readout,
+  .jh-compass__cardinal-pill,
+  .jh-attitude__pill,
+  .jh-attitude__well,
+  .jh-attitude__readout > div,
+  .jh-navigation-instrument__mode,
+  .jh-navigation-instrument__well,
+  .jh-navigation-instrument__readings > div,
+  .jh-weather__well,
+  .jh-weather__readings > div,
+  .jh-wind-instrument__well,
+  .jh-wind-instrument__tile,
+  .jh-astronomy__sky,
+  .jh-astronomy__scrubber,
+  .jh-astronomy__readouts > div,
+  .jh-astrology-wheel__details > div,
+  .jh-financial-chart__plot-wrap,
+  .jh-financial-chart__stats > div,
+  .jh-metric-card__well,
+  .jh-race-telemetry__cell,
+  .jh-race-telemetry__sectors span,
+  .jh-tactile-encoder,
+  .jh-tactile-console__oled,
+  .jh-tactile-console__speaker,
+  .jh-dialog-summary,
+  .jh-financial-order__asset,
+  .jh-financial-order[data-jh-material] .jh-financial-order__asset,
+  .jh-financial-order__side,
+  .jh-financial-order__summary,
+  .jh-financial-order[data-jh-material] .jh-financial-order__summary,
+  .jh-financial-order__fields input,
+  .jh-financial-order__fields select,
+  .jh-ephemeris-picker__fields input,
+  .jh-ephemeris-picker__fields select,
+  .jh-command-dialog__search input,
+  .jh-currency-picker__search input,
+  .jh-picker-overlay__search input,
+  .jh-picker-overlay .jh-search-input,
+  .jh-date-picker__clear,
+  .jh-financial-chart__periods,
+  .jh-financial-chart__modes,
+  .jh-market-picker__tabs,
+  .jh-theme-picker-popover__modes,
+  .jh-spectrum__modes,
+  .jh-spectrum__library-picker,
+  .jh-spectrum__hex-row
+),
+[data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"]:is(
+  .jh-input,
+  .jh-search-input,
+  .jh-segmented,
+  .jh-tactile-encoder
+) {
+  background-color: rgb(238 238 238 / var(--jh-surface-alpha, 1)) !important;
+  background-image: none !important;
+  backdrop-filter: blur(var(--jh-surface-blur, 0px)) !important;
+  -webkit-backdrop-filter: blur(var(--jh-surface-blur, 0px)) !important;
+}
+:is(
+  [data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"],
+  :root[data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"]
+) :is(
+  .jh-button:not(.jh-button--ghost) .jh-button__face::before,
+  .jh-slider__thumb::after,
+  .jh-bar-slider__thumb::after,
+  .jh-tactile-lever__thumb::after
+) {
+  background: none !important;
+  opacity: 0 !important;
+}
+@media (prefers-reduced-transparency: reduce) {
+  :is(
+    [data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"],
+    :root[data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"]
+  ) :is(
+    .jh-dialog,.jh-dialog__content,.jh-dialog-summary,.jh-command-dialog,.jh-date-popover,.jh-date-time-popover,
+    .jh-date-time-picker,.jh-picker-overlay,.jh-currency-picker__popover,.jh-ephemeris-picker__panel,.jh-menu,
+    .jh-context-menu,.jh-toast,.jh-oklch-palette,.jh-spectrum-popover,.jh-spectrum,.jh-vertical-gallery__ratio-menu,
+    .jh-theme-picker-popover,.jh-calendar:not(.jh-date-popover .jh-calendar):not(.jh-date-time-popover .jh-calendar),
+    .jh-data-form,.jh-data-table,.jh-metric-card,.jh-tabs,.jh-accordion:not(.jh-scroll-area > .jh-accordion),
+    .jh-step-navigation,.jh-radio-group__options,
+    .jh-scroll-frame:not(.jh-vertical-gallery__frame):not(.jh-picker-overlay .jh-scroll-frame):not(.jh-currency-picker .jh-scroll-frame):not(.jh-financial-order .jh-scroll-frame):not(.jh-market-picker .jh-scroll-frame),
+    .jh-gallery,.jh-gallery__caption,.jh-image-frame,.jh-file-transfer,.jh-vertical-gallery,.jh-filmstrip__chassis,
+    .jh-image-inspector,.jh-financial-chart,.jh-market-picker,.jh-financial-order:not(.jh-command-dialog > .jh-financial-order),
+    .jh-finance-nav--sidebar,.jh-finance-nav--header,.jh-weather,.jh-weather-conditions,.jh-wind-instrument,
+    .jh-tide-instrument,.jh-lunar-ephemeris,.jh-astronomy,.jh-astrology-wheel,.jh-navigation-instrument,.jh-attitude,
+    .jh-compass,.jh-compass__dial,.jh-race-telemetry,.jh-tactile-keypad,.jh-tactile-console,.jh-camera-wheel,.jh-camera-dial__plate
+  ),
+  [data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"]:is(
+    .jh-dialog,.jh-dialog__content,.jh-dialog-summary,.jh-command-dialog,.jh-date-popover,.jh-date-time-popover,
+    .jh-date-time-picker,.jh-picker-overlay,.jh-currency-picker__popover,.jh-ephemeris-picker__panel,.jh-menu,
+    .jh-context-menu,.jh-toast,.jh-oklch-palette,.jh-spectrum-popover,.jh-spectrum,.jh-vertical-gallery__ratio-menu,
+    .jh-theme-picker-popover,.jh-calendar,.jh-data-form,.jh-data-table,.jh-metric-card,.jh-tabs,.jh-accordion:not(.jh-scroll-area > .jh-accordion),
+    .jh-step-navigation,.jh-radio-group__options,
+    .jh-scroll-frame:not(.jh-vertical-gallery__frame):not(.jh-picker-overlay .jh-scroll-frame):not(.jh-currency-picker .jh-scroll-frame):not(.jh-financial-order .jh-scroll-frame):not(.jh-market-picker .jh-scroll-frame),
+    .jh-gallery,.jh-gallery__caption,.jh-image-frame,.jh-file-transfer,.jh-vertical-gallery,.jh-filmstrip__chassis,
+    .jh-image-inspector,.jh-financial-chart,.jh-market-picker,.jh-financial-order:not(.jh-command-dialog > .jh-financial-order),
+    .jh-finance-nav--sidebar,.jh-finance-nav--header,.jh-weather,.jh-weather-conditions,.jh-wind-instrument,
+    .jh-tide-instrument,.jh-lunar-ephemeris,.jh-astronomy,.jh-astrology-wheel,.jh-navigation-instrument,.jh-attitude,
+    .jh-compass,.jh-compass__dial,.jh-race-telemetry,.jh-tactile-keypad,.jh-tactile-console,.jh-camera-wheel,.jh-camera-dial__plate
+  ) {
+    background-color: #f7f7f7 !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  :is(
+    [data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"],
+    :root[data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"]
+  ) :is(
+    .jh-button:not(.jh-button--ghost) .jh-button__face,.jh-button--ghost:not(:disabled):is(:hover, :active) .jh-button__face,
+    .jh-slider__thumb,.jh-bar-slider__thumb,.jh-switch__thumb,.jh-tactile-lever__thumb,.jh-tactile-key__face,
+    .jh-tactile-pad__cap,.jh-tactile-encoder__cap,.jh-dial__knob,.jh-radio-option,
+    .jh-segmented__option[aria-checked="true"] span,.jh-segmented__thumb,.jh-tabs__thumb,.jh-context-menu__trigger,
+    .jh-combobox__trigger,.jh-command-trigger,.jh-currency-picker__trigger,.jh-ephemeris-picker__trigger,
+    .jh-oklch-trigger,.jh-spectrum-trigger,.jh-dialog__close,.jh-toast__close,.jh-date-time-slots button,
+    .jh-calendar__day-button[aria-selected="true"],.jh-calendar__selected .jh-calendar__day-button,
+    .jh-financial-order__close,.jh-financial-order__confirm,.jh-ephemeris-picker__submit,
+    .jh-vertical-gallery__aspect-btn,.jh-github-star,.jh-theme-toggle,
+    .jh-theme-picker-popover__modes button[aria-pressed="true"],.jh-theme-picker-popover__reset,
+    .jh-financial-chart__periods button[aria-pressed="true"],.jh-financial-chart__modes button[aria-pressed="true"],
+    .jh-market-picker__tabs button[aria-selected="true"],.jh-ephemeris-picker__targets button[aria-pressed="true"],
+    .jh-step-navigation__step,.jh-spectrum__steppers button,.jh-combobox__option[aria-selected="true"],
+    .jh-currency-picker__options button[aria-selected="true"],.jh-vertical-gallery__ratio-option[aria-selected="true"],
+    .jh-glass-shape
+  ),
+  [data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"]:is(
+    .jh-slider__thumb,.jh-bar-slider__thumb,.jh-switch__thumb,.jh-tactile-lever__thumb,.jh-dial__knob,
+    .jh-radio-option,.jh-context-menu__trigger,.jh-combobox__trigger,.jh-command-trigger,
+    .jh-currency-picker__trigger,.jh-ephemeris-picker__trigger,.jh-oklch-trigger,.jh-spectrum-trigger,
+    .jh-dialog__close,.jh-toast__close,.jh-financial-order__confirm,.jh-step-navigation__step,.jh-glass-shape
+  ) {
+    background-color: #ffffff !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  :is(
+    [data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"],
+    :root[data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"]
+  ) :is(
+    .jh-input,.jh-search-input,.jh-slider__track,.jh-bar-slider__track,.jh-tactile-lever__track,
+    .jh-progress__track,.jh-switch::before,.jh-segmented,.jh-tabs__list,.jh-dial__bed,.jh-compass__bed,
+    .jh-compass__well,.jh-compass__readout,.jh-compass__cardinal-pill,.jh-attitude__pill,.jh-attitude__well,
+    .jh-attitude__readout > div,.jh-navigation-instrument__mode,.jh-navigation-instrument__well,
+    .jh-navigation-instrument__readings > div,.jh-weather__well,.jh-weather__readings > div,
+    .jh-wind-instrument__well,.jh-wind-instrument__tile,.jh-astronomy__sky,.jh-astronomy__scrubber,
+    .jh-astronomy__readouts > div,.jh-astrology-wheel__details > div,.jh-financial-chart__plot-wrap,
+    .jh-financial-chart__stats > div,.jh-metric-card__well,.jh-race-telemetry__cell,.jh-race-telemetry__sectors span,
+    .jh-tactile-encoder,.jh-tactile-console__oled,.jh-tactile-console__speaker,.jh-dialog-summary,
+    .jh-financial-order__asset,.jh-financial-order__side,.jh-financial-order__summary,
+    .jh-financial-order__fields input,.jh-financial-order__fields select,.jh-ephemeris-picker__fields input,
+    .jh-ephemeris-picker__fields select,.jh-command-dialog__search input,.jh-currency-picker__search input,
+    .jh-picker-overlay .jh-search-input,.jh-date-picker__clear,.jh-financial-chart__periods,
+    .jh-financial-chart__modes,.jh-market-picker__tabs,.jh-theme-picker-popover__modes,
+    .jh-spectrum__modes,.jh-spectrum__library-picker,.jh-spectrum__hex-row
+  ),
+  [data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"]:is(
+    .jh-input,.jh-search-input,.jh-segmented,.jh-tactile-encoder
+  ) {
+    background-color: #eeeeee !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
   }
 }
 
@@ -13039,24 +14588,26 @@ input[type="number"] {
   box-shadow: inset 0 1px rgb(255 255 255 / .014),  0 1px 4px -2px rgb(0 0 0 / .6);
 }
 :is([data-jh-theme="dark"], .dark) .jh-glass-shape {
-  background: #141414 !important;
+  border: 0 !important;
+  outline: none !important;
+  background: rgb(10 10 10) !important;
   background-image: none !important;
-  box-shadow:
-    inset 0 1px rgb(255 255 255 / .06),
-    inset 0 0 0 1px rgb(255 255 255 / .055) !important;
+  box-shadow: inset 0 1px rgb(255 255 255 / .014), 
+    inset 0 0 0 1px rgb(255 255 255 / .008) !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
 }
-:is([data-jh-theme="dark"], .dark) .jh-glass-shape::before {
-  content: none !important;
-  display: none !important;
+:is([data-jh-theme="dark"], .dark) .jh-glass-shape::before, :is([data-jh-theme="dark"], .dark) .jh-glass-shape::after {
+  border: 0 !important;
+  box-shadow: none !important;
 }
 :is([data-jh-theme="dark"], .dark) [data-jh-material="solid"] .jh-glass-shape {
-  background: #141414 !important;
+  background: rgb(10 10 10) !important;
   background-image: none !important;
-  box-shadow:
-    inset 0 1px rgb(255 255 255 / .06),
-    inset 0 0 0 1px rgb(255 255 255 / .055) !important;
+  box-shadow: inset 0 1px rgb(255 255 255 / .014), 
+    inset 0 0 0 1px rgb(255 255 255 / .008) !important;
+  border: 0 !important;
+  outline: none !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
 }
@@ -14443,9 +15994,6 @@ input[type="number"] {
 }
 :is([data-jh-theme="dark"], .dark) .jh-astronomy__arc-bed {
   stroke: rgb(54 54 54);
-}
-:is([data-jh-theme="dark"], .dark) .jh-astronomy__arc {
-  stroke: rgb(172 172 172);
 }
 :is([data-jh-theme="dark"], .dark) .jh-astronomy__horizon {
   stroke: rgb(54 54 54);
@@ -19269,8 +20817,11 @@ input[type="number"] {
   background: transparent;
   box-shadow: none;
 }
+:is([data-jh-theme="dark"], .dark) .jh-scroll-option::after {
+  background: transparent;
+}
 :is([data-jh-theme="dark"], .dark) .jh-scroll-option[aria-pressed="true"]::after {
-  background: #d0d0d0;
+  background: rgb(220 220 220);
 }
 :is([data-jh-theme="dark"], .dark) .jh-simple-scroll__row, :is([data-jh-theme="dark"], .dark) .jh-simple-scroll__row:last-child, :is([data-jh-theme="dark"], .dark) .jh-scroll-area .jh-simple-scroll__row, :is([data-jh-theme="dark"], .dark) .jh-scroll-area .jh-simple-scroll__row:last-child {
   box-shadow: none !important;
@@ -19289,33 +20840,25 @@ input[type="number"] {
   color: rgb(233 233 233);
   box-shadow: none;
 }
+:is([data-jh-theme="dark"], .dark) .jh-simple-scroll__item::after {
+  background: transparent;
+}
 :is([data-jh-theme="dark"], .dark) .jh-simple-scroll__item.is-selected::after {
-  background: #d0d0d0;
+  background: rgb(220 220 220);
 }
 :is([data-jh-theme="dark"], .dark) .jh-simple-scroll__copy strong {
   color: rgb(227 227 227);
 }
-:is([data-jh-theme="dark"], .dark) .jh-simple-scroll__copy span {
+:is([data-jh-theme="dark"], .dark) .jh-simple-scroll__copy > span {
   color: rgb(170 170 170);
 }
 :is([data-jh-theme="dark"], .dark) .jh-simple-scroll__meta {
   color: rgb(171 171 171);
 }
-:is([data-jh-theme="dark"], .dark) .jh-accordion.jh-accordion--scroll:focus-visible {
-  outline: none;
-  box-shadow: inset 0 1px rgb(255 255 255 / .014), 
-    inset 0 0 0 1px rgb(255 255 255 / .008), 
-    0 8px 22px -14px rgb(0 0 0 / .715) !important;
-}
-:is([data-jh-theme="dark"], .dark) .jh-accordion.jh-accordion--scroll::-webkit-scrollbar-track, :is([data-jh-theme="dark"], .dark) .jh-vertical-gallery__viewport::-webkit-scrollbar-track {
-  background: transparent;
-}
-:is([data-jh-theme="dark"], .dark) .jh-accordion.jh-accordion--scroll::-webkit-scrollbar-thumb, :is([data-jh-theme="dark"], .dark) .jh-vertical-gallery__viewport::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, rgb(10 10 10), rgb(10 10 10)) padding-box;
-  box-shadow: none;
-}
-:is([data-jh-theme="dark"], .dark) .jh-accordion.jh-accordion--scroll::-webkit-scrollbar-thumb:hover, :is([data-jh-theme="dark"], .dark) .jh-vertical-gallery__viewport::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, rgb(10 10 10), rgb(10 10 10)) padding-box;
+:is([data-jh-theme="dark"], .dark) .jh-accordion-scroll > .jh-scroll-area > .jh-accordion {
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
 }
 :is([data-jh-theme="dark"], .dark) .jh-vertical-gallery, :is([data-jh-theme="dark"], .dark) [data-jh-material="solid"] .jh-vertical-gallery, :is([data-jh-theme="dark"], .dark) .jh-vertical-gallery[data-jh-material="solid"] {
   background: rgb(10 10 10);
@@ -19363,13 +20906,21 @@ input[type="number"] {
   background: rgb(16 16 16);
   box-shadow: inset 0 1px rgb(255 255 255 / .02),  inset 0 0 0 1px rgb(255 255 255 / .008),  0 1px 3px -1px rgb(0 0 0 / .6);
 }
-:is([data-jh-theme="dark"], .dark) .jh-vertical-gallery__viewport {
-  background: transparent;
-  box-shadow: none;
+:is([data-jh-theme="dark"], .dark) .jh-vertical-gallery__frame, :is([data-jh-theme="dark"], .dark) .jh-scroll-frame.jh-vertical-gallery__frame {
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-vertical-gallery__viewport, :is([data-jh-theme="dark"], .dark) .jh-scroll-frame > .jh-scroll-area.jh-vertical-gallery__viewport {
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
 }
 :is([data-jh-theme="dark"], .dark) .jh-vertical-gallery__viewport:focus-visible {
   outline: none;
-  box-shadow: inset 0 0 0 1px rgb(255 255 255 / .008);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / .008) !important;
 }
 :is([data-jh-theme="dark"], .dark) .jh-vertical-gallery__item {
   border: 0;
@@ -19387,8 +20938,256 @@ input[type="number"] {
 :is([data-jh-theme="dark"], .dark) .jh-vertical-gallery__footer {
   color: rgb(170 170 170);
 }
+:is([data-jh-theme="dark"], .dark) .jh-github-star {
+  border: 0;
+  background: linear-gradient(175deg, rgb(10 10 10), rgb(10 10 10));
+  color: rgb(218 218 218);
+  box-shadow: inset 0 1px rgb(255 255 255 / .014), 
+    inset 0 0 0 1px rgb(255 255 255 / .008), 
+    0 2px 5px -2px rgb(0 0 0 / .65);
+}
+:is([data-jh-theme="dark"], .dark) .jh-github-star svg {
+  color: rgb(204 204 204);
+}
+:is([data-jh-theme="dark"], .dark) .jh-github-star:hover {
+  color: rgb(233 233 233);
+  box-shadow: inset 0 1px rgb(255 255 255 / .014), 
+    inset 0 0 0 1px rgb(255 255 255 / .008), 
+    0 3px 8px -3px rgb(0 0 0 / .91);
+}
+:is([data-jh-theme="dark"], .dark) .jh-github-star:hover svg {
+  color: rgb(233 233 233);
+}
+:is([data-jh-theme="dark"], .dark) .jh-github-star:active {
+  box-shadow: inset 0 1px 2px rgb(0 0 0 / .6), 
+    inset 0 0 0 1px rgb(255 255 255 / .008), 
+    0 1px 2px -1px rgb(0 0 0 / .6);
+}
+:is([data-jh-theme="dark"], .dark) .jh-attitude__eyebrow {
+  color: rgb(171 171 171);
+}
+:is([data-jh-theme="dark"], .dark) .jh-attitude__title {
+  color: rgb(227 227 227);
+}
+:is([data-jh-theme="dark"], .dark) .jh-attitude__pill {
+  background: rgb(15 15 15);
+  box-shadow: inset 0 1px 2px rgb(0 0 0 / .6),  inset 0 -1px rgb(0 0 0 / .468),  0 1px rgb(255 255 255 / .01);
+  color: rgb(221 221 221);
+}
+:is([data-jh-theme="dark"], .dark) .jh-attitude__well {
+  background: rgb(6 6 6);
+  box-shadow: inset 0 1px 4px rgb(0 0 0 / .28),  inset 0 -1px 1px rgb(255 255 255 / .009),  0 1px rgb(255 255 255 / .01);
+}
+:is([data-jh-theme="dark"], .dark) .jh-attitude__sky {
+  fill: rgb(10 10 10);
+}
+:is([data-jh-theme="dark"], .dark) .jh-attitude__ground {
+  fill: rgb(10 10 10);
+}
+:is([data-jh-theme="dark"], .dark) .jh-attitude__horizon {
+  stroke: rgb(54 54 54);
+}
+:is([data-jh-theme="dark"], .dark) .jh-attitude__pitch-mark path, :is([data-jh-theme="dark"], .dark) .jh-attitude__bank-ticks path, :is([data-jh-theme="dark"], .dark) .jh-attitude__ticks path {
+  stroke: rgb(173 173 173);
+}
+:is([data-jh-theme="dark"], .dark) .jh-attitude__pitch-mark text {
+  fill: rgb(179 179 179);
+}
+:is([data-jh-theme="dark"], .dark) .jh-attitude__bank-indicator {
+  stroke: rgb(224 224 224);
+}
+:is([data-jh-theme="dark"], .dark) .jh-attitude__aircraft-pip {
+  stroke: rgb(224 224 224);
+}
+:is([data-jh-theme="dark"], .dark) .jh-attitude__readout {
+  background: transparent;
+  box-shadow: none;
+}
+:is([data-jh-theme="dark"], .dark) .jh-attitude__readout > div {
+  background: rgb(10 10 10);
+  box-shadow: inset 0 1px 2px rgb(0 0 0 / .6),  inset 0 -1px rgb(0 0 0 / .457),  0 1px rgb(255 255 255 / .01);
+}
+:is([data-jh-theme="dark"], .dark) .jh-attitude__readout span {
+  color: rgb(172 172 172);
+}
+:is([data-jh-theme="dark"], .dark) .jh-attitude__readout output {
+  color: rgb(227 227 227);
+}
+:is([data-jh-theme="dark"], .dark) .jh-navigation-instrument__header {
+  box-shadow: inset 0 -1px rgb(0 0 0 / .6);
+}
+:is([data-jh-theme="dark"], .dark) .jh-navigation-instrument__eyebrow {
+  color: rgb(171 171 171);
+}
+:is([data-jh-theme="dark"], .dark) .jh-navigation-instrument__title {
+  color: rgb(227 227 227);
+}
+:is([data-jh-theme="dark"], .dark) .jh-navigation-instrument__mode {
+  background: rgb(10 10 10);
+  box-shadow: inset 0 1px 2px rgb(0 0 0 / .6),  inset 0 -1px rgb(0 0 0 / .468),  0 1px rgb(255 255 255 / .01);
+  color: rgb(219 219 219);
+}
+:is([data-jh-theme="dark"], .dark) .jh-navigation-instrument__well {
+  background: rgb(6 6 6);
+  box-shadow: inset 0 1px 4px rgb(0 0 0 / .28),  inset 0 -1px 1px rgb(255 255 255 / .009),  0 1px rgb(255 255 255 / .01);
+}
+:is([data-jh-theme="dark"], .dark) .jh-navigation-instrument__readings > div, :is([data-jh-theme="dark"], .dark) .jh-navigation-instrument__readings > div:last-of-type {
+  background: rgb(10 10 10);
+  box-shadow: inset 0 1px 2px rgb(0 0 0 / .6),  inset 0 -1px rgb(0 0 0 / .457),  0 1px rgb(255 255 255 / .01);
+}
+:is([data-jh-theme="dark"], .dark) .jh-navigation-instrument__readings span {
+  color: rgb(172 172 172);
+}
+:is([data-jh-theme="dark"], .dark) .jh-navigation-instrument__readings strong {
+  color: rgb(227 227 227);
+}
+:is([data-jh-theme="dark"], .dark) .jh-compass__eyebrow {
+  color: rgb(171 171 171);
+}
+:is([data-jh-theme="dark"], .dark) .jh-compass__title {
+  color: rgb(227 227 227);
+}
+:is([data-jh-theme="dark"], .dark) .jh-compass__cardinal-pill {
+  background: rgb(15 15 15);
+  box-shadow: inset 0 1px 2px rgb(0 0 0 / .6),  inset 0 -1px rgb(0 0 0 / .468),  0 1px rgb(255 255 255 / .01);
+  color: rgb(221 221 221);
+}
+:is([data-jh-theme="dark"], .dark) .jh-compass__well {
+  background: rgb(6 6 6);
+  box-shadow: inset 0 1px 4px rgb(0 0 0 / .28),  inset 0 -1px 1px rgb(255 255 255 / .009),  0 1px rgb(255 255 255 / .01);
+}
+:is([data-jh-theme="dark"], .dark) .jh-compass__readout {
+  background: rgb(10 10 10);
+  box-shadow: inset 0 1px 2px rgb(0 0 0 / .6),  inset 0 -1px rgb(0 0 0 / .457),  0 1px rgb(255 255 255 / .01);
+}
+:is([data-jh-theme="dark"], .dark) .jh-race-telemetry__cell {
+  background: rgb(10 10 10);
+  box-shadow: inset 0 1px 3px rgb(0 0 0 / .6),  inset 0 -1px rgb(0 0 0 / .457),  0 1px rgb(255 255 255 / .01);
+}
+:is([data-jh-theme="dark"], .dark) .jh-race-telemetry__grid {
+  stroke: rgb(172 172 172);
+}
+:is([data-jh-theme="dark"], .dark) .jh-race-telemetry__dot {
+  stroke: rgb(224 224 224);
+}
+:is([data-jh-theme="dark"], .dark) .jh-weather__eyebrow {
+  color: rgb(171 171 171);
+}
+:is([data-jh-theme="dark"], .dark) .jh-weather__title {
+  color: rgb(227 227 227);
+}
+:is([data-jh-theme="dark"], .dark) .jh-weather__temp {
+  color: rgb(227 227 227);
+}
+:is([data-jh-theme="dark"], .dark) .jh-weather__well {
+  background: rgb(6 6 6);
+  box-shadow: inset 0 1px 4px rgb(0 0 0 / .28),  inset 0 -1px 1px rgb(255 255 255 / .009),  0 1px rgb(255 255 255 / .01);
+}
+:is([data-jh-theme="dark"], .dark) .jh-weather__readings > div, :is([data-jh-theme="dark"], .dark) .jh-weather__readings > div:last-child {
+  background: rgb(10 10 10);
+  box-shadow: inset 0 1px 2px rgb(0 0 0 / .6),  inset 0 -1px rgb(0 0 0 / .457),  0 1px rgb(255 255 255 / .01);
+}
+:is([data-jh-theme="dark"], .dark) .jh-weather-conditions__spark-dot {
+  stroke: rgb(224 224 224);
+}
+:is([data-jh-theme="dark"], .dark) .jh-weather-conditions__slot[data-active="true"] {
+  background: rgb(6 6 6) !important;
+  color: rgb(228 228 228);
+}
+:is([data-jh-theme="dark"], .dark) .jh-tide-instrument__marker {
+  stroke: rgb(10 10 10) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-financial-chart__plot-wrap {
+  background: rgb(10 10 10);
+  box-shadow: inset 0 1px 3px rgb(0 0 0 / .6),  inset 0 -1px rgb(0 0 0 / .457),  0 1px rgb(255 255 255 / .01);
+}
+:is([data-jh-theme="dark"], .dark) .jh-financial-chart__point {
+  stroke: rgb(224 224 224);
+}
+:is([data-jh-theme="dark"], .dark) .jh-financial-chart__stats > div {
+  background: rgb(10 10 10);
+  box-shadow: inset 0 1px 2px rgb(0 0 0 / .6),  inset 0 -1px rgb(0 0 0 / .457),  0 1px rgb(255 255 255 / .01);
+}
+:is([data-jh-theme="dark"], .dark) .jh-financial-chart__stats span {
+  color: rgb(170 170 170);
+}
+:is([data-jh-theme="dark"], .dark) .jh-financial-chart__stats strong {
+  color: rgb(227 227 227);
+}
+:is([data-jh-theme="dark"], .dark) .jh-metric-card__well {
+  background: rgb(6 6 6);
+  box-shadow: inset 0 1px 3px rgb(0 0 0 / .28),  inset 0 -1px rgb(255 255 255 / .01),  0 1px rgb(255 255 255 / .01);
+}
+:is([data-jh-theme="dark"], .dark) .jh-metric-card__point {
+  stroke: rgb(224 224 224);
+}
+:is([data-jh-theme="dark"], .dark) .jh-astronomy__sky {
+  background: rgb(10 10 10) !important;
+  box-shadow: inset 0 1px 4px rgb(0 0 0 / .6),  inset 0 -1px 1px rgb(0 0 0 / .423),  0 1px rgb(255 255 255 / .01) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-astronomy__scrubber {
+  background: rgb(10 10 10);
+  box-shadow: inset 0 1px rgb(255 255 255 / .014),  0 1px 2px rgb(0 0 0 / .6);
+  color: rgb(178 178 178);
+}
+:is([data-jh-theme="dark"], .dark) .jh-astronomy__scrubber output {
+  color: rgb(227 227 227);
+}
+:is([data-jh-theme="dark"], .dark) .jh-astronomy__readouts > div {
+  background: rgb(10 10 10) !important;
+  box-shadow: inset 0 1px 2px rgb(0 0 0 / .6),  inset 0 -1px rgb(0 0 0 / .457),  0 1px rgb(255 255 255 / .01) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-astrology-wheel__ascendant {
+  stroke: rgb(224 224 224);
+}
+:is([data-jh-theme="dark"], .dark) .jh-theme-picker-popover {
+  color: rgb(223 223 223);
+  background: rgb(16 16 16);
+  box-shadow: inset 0 1px rgb(255 255 255 / .02), 
+    inset 0 0 0 1px rgb(255 255 255 / .008), 
+    0 18px 48px -22px rgb(0 0 0 / .95);
+}
+:is([data-jh-theme="dark"], .dark) .jh-theme-picker-popover__eyebrow {
+  color: rgb(170 170 170);
+}
+:is([data-jh-theme="dark"], .dark) .jh-theme-picker-popover__head strong {
+  color: rgb(223 223 223);
+}
+:is([data-jh-theme="dark"], .dark) .jh-theme-picker-popover__reset {
+  border: 0;
+  background: linear-gradient(175deg, rgb(10 10 10), rgb(10 10 10));
+  color: rgb(206 206 206);
+  box-shadow: inset 0 1px rgb(255 255 255 / .014),  inset 0 0 0 1px rgb(255 255 255 / .008),  0 1px 3px -2px rgb(0 0 0 / .91);
+}
+:is([data-jh-theme="dark"], .dark) .jh-theme-picker-popover__reset:hover {
+  color: rgb(228 228 228);
+}
+:is([data-jh-theme="dark"], .dark) .jh-theme-picker-popover__section-label {
+  color: rgb(176 176 176);
+}
+:is([data-jh-theme="dark"], .dark) .jh-theme-picker-popover__modes {
+  background: rgb(10 10 10);
+  box-shadow: inset 0 1px 3px rgb(0 0 0 / .6),  0 1px rgb(255 255 255 / .01);
+}
+:is([data-jh-theme="dark"], .dark) .jh-theme-picker-popover__modes button {
+  border: 0;
+  background: transparent;
+  color: rgb(175 175 175);
+}
+:is([data-jh-theme="dark"], .dark) .jh-theme-picker-popover__modes button[aria-pressed="true"] {
+  background: linear-gradient(175deg, rgb(16 16 16), rgb(15 15 15));
+  color: rgb(228 228 228);
+  box-shadow: inset 0 1px rgb(255 255 255 / .02),  inset 0 0 0 1px rgb(255 255 255 / .008),  0 2px 6px -3px rgb(0 0 0 / .95);
+}
+:is([data-jh-theme="dark"], .dark) .jh-theme-picker-popover__label-row {
+  color: rgb(176 176 176);
+}
+:is([data-jh-theme="dark"], .dark) .jh-theme-picker-popover__label-row output {
+  color: rgb(182 182 182);
+}
 :is([data-jh-theme="dark"], .dark) {
   color-scheme: dark;
+  --jh-instrument-accent: oklch(100% 0 0);
   --background: #060606;
   --foreground: #ededed;
   --card: #0a0a0a;
@@ -19493,6 +21292,71 @@ input[type="number"] {
 }
 :is([data-jh-theme="dark"], .dark) .jh-theme-toggle:hover {
   color: #f0f0f0;
+}
+:is([data-jh-theme="dark"], .dark) .jh-theme-picker-popover {
+  color: #ededed !important;
+  background: #0a0a0a !important;
+  box-shadow:
+    inset 0 1px rgb(255 255 255 / .04),
+    inset 0 0 0 1px rgb(255 255 255 / .06),
+    0 20px 48px -18px rgb(0 0 0 / .96) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-theme-picker-popover__eyebrow,
+:is([data-jh-theme="dark"], .dark) .jh-theme-picker-popover__section-label,
+:is([data-jh-theme="dark"], .dark) .jh-theme-picker-popover__label-row {
+  color: #8c8c8c !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-theme-picker-popover__head strong,
+:is([data-jh-theme="dark"], .dark) .jh-theme-picker-popover__label-row output {
+  color: #ededed !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-theme-picker-popover__reset {
+  background: linear-gradient(175deg, #121212, #0b0b0b) !important;
+  color: #c8c8c8 !important;
+  box-shadow: inset 0 1px rgb(255 255 255 / .03), inset 0 0 0 1px rgb(255 255 255 / .055), 0 2px 6px -2px rgb(0 0 0 / .85) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-theme-picker-popover__reset:hover {
+  color: #ffffff !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-theme-picker-popover__modes {
+  background: #060606 !important;
+  box-shadow: inset 0 1px 3px rgb(0 0 0 / .9), inset 0 0 0 1px rgb(255 255 255 / .045), inset 0 -1px rgb(255 255 255 / .02) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-theme-picker-popover__modes button {
+  color: #888888 !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-theme-picker-popover__modes button[aria-pressed="true"] {
+  background: linear-gradient(175deg, #151515, #0e0e0e) !important;
+  color: #f4f4f4 !important;
+  box-shadow: inset 0 1px rgb(255 255 255 / .05), inset 0 0 0 1px rgb(255 255 255 / .07), 0 2px 8px -2px rgb(0 0 0 / .9) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-github-star {
+  background: linear-gradient(175deg, #121212, #0b0b0b) !important;
+  color: #dcdcdc !important;
+  box-shadow:
+    inset 0 1px rgb(255 255 255 / .035),
+    inset 0 0 0 1px rgb(255 255 255 / .05),
+    0 3px 8px -2px rgb(0 0 0 / .92) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-github-star svg {
+  color: #a8a8a8 !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-github-star:hover {
+  color: #ffffff !important;
+  box-shadow:
+    inset 0 1px rgb(255 255 255 / .055),
+    inset 0 0 0 1px rgb(255 255 255 / .085),
+    0 4px 10px -2px rgb(0 0 0 / .95) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-github-star:hover svg {
+  color: #ffffff !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-github-star:active {
+  background: #0a0a0a !important;
+  box-shadow:
+    inset 0 1px 2px rgb(0 0 0 / .75),
+    inset 0 0 0 1px rgb(255 255 255 / .04),
+    0 1px 2px rgb(0 0 0 / .88) !important;
 }
 
 
@@ -20001,13 +21865,13 @@ input[type="number"] {
 }
 :is([data-jh-theme="dark"], .dark) .jh-lunar-ephemeris__tick.is-active {
   opacity: .68;
-  stroke: color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0))) 76%, #181818);
+  stroke: color-mix(in oklch, var(--jh-instrument-accent, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0)))) 76%, #181818);
   filter: none;
 }
 :is([data-jh-theme="dark"], .dark) .jh-lunar-ephemeris[data-dragging="true"] .jh-lunar-ephemeris__tick.is-active {
   opacity: 1;
-  stroke: color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0))) 98%, white 6%);
-  filter: drop-shadow(0 0 1.4px color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0))) 62%, transparent));
+  stroke: color-mix(in oklch, var(--jh-instrument-accent, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0)))) 98%, white 6%);
+  filter: drop-shadow(0 0 1.4px color-mix(in oklch, var(--jh-instrument-accent, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0)))) 62%, transparent));
 }
 :is([data-jh-theme="dark"], .dark) .jh-lunar-ephemeris__lit,
 :is([data-jh-theme="dark"], .dark) .jh-lunar-ephemeris__lit-penumbra {
@@ -21115,17 +22979,16 @@ input[type="number"] {
 }
 :is([data-jh-theme="dark"], .dark) .jh-glass-shape,
 :is([data-jh-theme="dark"], .dark) [data-jh-material="solid"] .jh-glass-shape {
-  background: #141414 !important;
-  background-image: none !important;
-  box-shadow:
-    inset 0 1px rgb(255 255 255 / .06),
-    inset 0 0 0 1px rgb(255 255 255 / .055) !important;
+  background: linear-gradient(175deg, #0e0e0e, #0a0a0a) !important;
+  background-image: linear-gradient(175deg, #0e0e0e, #0a0a0a) !important;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / .018), inset 0 -1px 1px rgb(0 0 0 / .68) !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
 }
 :is([data-jh-theme="dark"], .dark) .jh-glass-shape::before {
-  content: none !important;
-  display: none !important;
+  background: radial-gradient(ellipse at 38% -65%, rgb(255 255 255 / .028) 30%, transparent 72%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / .016), inset 0 -1px 1px rgb(0 0 0 / .45);
+  opacity: .75;
 }
 :is([data-jh-theme="dark"], .dark) [data-jh-material="liquid-glass"] .jh-glass-shape {
   background: linear-gradient(175deg, rgb(16 16 16 / .86), rgb(10 10 10 / .78)) !important;
@@ -21144,7 +23007,7 @@ input[type="number"] {
   backdrop-filter: blur(20px) saturate(1.14) !important;
   -webkit-backdrop-filter: blur(20px) saturate(1.14) !important;
 }
-:is([data-jh-theme="dark"], .dark) .library-demo-shape__outer { stroke: none !important; stroke-width: 0 !important; }
+:is([data-jh-theme="dark"], .dark) .library-demo-shape__outer { stroke: rgb(255 255 255 / .07) !important; }
 :is([data-jh-theme="dark"], .dark) .library-demo-shape__specular { color: rgb(255 255 255 / .24) !important; }
 :is([data-jh-theme="dark"], .dark) .library-demo-shape__inner { stroke: rgb(255 255 255 / .12) !important; }
 :is([data-jh-theme="dark"], .dark) .library-demo-shape__readout { color: #b5b5b5 !important; }
@@ -21571,11 +23434,11 @@ input[type="number"] {
 }
 :is([data-jh-theme="dark"], .dark) .jh-scroll-option[aria-pressed="true"] {
   color: #f4f4f4 !important;
-  background: transparent !important;
-  box-shadow: none !important;
-}
-:is([data-jh-theme="dark"], .dark) .jh-scroll-option[aria-pressed="true"]::after {
-  background: #d0d0d0 !important;
+  background: #141414 !important;
+  box-shadow:
+    inset 0 1px rgb(255 255 255 / .05),
+    inset 0 0 0 1px rgb(255 255 255 / .07),
+    0 2px 6px -2px rgb(0 0 0 / .75) !important;
 }
 :is([data-jh-theme="dark"], .dark) .jh-simple-scroll__item { color: #a0a0a0 !important; }
 :is([data-jh-theme="dark"], .dark) .jh-simple-scroll__item:hover {
@@ -21584,22 +23447,24 @@ input[type="number"] {
 }
 :is([data-jh-theme="dark"], .dark) .jh-simple-scroll__item.is-selected {
   color: #f4f4f4 !important;
-  background: transparent !important;
-  box-shadow: none !important;
-}
-:is([data-jh-theme="dark"], .dark) .jh-simple-scroll__item.is-selected::after {
-  background: #d0d0d0 !important;
+  background: #141414 !important;
+  box-shadow:
+    inset 0 1px rgb(255 255 255 / .05),
+    inset 0 0 0 1px rgb(255 255 255 / .075),
+    0 2px 8px -3px rgb(0 0 0 / .85) !important;
 }
 :is([data-jh-theme="dark"], .dark) .jh-simple-scroll__copy strong { color: #ededed !important; }
 :is([data-jh-theme="dark"], .dark) .jh-simple-scroll__copy span,
 :is([data-jh-theme="dark"], .dark) .jh-simple-scroll__meta { color: #848484 !important; }
 
-:is([data-jh-theme="dark"], .dark) .jh-accordion.jh-accordion--scroll {
-  scrollbar-color: rgb(255 255 255 / .18) transparent !important;
-}
-:is([data-jh-theme="dark"], .dark) .jh-accordion.jh-accordion--scroll::-webkit-scrollbar-thumb {
-  background: linear-gradient(155deg, #2d2d2d, #1f1f1f) !important;
-  background-clip: padding-box !important;
+:is([data-jh-theme="dark"], .dark) .jh-accordion-scroll > .jh-scroll-area > .jh-accordion {
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  width: 100% !important;
+  max-width: none !important;
+  padding: 2px 6px 2px 2px !important;
 }
 
 :is([data-jh-theme="dark"], .dark) .jh-vertical-gallery,
@@ -21632,14 +23497,21 @@ input[type="number"] {
 :is([data-jh-theme="dark"], .dark) .jh-vertical-gallery__meta,
 :is([data-jh-theme="dark"], .dark) .jh-vertical-gallery__footer { color: #848484 !important; }
 :is([data-jh-theme="dark"], .dark) .jh-vertical-gallery__header strong { color: #ededed !important; }
-:is([data-jh-theme="dark"], .dark) .jh-vertical-gallery__viewport {
-  background: rgb(0 0 0 / .42) !important;
-  box-shadow: inset 0 1px 3px rgb(0 0 0 / .75), inset 0 0 0 1px rgb(255 255 255 / .04) !important;
-  scrollbar-color: rgb(255 255 255 / .18) transparent !important;
+:is([data-jh-theme="dark"], .dark) .jh-vertical-gallery__frame,
+:is([data-jh-theme="dark"], .dark) .jh-scroll-frame.jh-vertical-gallery__frame {
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  padding: 0 clamp(4px, .75vw, 6px) 0 0 !important;
 }
-:is([data-jh-theme="dark"], .dark) .jh-vertical-gallery__viewport::-webkit-scrollbar-thumb {
-  background: linear-gradient(155deg, #2d2d2d, #1f1f1f) !important;
-  background-clip: padding-box !important;
+:is([data-jh-theme="dark"], .dark) .jh-vertical-gallery__viewport,
+:is([data-jh-theme="dark"], .dark) .jh-scroll-frame > .jh-scroll-area.jh-vertical-gallery__viewport {
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
 }
 :is([data-jh-theme="dark"], .dark) .jh-vertical-gallery__item { background: #151516 !important; }
 :is([data-jh-theme="dark"], .dark) .jh-vertical-gallery__item.is-selected {
@@ -21663,99 +23535,472 @@ input[type="number"] {
   background: #161616 !important;
   box-shadow: inset 0 1px rgb(255 255 255 / .05), inset 0 0 0 1px rgb(255 255 255 / .07) !important;
 }
-:is([data-jh-theme="dark"], .dark) .jh-vertical-gallery__viewport {
-  background: transparent !important;
-  box-shadow: none !important;
-}
 :is([data-jh-theme="dark"], .dark) .jh-vertical-gallery__item {
   box-shadow: 0 1px 2px rgb(0 0 0 / .7), 0 4px 10px -5px rgb(0 0 0 / .9), inset 0 1px rgb(255 255 255 / .04) !important;
 }
-:is([data-jh-theme="dark"], .dark) .jh-accordion.jh-accordion--scroll,
-:is([data-jh-theme="dark"], .dark) .jh-vertical-gallery__viewport {
-  scrollbar-color: #2a2a2a transparent !important;
+
+/* —— Wave 2 Part 1: Dark Obsidian Monochrome + OKLCH Light Accent (15 Instruments) —— */
+:is([data-jh-theme="dark"], .dark) .jh-instrument-accent {
+  stop-color: var(--jh-instrument-accent, oklch(100% 0 0));
+}
+:is([data-jh-theme="dark"], .dark) :where(
+  .jh-attitude__well,
+  .jh-attitude__readout > div,
+  .jh-attitude__pill,
+  .jh-navigation-instrument__well,
+  .jh-navigation-instrument__readings > div,
+  .jh-navigation-instrument__readings > div:last-of-type,
+  .jh-navigation-instrument__mode,
+  .jh-compass__well,
+  .jh-compass__readout,
+  .jh-compass__cardinal-pill,
+  .jh-weather__well,
+  .jh-weather__readings > div,
+  .jh-weather__readings > div:last-child,
+  .jh-race-telemetry__cell,
+  .jh-financial-chart__plot-wrap,
+  .jh-financial-chart__stats > div,
+  .jh-metric-card__well,
+  .jh-astronomy__sky,
+  .jh-astronomy__scrubber,
+  .jh-astronomy__readouts > div
+) {
+  background: #060606 !important;
+  background-image: none !important;
+  box-shadow:
+    inset 0 1px 3px rgb(0 0 0 / .88),
+    inset 0 0 0 1px rgb(255 255 255 / .04),
+    inset 0 -1px rgb(255 255 255 / .022) !important;
+}
+:is([data-jh-theme="dark"], .dark) :where(
+  .jh-attitude__title,
+  .jh-attitude__pill,
+  .jh-attitude__readout output,
+  .jh-navigation-instrument__title,
+  .jh-navigation-instrument__mode,
+  .jh-navigation-instrument__readings strong,
+  .jh-compass__title,
+  .jh-compass__cardinal-pill,
+  .jh-weather__title,
+  .jh-weather__temp,
+  .jh-financial-chart__stats strong,
+  .jh-astronomy__scrubber output
+) {
+  color: #f0f0f0;
+}
+:is([data-jh-theme="dark"], .dark) :where(
+  .jh-attitude__eyebrow,
+  .jh-attitude__readout span,
+  .jh-navigation-instrument__eyebrow,
+  .jh-navigation-instrument__readings span,
+  .jh-compass__eyebrow,
+  .jh-weather__eyebrow,
+  .jh-financial-chart__stats span,
+  .jh-astronomy__scrubber
+) {
+  color: #848484;
+}
+:is([data-jh-theme="dark"], .dark) .jh-attitude__horizon { stroke: #6a6a6a; }
+:is([data-jh-theme="dark"], .dark) .jh-attitude__pitch-mark path,
+:is([data-jh-theme="dark"], .dark) .jh-attitude__bank-ticks path,
+:is([data-jh-theme="dark"], .dark) .jh-attitude__ticks path { stroke: #787878; }
+:is([data-jh-theme="dark"], .dark) .jh-attitude__pitch-mark text { fill: #989898; }
+:is([data-jh-theme="dark"], .dark) .jh-attitude__bank-indicator,
+:is([data-jh-theme="dark"], .dark) .jh-attitude__aircraft-pip {
+  fill: var(--jh-instrument-accent, oklch(100% 0 0));
+  stroke: #0a0a0a;
+}
+:is([data-jh-theme="dark"], .dark) .jh-attitude__aircraft path {
+  fill: none;
+  stroke: var(--jh-instrument-accent, oklch(100% 0 0));
+}
+:is([data-jh-theme="dark"], .dark) .jh-navigation-instrument__mode-dot,
+:is([data-jh-theme="dark"], .dark) .jh-financial-chart__delta-pip,
+:is([data-jh-theme="dark"], .dark) .jh-market-picker__delta-pip,
+:is([data-jh-theme="dark"], .dark) .jh-currency-picker__pip,
+:is([data-jh-theme="dark"], .dark) .jh-metric-card__delta-pip,
+:is([data-jh-theme="dark"], .dark) .jh-market-picker__live i,
+:is([data-jh-theme="dark"], .dark) .jh-astrology-wheel__badge-dot,
+:is([data-jh-theme="dark"], .dark) .jh-lunar-ephemeris__pill-dot,
+:is([data-jh-theme="dark"], .dark) .jh-race-telemetry__track span {
+  background: var(--jh-instrument-accent, oklch(100% 0 0));
+}
+:is([data-jh-theme="dark"], .dark) .jh-navigation-instrument__cdi { stroke: var(--jh-instrument-accent, oklch(100% 0 0)); }
+:is([data-jh-theme="dark"], .dark) .jh-navigation-instrument__lubber,
+:is([data-jh-theme="dark"], .dark) .jh-navigation-instrument__needle-north { fill: var(--jh-instrument-accent, oklch(100% 0 0)); }
+:is([data-jh-theme="dark"], .dark) .jh-compass__arc { stroke: var(--jh-instrument-accent, oklch(100% 0 0)); }
+:is([data-jh-theme="dark"], .dark) .jh-compass__needle i { background: var(--jh-instrument-accent, oklch(100% 0 0)); }
+:is([data-jh-theme="dark"], .dark) .jh-race-telemetry__grid { stroke: rgb(255 255 255 / .08); }
+:is([data-jh-theme="dark"], .dark) .jh-race-telemetry__line { stroke: var(--jh-instrument-accent, oklch(100% 0 0)); }
+:is([data-jh-theme="dark"], .dark) .jh-race-telemetry__dot {
+  fill: var(--jh-instrument-accent, oklch(100% 0 0));
+  stroke: #0a0a0a;
+}
+:is([data-jh-theme="dark"], .dark) .jh-weather__arc { stroke: var(--jh-instrument-accent, oklch(100% 0 0)); }
+:is([data-jh-theme="dark"], .dark) .jh-weather__needle { fill: var(--jh-instrument-accent, oklch(100% 0 0)); }
+:is([data-jh-theme="dark"], .dark) .jh-weather-conditions__spark-line { stroke: var(--jh-instrument-accent, oklch(100% 0 0)) !important; }
+:is([data-jh-theme="dark"], .dark) .jh-weather-conditions__spark-halo {
+  fill: color-mix(in oklch, var(--jh-instrument-accent, oklch(100% 0 0)) 22%, transparent);
+  stroke: color-mix(in oklch, var(--jh-instrument-accent, oklch(100% 0 0)) 58%, transparent);
+}
+:is([data-jh-theme="dark"], .dark) .jh-weather-conditions__spark-dot {
+  fill: var(--jh-instrument-accent, oklch(100% 0 0));
+  stroke: #0a0a0a;
+}
+:is([data-jh-theme="dark"], .dark) .jh-weather-conditions__slot[data-active="true"] {
+  background: #141414 !important;
+  box-shadow:
+    inset 0 1px rgb(255 255 255 / .05),
+    inset 0 0 0 1px color-mix(in oklch, var(--jh-instrument-accent, oklch(100% 0 0)) 36%, transparent),
+    0 4px 12px -4px rgb(0 0 0 / .9) !important;
+  color: #f2f2f2 !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-wind-instrument__beaufort-arc { stroke: var(--jh-instrument-accent, oklch(100% 0 0)); }
+:is([data-jh-theme="dark"], .dark) .jh-wind-instrument__head { fill: var(--jh-instrument-accent, oklch(100% 0 0)) !important; }
+:is([data-jh-theme="dark"], .dark) .jh-wind-instrument__shaft { stroke: var(--jh-instrument-accent, oklch(100% 0 0)) !important; }
+:is([data-jh-theme="dark"], .dark) .jh-wind-instrument__scale-track span[data-active="true"] { background: var(--jh-instrument-accent, oklch(100% 0 0)) !important; }
+:is([data-jh-theme="dark"], .dark) .jh-tide-instrument__curve { stroke: var(--jh-instrument-accent, oklch(100% 0 0)) !important; }
+:is([data-jh-theme="dark"], .dark) .jh-tide-instrument__cursor { stroke: color-mix(in oklch, var(--jh-instrument-accent, oklch(100% 0 0)) 48%, transparent) !important; }
+:is([data-jh-theme="dark"], .dark) .jh-tide-instrument__marker-halo {
+  fill: color-mix(in oklch, var(--jh-instrument-accent, oklch(100% 0 0)) 22%, transparent) !important;
+  stroke: color-mix(in oklch, var(--jh-instrument-accent, oklch(100% 0 0)) 56%, transparent) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tide-instrument__marker {
+  fill: var(--jh-instrument-accent, oklch(100% 0 0)) !important;
+  stroke: #0a0a0a !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-financial-chart__line,
+:is([data-jh-theme="dark"], .dark) .jh-metric-card__line,
+:is([data-jh-theme="dark"], .dark) .jh-astronomy__arc { stroke: var(--jh-instrument-accent, oklch(100% 0 0)); }
+:is([data-jh-theme="dark"], .dark) .jh-financial-chart__point-halo,
+:is([data-jh-theme="dark"], .dark) .jh-metric-card__point-halo,
+:is([data-jh-theme="dark"], .dark) .jh-astronomy__sun-halo {
+  fill: color-mix(in oklch, var(--jh-instrument-accent, oklch(100% 0 0)) 22%, transparent);
+  stroke: color-mix(in oklch, var(--jh-instrument-accent, oklch(100% 0 0)) 58%, transparent);
+}
+:is([data-jh-theme="dark"], .dark) .jh-financial-chart__point,
+:is([data-jh-theme="dark"], .dark) .jh-metric-card__point {
+  fill: var(--jh-instrument-accent, oklch(100% 0 0));
+  stroke: #0a0a0a;
+}
+:is([data-jh-theme="dark"], .dark) .jh-financial-chart__bar[data-selected="true"],
+:is([data-jh-theme="dark"], .dark) .jh-astronomy__sun { fill: var(--jh-instrument-accent, oklch(100% 0 0)); }
+:is([data-jh-theme="dark"], .dark) .jh-market-picker__check { color: var(--jh-instrument-accent, oklch(100% 0 0)); }
+:is([data-jh-theme="dark"], .dark) .jh-market-picker__asset[aria-selected="true"] {
+  box-shadow: inset 0 1px rgb(255 255 255 / .05), inset 0 0 0 1px color-mix(in oklch, var(--jh-instrument-accent, oklch(100% 0 0)) 28%, transparent), 0 2px 6px rgb(0 0 0 / .85) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-astrology-wheel__ascendant {
+  fill: var(--jh-instrument-accent, oklch(100% 0 0));
+  stroke: #0a0a0a;
+}
+:is([data-jh-theme="dark"], .dark) .jh-astrology-wheel__ascendant-axis { stroke: var(--jh-instrument-accent, oklch(100% 0 0)); }
+:is([data-jh-theme="dark"], .dark) .jh-astrology-wheel__planet[data-selected="true"] .jh-astrology-wheel__planet-halo {
+  fill: color-mix(in oklch, var(--jh-instrument-accent, oklch(100% 0 0)) 20%, transparent);
+  stroke: var(--jh-instrument-accent, oklch(100% 0 0));
+}
+:is([data-jh-theme="dark"], .dark) .jh-astrology-wheel__planet[data-selected="true"] circle.jh-astrology-wheel__planet-face {
+  stroke: var(--jh-instrument-accent, oklch(100% 0 0));
+}
+:is([data-jh-theme="dark"], .dark) .jh-lunar-ephemeris__age-pip {
+  fill: var(--jh-instrument-accent, oklch(100% 0 0));
+  stroke: #0a0a0a;
+}
+:is([data-jh-theme="dark"], .dark) .jh-lunar-ephemeris__light-source {
+  fill: #0a0a0a;
+  stroke: var(--jh-instrument-accent, oklch(100% 0 0));
+}
+
+/* Continuous custom surface transparency & backdrop blur (Dark / Obsidian — preserves outer shadows, text & SVG icons) */
+:is([data-jh-theme="dark"], .dark):is(
+  [data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"],
+  [data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"] *
+):is(
+  .jh-dialog,
+  .jh-dialog.jh-command-dialog,
+  .jh-dialog__content,
+  .jh-command-dialog,
+  .jh-date-popover,
+  .jh-date-popover.jh-picker-overlay,
+  .jh-date-time-popover,
+  .jh-date-time-popover.jh-picker-overlay,
+  .jh-date-time-picker,
+  .jh-picker-overlay,
+  [data-jh-material].jh-picker-overlay,
+  .jh-combobox__popover,
+  .jh-currency-picker__popover,
+  .jh-ephemeris-picker__panel,
+  .jh-menu,
+  .jh-context-menu,
+  .jh-toast,
+  .jh-oklch-palette,
+  .jh-oklch-palette[data-jh-material],
+  .jh-spectrum-popover,
+  .jh-spectrum,
+  .jh-vertical-gallery__ratio-menu,
+  .jh-theme-picker-popover,
+  .jh-theme-picker-popover.jh-picker-overlay,
+  .jh-calendar:not(.jh-date-popover .jh-calendar):not(.jh-date-time-popover .jh-calendar),
+  .jh-data-form,
+  .jh-data-table,
+  .jh-metric-card,
+  .jh-tabs,
+  .jh-accordion:not(.jh-scroll-area > .jh-accordion),
+  .jh-step-navigation,
+  .jh-radio-group__options,
+  .jh-scroll-frame:not(.jh-vertical-gallery__frame):not(.jh-picker-overlay .jh-scroll-frame):not(.jh-currency-picker .jh-scroll-frame):not(.jh-financial-order .jh-scroll-frame):not(.jh-market-picker .jh-scroll-frame),
+  .jh-gallery,
+  .jh-gallery__caption,
+  .jh-image-frame,
+  .jh-file-transfer,
+  .jh-vertical-gallery,
+  .jh-filmstrip__chassis,
+  .jh-image-inspector,
+  .jh-financial-chart,
+  .jh-market-picker,
+  .jh-financial-order:not(.jh-command-dialog > .jh-financial-order),
+  .jh-financial-order[data-jh-material]:not(.jh-command-dialog > .jh-financial-order),
+  .jh-finance-nav--sidebar,
+  .jh-finance-nav--header,
+  .jh-weather,
+  .jh-weather-conditions,
+  .jh-wind-instrument,
+  .jh-tide-instrument,
+  .jh-lunar-ephemeris,
+  .jh-astronomy,
+  .jh-astrology-wheel,
+  .jh-navigation-instrument,
+  .jh-attitude,
+  .jh-compass,
+  .jh-compass__dial,
+  .jh-race-telemetry,
+  .jh-tactile-keypad,
+  .jh-tactile-console,
+  .jh-camera-wheel,
+  .jh-camera-dial__plate
+) {
+  background-color: rgb(10 10 10 / var(--jh-surface-alpha, 1)) !important;
+  background-image: none !important;
+  backdrop-filter: blur(var(--jh-surface-blur, 0px)) !important;
+  -webkit-backdrop-filter: blur(var(--jh-surface-blur, 0px)) !important;
+}
+:is([data-jh-theme="dark"], .dark):is(
+  [data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"],
+  [data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"] *
+):is(
+  .jh-button:not(.jh-button--ghost) .jh-button__face,
+  .jh-button--glass:not(.jh-button--ghost) .jh-button__face,
+  .jh-button--ghost:not(:disabled):is(:hover, :active) .jh-button__face,
+  .jh-date-picker__trigger .jh-button__face,
+  .jh-date-time-picker__trigger .jh-button__face,
+  .jh-financial-order__launch .jh-button__face,
+  .jh-slider__thumb,
+  .jh-bar-slider__thumb,
+  .jh-switch__thumb,
+  .jh-tactile-lever__thumb,
+  .jh-tactile-key__face,
+  .jh-tactile-pad__cap,
+  .jh-tactile-encoder__cap,
+  .jh-dial__knob,
+  .jh-radio-option,
+  .jh-segmented__option[aria-checked="true"] span,
+  .jh-segmented__thumb,
+  .jh-tabs__thumb,
+  .jh-context-menu__trigger,
+  .jh-combobox__trigger,
+  .jh-command-trigger,
+  .jh-currency-picker__trigger,
+  .jh-ephemeris-picker__trigger,
+  .jh-oklch-trigger,
+  .jh-oklch-trigger[data-jh-material],
+  .jh-spectrum-trigger,
+  .jh-dialog__close,
+  .jh-toast__close,
+  .jh-date-time-slots button,
+  .jh-calendar__day-button[aria-selected="true"],
+  .jh-calendar__selected .jh-calendar__day-button,
+  .jh-financial-order__close,
+  .jh-financial-order__confirm,
+  .jh-financial-order[data-jh-material] .jh-financial-order__confirm,
+  .jh-ephemeris-picker__panel-head > button,
+  .jh-ephemeris-picker__submit,
+  .jh-vertical-gallery__aspect-btn,
+  .jh-github-star,
+  .jh-theme-toggle,
+  .jh-theme-picker-popover__modes button[aria-pressed="true"],
+  .jh-theme-picker-popover__reset,
+  .jh-financial-chart__periods button[aria-pressed="true"],
+  .jh-financial-chart__modes button[aria-pressed="true"],
+  .jh-market-picker__tabs button[aria-selected="true"],
+  .jh-ephemeris-picker__targets button[aria-pressed="true"],
+  .jh-step-navigation__step,
+  .jh-spectrum__steppers button,
+  .jh-combobox__option[aria-selected="true"],
+  .jh-currency-picker__options button[aria-selected="true"],
+  .jh-vertical-gallery__ratio-option[aria-selected="true"],
+  .jh-glass-shape,
+  [data-jh-material].jh-glass-shape
+) {
+  background-color: rgb(14 14 14 / var(--jh-surface-alpha, 1)) !important;
+  background-image: none !important;
+  backdrop-filter: blur(var(--jh-surface-blur, 0px)) !important;
+  -webkit-backdrop-filter: blur(var(--jh-surface-blur, 0px)) !important;
+}
+:is([data-jh-theme="dark"], .dark):is(
+  [data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"],
+  [data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"] *
+):is(.jh-dial__top, .jh-date-popover .jh-calendar, .jh-date-time-popover .jh-calendar) {
+  background: transparent !important;
+  background-image: none !important;
+}
+:is([data-jh-theme="dark"], .dark):is(
+  [data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"],
+  [data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"] *
+):is(
+  .jh-input,
+  .jh-search-input,
+  .jh-slider__track,
+  .jh-bar-slider__track,
+  .jh-tactile-lever__track,
+  .jh-progress__track,
+  .jh-switch::before,
+  .jh-segmented,
+  .jh-tabs__list,
+  .jh-dial__bed,
+  .jh-compass__bed,
+  .jh-tactile-encoder,
+  .jh-tactile-console__oled,
+  .jh-tactile-console__speaker,
+  .jh-dialog-summary,
+  .jh-financial-order__asset,
+  .jh-financial-order[data-jh-material] .jh-financial-order__asset,
+  .jh-financial-order__side,
+  .jh-financial-order__summary,
+  .jh-financial-order[data-jh-material] .jh-financial-order__summary,
+  .jh-financial-order__fields input,
+  .jh-financial-order__fields select,
+  .jh-ephemeris-picker__fields input,
+  .jh-ephemeris-picker__fields select,
+  .jh-command-dialog__search input,
+  .jh-currency-picker__search input,
+  .jh-picker-overlay__search input,
+  .jh-picker-overlay .jh-search-input,
+  .jh-date-picker__clear,
+  .jh-financial-chart__periods,
+  .jh-financial-chart__modes,
+  .jh-market-picker__tabs,
+  .jh-theme-picker-popover__modes,
+  .jh-spectrum__modes,
+  .jh-spectrum__library-picker,
+  .jh-spectrum__hex-row,
+  .jh-wind-instrument__well,
+  .jh-wind-instrument__tile,
+  .jh-compass__well,
+  .jh-compass__readout,
+  .jh-compass__cardinal-pill,
+  .jh-attitude__pill,
+  .jh-attitude__well,
+  .jh-attitude__readout > div,
+  .jh-navigation-instrument__mode,
+  .jh-navigation-instrument__well,
+  .jh-navigation-instrument__readings > div,
+  .jh-weather__well,
+  .jh-weather__readings > div,
+  .jh-astronomy__sky,
+  .jh-astronomy__scrubber,
+  .jh-astronomy__readouts > div,
+  .jh-astrology-wheel__details > div,
+  .jh-financial-chart__plot-wrap,
+  .jh-financial-chart__stats > div,
+  .jh-metric-card__well,
+  .jh-race-telemetry__cell,
+  .jh-race-telemetry__sectors span
+) {
+  background-color: rgb(6 6 6 / var(--jh-surface-alpha, 1)) !important;
+  background-image: none !important;
+  backdrop-filter: blur(var(--jh-surface-blur, 0px)) !important;
+  -webkit-backdrop-filter: blur(var(--jh-surface-blur, 0px)) !important;
+}
+:is([data-jh-theme="dark"], .dark):is(
+  [data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"],
+  [data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"] *
+):is(
+  .jh-button:not(.jh-button--ghost) .jh-button__face::before,
+  .jh-slider__thumb::after,
+  .jh-bar-slider__thumb::after,
+  .jh-tactile-lever__thumb::after
+) {
+  background: none !important;
+  opacity: 0 !important;
+}
+@media (prefers-reduced-transparency: reduce) {
+  :is([data-jh-theme="dark"], .dark):is(
+    [data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"],
+    [data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"] *
+  ):is(
+    .jh-dialog,.jh-dialog__content,.jh-dialog-summary,.jh-command-dialog,.jh-date-popover,.jh-date-time-popover,
+    .jh-date-time-picker,.jh-picker-overlay,.jh-currency-picker__popover,.jh-ephemeris-picker__panel,.jh-menu,
+    .jh-context-menu,.jh-toast,.jh-oklch-palette,.jh-spectrum-popover,.jh-spectrum,.jh-vertical-gallery__ratio-menu,
+    .jh-theme-picker-popover,.jh-calendar:not(.jh-date-popover .jh-calendar):not(.jh-date-time-popover .jh-calendar),
+    .jh-data-form,.jh-data-table,.jh-metric-card,.jh-tabs,.jh-accordion:not(.jh-scroll-area > .jh-accordion),
+    .jh-step-navigation,.jh-radio-group__options,
+    .jh-scroll-frame:not(.jh-vertical-gallery__frame):not(.jh-picker-overlay .jh-scroll-frame):not(.jh-currency-picker .jh-scroll-frame):not(.jh-financial-order .jh-scroll-frame):not(.jh-market-picker .jh-scroll-frame),
+    .jh-gallery,.jh-gallery__caption,.jh-image-frame,.jh-file-transfer,.jh-vertical-gallery,.jh-filmstrip__chassis,
+    .jh-image-inspector,.jh-financial-chart,.jh-market-picker,.jh-financial-order:not(.jh-command-dialog > .jh-financial-order),
+    .jh-finance-nav--sidebar,.jh-finance-nav--header,.jh-weather,.jh-weather-conditions,.jh-wind-instrument,
+    .jh-tide-instrument,.jh-lunar-ephemeris,.jh-astronomy,.jh-astrology-wheel,.jh-navigation-instrument,.jh-attitude,
+    .jh-compass,.jh-compass__dial,.jh-race-telemetry,.jh-tactile-keypad,.jh-tactile-console,.jh-camera-wheel,.jh-camera-dial__plate
+  ) {
+    background-color: #0a0a0a !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  :is([data-jh-theme="dark"], .dark):is(
+    [data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"],
+    [data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"] *
+  ):is(
+    .jh-button:not(.jh-button--ghost) .jh-button__face,.jh-button--ghost:not(:disabled):is(:hover, :active) .jh-button__face,
+    .jh-slider__thumb,.jh-bar-slider__thumb,.jh-switch__thumb,.jh-tactile-lever__thumb,.jh-tactile-key__face,
+    .jh-tactile-pad__cap,.jh-tactile-encoder__cap,.jh-dial__knob,.jh-radio-option,
+    .jh-segmented__option[aria-checked="true"] span,.jh-segmented__thumb,.jh-tabs__thumb,.jh-context-menu__trigger,
+    .jh-combobox__trigger,.jh-command-trigger,.jh-currency-picker__trigger,.jh-ephemeris-picker__trigger,
+    .jh-oklch-trigger,.jh-spectrum-trigger,.jh-dialog__close,.jh-toast__close,.jh-date-time-slots button,
+    .jh-calendar__day-button[aria-selected="true"],.jh-calendar__selected .jh-calendar__day-button,
+    .jh-financial-order__close,.jh-financial-order__confirm,.jh-ephemeris-picker__submit,
+    .jh-vertical-gallery__aspect-btn,.jh-github-star,.jh-theme-toggle,
+    .jh-theme-picker-popover__modes button[aria-pressed="true"],.jh-theme-picker-popover__reset,
+    .jh-financial-chart__periods button[aria-pressed="true"],.jh-financial-chart__modes button[aria-pressed="true"],
+    .jh-market-picker__tabs button[aria-selected="true"],.jh-ephemeris-picker__targets button[aria-pressed="true"],
+    .jh-step-navigation__step,.jh-spectrum__steppers button,.jh-combobox__option[aria-selected="true"],
+    .jh-currency-picker__options button[aria-selected="true"],.jh-vertical-gallery__ratio-option[aria-selected="true"],
+    .jh-glass-shape
+  ) {
+    background-color: #0e0e0e !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  :is([data-jh-theme="dark"], .dark):is(
+    [data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"],
+    [data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"] *
+  ):is(
+    .jh-input,.jh-search-input,.jh-slider__track,.jh-bar-slider__track,.jh-tactile-lever__track,
+    .jh-progress__track,.jh-switch::before,.jh-segmented,.jh-tabs__list,.jh-dial__bed,.jh-compass__bed,
+    .jh-tactile-encoder,.jh-tactile-console__oled,.jh-tactile-console__speaker,.jh-dialog-summary,
+    .jh-financial-order__asset,.jh-financial-order__side,.jh-financial-order__summary,
+    .jh-financial-order__fields input,.jh-financial-order__fields select,.jh-ephemeris-picker__fields input,
+    .jh-ephemeris-picker__fields select,.jh-command-dialog__search input,.jh-currency-picker__search input,
+    .jh-picker-overlay .jh-search-input,.jh-date-picker__clear,.jh-financial-chart__periods,
+    .jh-financial-chart__modes,.jh-market-picker__tabs,.jh-theme-picker-popover__modes,
+    .jh-spectrum__modes,.jh-spectrum__library-picker,.jh-spectrum__hex-row,.jh-wind-instrument__well,
+    .jh-wind-instrument__tile,.jh-compass__well,.jh-compass__readout,.jh-compass__cardinal-pill,
+    .jh-attitude__pill,.jh-attitude__well,.jh-attitude__readout > div,.jh-navigation-instrument__mode,
+    .jh-navigation-instrument__well,.jh-navigation-instrument__readings > div,.jh-weather__well,
+    .jh-weather__readings > div,.jh-astronomy__sky,.jh-astronomy__scrubber,.jh-astronomy__readouts > div,
+    .jh-astrology-wheel__details > div,.jh-financial-chart__plot-wrap,.jh-financial-chart__stats > div,
+    .jh-metric-card__well,.jh-race-telemetry__cell,.jh-race-telemetry__sectors span
+  ) {
+    background-color: #060606 !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
 }
 /* === JH_BLACK_THEME_END === */
-
-/* Accordion Scroll: same lateral thumb inset as Simple Scroll (.jh-scroll-frame padding-right) */
-.jh-scroll-frame.jh-accordion-scroll {
-  width: min(100%, 480px);
-  box-sizing: border-box;
-  /* Keep Simple Scroll frame chrome + right inset — do not override padding-right */
-}
-.jh-scroll-frame.jh-accordion-scroll > .jh-accordion.jh-accordion--scroll.jh-scroll-area {
-  display: grid;
-  gap: 3px;
-  width: 100%;
-  min-width: 0;
-  max-width: none;
-  box-sizing: border-box;
-  /* Inner scrollport: 3px before thumb = frame 3px after thumb */
-  overflow-y: auto;
-  overflow-x: hidden;
-  overscroll-behavior: contain;
-  padding: 6px 3px 6px 6px !important;
-  background: transparent !important;
-  background-image: none !important;
-  box-shadow: none !important;
-  border-radius: 12px;
-}
-/* Pull chevrons closer to the thumb — match Simple scroll side rhythm */
-.jh-scroll-frame.jh-accordion-scroll .jh-accordion__trigger {
-  padding-right: 6px !important;
-}
-.jh-scroll-frame.jh-accordion-scroll > .jh-accordion.jh-accordion--scroll.jh-scroll-area:focus-visible {
-  outline: none;
-  box-shadow: inset 0 0 0 1px #73737360 !important;
-}
-.jh-scroll-frame.jh-accordion-scroll .jh-accordion__item {
-  flex-shrink: 0;
-  width: 100%;
-}
-
-/* Scroll lists: selected = contrast + bolinha only (same weight, no pill) */
-.jh-scroll-option[aria-pressed="true"],
-.jh-simple-scroll__item.is-selected,
-.jh-scroll-frame .jh-scroll-option[aria-pressed="true"],
-.jh-scroll-frame .jh-simple-scroll__item.is-selected {
-  background: transparent !important;
-  background-image: none !important;
-  box-shadow: none !important;
-  color: #171717 !important;
-  font-weight: inherit !important;
-}
-.jh-scroll-option[aria-pressed="true"]:hover,
-.jh-simple-scroll__item.is-selected:hover {
-  background: rgb(0 0 0 / .035) !important;
-  box-shadow: none !important;
-}
-.jh-scroll-option::after,
-.jh-simple-scroll__item::after {
-  content: "";
-  flex: 0 0 auto;
-  width: 5px;
-  height: 5px;
-  margin-left: auto;
-  border-radius: 50%;
-  background: transparent;
-  box-shadow: none;
-}
-.jh-scroll-option[aria-pressed="true"]::after,
-.jh-simple-scroll__item.is-selected::after {
-  background: #2a2a2a;
-}
-.jh-simple-scroll__item.is-selected .jh-simple-scroll__copy strong {
-  color: #171717;
-  font-weight: 500; /* same as unselected label weight — contrast only */
-}
-.jh-scroll-option[aria-pressed="true"] > span {
-  color: #171717;
-  font-weight: inherit;
-}
-
-/* Accordion Scroll open row: no top-light face — keep disclosure chrome quiet */
-.jh-scroll-frame.jh-accordion-scroll .jh-accordion__item[data-state="open"] .jh-accordion__trigger,
-.jh-accordion.jh-accordion--scroll .jh-accordion__item[data-state="open"] .jh-accordion__trigger {
-  background: transparent !important;
-  background-image: none !important;
-  box-shadow: none !important;
-}

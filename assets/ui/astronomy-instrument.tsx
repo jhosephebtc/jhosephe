@@ -1,5 +1,7 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useId, useMemo, useState } from 'react';
 import { Button } from './button';
+import { Slider } from './controls';
+import { instrumentAccentStyle } from './utils';
 import { clamp, surfaceMaterialAttr, type SurfaceMaterial } from './weather-ephemeris';
 
 export type SolarPosition = {
@@ -79,6 +81,7 @@ export function AstronomyInstrument({
   date,
   solarData,
   material = 'solid',
+  accentColor,
 }: {
   latitude?: number;
   longitude?: number;
@@ -86,19 +89,30 @@ export function AstronomyInstrument({
   date?: Date;
   solarData?: Partial<SolarPosition>;
   material?: SurfaceMaterial;
+  accentColor?: string;
 }) {
+  const id = useId();
   const [now, setNow] = useState(() => new Date());
+  const [scrubMinutes, setScrubMinutes] = useState<number | null>(null);
   const [usingLocation, setUsingLocation] = useState(false);
   const [deviceCoordinates, setDeviceCoordinates] = useState<{ latitude: number; longitude: number } | null>(null);
   const [locationError, setLocationError] = useState('');
 
   useEffect(() => {
-    if (date) return;
+    if (date || scrubMinutes !== null) return;
     const timer = window.setInterval(() => setNow(new Date()), 30000);
     return () => window.clearInterval(timer);
-  }, [date]);
+  }, [date, scrubMinutes]);
 
-  const moment = date ?? now;
+  const baseMoment = date ?? now;
+  const moment = useMemo(() => {
+    if (scrubMinutes === null) return baseMoment;
+    const next = new Date(baseMoment);
+    next.setHours(Math.floor(scrubMinutes / 60), scrubMinutes % 60, 0, 0);
+    return next;
+  }, [baseMoment, scrubMinutes]);
+  const currentMinutes = moment.getHours() * 60 + moment.getMinutes();
+
   const observerLatitude = deviceCoordinates?.latitude ?? latitude;
   const observerLongitude = deviceCoordinates?.longitude ?? longitude;
   const observerLocation = deviceCoordinates ? 'Your location' : location;
@@ -111,10 +125,16 @@ export function AstronomyInstrument({
 
   const progress =
     solar.sunrise !== null && solar.sunset !== null
-      ? clamp((moment.getHours() * 60 + moment.getMinutes() - solar.sunrise) / (solar.sunset - solar.sunrise), 0, 1)
+      ? clamp((currentMinutes - solar.sunrise) / (solar.sunset - solar.sunrise), 0, 1)
       : 0.5;
   const x = 24 + progress * 352;
-  const y = 118 - Math.sin(progress * Math.PI) * 91;
+  const y =
+    (1 - progress) * (1 - progress) * 118 +
+    2 * (1 - progress) * progress * -64 +
+    progress * progress * 118;
+  const qx = 24 + progress * (200 - 24);
+  const qy = 118 + progress * (-64 - 118);
+  const traversedArc = `M24 118 Q${qx.toFixed(1)} ${qy.toFixed(1)} ${x.toFixed(1)} ${y.toFixed(1)}`;
 
   const phaseLabel =
     solar.altitude > 0 ? 'Above horizon' : solar.altitude > -6 ? 'Civil twilight' : 'Below horizon';
@@ -147,10 +167,13 @@ export function AstronomyInstrument({
       className="jh-astronomy"
       data-jh-material={matAttr}
       aria-label={`Solar ephemeris for ${observerLocation}`}
+      style={instrumentAccentStyle(accentColor)}
     >
       <header className="jh-astronomy__header">
         <div>
-          <span className="jh-astronomy__eyebrow">Solar ephemeris · Live</span>
+          <span className="jh-astronomy__eyebrow">
+            Solar ephemeris · {scrubMinutes !== null ? `Scrub ${clock(scrubMinutes)}` : 'Live'}
+          </span>
           <h2>{observerLocation}</h2>
           <p>{observerLatitude.toFixed(2)}°, {observerLongitude.toFixed(2)}° · {phaseLabel}</p>
         </div>
@@ -167,8 +190,8 @@ export function AstronomyInstrument({
           role="img"
           aria-label={`Sun altitude ${Math.round(solar.altitude)} degrees, azimuth ${Math.round(solar.azimuth)} degrees`}
         >
-          <path className="jh-astronomy__arc-bed" d="M24 118 Q200 -58 376 118" />
-          <path className="jh-astronomy__arc" d="M24 118 Q200 -58 376 118" pathLength="1" />
+          <path className="jh-astronomy__arc-bed" d="M24 118 Q200 -64 376 118" />
+          {progress > 0.005 && <path className="jh-astronomy__arc" d={traversedArc} />}
           <path className="jh-astronomy__horizon" d="M18 119H382" />
           {Array.from({ length: 25 }, (_, index) => (
             <path
@@ -178,13 +201,37 @@ export function AstronomyInstrument({
               transform={`translate(${24 + index * 14.67} 124)`}
             />
           ))}
-          <path className="jh-astronomy__guide" d={`M${x} ${y}V118`} />
-          <circle cx={x} cy={y} r="12" className="jh-astronomy__sun-halo" />
+          <path className="jh-astronomy__guide" d={`M${x.toFixed(1)} ${y.toFixed(1)}V118`} />
+          <circle cx={x} cy={y} r="13" className="jh-astronomy__sun-halo" />
           <circle cx={x} cy={y} r="5" className="jh-astronomy__sun" />
           <text x="20" y="147">East</text>
           <text x="200" y="147" textAnchor="middle">South</text>
           <text x="380" y="147" textAnchor="end">West</text>
         </svg>
+        <div className="jh-astronomy__scrubber">
+          <span id={`${id}-solar-time-label`}>Time of day</span>
+          <Slider
+            labelId={`${id}-solar-time-label`}
+            className="jh-scrubber-slider"
+            min={0}
+            max={1439}
+            step={5}
+            value={[currentMinutes]}
+            thumbThickness={14}
+            thumbHeight={24}
+            thumbRadius={7}
+            onValueChange={([minutes]) => setScrubMinutes(minutes)}
+          />
+          <output>{clock(currentMinutes)}</output>
+          <Button
+            size="small"
+            variant="secondary"
+            disabled={scrubMinutes === null}
+            onClick={() => setScrubMinutes(null)}
+          >
+            Live
+          </Button>
+        </div>
       </div>
 
       <div className="jh-astronomy__readouts">

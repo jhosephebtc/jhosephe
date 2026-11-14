@@ -97,7 +97,7 @@ A iluminação em ambos os temas parte de **luz superior contida**, evitando lin
 
 1. **Alto-relevo sutil**: contornos claros superiores permanecem entre `rgb(255 255 255 / .010)` e `.022` (`.015` nos painéis e cards, `.018`–`.02` em faces e botões), sem halos brancos artificiais.
 2. **Baixo-relevo plano e sem gradiente**: cavidades (`.jh-segmented`, `.jh-tabs__list`, `.jh-input`, `.jh-search-input`, trilhos) usam cor sólida plana (`#060606` ou `#070707`, `background-image: none`) com sombra interna curta (`inset 0 1px 2px rgb(0 0 0 / .52)`) e filete inferior quase imperceptível (`rgb(255 255 255 / .012)`).
-3. **Estudo de cantos contínuos (`SmoothCornerStudy`)**: usa face elevada `#0e0e0e → #0a0a0a`, traço especular `.library-demo-shape__specular` contido em `.018` (Solid) / `.038` (Glass/Liquid) e guias técnicas internas em `.045` / `.035`.
+3. **Estudo de cantos contínuos (`SmoothCornerStudy`)**: usa face elevada `#0e0e0e → #0a0a0a`, traço especular `.library-demo-shape__specular` contido em `.018` (superfície opaca) / `.038` (quando `[data-jh-surface-custom="true"]` ou translúcido) e guias técnicas internas em `.045` / `.035`.
 
 ---
 
@@ -197,17 +197,40 @@ A iluminação em ambos os temas parte de **luz superior contida**, evitando lin
 
 ---
 
-## 6. Materiais (`data-jh-material`), Luzes OKLCH & Acessibilidade
+## 6. Sistema Contínuo de Transparência & Blur (`--jh-surface-alpha`, `--jh-surface-blur`)
 
-### 6.1 Três Acabamentos Suportados
+A partir da evolução do sistema de superfícies, os presets discretos anteriores (`Solid | Glass | Liquid`) foram substituídos por um modelo **contínuo e paramétrico** de transparência e desfoque de fundo controlado por `[data-jh-surface-custom="true"]`:
 
-| Atributo / Classe | Comportamento Visual | Observação entre Temas |
+### 6.1 Tokens e Faixas Calibradas
+
+| Token / Atributo | Faixa / Valores | Comportamento entre Light & Black/Dark |
 | --- | --- | --- |
-| `solid` (`.library-card-preview`, `[data-jh-material="solid"]`) | Superfície opaca sem `backdrop-filter`. Light: `#ffffff` / `#f7f7f7`; Dark: `#0a0a0a` (cards/modais) e `#0e0e0e → #0a0a0a` (botões/thumbs). | Base funcional obrigatória quando `prefers-reduced-transparency: reduce` está ativo. |
-| `liquid-glass` | Vidro fosco translúcido com `backdrop-filter: blur(...) saturate(...)`. Light: `rgb(255 255 255 / .772)`–`.952`; Dark atual: `rgb(10 10 10 / .84)`–`.95` + `.jh-glass-shape` em `rgb(12 12 12 / .82)`. | Preserva o mesmo posicionamento cromático do Solid, preparando a camada translúcida. |
-| `liquid` | Camada especular com `backdrop-filter` ampliado e ponto de luz dinâmico (`--jh-press-x`, `--jh-press-y` no `Button` quando `data-liquid="true"`). | Clique usa compressão sutil sem alterar bruscamente a cor da face. |
+| `[data-jh-surface-custom="true"]` | Atributo booleano | Ativa os tokens contínuos na árvore de componentes e nos portals globais. |
+| `--jh-surface-alpha` | `1.00` (`0%` transparência) até `0.15` (`85%` transparência), via `1 - (transparency / 100)` | Modula **exclusivamente** a opacidade do background de superfícies elevadas (cards, modais, menus, popovers, painéis, toasts, botões e instrumentos) mantendo `#ffffff` em Light e `#0a0a0a` / `#0e0e0e` em Black/Dark como base acromática. |
+| `--jh-surface-blur` | `0px` até `32px` | Aplica `backdrop-filter: blur(var(--jh-surface-blur)) saturate(...)` na camada de vidro sem alterar nitidez de conteúdo ou elevação externa. |
+| `data-liquid="true"` (`.jh-button`) | `--jh-press-x`, `--jh-press-y` | Resposta especular contínua ao ponteiro com compressão tátil (`translateY(1px) scale(.985)`) e sem salto brusco de cor na face durante `:active`, além de estado explícito `loading` (`aria-busy="true"`). |
 
-### 6.2 Luzes Emissoras OKLCH, Profundidade Física & Hardware Tátil (`Light` + `Black/Dark`)
+### 6.2 Regras Invariantes de Proteção & Portais
+
+- **Preservação estrita de sombra, texto e ícones**: variar `--jh-surface-alpha` (`0–85%`) e `--jh-surface-blur` (`0–32px`) altera **apenas** a translucidez do preenchimento da superfície e o `backdrop-filter` atrás dela. **Nunca** reduza a opacidade do elemento raiz (`opacity`), nunca degrade nem desfoque as sombras externas de elevação (`box-shadow`), e nunca reduza o contraste da tipografia (`color`), ícones SVG, grades de dados ou miniaturas fotográficas.
+- **Propagação em Portais (`document.documentElement`)**: o customizador do showcase e do Lab grava `--jh-surface-alpha`, `--jh-surface-blur` e `data-jh-surface-custom="true"` diretamente em `document.documentElement`, assegurando que componentes portalisados (`Dialog`, `Menu`, `ContextMenu`, `Popover`, `Toast`, `Combobox`, `Picker`, `CommandPalette`, `FinancialOrderModal`) acompanhem o ajuste em tempo real em Light e Black/Dark.
+- **Camada ambiente neutra (`<ShaderSurface />`)**: superfícies translúcidas repousam sobre um backdrop monocromático em movimento lento (`#dedede / #f6f6f6 / #c8c8c8 / #f1f1f1` em Light; `#1d1d1d / #0b0b0b / #282828 / #141414` em Black/Dark) para evidenciar a refração sem introduzir cromatismo estrutural.
+- **Degradação segura (`prefers-reduced-transparency: reduce`)**: força superfícies opacas de alto contraste tanto em Light quanto em Black/Dark.
+
+---
+
+## 7. Arquitetura Unificada de Scroll, Galeria Vertical & Luzes OKLCH
+
+### 7.1 Contrato Unificado de Scrollbars & Vertical Gallery
+
+`ScrollArea`, `SimpleScroll`, `AccordionScroll` e `VerticalGallery` compartilham exatamente a mesma anatomia física `.jh-scroll-frame > .jh-scroll-area`:
+
+- **Elevação única sem cartão aninhado**: somente a moldura externa `.jh-scroll-frame` carrega sombra, borda especular, fundo de superfície (`--jh-surface-alpha` / `--jh-surface-blur`) e cantos arredondados. O container interno `.jh-scroll-area` permanece plano e transparente (`background: transparent; box-shadow: none`), eliminando elevação dupla em accordions e galerias roláveis.
+- **Barra fina sem setas e respiro simétrico**: pista transparente sem `::-webkit-scrollbar-button` (`display: none`), thumb vertical compacto e arredondado com respiro uniforme entre conteúdo, thumb e borda direita em ambos os temas (`Light` e `Black/Dark`), com fallback `scrollbar-width: thin`.
+- **Revelação progressiva no viewport**: itens de lista (`SimpleScroll`, `ScrollArea`), seções (`AccordionScroll`) e quadros (`VerticalGallery`) usam observadores de interseção (`useScrollItemReveal` / `syncScrollItemVisibility`) para revelar itens com suavidade conforme entram/saem das extremidades do scrollport.
+- **Vertical Gallery (`VerticalGallery`)**: grade de folha de contato (`4 × 12`) dentro de `.jh-scroll-frame > .jh-scroll-area` equipada com seletor inline de proporção (`1:1 | 3:4 | 4:5 | 9:16 | 16:9`) e tiles elevados não rebaixados, mantendo imagens e molduras nítidas independentemente do nível de transparência da moldura.
+
+### 7.2 Luzes Emissoras OKLCH, Profundidade Física & Hardware Tátil (`Light` + `Black/Dark`)
 
 Controles emissivos (`Dial`, `Detent Dial`, `Slider`, `Bar Slider`, `Tactile Lever`, `Instrument Bars`, `Audio Meter`, `Tactile Key`, `Tactile Keypad`, `Tactile Console` e `Lunar Ephemeris`) operam em dois regimes físicos sincronizados entre **Light** e **Black/Dark**:
 
@@ -220,15 +243,49 @@ Controles emissivos (`Dial`, `Detent Dial`, `Slider`, `Bar Slider`, `Tactile Lev
 - **Linha Hardware Tátil (`OP-XY` Inspired)**:
   - `TactileKey` suporta `shape` (`'pad' | 'dish' | 'circle' | 'pill'`), `tone` (`'surface' | 'contrast'`), `ledPosition` (`'bottom' | 'top-left' | 'top-right' | 'center' | 'none'`) e `accentColor`.
   - `TactileKeypad` entrega decks (`'keyboard' | 'sequencer' | 'command'`) em chassis usinado com poços quadrados, pratos côncavos circulares e pinhole LEDs.
-  - `TactileConsole` reúne grade de alto-falante perfurada, visor OLED monocromático de telemetria, 4 encoders rotativos graduados em rampa tonal e faixa de 8 steps tateis.
+  - `TactileConsole` reúne grade de alto-falante perfurada, visor OLED monocromático de telemetria, 4 encoders rotativos graduados em rampa tonal e faixa de 8 steps táteis.
 - **Ótica Fotográfica, Filmstrip & Grade Tipográfica Suíça (`Light` + `Black/Dark`)**:
-  - `CameraWheel` (anel serrilhado em alumínio anodizado/magnésio + régua de exposição de 1/3 EV em baixo-relevo com hierarquia de inteiros dominantes `-2 · -1 · ○ · 1 · 2` e frações recessivas `⅓` / `⅔`) e `CameraDial` (torre GF670 com janela ISO perfurada em baixo-relevo e colar `-2..+2` EV, além do seletor `FILM`).
+  - `CameraWheel` (anel serrilhado anodizado + régua de exposição de 1/3 EV em baixo-relevo com hierarquia de inteiros dominantes `-2 · -1 · ○ · 1 · 2` e frações recessivas `⅓` / `⅔`) e `CameraDial` (torre GF670 com janela ISO perfurada em baixo-relevo e colar `-2..+2` EV, além do seletor `FILM`).
   - `FilmstripGallery` (poço de inspeção em baixo-relevo com fita deslizante de papel 120 saindo pela fenda direita) e `ImageInspector` (grade editorial tabular com micro-cabeçalhos em filetes e verificação local de arquivo).
 
-### 6.3 Scrollbars (Dark Mode) & Preferências de Acessibilidade
+### 7.3 Preferências de Acessibilidade
 
-- **Scrollbars Dark**: pista transparente (`transparent`), thumb `9px` arredondado (`border-radius: 99px`) com `border: 2.5px solid transparent; background: #282828 padding-box` (`#3d3d3d` no hover), e `::-webkit-scrollbar-button { display: none; width: 0; height: 0; }` em toda a página e em `.jh-scroll-frame` / sidebars para eliminar setas nativas do sistema operacional. Fallback para Firefox/não-WebKit via `scrollbar-width: thin; scrollbar-color: #2b2b2b transparent;`.
-- **Acessibilidade**:
-  - `:focus-visible`: `outline: 3px solid var(--ring); outline-offset: 3px` no tema global (anéis ajustados para inputs/thumbs sem recorte pelo `clip-path`).
-  - `@media (prefers-reduced-motion: reduce)`: remove animações de entrada, pulso contínuo e transições.
-  - `@media (prefers-reduced-transparency: reduce)` & `@media (forced-colors: active)`: garantem degradação para superfícies opacas legíveis (`Canvas`, `CanvasText`, `Highlight`).
+- **`:focus-visible`**: `outline: 3px solid var(--ring); outline-offset: 3px` no tema global (anéis ajustados para inputs/thumbs sem recorte pelo `clip-path`).
+- **`@media (prefers-reduced-motion: reduce)`**: remove animações de entrada, pulso contínuo e transições.
+- **`@media (prefers-reduced-transparency: reduce)` & `@media (forced-colors: active)`**: garantem degradação para superfícies opacas legíveis (`Canvas`, `CanvasText`, `Highlight`).
+
+---
+
+## 8. Aplicação Pública, CTA GitHub Star & Registry Público
+
+- **Aplicação hospedada (`https://jhosephe.vercel.app`)**:
+  - `/` e `/components`: catálogo interativo completo com os **64 componentes**, filtro por categoria e customizador contínuo de **Transparency (`0–85%`)**, **Blur (`0–32px`)** e **Light / Black**.
+  - `/components/<id>`: playground isolado com props, estados, tema em tempo real e comando de instalação via CLI.
+  - `/installation`: guia de setup com React 19, TypeScript, `@fontsource-variable/geist` e tokens `--jh-*`.
+  - `/lab`: laboratório tátil completo para validar materiais, emissores OKLCH, scrollbars unificados e instrumentos.
+  - `/solar`: observatório solar interativo com efemérides, coordenadas reais e visualizações astronômicas.
+- **CTA GitHub Star (`https://github.com/jhosephebtc/jhosephe`)**: cabeçalho compartilhado entre `/`, `/components`, `/lab` e `/solar` exibe acesso consistente ao repositório oficial com ação direta para favoritar com estrela (Star on GitHub).
+- **Registry Público shadcn/ui**: `npm run registry:build` (`node scripts/build-registry.mjs`) gera `/registry.json` e 64 arquivos `/r/<id>.json` prontos para consumo direto via `npx shadcn@latest add https://jhosephe.vercel.app/r/<id>.json`.
+
+---
+
+## 9. Guia de Aplicação Visual (UI-Only) em Projetos Externos (`OrionVision`: `nodeapp` & `artesan`)
+
+Quando este design system é aplicado a aplicações irmãs — especificamente os apps **`nodeapp`** e **`artesan`** do projeto **OrionVision** — a migração é **estritamente visual (UI-only)**:
+
+1. **Preservação integral de funcionalidades**: manter **100%** das rotas, lógica de estado, hooks, chamadas de API, eventos, validações e regras de negócio intactos. Alterar apenas folhas de estilo, tokens CSS (`:root` + `[data-jh-theme="dark"], .dark`), família/pesos tipográficos e wrappers visuais equivalentes aos componentes `jh-*`.
+2. **Paridade de Cores (Light Porcelain vs. Black/Dark Obsidian)**:
+   - **Light (`:root`)**: `--background: #f8f8f8`, `--card` / `--popover: #ffffff`, faces elevadas `#f7f7f7`, baixo-relevo/trilhos `#ededed`–`#f4f4f4`, texto primário `#2e2e2e`, secundário `#6b6b6b`, terciário `#8c8c8c`.
+   - **Black / Dark (`:is([data-jh-theme="dark"], .dark)`)**: canvas e poços `--background: #060606`, inputs `#070707` (repouso) → `#090909` (foco), palco `#080808`, cards/modais/pickers/scroll `#0a0a0a`, faces elevadas/botões/thumbs `#0e0e0e` → `#0a0a0a`, texto primário `#ededed`, secundário `#989898`, terciário `#6e6e6e`.
+3. **Paridade Tipográfica (`Geist Variable`)**:
+   - Aplicar `'Geist Variable', system-ui, sans-serif` em toda a interface (incluindo números, tabelas e código) com `font-kerning: normal`, `font-optical-sizing: auto`, `tabular-nums lining-nums` em valores dinâmicos, pesos `350–550` (`450–500` em títulos/controles), e tamanhos calibrados (`11px–12px` metadados/`--jh-type-meta`, `13px–14px` controles/`--jh-type-control`, `18px–24px` cabeçalhos de seção/modal).
+4. **Picker de Tema & Superfície (`Light / Black` + `Transparency` + `Blur`)**:
+   - O botão de alternância de tema no cabeçalho **não muda o tema imediatamente ao clique**: em vez disso, abre um **picker popover** (`.jh-picker-overlay.jh-theme-picker-popover`) contendo:
+     1. Seletor segmentado de **Tema** (`Light` / `Black`), com transição sincronizada (`data-jh-theme` + `.dark`);
+     2. Controle contínuo de **Transparency (`0–85%`, `--jh-surface-alpha`)**;
+     3. Controle contínuo de **Blur (`0–32px`, `--jh-surface-blur`)**;
+     4. Ação discreta de **Reset** quando qualquer ajuste de transparência/desfoque estiver ativo.
+5. **Superfície Translúcida Completa (Sem Alterar Sombras, Textos, Ícones ou Fundo do Palco)**:
+   - O par `--jh-surface-alpha` + `--jh-surface-blur` (`[data-jh-surface-custom="true"]`) afeta cards, painéis, inputs, **todos os pickers e modais** (`.jh-picker-overlay`, `.jh-date-popover`, `.jh-date-time-popover`, `.jh-dialog`, `.jh-command-dialog`, `.jh-financial-order`, `.jh-oklch-palette`, `.jh-menu`, `.jh-context-menu` e suas seções internas), **puxadores de sliders** (`.jh-slider__thumb`, `.jh-bar-slider__thumb`, `.jh-tactile-lever__thumb`, `.jh-switch__thumb`), e **botões** (`.jh-button:not(.jh-button--ghost) .jh-button__face`, `.jh-theme-toggle`, `.jh-github-star`, triggers de pickers), preservando intactos **sombras externas (`box-shadow`)**, **tipografia**, **ícones SVG** e **o tom de fundo do palco/container** onde o componente está inserido.
+6. **Light Accent Contido & Responsividade**:
+   - Reutilizar `--jh-instrument-accent` em acentos OKLCH estritamente contidos e o contrato `.jh-scroll-frame > .jh-scroll-area` junto dos componentes de `assets/ui/`.

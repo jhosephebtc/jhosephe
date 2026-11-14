@@ -1,90 +1,81 @@
 ---
 name: jhosephe
-description: Projetar, implementar e revisar interfaces web táteis em React, CSS e shadcn/ui, com tema claro monocromático, botões liquid glass, sliders rígidos de vidro, skeuomorfismo, tipografia Geist Sans e grids precisos, cantos contínuos e movimento responsivo. Use em novos componentes, sistemas visuais, refinamento visual e revisão de interação.
+description: Projetar, implementar e revisar interfaces web táteis em React 19, TypeScript, CSS e shadcn/ui com tema duplo monocromático (Light Porcelain e Black/Dark Obsidian), transparência e blur contínuos (--jh-surface-alpha e --jh-surface-blur), emissão OKLCH em canais táteis, scrollbars unificados (.jh-scroll-frame > .jh-scroll-area), tipografia Geist Variable, cantos contínuos e 64 componentes registrados.
 ---
 
-# jhosephe
+# Jhosephe Tactile Interface System (`jhosephe`)
 
-Construa interfaces que pareçam objetos bem fabricados e sejam simples de operar. A assinatura é luz neutra suave, uma paleta acromática de branco, cinzas e preto, encaixes precisos, contraste legível e resposta imediata. Use Geist Sans, sem serifas, em toda a interface, inclusive instrumentos, números, escalas e legendas. Não use famílias serifadas nem monoespaçadas. Para números que mudam, use tabular-nums na própria Geist Sans. O realismo deve explicar hierarquia e uso.
+Use esta skill sempre que o trabalho envolver criar, estilizar, evoluir ou revisar interfaces web, bibliotecas de componentes, superfícies físicas táteis, instrumentos, galerias, controles de áudio/óptica, dashboards financeiros ou painéis astronômicos no sistema **Jhosephe UI**.
 
-## Regras da identidade
+Traduza o objetivo de engenharia em uma interface calma, monocromática, tátil e fisicamente legível, onde **profundidade óptica, transparência contínua, borda suave e emissão cromática confinada** substituem decoração supérflua.
 
-- **Superfícies sempre monocromáticas.** Use branco, cinzas neutros e preto em fundos, canvas, faces, gradientes, texturas, sombras, reflexos, foco, SVG e shaders. Cores só aparecem dentro de um controle feito para editar cor, nos trilhos de espectro e na amostra que representa o valor atual. Estados em outros componentes usam contraste, forma, ícone e texto. Preserve as cores de acessibilidade escolhidas pelo sistema em forced-colors.
-- **Geist Sans em tudo.** Não use serifadas nem fontes mono. Ative o kerning da fonte, ajuste tracking por papel e tamanho e mantenha números de instrumentos estáveis. Confira o texto real, acentos, unidades e quebras antes de acertar a composição.
-- **Grid e espaçamento deliberados.** Defina colunas, margens, gutters e uma escala de espaço antes de posicionar peças. Alinhe rótulos, valores e controles a eixos compartilhados; use ajustes ópticos localizados, sem espaçamentos arbitrários.
+---
 
-- **Tema claro integral.** Fundos, molduras, bases, visores e controles usam branco e cinzas claros. Grafite fica na informação. Não crie blocos escuros para simular instrumentos.
-- **Duas aparências em cada componente.** Exponha `Solid` e `Glass` em todo controle personalizável, preview e exemplo de código. `Solid` mantém a face tátil aprovada; `Glass` aumenta translucidez e desfoque de forma contida, sem acrescentar gradientes decorativos. A escolha precisa atingir estados internos, opções selecionadas e superfícies em portais. Não altere o acabamento Solid ao completar Glass.
-- **Glass, liquid glass e skeuomorfismo.** Botões seguem a mesma face elevada do thumb do Segmented Control (`#f7f7f7` em Solid, `rgb(255 255 255 / .78)` em Glass e translucidez direcional em Liquid), com brilho superior interno e sombra ambiental curta — porém sem canal em baixo-relevo ao redor, pois repousam sobre a superfície plana. Sliders usam puxador sólido de vidro, com reflexo localizado e volume coerente: sem deformação liquid, expansão, squash ou elasticidade durante arraste. Não use metal, acabamento cromado nem Liquid Metal, inclusive em detalhes. Paper pode produzir luz acromática suave atrás do vidro. Links ghost permanecem sem face nem sombra em repouso, hover e clique. Preserve fallback CSS legível e movimento reduzido.
-- **Switch simples e arredondado; ícones sem relevo.** Use um canal claro de vidro, um thumb pequeno com cantos suaves e espaço visível ao redor. Evite o trilho escuro com esfera branca e evite detalhes decorativos no thumb. Ícones são planos, suaves e semitransparentes: sem baixo-relevo, drop shadow ou contorno de sombra.
-- **Separação por relevo.** Prefira respiro, planos, sombras de contato suaves e brilho interior. Divisórias decorativas são quase imperceptíveis; evite linhas contrastantes, molduras marcadas e grids que pareçam tabelas desenhadas. Foco, limites funcionais e escalas mantêm contraste suficiente.
+## Princípios Não Negociáveis
 
-## Decida antes de desenhar
+1. **Tema Duplo Acromático Calibrado (Light Porcelain & Black/Dark Obsidian)**
+   - **Light (`:root`)**: base em papel/porcelana `#f8f8f8` e superfícies elevadas `#ffffff`.
+   - **Black / Dark (`:is([data-jh-theme="dark"], .dark)`)**: obsidian calibrado `#060606` (canvas) e `#0a0a0a` / `#0e0e0e` (superfícies e cards), derivado de forma determinística via `node scripts/generate-dark-theme.mjs`.
+   - **Pureza estrutural**: toda estrutura (canvas, painéis, bordas, textos, sombras, trilhas inativas e gráficos base) permanece **100% acromática (`R = G = B`, `C = 0` em OKLCH)**. Proibido qualquer tom de metal prateado, cromo, ruído metálico ou gradiente frio/quente na arquitetura base.
 
-Identifique a tarefa, o componente, a frequência de uso e os dispositivos. Leia os tokens e primitivas existentes. Preserve a stack, a semântica e o escopo solicitado. Em projeto novo, use React + TypeScript + CSS e componentes compatíveis com shadcn/ui. Em projeto existente, adapte os tokens em vez de introduzir um segundo tema global.
+2. **Superfície Contínua: Transparency (`0–85%`) & Backdrop Blur (`0–32px`)**
+   - O sistema substitui presets discretos antigos (`Solid | Glass | Liquid`) por controle contínuo aplicado via `[data-jh-surface-custom="true"]` com duas variáveis CSS:
+     - `--jh-surface-alpha`: calculada como `(100 - transparency) / 100` (de `1` em `0%` até `0.15` em `85%`).
+     - `--jh-surface-blur`: raio de `backdrop-filter: blur(...)` de `0px` até `32px`.
+   - **Sincronização global para portals**: ao personalizar superfícies no app ou lab, sincronize `--jh-surface-alpha`, `--jh-surface-blur` e `data-jh-surface-custom="true"` em `document.documentElement` para que portals (`Dialog`, `Menu`, `ContextMenu`, `Popover`, `Toast`, `Combobox`, `Picker`, `CommandPalette`) herdem o mesmo estado.
+   - **Invariante de preservação estrita**: ajuste **exclusivamente** a transparência do background da superfície e o `backdrop-filter` de fundo. **NUNCA** reduza, apague ou desfoque a elevação externa (`box-shadow`), a nitidez/cor da tipografia (`color`), ícones SVG, gráficos internos ou tiles de imagens.
+   - **Fundo neutro e fallback acessível**: sempre posicione `<ShaderSurface />` monocromático atrás de palcos translúcidos e garanta fallback opaco limpo em `@media (prefers-reduced-transparency: reduce)`.
 
-Defina um material dominante e um material secundário. O ponto de partida é mineral claro para conteúdo; botões e sliders são de vidro. Vidro também serve às superfícies que flutuam. O relevo skeuomórfico vem da luz e da profundidade do próprio vidro; uma textura narrativa pode destacar um objeto. Barras e escalas devem comunicar dados reais; gráficos decorativos devem ser identificados como ilustração. Não transforme todas as regiões em controles volumétricos.
+3. **Física Tátil Líquida & Emissão OKLCH Confinada**
+   - **Botões líquidos (`.jh-button`)**: depressão responsiva ao ponteiro (`translateY(1px) scale(.985)`) e specular sutil no hover/pointer sem jamais trocar bruscamente a cor da face no `:active`; suporte explícito a estado `loading` (`aria-busy="true"`).
+   - **Emissão OKLCH estrita**: cor cromática em OKLCH existe apenas para emissores controlados pelo usuário, espectros e pinos LED de hardware (`SpectrumControl`, `OKLCHPalette`, `Dial`, `DetentDial`, `Slider`, `BarSlider`, `TactileLever`, `TactileKey`, `TactileKeypad`, `TactileConsole`, `InstrumentBars`, `AudioMeter`, `LunarEphemeris`), sempre confinados em canais de baixo relevo (wells) com estado standby neutro vs. estado ativo iluminado.
+   - **Grips rígidos de vidro**: cursores de slider mantêm corpo rígido e legível acima do canal iluminado.
 
-## Carregue apenas o necessário
+4. **Contrato Unificado de Scrollbars & Galerias**
+   - `ScrollArea`, `SimpleScroll`, `AccordionScroll` e `VerticalGallery` compartilham exatamente a mesma moldura `.jh-scroll-frame > .jh-scroll-area` (elevação única no frame externo, sem cartão aninhado interno, barra fina sem setas de `7px` e respiro lateral simétrico).
+   - Listas e grades roláveis utilizam revelação progressiva na entrada/saída da viewport (`useScrollItemReveal` / `syncScrollItemVisibility`).
+   - `VerticalGallery` inclui seletor inline de proporção (`1:1 | 3:4 | 4:5 | 9:16 | 16:9`) e tiles elevados não rebaixados.
 
-| Tarefa | Referência |
-| --- | --- |
-| Direção visual, composição e paleta monocromática | [Linguagem visual](references/design-language.md) |
-| Kerning, tracking, hierarquia, espaçamento e grids | [Tipografia e layout](references/typography-layout.md) |
-| Skeuomorfismo, glass, liquid glass e relevo | [Materiais](references/materials.md) |
-| Radius, suavização, clipping e contorno | [Cantos contínuos](references/corners.md) |
-| Pressão, molas, gestos e transições | [Movimento tátil](references/motion.md) |
-| Linhas, barras e microinterações SVG | [Instrumentos e SVG](references/instruments.md) |
-| Luz procedural e materiais com shaders | [Shaders](references/shaders.md) |
-| React, CSS, Tailwind e integração shadcn/ui | [Implementação](references/react-shadcn.md) |
-| Revisão, acessibilidade, desempenho e estados extremos | [Critérios de revisão](references/review.md) |
-| Tradução de referências visuais em decisões | [Estudo visual](references/visual-study.md) |
+5. **Tipografia Geist Variable, Cantos Contínuos & Copy em Inglês Americano**
+   - Todo texto da UI (títulos, métricas, tabelas e blocos de código) usa `--jh-font: 'Geist Variable', system-ui, sans-serif` (`@fontsource-variable/geist`) com `font-variant-numeric: tabular-nums` em leituras numéricas.
+   - Cantos contínuos com `SmoothShape` / squircle onde indicado e contraste de sombra realista (`#` em Light, rim light sutil + oclusão em Black/Dark).
+   - Todo texto voltado ao usuário em componentes e exemplos (rótulos, placeholders, nomes acessíveis e status) deve estar em **American English (`en-US`)** e **sentence case** (exceção apenas para siglas consolidadas e termos próprios).
+   - Zero movimento decorativo ocioso: animações respondem apenas a ponteiro, teclado, foco, scroll ou telemetria ativa, respeitando `prefers-reduced-motion: reduce`.
 
-## Contrato de construção
+---
 
-1. **Função antes do material.** Use button, input, link e primitivas acessíveis. Uma aparência de botão precisa corresponder a uma ação. Não invente rotação ou arraste para um comando binário.
-2. **Luz coerente.** Uma direção predominante, brilho de borda estreito e sombra de contato. Profundidade maior significa camada mais alta ou elemento com maior curso, não maior importância indiscriminadamente.
-3. **Texto protegido.** O conteúdo principal fica sobre fundo previsível. Vidro recebe tinta suficiente para preservar legibilidade sobre o fundo real. Rótulos, ícones e contorno de controle não podem depender somente da sombra.
-4. **Forma explícita.** Raio e suavização são parâmetros distintos. Use 60% como ponto de partida da linguagem; não chame um border-radius maior de smoothing. Mantenha foco fora do recorte e fallback arredondado utilizável.
-5. **Resposta contínua.** Pressionar dá feedback imediatamente, a ação confirma em click/ativação semântica. Durante arraste, o controle acompanha o ponteiro. Após soltar, o retorno pode amortecer. Nenhuma animação deve bloquear a próxima ação.
-6. **Movimento proporcional.** Faça a frequência e o propósito definirem a intensidade. Entrada rápida, saída curta, repouso estável. Estados de hover dependem da capacidade de hover. Respeite movimento reduzido também no JavaScript.
-7. **Acabamento resiliente.** Valide teclado, toque, zoom, texto longo, disabled, loading, erro, ausência de blur, transparência reduzida e cores forçadas. O sistema deve continuar compreensível sem os efeitos.
+## Catálogo dos 64 Componentes & Registry Público
 
-Os números sugeridos são pontos de partida ajustáveis à densidade e à matriz de suporte. A base visual monocromática é explícita; um controle de cor pode mostrar a cor que edita sem colorir a página ao redor.
+Todos os **64 componentes** são isolados por prefixos `--jh-*` / `.jh-*`, compatíveis com React 19, Radix UI e shadcn CLI, e servidos diretamente pelo registry público hospedado em `https://jhosephe.vercel.app/r/<id>.json` (showcase interativo em `https://jhosephe.vercel.app`, rotas `/components`, `/lab` e `/solar`):
 
-## Recursos reutilizáveis
+- **Controls (15)**: `button`, `slider`, `switch`, `dial`, `bar-slider`, `radio-group`, `tactile-key`, `tactile-keypad`, `tactile-console`, `camera-wheel`, `camera-dial`, `spectrum-control`, `oklch-palette`, `detent-dial`, `tactile-lever`
+- **Surfaces (10)**: `dialog`, `smooth-shape`, `shader-surface`, `scroll-area`, `simple-scroll`, `accordion-scroll`, `vertical-gallery`, `filmstrip-gallery`, `image-frame`, `data-table`
+- **Instruments (8)**: `instrument`, `image-inspector`, `compass`, `audio-meter`, `weather-instrument`, `attitude-indicator`, `navigation-instrument`, `race-telemetry`
+- **Inputs (8)**: `calendar`, `date-picker`, `input`, `search-input`, `data-form`, `date-time-picker`, `file-transfer`, `combobox`
+- **Navigation (9)**: `menu`, `gallery`, `segmented-control`, `context-menu`, `step-navigation`, `accordion`, `finance-navigation`, `tabs`, `command-palette`
+- **Feedback (3)**: `toast`, `progress-bar`, `metric-card`
+- **Finance (4)**: `financial-chart`, `market-picker`, `currency-picker`, `financial-order-modal`
+- **Astronomy (4)**: `astronomy-instrument`, `ephemeris-picker`, `astrology-wheel`, `lunar-ephemeris`
+- **Weather (3)**: `weather-conditions`, `wind-instrument`, `tide-instrument`
 
-[assets/ui](assets/ui) contém CSS e componentes funcionais: Button, SmoothShape, Switch, Slider, Dial, Dialog, InstrumentBars, ShaderSurface, BarSlider, Calendar, DatePicker, DateTimePicker, Menu, ActionMenu, Toast, Gallery, Input, SearchInput, DataForm, RadioGroup, SegmentedControl, ScrollArea, TactileKey, Compass, SpectrumControl e StepNavigation. Leia [integração](references/react-shadcn.md) antes de copiá-los. A geometria usa uma dependência declarada; não exige outra skill. A home e a página de detalhes usam as mesmas implementações interativas do registro.
+Instalação direta via CLI:
 
-## Interação física e linguagem
+```sh
+npx shadcn@latest add https://jhosephe.vercel.app/r/button.json
+```
 
-- Use inglês americano em todo texto de produto, nomes acessíveis, estados, mensagens e exemplos. Geist Sans também em números e código.
-- Sliders têm uma trilha um pouco mais larga, quase plana, com pouca sombra. O thumb translúcido parece vidro fosco, mas continua fácil de encontrar. O caminho preenchido é branco semitransparente, com blur e brilho discreto. Barras interativas acompanham arraste e teclado; mostre o valor verdadeiro.
-- Switches têm canal claro, mais arredondado e simples, com respiro ao redor. Uma peça móvel de vidro comunica o estado por posição e forma.
-- Ícones permanecem planos, suaves e semitransparentes, sem sombra ou efeito gravado. Preserve silhueta, espessura do traço e contraste em tamanhos pequenos.
-- Campos de texto usam uma face clara rebaixada como a busca. Ao focar, mude a face e adicione um realce interno muito suave; não desenhe um anel externo escuro. O foco deve continuar perceptível por teclado.
-- Menus de escolha devem compartilhar o material glass dos componentes; não deixe o dropdown padrão do navegador destoar da interface.
-- Variações de hover dão retorno imediato e calmo, sem elevar demais nem transformar a face em branco puro; no clique (`:active`), **o botão não muda de cor** — responde apenas por afundamento uniforme curto (`translateY(1px) scale(.985)`) e compressão sutil da sombra, sem esmagamento assimétrico ou salto entre estados. Em operações assíncronas reais, exponha o estado `loading` com spinner acromático inline (`aria-busy`) e posicionamento contextual ao fluxo. Evite animação hover em dispositivos sem hover e respeite movimento reduzido.
-- O dia selecionado no calendário se distingue por valor e uma face clara quase plana; não use uma sombra escura para forçar a seleção.
-- Dials usam o ângulo real do ponteiro para girar no mesmo lado e direção. Preserve o arco de valores, trate o trecho inferior sem escala como limite e mantenha alternativa de teclado.
-- Modais complexos agrupam contexto, informações e ações em hierarquia legível. Pickers maiores combinam seleção, disponibilidade e confirmação sem esconder cancelar ou limpar.
-- Não use ALL CAPS como estilo de texto de produto. Prefira sentence case em nomes, rótulos, estados, metadados e botões.
-- Dials têm assento recuado, lateral visível e sombra de contato. A luz permanece fixa enquanto apenas o indicador gira. O ponteiro angular segue a posição e o sentido do cursor; limites, step, setor sem escala, teclado e cancelamento são explícitos.
-- Use cursor grab em controles arrastáveis e grabbing durante o gesto. Evite animar o valor atrás do ponteiro.
-- Traduza instrumentos vintage em proporções, escalas, alavancas e volume, mantendo a identidade clara, monocromática e sem metal.
-- Navegação entre componentes mantém a estrutura da página, histórico, foco e rolagem; transições curtas e interrompíveis, removidas com movimento reduzido.
-- Catálogos oferecem prévia, personalização, código real e instalação verificável; exemplos não fingem salvar dados em servidor.
+---
 
-## Fluxo de trabalho
+## Fluxo de Trabalho Recomendado
 
-- Comece por estrutura, estados, tokens, escala tipográfica e grid. Confira alinhamentos e relações de espaço com o conteúdo real. Aplique material ao componente funcionando.
-- Para novo sistema, estabeleça uma pequena amostra: superfície, ação, entrada de dados e sobreposição. Só propague depois de conferir esses quatro casos.
-- Para revisão, registre evidência por arquivo/linha ou captura. Diferencie erro funcional de preferência estética e de hipótese que ainda precisa de medição.
-- Para gesto ou transição, teste interrupção, cancelamento, reversão e redução de movimento. Meça frames quando houver indício de custo; não prometa GPU ou desempenho a partir de uma propriedade CSS.
-- Entregue o artefato, as decisões relevantes, a verificação feita e os limites reais. Não entregue apenas adjetivos ou uma lista de inspirações.
+1. **Definir linguagem, tema e paleta acromática**: leia [design-language.md](references/design-language.md) para tokens de superfície Light/Black, regras OKLCH, idioma `en-US` e proibição de metal.
+2. **Estruturar grid, escalas e tipografia Geist Variable**: siga [typography-layout.md](references/typography-layout.md) e [corners.md](references/corners.md).
+3. **Aplicar física de materiais, transparência contínua e scrollbars**: siga [materials.md](references/materials.md) e consulte [shaders.md](references/shaders.md) e [motion.md](references/motion.md).
+4. **Instrumentação, óptica e React/shadcn**: consulte [instruments.md](references/instruments.md) para hardware, câmeras e efemérides, e [react-shadcn.md](references/react-shadcn.md) para contratos de tokens `--jh-*`, portals e build do registry.
+5. **Revisão técnica e visual**: verifique a entrega contra [review.md](references/review.md), [visual-study.md](references/visual-study.md) e a documentação canônica em [design-system.md](docs/design-system.md).
 
-## Evite
+## Recursos no Repositório
 
-Vidro em toda a tela; sombras simétricas que apagam limites; bloom sobre texto; textura em formulários; bounce em cada clique; transition: all; blur animado como disfarce universal; número importante rolando por decoração; elemento invisível ainda focável; máscara cortando foco; fontes pequenas para compensar falta de espaço.
-
-Use a identidade **jhosephe** em títulos, instruções e exemplos. Não introduza personas ou assinaturas de autores de referências. Ao incorporar uma dependência ou código de terceiro, preserve os avisos que acompanham esse material; os recursos deste pacote são redigidos para esta identidade.
+- Primitivos de UI, estilos e tokens de referência em [assets/ui](assets/ui)
+- Especificação detalhada do Design System em [docs/design-system.md](docs/design-system.md)
+- Guias focados por domínio em `references/` (todos linkados acima)

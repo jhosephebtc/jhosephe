@@ -1,6 +1,8 @@
+import { useRef, type CSSProperties } from 'react';
 import { Accordion, type AccordionItem } from './accordion';
 import { cn } from './utils';
-import type { SurfaceMaterial } from './weather-ephemeris';
+import { useScrollItemReveal } from './vertical-gallery';
+import { surfaceMaterialAttr, type SurfaceMaterial } from './weather-ephemeris';
 
 const DEFAULT_ITEMS: AccordionItem[] = [
   {
@@ -47,26 +49,49 @@ export function AccordionScroll({
   type = 'single',
   defaultValue = 'spacing',
   maxHeight = 264,
+  width,
   material = 'solid',
   className,
+  style,
 }: {
   items?: AccordionItem[];
   label?: string;
   type?: 'single' | 'multiple';
   defaultValue?: string | string[];
-  maxHeight?: number;
+  maxHeight?: number | string;
+  width?: number | string;
   material?: SurfaceMaterial;
   className?: string;
+  style?: CSSProperties;
 }) {
+  const viewportRef = useRef<HTMLDivElement>(null);
+  useScrollItemReveal(viewportRef, [items.length, maxHeight, material], '.jh-accordion__item');
+
   return (
-    <Accordion
-      items={items}
-      label={label}
-      type={type}
-      defaultValue={defaultValue}
-      maxHeight={maxHeight}
-      material={material}
-      className={cn('jh-accordion-scroll', className)}
-    />
+    <div
+      className={cn('jh-scroll-frame jh-accordion-scroll', className)}
+      data-jh-material={surfaceMaterialAttr(material)}
+      style={{
+        width: typeof width === 'number' ? `${width}px` : width,
+        ...style,
+      }}
+    >
+      <div
+        ref={viewportRef}
+        className="jh-scroll-area jh-accordion-scroll__viewport"
+        style={{ height: typeof maxHeight === 'number' ? `${maxHeight}px` : maxHeight }}
+        tabIndex={0}
+        role="region"
+        aria-label={label}
+      >
+        <Accordion
+          items={items}
+          label={label}
+          type={type}
+          defaultValue={defaultValue}
+          material={material}
+        />
+      </div>
+    </div>
   );
 }

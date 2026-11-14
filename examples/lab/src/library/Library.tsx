@@ -1,5 +1,5 @@
-import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent as ReactKeyboardEvent, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react';
-import { ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, Check, ChevronDown, ChevronRight, Code2, Copy, CornerDownLeft, Grid2X2, Menu, Monitor, RotateCcw, Search, Smartphone, Sun, X } from 'lucide-react';
+import { useEffect, useId, useMemo, useRef, useState, type CSSProperties, type KeyboardEvent as ReactKeyboardEvent, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react';
+import { ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, Check, ChevronDown, ChevronRight, Code2, Copy, CornerDownLeft, Grid2X2, Menu, Monitor, RotateCcw, Search, Smartphone, Star, Sun, X } from 'lucide-react';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { Button } from '../../../../assets/ui/button';
 import { Dial } from '../../../../assets/ui/dial';
@@ -15,7 +15,7 @@ import { extraComponents } from './extra-data';
 import { SearchInput } from '../../../../assets/ui/search-input';
 import { OklchPalette } from '../../../../assets/ui/oklch-palette';
 import { useLibraryNavigation } from './use-navigation';
-import { ThemeToggle } from '../theme';
+import { ThemeToggle, useJhosepheTheme } from '../theme';
 import { useScrollItemReveal } from '../../../../assets/ui/vertical-gallery';
 import './library.css';
 
@@ -170,9 +170,9 @@ function Header({ path }: { path: string }) {
     <div className="library-header-inner">
       <a className="library-brand" href="/" aria-label="jhosephe, home"><Mark /><span>jhosephe<span className="library-brand-dot">.</span></span></a>
       <nav className="library-header-nav" aria-label="Main navigation"><a aria-current={path.startsWith('/components') ? 'page' : undefined} href="/components">Components</a><a href="/lab">Laboratory</a><a href="/solar">Solar <ArrowUpRight size={12} aria-hidden="true" /></a></nav>
-      <div className="library-header-actions"><SearchDialog /><ThemeToggle /><button className="library-menu" aria-label={menu ? 'Close navigation' : 'Open navigation'} aria-expanded={menu} aria-controls="library-mobile-nav" onClick={() => setMenu(!menu)}>{menu ? <X {...iconProps} /> : <Menu {...iconProps} />}</button><span className="library-version">v0.1</span></div>
+      <div className="library-header-actions"><SearchDialog /><a className="jh-github-star" href="https://github.com/jhosephebtc/jhosephe" target="_blank" rel="noreferrer" aria-label="Star jhosephe on GitHub"><Star size={14} strokeWidth={1.75} aria-hidden="true" /><span>Star on GitHub</span></a><ThemeToggle /><button className="library-menu" aria-label={menu ? 'Close navigation' : 'Open navigation'} aria-expanded={menu} aria-controls="library-mobile-nav" onClick={() => setMenu(!menu)}>{menu ? <X {...iconProps} /> : <Menu {...iconProps} />}</button><span className="library-version">v0.1</span></div>
     </div>
-    {menu && <nav id="library-mobile-nav" className="library-mobile-nav" aria-label="Mobile navigation"><a href="/components">All components</a><a href="/installation">Installation</a><a href="/lab">Laboratory</a><a href="/solar">Solar panel</a>{components.map(item => <a key={item.id} href={`/components/${item.id}`}>{item.name}</a>)}</nav>}
+    {menu && <nav id="library-mobile-nav" className="library-mobile-nav" aria-label="Mobile navigation"><a href="/components">All components</a><a href="/installation">Installation</a><a href="/lab">Laboratory</a><a href="/solar">Solar panel</a><a className="jh-github-star library-mobile-star" href="https://github.com/jhosephebtc/jhosephe" target="_blank" rel="noreferrer" aria-label="Star jhosephe on GitHub"><Star size={14} strokeWidth={1.75} aria-hidden="true" /><span>Star on GitHub</span></a>{components.map(item => <a key={item.id} href={`/components/${item.id}`}>{item.name}</a>)}</nav>}
   </header>;
 }
 
@@ -329,12 +329,14 @@ function SelectField({ label, value, options, onChange }: { label: string; value
 
 function Customizer({ id, settings: s, change, reset }: { id: ComponentId; settings: Settings; change: (value: Partial<Settings>) => void; reset: () => void }) {
   return <section className="library-customizer" aria-labelledby="customizer-title"><div className="library-customizer-head"><h2 id="customizer-title">Make it your own.</h2><button aria-label="Reset settings" onClick={reset}><RotateCcw {...iconProps} /></button></div><p>The code follows every adjustment.</p>
-    <SelectField label="Appearance" value={s.material} options={[{ value: 'solid', label: 'Solid' }, { value: 'liquid-glass', label: 'Glass' }, { value: 'liquid', label: 'Liquid' }]} onChange={material => change({ material: material as Settings['material'] })} />
+    <RangeField label="Transparency" value={s.surfaceTransparency} min={0} max={85} unit="%" onChange={surfaceTransparency => change({ surfaceTransparency })} />
+    <RangeField label="Blur" value={s.surfaceBlur} min={0} max={32} unit=" px" onChange={surfaceBlur => change({ surfaceBlur })} />
     {id === 'button' && <><label className="library-text-field">Label<input value={s.label} maxLength={60} onChange={event => change({ label: event.target.value })} /></label><SelectField label="Variant" value={s.variant} options={[{ value: 'primary', label: 'Primary' }, { value: 'secondary', label: 'Secondary' }, { value: 'ghost', label: 'Ghost' }, { value: 'working', label: 'Working' }]} onChange={variant => change({ variant: variant as Settings['variant'] })} /><RangeField label="Corner radius" value={s.radius} max={32} unit=" px" onChange={radius => change({ radius })} /><RangeField label="Corner smoothness" value={s.smoothing} unit="%" onChange={smoothing => change({ smoothing })} /><ToggleField label="Liquid feedback" checked={s.liquid} onChange={liquid => change({ liquid })} /><ToggleField label="Working / loading" checked={s.loading} onChange={loading => change({ loading })} /></>}
     {['slider', 'dial', 'instrument', 'bar-slider'].includes(id) && <RangeField label="Value" value={s.value} unit="%" onChange={value => change({ value })} />}
     {id === 'dial' && <SelectField label="Edition" value={s.dialVariant} options={[{ value: 'classic', label: 'Classic' }, { value: 'arc', label: 'Arc ring' }, { value: 'vernier', label: 'Vernier' }, { value: 'monolith', label: 'Monolith' }]} onChange={dialVariant => change({ dialVariant: dialVariant as Settings['dialVariant'] })} />}
     {id === 'instrument' && <SelectField label="Orientation" value={s.instrumentOrientation} options={[{ value: 'horizontal', label: 'Horizontal' }, { value: 'vertical', label: 'Vertical' }]} onChange={instrumentOrientation => change({ instrumentOrientation: instrumentOrientation as Settings['instrumentOrientation'] })} />}
     {['slider', 'bar-slider', 'dial', 'instrument', 'tactile-lever', 'audio-meter'].includes(id) && <>{(id !== 'audio-meter' || s.audioColorScale === 'accent') && <><div className="library-palette-setting"><span>Accent light</span><OklchPalette label="Choose the accent light color" value={s.accentColor} onValueChange={accentColor => change({ accentColor })} material={s.material} /></div><ToggleField label="Accent gradient" checked={s.accentGradient} onChange={accentGradient => change({ accentGradient })} />{s.accentGradient && <div className="library-palette-setting"><span>Gradient end</span><OklchPalette label="Choose the gradient end color" value={s.accentColorEnd} onValueChange={accentColorEnd => change({ accentColorEnd })} material={s.material} /></div>}</>}<RangeField label="Glow intensity" value={s.glowIntensity} unit="%" onChange={glowIntensity => change({ glowIntensity })} /><RangeField label="Glow blur" value={s.glowBlur} max={16} unit=" px" onChange={glowBlur => change({ glowBlur })} /></>}
+    {['attitude-indicator', 'navigation-instrument', 'compass', 'race-telemetry', 'weather-instrument', 'weather-conditions', 'wind-instrument', 'tide-instrument', 'financial-chart', 'market-picker', 'currency-picker', 'metric-card', 'astronomy-instrument', 'astrology-wheel', 'lunar-ephemeris'].includes(id) && <div className="library-palette-setting"><span>Accent light</span><OklchPalette label="Choose the accent light color" value={s.accentColor} onValueChange={accentColor => change({ accentColor })} material={s.material} /></div>}
     {['slider', 'bar-slider'].includes(id) && <><RangeField label="Thumb thickness" value={s.thumbThickness} min={8} max={30} unit=" px" onChange={thumbThickness => change({ thumbThickness })} /><RangeField label="Thumb height" value={s.thumbHeight} min={20} max={58} unit=" px" onChange={thumbHeight => change({ thumbHeight })} /><RangeField label="Thumb corner radius" value={s.thumbRadius} min={0} max={18} unit=" px" onChange={thumbRadius => change({ thumbRadius })} /></>}
     {id === 'progress-bar' && <RangeField label="Progress" value={s.progressValue} unit="%" onChange={progressValue => change({ progressValue })} />}
     {id === 'switch' && <ToggleField label="Enabled" checked={s.checked} onChange={checked => change({ checked })} />}
@@ -494,16 +496,34 @@ function ComponentPage({ item }: { item: ComponentInfo }) {
   const [tab, setTab] = useState<'preview' | 'code'>('preview');
   const [narrow, setNarrow] = useState(false);
   const [source, setSource] = useState(false);
-  const change = (patch: Partial<Settings>) => setSettings(old => ({ ...old, ...patch }));
+  const { surfaceTransparency, setSurfaceTransparency, surfaceBlur, setSurfaceBlur, resetSurface } = useJhosepheTheme();
+  const effectiveSettings = useMemo(
+    () => ({ ...settings, surfaceTransparency, surfaceBlur }),
+    [settings, surfaceTransparency, surfaceBlur],
+  );
+  const change = (patch: Partial<Settings>) => {
+    if (patch.surfaceTransparency !== undefined) setSurfaceTransparency(patch.surfaceTransparency);
+    if (patch.surfaceBlur !== undefined) setSurfaceBlur(patch.surfaceBlur);
+    setSettings(old => ({ ...old, ...patch }));
+  };
   const index = components.indexOf(item);
   const next = components[(index + 1) % components.length];
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const hasSurfaceEffect = surfaceTransparency > 0 || surfaceBlur > 0;
+  const surfaceAlpha = Number(((100 - surfaceTransparency) / 100).toFixed(3));
+  const surfaceVars = hasSurfaceEffect
+    ? ({
+        '--jh-surface-alpha': String(surfaceAlpha),
+        '--jh-surface-blur': `${surfaceBlur}px`,
+      } as CSSProperties)
+    : undefined;
+
   return <main tabIndex={-1} id="library-main" className="library-main library-detail"><div className="library-breadcrumb"><a href="/components">Components</a><ChevronRight size={12} aria-hidden="true" /><span>{item.name}</span></div><div className="library-page-heading"><span className="library-eyebrow">{item.category} / {item.tag}</span><h1>{item.name}</h1><p>{item.detail}</p></div>
     <div className="library-detail-toolbar"><div role="tablist" aria-label="Component view" className="library-tabs">{(['preview', 'code'] as const).map((value, i) => <button key={value} ref={element => { tabRefs.current[i] = element; }} id={`tab-${value}`} aria-controls={`panel-${value}`} role="tab" tabIndex={tab === value ? 0 : -1} aria-selected={tab === value} onClick={() => setTab(value)} onKeyDown={event => { if (['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) { event.preventDefault(); const target = event.key === 'Home' ? 0 : event.key === 'End' ? 1 : 1 - i; setTab(target === 0 ? 'preview' : 'code'); tabRefs.current[target]?.focus(); } }}>{value === 'preview' ? <><Monitor {...iconProps} />Preview</> : <><Code2 {...iconProps} />Code</>}</button>)}</div>{tab === 'preview' && <div className="library-view-toggle" aria-label="Preview width"><button aria-label="Wide preview" aria-pressed={!narrow} onClick={() => setNarrow(false)}><Monitor {...iconProps} /></button><button aria-label="Compact preview" aria-pressed={narrow} onClick={() => setNarrow(true)}><Smartphone {...iconProps} /></button></div>}</div>
     <div className="library-playground">
-      <div id="panel-preview" role="tabpanel" aria-labelledby="tab-preview" hidden={tab !== 'preview'} tabIndex={0}><div className={`library-preview-stage library-preview-stage--${item.id} ${narrow ? 'is-narrow' : ''}${settings.material === 'liquid' ? ' is-liquid-stage' : settings.material === 'liquid-glass' ? ' is-glass-stage' : ''}`}>{settings.material === 'liquid' && <div className="library-material-backdrop" aria-hidden="true"><ShaderSurface /></div>}<span className="library-preview-caption">{item.tag} / Interactive</span><div className="library-preview-object" data-jh-material={settings.material}><Preview id={item.id} settings={settings} onChange={change} /></div><span className="library-preview-hint">{item.id === 'instrument' ? 'Drag across the bars or use the arrow keys.' : item.id === 'shader-surface' ? 'Light adapts to your device’s motion preferences.' : settings.material === 'liquid' ? 'Liquid needs light behind it — the stage adapts so the sheen can read.' : 'Try a touch. Feel the response.'}</span></div></div>
-      <div id="panel-code" role="tabpanel" aria-labelledby="tab-code" hidden={tab !== 'code'} tabIndex={0}><div className="library-code-switch"><button aria-pressed={!source} onClick={() => setSource(false)}>Your configuration</button><button aria-pressed={source} onClick={() => setSource(true)}>Component files</button></div>{tab === 'code' && (source ? <SourceCode id={item.id} /> : <CodeBlock title="example.tsx" value={usage(item.id, settings)} />)}</div>
-      <Customizer id={item.id} settings={settings} change={change} reset={() => setSettings(settingsFor(item.id))} />
+      <div id="panel-preview" role="tabpanel" aria-labelledby="tab-preview" hidden={tab !== 'preview'} tabIndex={0}><div className={`library-preview-stage library-preview-stage--${item.id} ${narrow ? 'is-narrow' : ''}`}><span className="library-preview-caption">{item.tag} / Interactive</span><div className="library-preview-object" data-jh-material={effectiveSettings.material} data-jh-surface-custom={hasSurfaceEffect ? 'true' : undefined} style={surfaceVars}><Preview id={item.id} settings={effectiveSettings} onChange={change} /></div><span className="library-preview-hint">{item.id === 'instrument' ? 'Drag across the bars or use the arrow keys.' : item.id === 'shader-surface' ? 'Light adapts to your device’s motion preferences.' : hasSurfaceEffect ? 'Adjust Transparency and Blur to inspect translucent backdrop diffusion.' : 'Try a touch. Feel the response.'}</span></div></div>
+      <div id="panel-code" role="tabpanel" aria-labelledby="tab-code" hidden={tab !== 'code'} tabIndex={0}><div className="library-code-switch"><button aria-pressed={!source} onClick={() => setSource(false)}>Your configuration</button><button aria-pressed={source} onClick={() => setSource(true)}>Component files</button></div>{tab === 'code' && (source ? <SourceCode id={item.id} /> : <CodeBlock title="example.tsx" value={usage(item.id, effectiveSettings)} />)}</div>
+      <Customizer id={item.id} settings={effectiveSettings} change={change} reset={() => { setSettings(settingsFor(item.id)); resetSurface(); }} />
     </div>
     {item.id === 'dial' && (
       <section className="library-dial-versions" aria-labelledby="dial-versions-heading">
@@ -519,6 +539,8 @@ function ComponentPage({ item }: { item: ComponentInfo }) {
               key={variantId}
               className={`library-dial-version-card${settings.dialVariant === variantId ? ' is-selected' : ''}`}
               data-jh-material={settings.material}
+              data-jh-surface-custom={hasSurfaceEffect ? 'true' : undefined}
+              style={surfaceVars}
             >
               <div className="library-dial-version-stage" onPointerDown={() => change({ dialVariant: variantId })}>
                 <Dial

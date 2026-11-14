@@ -102,6 +102,9 @@
 }
 @media (max-width: 600px) {
   .topbar, .footer { padding-inline: 6%; }
+  .topbar { gap: 8px; }
+  .topbar .jh-github-star { padding-inline: 10px; }
+  .topbar .jh-github-star span { display: none; }
   .topbar__link { font-size: 9px; }
   .intro { min-height: 390px; }
   .intro h1 { font-size: clamp(61px, 15vw, 86px); }
@@ -161,13 +164,17 @@
 .instrument-workbench__picker-card p { margin:0 0 6px; color:#6b6b6b; font-size:12px; line-height:1.55; }
 
 .tactile-study { width:min(100% - clamp(28px, 5vw, 80px), 1400px); margin:0 auto; padding:78px 0 88px; border-top:1px solid #00000008; }
-.tactile-study__material { display:flex; align-items:flex-end; }
+.tactile-study__material { display:flex; align-items:flex-end; gap:18px; flex-wrap:wrap; }
+.tactile-study__surface-control { display:grid; gap:6px; width:168px; min-width:0; }
+.tactile-study__surface-head { display:flex; justify-content:space-between; gap:10px; align-items:center; font-size:11px; color:#555; }
+.tactile-study__surface-head output { font-variant-numeric:tabular-nums; color:#353535; }
 .tactile-study__stage { position:relative; overflow:hidden; padding:26px; border-radius:28px; background:#f4f4f4; box-shadow:inset 0 1px #fff,inset 0 0 0 1px rgb(0 0 0 / .045); }
 .tactile-study__stage.is-layered { background:transparent; }
 .tactile-study__backdrop { position:absolute; inset:0; z-index:0; overflow:hidden; border-radius:inherit; pointer-events:none; }
 .tactile-study__backdrop .jh-shader-surface { width:100%; height:100%; }
 .tactile-study__grid { position:relative; z-index:1; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px; align-items:start; }
 .tactile-study__panel { display:grid; gap:20px; padding:24px; border-radius:22px; background:#fafafa; box-shadow:inset 0 1px #fff,inset 0 0 0 1px rgb(0 0 0 / .045),0 4px 12px -8px rgb(0 0 0 / .08),0 1px 4px -2px rgb(0 0 0 / .03); min-width:0; }
+.tactile-study__stage[data-jh-surface-custom="true"] .tactile-study__panel { background:rgb(250 250 250 / var(--jh-surface-alpha, 1)); background-image:none; backdrop-filter:blur(var(--jh-surface-blur, 0px)); -webkit-backdrop-filter:blur(var(--jh-surface-blur, 0px)); }
 .tactile-study__stage[data-jh-material="liquid-glass"] .tactile-study__panel { background:rgb(255 255 255 / .74); backdrop-filter:blur(18px) saturate(1.05); -webkit-backdrop-filter:blur(18px) saturate(1.05); }
 .tactile-study__stage[data-jh-material="liquid"] .tactile-study__panel { background:linear-gradient(165deg,rgb(255 255 255 / .66),rgb(245 245 245 / .38)); backdrop-filter:blur(22px) saturate(1.14); -webkit-backdrop-filter:blur(22px) saturate(1.14); }
 .tactile-study__panel--stack > * { width:100%; max-width:none; }
@@ -187,6 +194,8 @@
 @media (max-width:600px) {
   .instrument-study,.tactile-study { width:calc(100% - 32px); padding:54px 0; }
   .instrument-study__heading { align-items:flex-start; flex-direction:column; }
+  .tactile-study__material { width:100%; gap:14px; }
+  .tactile-study__surface-control { flex:1 1 136px; width:auto; }
   .tactile-study__stage { padding:14px; border-radius:20px; }
   .tactile-study__panel { padding:16px; }
 }
@@ -445,6 +454,12 @@
 :is([data-jh-theme="dark"], .dark) .tactile-study {
   border-top: 1px solid rgb(255 255 255 / .005);
 }
+:is([data-jh-theme="dark"], .dark) .tactile-study__surface-head {
+  color: rgb(206 206 206);
+}
+:is([data-jh-theme="dark"], .dark) .tactile-study__surface-head output {
+  color: rgb(220 220 220);
+}
 :is([data-jh-theme="dark"], .dark) .tactile-study__stage {
   background: rgb(10 10 10);
   box-shadow: inset 0 1px rgb(255 255 255 / .014), inset 0 0 0 1px rgb(255 255 255 / .008);
@@ -452,6 +467,9 @@
 :is([data-jh-theme="dark"], .dark) .tactile-study__panel {
   background: rgb(10 10 10);
   box-shadow: inset 0 1px rgb(255 255 255 / .014), inset 0 0 0 1px rgb(255 255 255 / .008), 0 4px 12px -8px rgb(0 0 0 / .6), 0 1px 4px -2px rgb(0 0 0 / .6);
+}
+:is([data-jh-theme="dark"], .dark) .tactile-study__stage[data-jh-surface-custom="true"] .tactile-study__panel {
+  background-image: none;
 }
 :is([data-jh-theme="dark"], .dark) .tactile-study__stage[data-jh-material="liquid-glass"] .tactile-study__panel {
   background: rgb(10 10 10 / .9);
@@ -468,5 +486,17 @@
 }
 :is([data-jh-theme="dark"], .dark) .relief-art {
   background: radial-gradient(ellipse at 50% 20%, #0d0d0d, #070707);
+}
+:is([data-jh-theme="dark"], .dark) .tactile-study__surface-head {
+  color: #9c9c9c;
+}
+:is([data-jh-theme="dark"], .dark) .tactile-study__surface-head output {
+  color: #ededed;
+}
+:is([data-jh-theme="dark"], .dark) .tactile-study__stage[data-jh-surface-custom="true"] .tactile-study__panel {
+  background: rgb(12 12 12 / var(--jh-surface-alpha, 1)) !important;
+  background-image: none !important;
+  backdrop-filter: blur(var(--jh-surface-blur, 0px)) !important;
+  -webkit-backdrop-filter: blur(var(--jh-surface-blur, 0px)) !important;
 }
 /* === JH_BLACK_THEME_END === */

@@ -1,7 +1,7 @@
 import './lab.css';
-import { ThemeToggle } from './theme';
-import { useMemo, useState } from 'react';
-import { ArrowDown, ArrowUpRight, Check, CircleDashed, MoveRight, Sparkles } from 'lucide-react';
+import { ThemeToggle, useJhosepheTheme } from './theme';
+import { useId, useMemo, useState, type CSSProperties } from 'react';
+import { ArrowDown, ArrowUpRight, Check, CircleDashed, MoveRight, Sparkles, Star } from 'lucide-react';
 import { Accordion } from '../../../assets/ui/accordion';
 import { AstrologyWheel } from '../../../assets/ui/astrology-wheel';
 import { AstronomyInstrument } from '../../../assets/ui/astronomy-instrument';
@@ -21,7 +21,6 @@ import { FinancialChart } from '../../../assets/ui/financial-chart';
 import { InstrumentBars } from '../../../assets/ui/instrument';
 import { LunarEphemeris } from '../../../assets/ui/lunar-ephemeris';
 import { MetricCard } from '../../../assets/ui/metric-card';
-import { SegmentedControl } from '../../../assets/ui/segmented-control';
 import { ShaderSurface } from '../../../assets/ui/shader-surface';
 import { SmoothShape } from '../../../assets/ui/smooth-shape';
 import { SpectrumControl } from '../../../assets/ui/spectrum-control';
@@ -32,7 +31,6 @@ import { TideInstrument } from '../../../assets/ui/tide-instrument';
 import { WeatherConditions } from '../../../assets/ui/weather-conditions';
 import { WeatherInstrument } from '../../../assets/ui/weather-instrument';
 import { WindInstrument } from '../../../assets/ui/wind-instrument';
-import type { SurfaceMaterial } from '../../../assets/ui/weather-ephemeris';
 
 function Wordmark() {
   return <a className="brand" href="/" aria-label="jhosephe, home">
@@ -142,7 +140,9 @@ const LAB_STATION_ROWS: StationRow[] = [
 ];
 
 function TactileStudy() {
-  const [material, setMaterial] = useState<SurfaceMaterial>('solid');
+  const { surfaceTransparency, setSurfaceTransparency, surfaceBlur, setSurfaceBlur } = useJhosepheTheme();
+  const transparencyLabelId = useId();
+  const blurLabelId = useId();
   const [outputLevel, setOutputLevel] = useState(68);
   const [detent, setDetent] = useState(1);
   const [pulseHeld, setPulseHeld] = useState(true);
@@ -151,6 +151,14 @@ function TactileStudy() {
   const [saturation, setSaturation] = useState(28);
   const [lightness, setLightness] = useState(72);
 
+  const hasSurfaceEffect = surfaceTransparency > 0 || surfaceBlur > 0;
+  const surfaceAlpha = Number(((100 - surfaceTransparency) / 100).toFixed(3));
+  const surfaceVars = hasSurfaceEffect
+    ? ({
+        '--jh-surface-alpha': String(surfaceAlpha),
+        '--jh-surface-blur': `${surfaceBlur}px`,
+      } as CSSProperties)
+    : undefined;
   const accentColor = `hsl(${Math.round(hue)} ${Math.round(saturation)}% ${Math.round(lightness)}%)`;
   const signalSeries = useMemo(
     () => [
@@ -173,25 +181,42 @@ function TactileStudy() {
           <h2 id="tactile-study-title">Every touch calibrated.</h2>
         </div>
         <div className="tactile-study__material">
-          <SegmentedControl
-            label="Study finish"
-            value={material}
-            onValueChange={next => setMaterial(next as SurfaceMaterial)}
-            options={[
-              { value: 'solid', label: 'Solid' },
-              { value: 'liquid-glass', label: 'Glass' },
-              { value: 'liquid', label: 'Liquid' },
-            ]}
-          />
+          <div className="tactile-study__surface-control">
+            <div className="tactile-study__surface-head">
+              <span id={transparencyLabelId}>Transparency</span>
+              <output>{surfaceTransparency}%</output>
+            </div>
+            <Slider
+              labelId={transparencyLabelId}
+              value={[surfaceTransparency]}
+              min={0}
+              max={85}
+              step={1}
+              onValueChange={values => setSurfaceTransparency(values[0])}
+            />
+          </div>
+          <div className="tactile-study__surface-control">
+            <div className="tactile-study__surface-head">
+              <span id={blurLabelId}>Blur</span>
+              <output>{surfaceBlur} px</output>
+            </div>
+            <Slider
+              labelId={blurLabelId}
+              value={[surfaceBlur]}
+              min={0}
+              max={32}
+              step={1}
+              onValueChange={values => setSurfaceBlur(values[0])}
+            />
+          </div>
         </div>
       </div>
 
-      <div className={`tactile-study__stage${material !== 'solid' ? ' is-layered' : ''}`} data-jh-material={material}>
-        {material !== 'solid' && (
-          <div className="tactile-study__backdrop" aria-hidden="true">
-            <ShaderSurface />
-          </div>
-        )}
+      <div
+        className="tactile-study__stage"
+        data-jh-surface-custom={hasSurfaceEffect ? 'true' : undefined}
+        style={surfaceVars}
+      >
         <div className="tactile-study__grid">
           <div className="tactile-study__panel">
             <div className="tactile-study__sliders">
@@ -224,10 +249,10 @@ function TactileStudy() {
               </div>
             </div>
             <div className="tactile-study__keys">
-              <TactileKey pressed={pulseHeld} onPressedChange={setPulseHeld} material={material}>
+              <TactileKey pressed={pulseHeld} onPressedChange={setPulseHeld}>
                 <span>{pulseHeld ? 'Signal armed' : 'Standby'}</span>
               </TactileKey>
-              <TactileKey pressed={muted} onPressedChange={setMuted} size="compact" material={material}>
+              <TactileKey pressed={muted} onPressedChange={setMuted} size="compact">
                 <span>{muted ? 'Glow low' : 'Glow active'}</span>
               </TactileKey>
             </div>
@@ -242,7 +267,6 @@ function TactileStudy() {
               deltaDirection="neutral"
               caption="Linked to bar slider, lever, and detent dial"
               series={signalSeries}
-              material={material}
             />
             <SpectrumControl
               label="Optical tint"
@@ -256,9 +280,8 @@ function TactileStudy() {
             <Accordion
               label="System notes"
               defaultValue="surface"
-              material={material}
               items={[
-                { value: 'surface', title: 'Material continuity', content: 'Switch between Solid, Glass, and Liquid to compare optical depth on the same hardware controls.' },
+                { value: 'surface', title: 'Material continuity', content: 'Tune Transparency and Blur continuously to adjust backdrop diffusion on the same hardware controls.' },
                 { value: 'motion', title: 'Coupled range semantics', content: 'Bar slider and vertical lever write to the same numeric state without stepping on each other.' },
               ]}
             />
@@ -345,7 +368,7 @@ export function App() {
   return (
     <div className="site" id="inicio">
       <a className="skip-link" href="#conteudo">Skip to content</a>
-      <header className="topbar"><Wordmark /><div className="topbar__middle">Interface laboratory</div><a className="topbar__link" href="/solar">Solar panel <ArrowUpRight size={14} aria-hidden="true" /></a><a className="topbar__link" href="#materiais">Explore materials <ArrowDown size={14} aria-hidden="true" /></a><ThemeToggle /></header>
+      <header className="topbar"><Wordmark /><div className="topbar__middle">Interface laboratory</div><a className="topbar__link" href="/solar">Solar panel <ArrowUpRight size={14} aria-hidden="true" /></a><a className="topbar__link" href="#materiais">Explore materials <ArrowDown size={14} aria-hidden="true" /></a><a className="jh-github-star" href="https://github.com/jhosephebtc/jhosephe" target="_blank" rel="noreferrer" aria-label="Star jhosephe on GitHub"><Star size={14} strokeWidth={1.75} aria-hidden="true" /><span>Star on GitHub</span></a><ThemeToggle /></header>
       <main id="conteudo">
         <div className="hero-grid">
           <section className="intro" aria-labelledby="title">

@@ -1,5 +1,6 @@
 import { useEffect, useId, useMemo, useState } from 'react';
 import { Slider } from './controls';
+import { instrumentAccentStyle } from './utils';
 import {
   computeLunarEphemeris,
   surfaceMaterialAttr,
@@ -24,6 +25,7 @@ export function LunarEphemeris({
   moonset: suppliedSet,
   distanceKm: suppliedDistance,
   material = 'solid',
+  accentColor,
 }: {
   location?: string;
   latitude?: number;
@@ -39,6 +41,7 @@ export function LunarEphemeris({
   moonset?: string;
   distanceKm?: number;
   material?: SurfaceMaterial;
+  accentColor?: string;
 }) {
   const id = useId();
   const [dayOffset, setDayOffset] = useState(0);
@@ -127,6 +130,7 @@ export function LunarEphemeris({
       data-jh-material={matAttr}
       data-dragging={scrubbing ? 'true' : undefined}
       aria-labelledby={`${id}-title`}
+      style={instrumentAccentStyle(accentColor)}
     >
       <header className="jh-lunar-ephemeris__header">
         <div>
@@ -134,7 +138,7 @@ export function LunarEphemeris({
           <h2 id={`${id}-title`}>{phaseName}</h2>
           <p>{location} · {targetDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</p>
         </div>
-        <span className="jh-lunar-ephemeris__pill">{Math.round(illumination)}% lit</span>
+        <span className="jh-lunar-ephemeris__pill"><i className="jh-lunar-ephemeris__pill-dot" aria-hidden="true" />{Math.round(illumination)}% lit</span>
       </header>
 
       <div className="jh-lunar-ephemeris__stage">

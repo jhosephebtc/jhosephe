@@ -1,6 +1,6 @@
 import { useId, useMemo, useState } from 'react';
 import { ShaderSurface } from './shader-surface';
-import { cn } from './utils';
+import { cn, instrumentAccentStyle } from './utils';
 import { clamp, normalizeSurfaceMaterial, surfaceMaterialAttr, type SurfaceMaterial } from './weather-ephemeris';
 
 export interface MetricPoint {
@@ -35,6 +35,7 @@ export function MetricCard({
   caption = '24h coastal station · Sensor 02B',
   series = DEFAULT_SERIES,
   material = 'solid',
+  accentColor,
   className,
 }: {
   label?: string;
@@ -45,6 +46,7 @@ export function MetricCard({
   caption?: string;
   series?: MetricPoint[];
   material?: SurfaceMaterial;
+  accentColor?: string;
   className?: string;
 }) {
   const [inspectIndex, setInspectIndex] = useState<number | null>(null);
@@ -103,12 +105,14 @@ export function MetricCard({
       className={cn('jh-metric-card', finish === 'liquid' && 'jh-metric-card--liquid', className)}
       data-jh-material={matAttr}
       aria-label={label}
+      style={instrumentAccentStyle(accentColor)}
     >
       {finish === 'liquid' ? <ShaderSurface /> : null}
       <div className="jh-metric-card__header">
         <span className="jh-metric-card__eyebrow">{label}</span>
         {delta ? (
           <span className="jh-metric-card__delta">
+            <i className="jh-metric-card__delta-pip" aria-hidden="true" />
             <span aria-hidden="true">{deltaPrefix}</span>
             <span>{delta}</span>
           </span>
@@ -133,8 +137,8 @@ export function MetricCard({
           >
             <defs>
               <linearGradient id={clipId} x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="currentColor" stopOpacity="0.10" />
-                <stop offset="100%" stopColor="currentColor" stopOpacity="0" />
+                <stop offset="0%" stopColor="var(--jh-instrument-accent)" stopOpacity="0.18" />
+                <stop offset="100%" stopColor="var(--jh-instrument-accent)" stopOpacity="0" />
               </linearGradient>
             </defs>
             {[0.2, 0.5, 0.8].map(ratio => (
@@ -167,19 +171,18 @@ export function MetricCard({
                 y1={2}
                 x2={focusedPoint.x.toFixed(1)}
                 y2={chart.H - 2}
-                stroke="currentColor"
-                strokeOpacity="0.20"
-                strokeWidth="0.75"
+                stroke="var(--jh-instrument-accent)"
+                strokeOpacity="0.34"
+                strokeWidth="0.85"
                 vectorEffect="non-scaling-stroke"
               />
             ) : null}
             <path d={chart.area} fill={`url(#${clipId})`} />
             <path
               d={chart.line}
+              className="jh-metric-card__line"
               fill="none"
-              stroke="currentColor"
-              strokeOpacity="0.68"
-              strokeWidth="0.95"
+              strokeWidth="1.2"
               strokeLinecap="round"
               strokeLinejoin="round"
               vectorEffect="non-scaling-stroke"
@@ -188,12 +191,19 @@ export function MetricCard({
               const isFocused = index === focusedIndex;
               return (
                 <g key={`${pt.point.label}-${index}`}>
+                  {isFocused ? (
+                    <circle
+                      cx={pt.x}
+                      cy={pt.y}
+                      r={4.8}
+                      className="jh-metric-card__point-halo"
+                    />
+                  ) : null}
                   <circle
                     cx={pt.x}
                     cy={pt.y}
-                    r={isFocused ? 2.4 : 1.15}
-                    fill="currentColor"
-                    fillOpacity={isFocused ? 1 : 0.3}
+                    r={isFocused ? 2.5 : 1.15}
+                    className={isFocused ? 'jh-metric-card__point is-focused' : 'jh-metric-card__point'}
                   />
                   <rect
                     x={pt.x - hitWidth / 2}

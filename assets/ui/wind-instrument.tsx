@@ -1,6 +1,7 @@
 import { useId, useState } from 'react';
 import { Slider } from './controls';
 import { SegmentedControl } from './segmented-control';
+import { clockwiseArcPath, instrumentAccentStyle } from './utils';
 import {
   beaufortFromKmh,
   cardinalDirection,
@@ -22,6 +23,7 @@ export function WindInstrument({
   onUnitChange,
   onDirectionChange,
   material = 'solid',
+  accentColor,
 }: {
   location?: string;
   speed?: number;
@@ -31,6 +33,7 @@ export function WindInstrument({
   onUnitChange?: (unit: WindUnit) => void;
   onDirectionChange?: (degrees: number) => void;
   material?: SurfaceMaterial;
+  accentColor?: string;
 }) {
   const id = useId();
   const [internalUnit, setInternalUnit] = useState<WindUnit>('km/h');
@@ -59,6 +62,7 @@ export function WindInstrument({
       className="jh-wind-instrument"
       data-jh-material={matAttr}
       aria-labelledby={`${id}-title`}
+      style={instrumentAccentStyle(accentColor)}
     >
       <header className="jh-wind-instrument__header">
         <div>
@@ -92,6 +96,12 @@ export function WindInstrument({
             <circle cx="90" cy="90" r="78" className="jh-wind-instrument__bezel-edge" />
             <circle cx="90" cy="90" r="72" className="jh-wind-instrument__well" />
             <circle cx="90" cy="90" r="56" className="jh-wind-instrument__ring" />
+            {beaufort.force > 0 && (
+              <path
+                className="jh-wind-instrument__beaufort-arc"
+                d={clockwiseArcPath(90, 90, 56, (clamp(beaufort.force, 0, 12) / 12) * 360)}
+              />
+            )}
             <g transform="translate(90 90)" className="jh-wind-instrument__ticks">
               {Array.from({ length: 36 }, (_, index) => (
                 <path

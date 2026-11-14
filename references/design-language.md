@@ -2,45 +2,70 @@
 
 ## Personalidade
 
-Uma interface de instrumentos: precisa, serena e silenciosa. Faça o conteúdo se organizar em planos claros com espaçamento deliberado e poucas linhas técnicas; use volume para os elementos manipuláveis. Escolha uma peça principal por área e deixe o resto respirar. O resultado precisa funcionar em um produto real, não apenas em uma composição de portfólio.
+Uma interface de instrumentos: precisa, serena e tátil. Organize o conteúdo em planos neutros com espaçamento deliberado e poucas linhas técnicas; reserve volume físico e emissão luminosa para os elementos manipuláveis. Escolha uma peça principal por área e deixe o restante respirar. O sistema precisa funcionar em produtos reais em **Light Porcelain** e **Black / Dark Obsidian**, não apenas em composições estáticas de portfólio.
 
-## Paleta monocromática
+## Dupla paleta monocromática (Light Porcelain & Black / Dark Obsidian)
 
-A identidade usa sempre branco, cinzas neutros e preto. Monocromática aqui significa acromática, sem matiz azulado, bege ou dourado. A regra inclui todos os fundos e canvas, texturas, sombras, gradientes, foco, iluminação de vidro e shaders. Em RGB, use canais iguais; em OKLCH, use croma zero.
+A identidade estrutural opera em dois temas acromáticos calibrados — **Light** (`:root`, `color-scheme: light`) e **Black / Dark** (`:is([data-jh-theme="dark"], .dark)`, `color-scheme: dark`). Monocromática aqui significa **estritamente acromática**: sem matiz azulado, bege, sépia ou dourado em fundos, canvas, faces, gradientes estruturais, texturas, sombras, reflexos, foco, divisórias, SVG estrutural ou shaders (`R = G = B` em RGB; `C = 0` em OKLCH).
 
-| Papel | Valor inicial | Uso |
+### Tema claro (`Light Porcelain` — `:root`)
+
+| Papel | Token / Valor | Uso |
 | --- | --- | --- |
-| Fundo mineral | `#f8f8f8` | canvas do app e espaço vazio |
-| Superfície | `#ffffff` | cartões e leitura |
-| Vidro | `rgb(255 255 255 / 0.772)` | painéis e barras sobre fundo neutro |
-| Vidro elevado | `rgb(255 255 255 / 0.952)` | faces com mais cobertura |
-| Hover claro | #f5f5f5 | feedback de superfície |
-| Estrutura | #b0b0b0 | divisórias decorativas e estrutura secundária |
-| Tinta auxiliar | #8c8c8c | apoio visual somente onde o contraste medido permitir |
-| Contorno funcional | `#737373` | limites de controles quando necessários para reconhecê-los |
-| Tinta principal | `#2e2e2e` | texto, ícones e foco sobre superfícies claras |
-| Tinta secundária | `#6b6b6b` | legendas e descrições |
-| Divisória decorativa | `rgb(0 0 0 / .035)` | separação quase invisível, somente quando necessária |
+| Canvas mineral | `--background: #f8f8f8` | Fundo principal da aplicação e espaço negativo |
+| Superfície elevada | `--card` / `--popover: #ffffff` | Cartões, popovers, modais, menus e faces (`#f7f7f7` em controles sólidos) |
+| Cavidade / Input | `--jh-surface-well` / `#eeeeee`–`#f1f1f1` | Trilhos, assentos em baixo-relevo e campos de texto |
+| Hover claro | `--muted: #f5f5f5` | Feedback sutil de superfície |
+| Estrutura | `--border: #d6d6d6` / `--input: #b0b0b0` | Filetes estruturais quando estritamente necessários |
+| Tinta principal | `--foreground: #2e2e2e` | Texto, valores numéricos e ícones principais |
+| Tinta secundária | `--jh-text-secondary: #6b6b6b` | Subtítulos, legendas e descrições |
+| Tinta auxiliar | `--jh-text-tertiary: #8c8c8c` | Notas técnicas e unidades onde o contraste medido permitir |
+| Foco acessível | `--ring: #525252` | Anel de `:focus-visible` fora de recortes |
+| Divisória discreta | `--jh-divider: rgb(0 0 0 / .035)` | Separação quase imperceptível |
 
-O ponto de partida preserva os papéis neutros da base clara do app e do editor de nós: canvas quase branco, superfícies brancas, texto principal escuro, texto secundário moderado e vidro com coberturas distintas. São amostras, não garantias de contraste. Meça cada par aplicado, inclusive sobre vidro e gradiente. Opacidade sobre um fundo colorido pode produzir cor: mantenha o fundo acromático ou use uma face opaca. Não aplique um filtro grayscale ao aplicativo inteiro para corrigir tokens inconsistentes.
+### Tema escuro (`Black / Dark Obsidian` — `:is([data-jh-theme="dark"], .dark)`)
 
-O tema é integralmente claro: canvas, visores, molduras, pedestal e controles. Use grafite em números, texto e escalas; não crie áreas pretas para simular um instrumento. Botões usam glass com resposta liquid pontual; sliders usam puxadores sólidos de vidro, táteis e sem deformação liquid. Relevo skeuomórfico organiza o volume, sem metal.
+| Papel | Token / Valor | Uso |
+| --- | --- | --- |
+| Canvas & Cavidades (Wells) | `--background: #060606` | Canvas da página, trilhos em baixo-relevo, leito do dial e bandejas segmentadas |
+| Campos de entrada | `#070707` → `#090909` (foco) | Superfície côncava plana em inputs, buscas e triggers de pickers |
+| Palcos de preview | `#080808` | Palco recuado atrás de componentes elevados no catálogo |
+| Cards, Modais & Scroll | `--card` / `--popover: #0a0a0a` | Cartões, diálogos, menus, calendários, `.jh-scroll-frame` e painéis |
+| Faces elevadas & Thumbs | `--jh-surface-face: #0e0e0e` → `#0a0a0a` | Botões, thumbs ativos e superfícies manipuláveis |
+| Tinta principal | `--foreground: #ededed` | Texto e ícones principais em fundo escuro |
+| Tinta secundária | `--jh-text-secondary: #989898` | Subtítulos, legendas e instruções |
+| Tinta auxiliar | `--jh-text-tertiary: #6e6e6e` | Notas auxiliares e metadados |
+| Foco acessível | `--ring: #383838` | Anel de foco calibrado para fundo escuro |
+| Divisória discreta | `--jh-divider: rgb(255 255 255 / .018)` | Separação sutil sem halos brancos |
 
-## Estados sem acentos de cor
+A geração dos tokens e regras do tema escuro é determinística via `node scripts/generate-dark-theme.mjs`. Nunca aplique `filter: grayscale(...)` globalmente para corrigir tokens desalinhados, nem crie blocos escuros arbitrários dentro do tema claro para simular visores: cada componente respeita o tema ativo por meio de tokens semânticos.
 
-- Selecionado: rebaixo sutil ou mudança de cobertura do vidro, com marcador, ícone ou texto quando necessário; mantenha a face clara.
-- Erro: mensagem explícita e ícone reconhecível; não dependa de vermelho ou apenas de borda.
-- Sucesso: confirmação em texto ou símbolo, sem depender de verde.
-- Foco: contorno neutro contrastante e separado da sombra; teste sobre todas as coberturas de vidro.
-- Disabled: semântica correta e aparência diferenciada que preserve leitura.
-- Cores forçadas: respeite as cores do sistema e a preferência de acessibilidade do usuário.
+### Onde a cor cromática é permitida (emissão OKLCH controlada)
 
-## Tipografia e composição
+Cor cromática entra **exclusivamente** como luz emissora controlada pelo usuário ou espectro funcional — nunca como fundo estrutural da página:
 
-Use Geist Sans em toda a interface, incluindo medições, eixos, código e índices. Não use serifadas nem monoespaçadas. Leia [Tipografia e layout](typography-layout.md) ao definir hierarquia, kerning, espaçamento e grids.
+- Controles de edição de cor e matrizes cromáticas: `SpectrumControl`, `OklchPalette`.
+- Emissores internos de instrumentos e hardware tátil: `Dial`, `DetentDial`, `Slider`, `BarSlider`, `TactileLever`, `TactileKey`, `TactileKeypad`, `TactileConsole`, `CameraWheel`, `CameraDial`, `FilmstripGallery`, `InstrumentBars`, `AudioMeter` e `LunarEphemeris`.
 
-A grade pode evocar um console, mas o fluxo segue o conteúdo e se reorganiza para telas pequenas. Respiro, relevo suave, marcas de escala funcionais e alinhamento entre rótulo, valor e comando criam precisão. Divisórias decorativas são quase imperceptíveis; prefira volume e sombras suaves a linhas contrastantes. Use respiros amplos ao redor de um objeto expressivo; em configurações densas priorize leitura e alvos suficientes. Um plano pode ter cantos suaves enquanto instrumentos e linhas internas mantêm geometria mais firme.
+Toda emissão luminosa permanece confinada dentro de cavidades, ranhuras em baixo-relevo ou fendas fresadas (`overflow: hidden` ou máscara SVG), entrando em standby contido em repouso e ganhando intensidade durante manipulação ativa.
+
+## Estados sem acentos cromáticos estruturais
+
+- **Selecionado**: marcador discreto, elevação de face ou mudança de luminância coerente com o tema ativo; preserve contraste legível em Light e Black/Dark.
+- **Erro**: mensagem explícita e ícone reconhecível; não dependa de vermelho nem apenas de borda.
+- **Sucesso**: confirmação em texto ou símbolo, sem depender de verde.
+- **Foco**: contorno neutro contrastante (`:focus-visible`) separado da sombra externa e livre de clipping; teste em todas as faixas de transparência e blur (`0–85%` / `0–32px`).
+- **Disabled**: semântica nativa (`disabled`) e contraste diferenciado sem esconder o papel do controle.
+- **Loading / Working**: spinner acromático inline com `aria-busy="true"` e bloqueio de clique duplicado, sem alterar o layout do botão.
+- **Cores forçadas (`forced-colors: active`)**: respeite `Canvas`, `CanvasText`, `ButtonText` e `Highlight`.
+
+## Tipografia, idioma de produto e composição
+
+- **Geist Variable em tudo**: use `'Geist Variable', system-ui, sans-serif` em toda a hierarquia, incluindo medições, tabelas, eixos e blocos de código. Não use famílias serifadas nem monoespaçadas. Use `font-variant-numeric: tabular-nums lining-nums` em readouts dinâmicos. Consulte [Tipografia e layout](typography-layout.md).
+- **Inglês americano (`en-US`) e sentence case**: redija rótulos, estados, mensagens de validação, nomes acessíveis e exemplos de produto em inglês americano natural, usando **sentence case** (evite ALL CAPS como estilo decorativo de UI; preserve siglas técnicas legítimas como `EV`, `ISO`, `OKLCH`, `CUT`, `RES`, `dBFS`, `UTC`).
+
+A grade pode evocar um console de precisão, mas o fluxo acompanha o conteúdo e se reorganiza em telas estreitas. Prefira respiro, planos, sombras de contato calibradas e superfícies em baixo-relevo a divisórias contrastantes ou molduras desenhadas.
 
 ## Tradução de referências
 
-Escolha materiais para o contexto da tela. Uma lista longa, um painel de dados e uma landing page precisam de níveis diferentes de profundidade. Extraia proporção, contraste, textura, luz e ritmo das referências; traduza seus acentos coloridos para diferenças de luminância, forma e relevo. A inspiração não muda a paleta da identidade nem autoriza redesenhar partes fora do escopo.
+Escolha a profundidade do material conforme o contexto da tela. Extraia proporção, escala, ritmo e iluminação das referências físicas; traduza acentos coloridos estruturais para luminância acromática, forma e relevo, deixando cor viva apenas onde o usuário escolhe emitir luz OKLCH.

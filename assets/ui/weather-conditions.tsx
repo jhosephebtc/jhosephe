@@ -1,5 +1,6 @@
 import { useId, useMemo, useState } from 'react';
 import { SegmentedControl } from './segmented-control';
+import { instrumentAccentStyle } from './utils';
 import {
   dewPointCelsius,
   surfaceMaterialAttr,
@@ -130,6 +131,7 @@ export function WeatherConditions({
   unit: controlledUnit,
   onUnitChange,
   material = 'solid',
+  accentColor,
 }: {
   location?: string;
   condition?: WeatherConditionKind;
@@ -151,10 +153,13 @@ export function WeatherConditions({
   unit?: 'C' | 'F';
   onUnitChange?: (unit: 'C' | 'F') => void;
   material?: SurfaceMaterial;
+  accentColor?: string;
 }) {
   const id = useId();
+  const sparkGradId = `jh-wc-spark-${id.replace(/[^a-zA-Z0-9_-]/g, '')}`;
   const [internalUnit, setInternalUnit] = useState<'C' | 'F'>('C');
   const [horizon, setHorizon] = useState<'hourly' | 'daily'>('hourly');
+  const [activeSlot, setActiveSlot] = useState(0);
   const unit = controlledUnit ?? internalUnit;
 
   const setUnit = (next: 'C' | 'F') => {
@@ -169,10 +174,12 @@ export function WeatherConditions({
 
   const computedDew = dewPoint ?? dewPointCelsius(temperature, humidity);
   const matAttr = surfaceMaterialAttr(material);
+  const slotCount = horizon === 'hourly' ? hourly.length : daily.length;
+  const safeActiveSlot = Math.min(activeSlot, Math.max(0, slotCount - 1));
 
   const curvePath = useMemo(() => {
     const values = horizon === 'hourly' ? hourly.map(h => h.tempC) : daily.map(d => d.highC);
-    if (values.length < 2) return { line: '', area: '', min: 0, max: 0 };
+    if (values.length < 2) return { line: '', area: '', min: 0, max: 0, points: [] as Array<{ x: number; y: number }> };
     const min = Math.min(...values);
     const max = Math.max(...values);
     const span = Math.max(1, max - min);
@@ -184,14 +191,16 @@ export function WeatherConditions({
     }));
     const line = pts.map((p, i) => `${i === 0 ? 'M' : 'L'}${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(' ');
     const area = `${line} L${width} ${height} L0 ${height} Z`;
-    return { line, area, min, max };
+    return { line, area, min, max, points: pts };
   }, [horizon, hourly, daily]);
+  const activePt = curvePath.points[safeActiveSlot];
 
   return (
     <section
       className="jh-weather-conditions"
       data-jh-material={matAttr}
       aria-labelledby={`${id}-title`}
+      style={instrumentAccentStyle(accentColor)}
     >
       <header className="jh-weather-conditions__header">
         <div>
@@ -242,7 +251,10 @@ export function WeatherConditions({
           <SegmentedControl
             label="Forecast horizon"
             value={horizon}
-            onValueChange={val => setHorizon(val as 'hourly' | 'daily')}
+            onValueChange={val => {
+              setHorizon(val as 'hourly' | 'daily');
+              setActiveSlot(0);
+            }}
             options={[
               { value: 'hourly', label: 'Hourly' },
               { value: 'daily', label: 'Daily' },
@@ -252,15 +264,40 @@ export function WeatherConditions({
 
         {curvePath.line && (
           <svg className="jh-weather-conditions__spark" viewBox="0 0 320 44" aria-hidden="true">
-            <path d={curvePath.area} className="jh-weather-conditions__spark-area" />
+            <defs>
+              <linearGradient id={sparkGradId} x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="var(--jh-instrument-accent)" stopOpacity="0.2" />
+                <stop offset="100%" stopColor="var(--jh-instrument-accent)" stopOpacity="0" />
+              </linearGradient>
+            </defs>
+            <path d={curvePath.area} fill={`url(#${sparkGradId})`} className="jh-weather-conditions__spark-area" />
             <path d={curvePath.line} className="jh-weather-conditions__spark-line" />
+            {activePt && (
+              <>
+                <circle cx={activePt.x} cy={activePt.y} r="5.5" className="jh-weather-conditions__spark-halo" />
+                <circle cx={activePt.x} cy={activePt.y} r="2.6" className="jh-weather-conditions__spark-dot" />
+              </>
+            )}
           </svg>
         )}
 
         <div className="jh-weather-conditions__strip" role="list" aria-label={`${horizon} forecast`}>
           {horizon === 'hourly'
-            ? hourly.map(slot => (
-                <div className="jh-weather-conditions__slot" role="listitem" key={slot.time}>
+            ? hourly.map((slot, idx) => (
+                <div
+                  className="jh-weather-conditions__slot"
+                  role="listitem"
+                  key={slot.time}
+                  data-active={idx === safeActiveSlot || undefined}
+                  tabIndex={0}
+                  onClick={() => setActiveSlot(idx)}
+                  onKeyDown={event => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                      event.preventDefault();
+                      setActiveSlot(idx);
+                    }
+                  }}
+                >
                   <span>{slot.time}</span>
                   <span className="jh-weather-conditions__slot-icon" aria-hidden="true">
                     <ConditionGlyph kind={slot.condition} />
@@ -269,8 +306,21 @@ export function WeatherConditions({
                   <small>{Math.round(slot.precipitationChance)}%</small>
                 </div>
               ))
-            : daily.map(day => (
-                <div className="jh-weather-conditions__slot" role="listitem" key={day.day}>
+            : daily.map((day, idx) => (
+                <div
+                  className="jh-weather-conditions__slot"
+                  role="listitem"
+                  key={day.day}
+                  data-active={idx === safeActiveSlot || undefined}
+                  tabIndex={0}
+                  onClick={() => setActiveSlot(idx)}
+                  onKeyDown={event => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                      event.preventDefault();
+                      setActiveSlot(idx);
+                    }
+                  }}
+                >
                   <span>{day.day}</span>
                   <span className="jh-weather-conditions__slot-icon" aria-hidden="true">
                     <ConditionGlyph kind={day.condition} />

@@ -1,5 +1,6 @@
 import { useMemo, useRef, useState } from 'react';
 import { PickerPanel } from './picker-panel';
+import { instrumentAccentStyle } from './utils';
 
 const CURRENCIES = [
   { code: 'USD', name: 'US Dollar', symbol: '$', rate: '1.0000' },
@@ -13,12 +14,21 @@ const CURRENCIES = [
 ];
 
 /** Compact, searchable currency selector with explicit, static demo rates. */
-export function CurrencyPicker({ value = 'USD', onValueChange, label = 'Settlement currency' }: {
-  value?: string; onValueChange?: (value: string) => void; label?: string;
+export function CurrencyPicker({
+  value = 'USD',
+  onValueChange,
+  label = 'Settlement currency',
+  accentColor,
+}: {
+  value?: string;
+  onValueChange?: (value: string) => void;
+  label?: string;
+  accentColor?: string;
 }) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
   const trigger = useRef<HTMLButtonElement>(null);
+  const accentStyle = instrumentAccentStyle(accentColor);
   const currency = CURRENCIES.find(item => item.code === value) ?? CURRENCIES[0];
   const results = useMemo(
     () => CURRENCIES.filter(item => (item.code + ' ' + item.name).toLowerCase().includes(query.toLowerCase())),
@@ -31,7 +41,7 @@ export function CurrencyPicker({ value = 'USD', onValueChange, label = 'Settleme
   };
 
   return (
-    <div className="jh-currency-picker" data-open={open || undefined}>
+    <div className="jh-currency-picker" data-open={open || undefined} style={accentStyle}>
       <span className="jh-currency-picker__label">{label}</span>
       <button
         ref={trigger}
@@ -43,7 +53,7 @@ export function CurrencyPicker({ value = 'USD', onValueChange, label = 'Settleme
       >
         <span className="jh-currency-picker__symbol">{currency.symbol}</span>
         <span>
-          <strong>{currency.code}</strong>
+          <strong><i className="jh-currency-picker__pip" aria-hidden="true" />{currency.code}</strong>
           <small>{currency.name}</small>
         </span>
         <svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4" /></svg>
@@ -57,6 +67,7 @@ export function CurrencyPicker({ value = 'USD', onValueChange, label = 'Settleme
         searchPlaceholder="Search currency"
         label="Currency options"
         className="jh-currency-picker__popover"
+        style={accentStyle}
         footer={<p>Indicative rates · Demo</p>}
       >
         <ul className="jh-currency-picker__options" role="listbox" aria-label="Currency options">
@@ -70,7 +81,7 @@ export function CurrencyPicker({ value = 'USD', onValueChange, label = 'Settleme
               >
                 <span className="jh-currency-picker__option-symbol">{item.symbol}</span>
                 <span>
-                  <strong>{item.code}</strong>
+                  <strong><i className="jh-currency-picker__pip" aria-hidden="true" />{item.code}</strong>
                   <small>{item.name}</small>
                 </span>
                 <span className="jh-currency-picker__rate">{item.rate}</span>

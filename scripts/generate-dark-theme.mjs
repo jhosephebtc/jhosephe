@@ -106,7 +106,7 @@ const INPUT_WELL_RE = /(?:__fields\s+(?:input|select)|\.jh-input\b|\.jh-textarea
 const SPECULAR_RE = /(?:(?<!__face)::before|(?<!__face)::after|__glow|ripple|__glass\b|shine|glare)/i;
 const LIGHT_EMITTER_RE = /(\.jh-slider__range\b|\.jh-tactile-lever__range\b|\.jh-bar-slider__bars\s+span\[data-active|\.jh-audio-meter__segments\s+span\[data-active|\.jh-audio-meter__bars\s+rect\[data-active|\.jh-dial(?!.*detent).*__tick\.is-active|\.jh-dial__arc-fill\b|\.jh-dial__mark\b|\.jh-tactile-key.*__face::after|\.jh-tactile-keypad__led\b|\.jh-tactile-console__led\b|\.jh-instrument__bar\.is-active|\.jh-progress__fill\b|\.jh-lunar-ephemeris__tick\.is-active|\.jh-lunar-ephemeris__light-source|\.jh-lunar-ephemeris__age-pip)/i;
 const DETENT_NOTCH_RE = /\.jh-detent-dial\s+\.jh-dial__tick/i;
-const DYNAMIC_ACCENT_VAL_RE = /(--jh-slider-|--jh-bar-cell-|--jh-audio-cell-|color-mix\()/i;
+const DYNAMIC_ACCENT_VAL_RE = /(--jh-slider-|--jh-bar-cell-|--jh-audio-cell-|--jh-instrument-accent|color-mix\()/i;
 
 function classifySurface(selector) {
   const lastPart = selector.split(/\s+/).pop() || '';
@@ -510,6 +510,7 @@ function extractDarkRules(cssText) {
 const DARK_TOKENS = `
 :is([data-jh-theme="dark"], .dark) {
   color-scheme: dark;
+  --jh-instrument-accent: oklch(100% 0 0);
   --background: #060606;
   --foreground: #ededed;
   --card: #0a0a0a;
@@ -615,6 +616,71 @@ const DARK_TOKENS = `
 :is([data-jh-theme="dark"], .dark) .jh-theme-toggle:hover {
   color: #f0f0f0;
 }
+:is([data-jh-theme="dark"], .dark) .jh-theme-picker-popover {
+  color: #ededed !important;
+  background: #0a0a0a !important;
+  box-shadow:
+    inset 0 1px rgb(255 255 255 / .04),
+    inset 0 0 0 1px rgb(255 255 255 / .06),
+    0 20px 48px -18px rgb(0 0 0 / .96) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-theme-picker-popover__eyebrow,
+:is([data-jh-theme="dark"], .dark) .jh-theme-picker-popover__section-label,
+:is([data-jh-theme="dark"], .dark) .jh-theme-picker-popover__label-row {
+  color: #8c8c8c !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-theme-picker-popover__head strong,
+:is([data-jh-theme="dark"], .dark) .jh-theme-picker-popover__label-row output {
+  color: #ededed !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-theme-picker-popover__reset {
+  background: linear-gradient(175deg, #121212, #0b0b0b) !important;
+  color: #c8c8c8 !important;
+  box-shadow: inset 0 1px rgb(255 255 255 / .03), inset 0 0 0 1px rgb(255 255 255 / .055), 0 2px 6px -2px rgb(0 0 0 / .85) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-theme-picker-popover__reset:hover {
+  color: #ffffff !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-theme-picker-popover__modes {
+  background: #060606 !important;
+  box-shadow: inset 0 1px 3px rgb(0 0 0 / .9), inset 0 0 0 1px rgb(255 255 255 / .045), inset 0 -1px rgb(255 255 255 / .02) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-theme-picker-popover__modes button {
+  color: #888888 !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-theme-picker-popover__modes button[aria-pressed="true"] {
+  background: linear-gradient(175deg, #151515, #0e0e0e) !important;
+  color: #f4f4f4 !important;
+  box-shadow: inset 0 1px rgb(255 255 255 / .05), inset 0 0 0 1px rgb(255 255 255 / .07), 0 2px 8px -2px rgb(0 0 0 / .9) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-github-star {
+  background: linear-gradient(175deg, #121212, #0b0b0b) !important;
+  color: #dcdcdc !important;
+  box-shadow:
+    inset 0 1px rgb(255 255 255 / .035),
+    inset 0 0 0 1px rgb(255 255 255 / .05),
+    0 3px 8px -2px rgb(0 0 0 / .92) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-github-star svg {
+  color: #a8a8a8 !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-github-star:hover {
+  color: #ffffff !important;
+  box-shadow:
+    inset 0 1px rgb(255 255 255 / .055),
+    inset 0 0 0 1px rgb(255 255 255 / .085),
+    0 4px 10px -2px rgb(0 0 0 / .95) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-github-star:hover svg {
+  color: #ffffff !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-github-star:active {
+  background: #0a0a0a !important;
+  box-shadow:
+    inset 0 1px 2px rgb(0 0 0 / .75),
+    inset 0 0 0 1px rgb(255 255 255 / .04),
+    0 1px 2px rgb(0 0 0 / .88) !important;
+}
 `;
 
 const DARK_LIBRARY_POLISH = `
@@ -665,6 +731,21 @@ const DARK_LIBRARY_POLISH = `
     radial-gradient(ellipse at 20% 15%, rgb(255 255 255 / .02), transparent 44%),
     radial-gradient(ellipse at 80% 85%, rgb(255 255 255 / .012), transparent 48%),
     #080808;
+}
+:is([data-jh-theme="dark"], .dark) .library-preview-stage.is-glass-stage .library-preview-caption,
+:is([data-jh-theme="dark"], .dark) .library-preview-stage.is-glass-stage .library-preview-hint {
+  color: #8c8c8c !important;
+  text-shadow: none !important;
+}
+:is([data-jh-theme="dark"], .dark) .library-dial-version-card[data-jh-surface-custom="true"] {
+  background: rgb(10 10 10 / var(--jh-surface-alpha, 1)) !important;
+  background-image: none !important;
+  backdrop-filter: blur(var(--jh-surface-blur, 0px)) !important;
+  -webkit-backdrop-filter: blur(var(--jh-surface-blur, 0px)) !important;
+}
+:is([data-jh-theme="dark"], .dark) .library-dial-version-card.is-selected[data-jh-surface-custom="true"] {
+  background: rgb(14 14 14 / var(--jh-surface-alpha, 1)) !important;
+  background-image: none !important;
 }
 :is([data-jh-theme="dark"], .dark) .library-solar-art-sun {
   fill: #0e0e0e;
@@ -1230,13 +1311,13 @@ const DARK_COMPONENT_POLISH = `
 }
 :is([data-jh-theme="dark"], .dark) .jh-lunar-ephemeris__tick.is-active {
   opacity: .68;
-  stroke: color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0))) 76%, #181818);
+  stroke: color-mix(in oklch, var(--jh-instrument-accent, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0)))) 76%, #181818);
   filter: none;
 }
 :is([data-jh-theme="dark"], .dark) .jh-lunar-ephemeris[data-dragging="true"] .jh-lunar-ephemeris__tick.is-active {
   opacity: 1;
-  stroke: color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0))) 98%, white 6%);
-  filter: drop-shadow(0 0 1.4px color-mix(in oklch, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0))) 62%, transparent));
+  stroke: color-mix(in oklch, var(--jh-instrument-accent, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0)))) 98%, white 6%);
+  filter: drop-shadow(0 0 1.4px color-mix(in oklch, var(--jh-instrument-accent, var(--jh-bar-cell-accent, var(--jh-slider-accent-color, oklch(100% 0 0)))) 62%, transparent));
 }
 :is([data-jh-theme="dark"], .dark) .jh-lunar-ephemeris__lit,
 :is([data-jh-theme="dark"], .dark) .jh-lunar-ephemeris__lit-penumbra {
@@ -2822,12 +2903,14 @@ const DARK_COMPONENT_POLISH = `
 :is([data-jh-theme="dark"], .dark) .jh-simple-scroll__copy span,
 :is([data-jh-theme="dark"], .dark) .jh-simple-scroll__meta { color: #848484 !important; }
 
-:is([data-jh-theme="dark"], .dark) .jh-accordion.jh-accordion--scroll {
-  scrollbar-color: rgb(255 255 255 / .18) transparent !important;
-}
-:is([data-jh-theme="dark"], .dark) .jh-accordion.jh-accordion--scroll::-webkit-scrollbar-thumb {
-  background: linear-gradient(155deg, #2d2d2d, #1f1f1f) !important;
-  background-clip: padding-box !important;
+:is([data-jh-theme="dark"], .dark) .jh-accordion-scroll > .jh-scroll-area > .jh-accordion {
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  width: 100% !important;
+  max-width: none !important;
+  padding: 2px 6px 2px 2px !important;
 }
 
 :is([data-jh-theme="dark"], .dark) .jh-vertical-gallery,
@@ -2860,14 +2943,21 @@ const DARK_COMPONENT_POLISH = `
 :is([data-jh-theme="dark"], .dark) .jh-vertical-gallery__meta,
 :is([data-jh-theme="dark"], .dark) .jh-vertical-gallery__footer { color: #848484 !important; }
 :is([data-jh-theme="dark"], .dark) .jh-vertical-gallery__header strong { color: #ededed !important; }
-:is([data-jh-theme="dark"], .dark) .jh-vertical-gallery__viewport {
-  background: rgb(0 0 0 / .42) !important;
-  box-shadow: inset 0 1px 3px rgb(0 0 0 / .75), inset 0 0 0 1px rgb(255 255 255 / .04) !important;
-  scrollbar-color: rgb(255 255 255 / .18) transparent !important;
+:is([data-jh-theme="dark"], .dark) .jh-vertical-gallery__frame,
+:is([data-jh-theme="dark"], .dark) .jh-scroll-frame.jh-vertical-gallery__frame {
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  padding: 0 clamp(4px, .75vw, 6px) 0 0 !important;
 }
-:is([data-jh-theme="dark"], .dark) .jh-vertical-gallery__viewport::-webkit-scrollbar-thumb {
-  background: linear-gradient(155deg, #2d2d2d, #1f1f1f) !important;
-  background-clip: padding-box !important;
+:is([data-jh-theme="dark"], .dark) .jh-vertical-gallery__viewport,
+:is([data-jh-theme="dark"], .dark) .jh-scroll-frame > .jh-scroll-area.jh-vertical-gallery__viewport {
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
 }
 :is([data-jh-theme="dark"], .dark) .jh-vertical-gallery__item { background: #151516 !important; }
 :is([data-jh-theme="dark"], .dark) .jh-vertical-gallery__item.is-selected {
@@ -2891,16 +2981,473 @@ const DARK_COMPONENT_POLISH = `
   background: #161616 !important;
   box-shadow: inset 0 1px rgb(255 255 255 / .05), inset 0 0 0 1px rgb(255 255 255 / .07) !important;
 }
-:is([data-jh-theme="dark"], .dark) .jh-vertical-gallery__viewport {
-  background: transparent !important;
-  box-shadow: none !important;
-}
 :is([data-jh-theme="dark"], .dark) .jh-vertical-gallery__item {
   box-shadow: 0 1px 2px rgb(0 0 0 / .7), 0 4px 10px -5px rgb(0 0 0 / .9), inset 0 1px rgb(255 255 255 / .04) !important;
 }
-:is([data-jh-theme="dark"], .dark) .jh-accordion.jh-accordion--scroll,
-:is([data-jh-theme="dark"], .dark) .jh-vertical-gallery__viewport {
-  scrollbar-color: #2a2a2a transparent !important;
+
+/* —— Wave 2 Part 1: Dark Obsidian Monochrome + OKLCH Light Accent (15 Instruments) —— */
+:is([data-jh-theme="dark"], .dark) .jh-instrument-accent {
+  stop-color: var(--jh-instrument-accent, oklch(100% 0 0));
+}
+:is([data-jh-theme="dark"], .dark) :where(
+  .jh-attitude__well,
+  .jh-attitude__readout > div,
+  .jh-attitude__pill,
+  .jh-navigation-instrument__well,
+  .jh-navigation-instrument__readings > div,
+  .jh-navigation-instrument__readings > div:last-of-type,
+  .jh-navigation-instrument__mode,
+  .jh-compass__well,
+  .jh-compass__readout,
+  .jh-compass__cardinal-pill,
+  .jh-weather__well,
+  .jh-weather__readings > div,
+  .jh-weather__readings > div:last-child,
+  .jh-race-telemetry__cell,
+  .jh-financial-chart__plot-wrap,
+  .jh-financial-chart__stats > div,
+  .jh-metric-card__well,
+  .jh-astronomy__sky,
+  .jh-astronomy__scrubber,
+  .jh-astronomy__readouts > div
+) {
+  background: #060606 !important;
+  background-image: none !important;
+  box-shadow:
+    inset 0 1px 3px rgb(0 0 0 / .88),
+    inset 0 0 0 1px rgb(255 255 255 / .04),
+    inset 0 -1px rgb(255 255 255 / .022) !important;
+}
+:is([data-jh-theme="dark"], .dark) :where(
+  .jh-attitude__title,
+  .jh-attitude__pill,
+  .jh-attitude__readout output,
+  .jh-navigation-instrument__title,
+  .jh-navigation-instrument__mode,
+  .jh-navigation-instrument__readings strong,
+  .jh-compass__title,
+  .jh-compass__cardinal-pill,
+  .jh-weather__title,
+  .jh-weather__temp,
+  .jh-financial-chart__stats strong,
+  .jh-astronomy__scrubber output
+) {
+  color: #f0f0f0;
+}
+:is([data-jh-theme="dark"], .dark) :where(
+  .jh-attitude__eyebrow,
+  .jh-attitude__readout span,
+  .jh-navigation-instrument__eyebrow,
+  .jh-navigation-instrument__readings span,
+  .jh-compass__eyebrow,
+  .jh-weather__eyebrow,
+  .jh-financial-chart__stats span,
+  .jh-astronomy__scrubber
+) {
+  color: #848484;
+}
+:is([data-jh-theme="dark"], .dark) .jh-attitude__horizon { stroke: #6a6a6a; }
+:is([data-jh-theme="dark"], .dark) .jh-attitude__pitch-mark path,
+:is([data-jh-theme="dark"], .dark) .jh-attitude__bank-ticks path,
+:is([data-jh-theme="dark"], .dark) .jh-attitude__ticks path { stroke: #787878; }
+:is([data-jh-theme="dark"], .dark) .jh-attitude__pitch-mark text { fill: #989898; }
+:is([data-jh-theme="dark"], .dark) .jh-attitude__bank-indicator,
+:is([data-jh-theme="dark"], .dark) .jh-attitude__aircraft-pip {
+  fill: var(--jh-instrument-accent, oklch(100% 0 0));
+  stroke: #0a0a0a;
+}
+:is([data-jh-theme="dark"], .dark) .jh-attitude__aircraft path {
+  fill: none;
+  stroke: var(--jh-instrument-accent, oklch(100% 0 0));
+}
+:is([data-jh-theme="dark"], .dark) .jh-navigation-instrument__mode-dot,
+:is([data-jh-theme="dark"], .dark) .jh-financial-chart__delta-pip,
+:is([data-jh-theme="dark"], .dark) .jh-market-picker__delta-pip,
+:is([data-jh-theme="dark"], .dark) .jh-currency-picker__pip,
+:is([data-jh-theme="dark"], .dark) .jh-metric-card__delta-pip,
+:is([data-jh-theme="dark"], .dark) .jh-market-picker__live i,
+:is([data-jh-theme="dark"], .dark) .jh-astrology-wheel__badge-dot,
+:is([data-jh-theme="dark"], .dark) .jh-lunar-ephemeris__pill-dot,
+:is([data-jh-theme="dark"], .dark) .jh-race-telemetry__track span {
+  background: var(--jh-instrument-accent, oklch(100% 0 0));
+}
+:is([data-jh-theme="dark"], .dark) .jh-navigation-instrument__cdi { stroke: var(--jh-instrument-accent, oklch(100% 0 0)); }
+:is([data-jh-theme="dark"], .dark) .jh-navigation-instrument__lubber,
+:is([data-jh-theme="dark"], .dark) .jh-navigation-instrument__needle-north { fill: var(--jh-instrument-accent, oklch(100% 0 0)); }
+:is([data-jh-theme="dark"], .dark) .jh-compass__arc { stroke: var(--jh-instrument-accent, oklch(100% 0 0)); }
+:is([data-jh-theme="dark"], .dark) .jh-compass__needle i { background: var(--jh-instrument-accent, oklch(100% 0 0)); }
+:is([data-jh-theme="dark"], .dark) .jh-race-telemetry__grid { stroke: rgb(255 255 255 / .08); }
+:is([data-jh-theme="dark"], .dark) .jh-race-telemetry__line { stroke: var(--jh-instrument-accent, oklch(100% 0 0)); }
+:is([data-jh-theme="dark"], .dark) .jh-race-telemetry__dot {
+  fill: var(--jh-instrument-accent, oklch(100% 0 0));
+  stroke: #0a0a0a;
+}
+:is([data-jh-theme="dark"], .dark) .jh-weather__arc { stroke: var(--jh-instrument-accent, oklch(100% 0 0)); }
+:is([data-jh-theme="dark"], .dark) .jh-weather__needle { fill: var(--jh-instrument-accent, oklch(100% 0 0)); }
+:is([data-jh-theme="dark"], .dark) .jh-weather-conditions__spark-line { stroke: var(--jh-instrument-accent, oklch(100% 0 0)) !important; }
+:is([data-jh-theme="dark"], .dark) .jh-weather-conditions__spark-halo {
+  fill: color-mix(in oklch, var(--jh-instrument-accent, oklch(100% 0 0)) 22%, transparent);
+  stroke: color-mix(in oklch, var(--jh-instrument-accent, oklch(100% 0 0)) 58%, transparent);
+}
+:is([data-jh-theme="dark"], .dark) .jh-weather-conditions__spark-dot {
+  fill: var(--jh-instrument-accent, oklch(100% 0 0));
+  stroke: #0a0a0a;
+}
+:is([data-jh-theme="dark"], .dark) .jh-weather-conditions__slot[data-active="true"] {
+  background: #141414 !important;
+  box-shadow:
+    inset 0 1px rgb(255 255 255 / .05),
+    inset 0 0 0 1px color-mix(in oklch, var(--jh-instrument-accent, oklch(100% 0 0)) 36%, transparent),
+    0 4px 12px -4px rgb(0 0 0 / .9) !important;
+  color: #f2f2f2 !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-wind-instrument__beaufort-arc { stroke: var(--jh-instrument-accent, oklch(100% 0 0)); }
+:is([data-jh-theme="dark"], .dark) .jh-wind-instrument__head { fill: var(--jh-instrument-accent, oklch(100% 0 0)) !important; }
+:is([data-jh-theme="dark"], .dark) .jh-wind-instrument__shaft { stroke: var(--jh-instrument-accent, oklch(100% 0 0)) !important; }
+:is([data-jh-theme="dark"], .dark) .jh-wind-instrument__scale-track span[data-active="true"] { background: var(--jh-instrument-accent, oklch(100% 0 0)) !important; }
+:is([data-jh-theme="dark"], .dark) .jh-tide-instrument__curve { stroke: var(--jh-instrument-accent, oklch(100% 0 0)) !important; }
+:is([data-jh-theme="dark"], .dark) .jh-tide-instrument__cursor { stroke: color-mix(in oklch, var(--jh-instrument-accent, oklch(100% 0 0)) 48%, transparent) !important; }
+:is([data-jh-theme="dark"], .dark) .jh-tide-instrument__marker-halo {
+  fill: color-mix(in oklch, var(--jh-instrument-accent, oklch(100% 0 0)) 22%, transparent) !important;
+  stroke: color-mix(in oklch, var(--jh-instrument-accent, oklch(100% 0 0)) 56%, transparent) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-tide-instrument__marker {
+  fill: var(--jh-instrument-accent, oklch(100% 0 0)) !important;
+  stroke: #0a0a0a !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-financial-chart__line,
+:is([data-jh-theme="dark"], .dark) .jh-metric-card__line,
+:is([data-jh-theme="dark"], .dark) .jh-astronomy__arc { stroke: var(--jh-instrument-accent, oklch(100% 0 0)); }
+:is([data-jh-theme="dark"], .dark) .jh-financial-chart__point-halo,
+:is([data-jh-theme="dark"], .dark) .jh-metric-card__point-halo,
+:is([data-jh-theme="dark"], .dark) .jh-astronomy__sun-halo {
+  fill: color-mix(in oklch, var(--jh-instrument-accent, oklch(100% 0 0)) 22%, transparent);
+  stroke: color-mix(in oklch, var(--jh-instrument-accent, oklch(100% 0 0)) 58%, transparent);
+}
+:is([data-jh-theme="dark"], .dark) .jh-financial-chart__point,
+:is([data-jh-theme="dark"], .dark) .jh-metric-card__point {
+  fill: var(--jh-instrument-accent, oklch(100% 0 0));
+  stroke: #0a0a0a;
+}
+:is([data-jh-theme="dark"], .dark) .jh-financial-chart__bar[data-selected="true"],
+:is([data-jh-theme="dark"], .dark) .jh-astronomy__sun { fill: var(--jh-instrument-accent, oklch(100% 0 0)); }
+:is([data-jh-theme="dark"], .dark) .jh-market-picker__check { color: var(--jh-instrument-accent, oklch(100% 0 0)); }
+:is([data-jh-theme="dark"], .dark) .jh-market-picker__asset[aria-selected="true"] {
+  box-shadow: inset 0 1px rgb(255 255 255 / .05), inset 0 0 0 1px color-mix(in oklch, var(--jh-instrument-accent, oklch(100% 0 0)) 28%, transparent), 0 2px 6px rgb(0 0 0 / .85) !important;
+}
+:is([data-jh-theme="dark"], .dark) .jh-astrology-wheel__ascendant {
+  fill: var(--jh-instrument-accent, oklch(100% 0 0));
+  stroke: #0a0a0a;
+}
+:is([data-jh-theme="dark"], .dark) .jh-astrology-wheel__ascendant-axis { stroke: var(--jh-instrument-accent, oklch(100% 0 0)); }
+:is([data-jh-theme="dark"], .dark) .jh-astrology-wheel__planet[data-selected="true"] .jh-astrology-wheel__planet-halo {
+  fill: color-mix(in oklch, var(--jh-instrument-accent, oklch(100% 0 0)) 20%, transparent);
+  stroke: var(--jh-instrument-accent, oklch(100% 0 0));
+}
+:is([data-jh-theme="dark"], .dark) .jh-astrology-wheel__planet[data-selected="true"] circle.jh-astrology-wheel__planet-face {
+  stroke: var(--jh-instrument-accent, oklch(100% 0 0));
+}
+:is([data-jh-theme="dark"], .dark) .jh-lunar-ephemeris__age-pip {
+  fill: var(--jh-instrument-accent, oklch(100% 0 0));
+  stroke: #0a0a0a;
+}
+:is([data-jh-theme="dark"], .dark) .jh-lunar-ephemeris__light-source {
+  fill: #0a0a0a;
+  stroke: var(--jh-instrument-accent, oklch(100% 0 0));
+}
+
+/* Continuous custom surface transparency & backdrop blur (Dark / Obsidian — preserves outer shadows, text & SVG icons) */
+:is([data-jh-theme="dark"], .dark):is(
+  [data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"],
+  [data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"] *
+):is(
+  .jh-dialog,
+  .jh-dialog.jh-command-dialog,
+  .jh-dialog__content,
+  .jh-command-dialog,
+  .jh-date-popover,
+  .jh-date-popover.jh-picker-overlay,
+  .jh-date-time-popover,
+  .jh-date-time-popover.jh-picker-overlay,
+  .jh-date-time-picker,
+  .jh-picker-overlay,
+  [data-jh-material].jh-picker-overlay,
+  .jh-combobox__popover,
+  .jh-currency-picker__popover,
+  .jh-ephemeris-picker__panel,
+  .jh-menu,
+  .jh-context-menu,
+  .jh-toast,
+  .jh-oklch-palette,
+  .jh-oklch-palette[data-jh-material],
+  .jh-spectrum-popover,
+  .jh-spectrum,
+  .jh-vertical-gallery__ratio-menu,
+  .jh-theme-picker-popover,
+  .jh-theme-picker-popover.jh-picker-overlay,
+  .jh-calendar:not(.jh-date-popover .jh-calendar):not(.jh-date-time-popover .jh-calendar),
+  .jh-data-form,
+  .jh-data-table,
+  .jh-metric-card,
+  .jh-tabs,
+  .jh-accordion:not(.jh-scroll-area > .jh-accordion),
+  .jh-step-navigation,
+  .jh-radio-group__options,
+  .jh-scroll-frame:not(.jh-vertical-gallery__frame):not(.jh-picker-overlay .jh-scroll-frame):not(.jh-currency-picker .jh-scroll-frame):not(.jh-financial-order .jh-scroll-frame):not(.jh-market-picker .jh-scroll-frame),
+  .jh-gallery,
+  .jh-gallery__caption,
+  .jh-image-frame,
+  .jh-file-transfer,
+  .jh-vertical-gallery,
+  .jh-filmstrip__chassis,
+  .jh-image-inspector,
+  .jh-financial-chart,
+  .jh-market-picker,
+  .jh-financial-order:not(.jh-command-dialog > .jh-financial-order),
+  .jh-financial-order[data-jh-material]:not(.jh-command-dialog > .jh-financial-order),
+  .jh-finance-nav--sidebar,
+  .jh-finance-nav--header,
+  .jh-weather,
+  .jh-weather-conditions,
+  .jh-wind-instrument,
+  .jh-tide-instrument,
+  .jh-lunar-ephemeris,
+  .jh-astronomy,
+  .jh-astrology-wheel,
+  .jh-navigation-instrument,
+  .jh-attitude,
+  .jh-compass,
+  .jh-compass__dial,
+  .jh-race-telemetry,
+  .jh-tactile-keypad,
+  .jh-tactile-console,
+  .jh-camera-wheel,
+  .jh-camera-dial__plate
+) {
+  background-color: rgb(10 10 10 / var(--jh-surface-alpha, 1)) !important;
+  background-image: none !important;
+  backdrop-filter: blur(var(--jh-surface-blur, 0px)) !important;
+  -webkit-backdrop-filter: blur(var(--jh-surface-blur, 0px)) !important;
+}
+:is([data-jh-theme="dark"], .dark):is(
+  [data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"],
+  [data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"] *
+):is(
+  .jh-button:not(.jh-button--ghost) .jh-button__face,
+  .jh-button--glass:not(.jh-button--ghost) .jh-button__face,
+  .jh-button--ghost:not(:disabled):is(:hover, :active) .jh-button__face,
+  .jh-date-picker__trigger .jh-button__face,
+  .jh-date-time-picker__trigger .jh-button__face,
+  .jh-financial-order__launch .jh-button__face,
+  .jh-slider__thumb,
+  .jh-bar-slider__thumb,
+  .jh-switch__thumb,
+  .jh-tactile-lever__thumb,
+  .jh-tactile-key__face,
+  .jh-tactile-pad__cap,
+  .jh-tactile-encoder__cap,
+  .jh-dial__knob,
+  .jh-radio-option,
+  .jh-segmented__option[aria-checked="true"] span,
+  .jh-segmented__thumb,
+  .jh-tabs__thumb,
+  .jh-context-menu__trigger,
+  .jh-combobox__trigger,
+  .jh-command-trigger,
+  .jh-currency-picker__trigger,
+  .jh-ephemeris-picker__trigger,
+  .jh-oklch-trigger,
+  .jh-oklch-trigger[data-jh-material],
+  .jh-spectrum-trigger,
+  .jh-dialog__close,
+  .jh-toast__close,
+  .jh-date-time-slots button,
+  .jh-calendar__day-button[aria-selected="true"],
+  .jh-calendar__selected .jh-calendar__day-button,
+  .jh-financial-order__close,
+  .jh-financial-order__confirm,
+  .jh-financial-order[data-jh-material] .jh-financial-order__confirm,
+  .jh-ephemeris-picker__panel-head > button,
+  .jh-ephemeris-picker__submit,
+  .jh-vertical-gallery__aspect-btn,
+  .jh-github-star,
+  .jh-theme-toggle,
+  .jh-theme-picker-popover__modes button[aria-pressed="true"],
+  .jh-theme-picker-popover__reset,
+  .jh-financial-chart__periods button[aria-pressed="true"],
+  .jh-financial-chart__modes button[aria-pressed="true"],
+  .jh-market-picker__tabs button[aria-selected="true"],
+  .jh-ephemeris-picker__targets button[aria-pressed="true"],
+  .jh-step-navigation__step,
+  .jh-spectrum__steppers button,
+  .jh-combobox__option[aria-selected="true"],
+  .jh-currency-picker__options button[aria-selected="true"],
+  .jh-vertical-gallery__ratio-option[aria-selected="true"],
+  .jh-glass-shape,
+  [data-jh-material].jh-glass-shape
+) {
+  background-color: rgb(14 14 14 / var(--jh-surface-alpha, 1)) !important;
+  background-image: none !important;
+  backdrop-filter: blur(var(--jh-surface-blur, 0px)) !important;
+  -webkit-backdrop-filter: blur(var(--jh-surface-blur, 0px)) !important;
+}
+:is([data-jh-theme="dark"], .dark):is(
+  [data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"],
+  [data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"] *
+):is(.jh-dial__top, .jh-date-popover .jh-calendar, .jh-date-time-popover .jh-calendar) {
+  background: transparent !important;
+  background-image: none !important;
+}
+:is([data-jh-theme="dark"], .dark):is(
+  [data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"],
+  [data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"] *
+):is(
+  .jh-input,
+  .jh-search-input,
+  .jh-slider__track,
+  .jh-bar-slider__track,
+  .jh-tactile-lever__track,
+  .jh-progress__track,
+  .jh-switch::before,
+  .jh-segmented,
+  .jh-tabs__list,
+  .jh-dial__bed,
+  .jh-compass__bed,
+  .jh-tactile-encoder,
+  .jh-tactile-console__oled,
+  .jh-tactile-console__speaker,
+  .jh-dialog-summary,
+  .jh-financial-order__asset,
+  .jh-financial-order[data-jh-material] .jh-financial-order__asset,
+  .jh-financial-order__side,
+  .jh-financial-order__summary,
+  .jh-financial-order[data-jh-material] .jh-financial-order__summary,
+  .jh-financial-order__fields input,
+  .jh-financial-order__fields select,
+  .jh-ephemeris-picker__fields input,
+  .jh-ephemeris-picker__fields select,
+  .jh-command-dialog__search input,
+  .jh-currency-picker__search input,
+  .jh-picker-overlay__search input,
+  .jh-picker-overlay .jh-search-input,
+  .jh-date-picker__clear,
+  .jh-financial-chart__periods,
+  .jh-financial-chart__modes,
+  .jh-market-picker__tabs,
+  .jh-theme-picker-popover__modes,
+  .jh-spectrum__modes,
+  .jh-spectrum__library-picker,
+  .jh-spectrum__hex-row,
+  .jh-wind-instrument__well,
+  .jh-wind-instrument__tile,
+  .jh-compass__well,
+  .jh-compass__readout,
+  .jh-compass__cardinal-pill,
+  .jh-attitude__pill,
+  .jh-attitude__well,
+  .jh-attitude__readout > div,
+  .jh-navigation-instrument__mode,
+  .jh-navigation-instrument__well,
+  .jh-navigation-instrument__readings > div,
+  .jh-weather__well,
+  .jh-weather__readings > div,
+  .jh-astronomy__sky,
+  .jh-astronomy__scrubber,
+  .jh-astronomy__readouts > div,
+  .jh-astrology-wheel__details > div,
+  .jh-financial-chart__plot-wrap,
+  .jh-financial-chart__stats > div,
+  .jh-metric-card__well,
+  .jh-race-telemetry__cell,
+  .jh-race-telemetry__sectors span
+) {
+  background-color: rgb(6 6 6 / var(--jh-surface-alpha, 1)) !important;
+  background-image: none !important;
+  backdrop-filter: blur(var(--jh-surface-blur, 0px)) !important;
+  -webkit-backdrop-filter: blur(var(--jh-surface-blur, 0px)) !important;
+}
+:is([data-jh-theme="dark"], .dark):is(
+  [data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"],
+  [data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"] *
+):is(
+  .jh-button:not(.jh-button--ghost) .jh-button__face::before,
+  .jh-slider__thumb::after,
+  .jh-bar-slider__thumb::after,
+  .jh-tactile-lever__thumb::after
+) {
+  background: none !important;
+  opacity: 0 !important;
+}
+@media (prefers-reduced-transparency: reduce) {
+  :is([data-jh-theme="dark"], .dark):is(
+    [data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"],
+    [data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"] *
+  ):is(
+    .jh-dialog,.jh-dialog__content,.jh-dialog-summary,.jh-command-dialog,.jh-date-popover,.jh-date-time-popover,
+    .jh-date-time-picker,.jh-picker-overlay,.jh-currency-picker__popover,.jh-ephemeris-picker__panel,.jh-menu,
+    .jh-context-menu,.jh-toast,.jh-oklch-palette,.jh-spectrum-popover,.jh-spectrum,.jh-vertical-gallery__ratio-menu,
+    .jh-theme-picker-popover,.jh-calendar:not(.jh-date-popover .jh-calendar):not(.jh-date-time-popover .jh-calendar),
+    .jh-data-form,.jh-data-table,.jh-metric-card,.jh-tabs,.jh-accordion:not(.jh-scroll-area > .jh-accordion),
+    .jh-step-navigation,.jh-radio-group__options,
+    .jh-scroll-frame:not(.jh-vertical-gallery__frame):not(.jh-picker-overlay .jh-scroll-frame):not(.jh-currency-picker .jh-scroll-frame):not(.jh-financial-order .jh-scroll-frame):not(.jh-market-picker .jh-scroll-frame),
+    .jh-gallery,.jh-gallery__caption,.jh-image-frame,.jh-file-transfer,.jh-vertical-gallery,.jh-filmstrip__chassis,
+    .jh-image-inspector,.jh-financial-chart,.jh-market-picker,.jh-financial-order:not(.jh-command-dialog > .jh-financial-order),
+    .jh-finance-nav--sidebar,.jh-finance-nav--header,.jh-weather,.jh-weather-conditions,.jh-wind-instrument,
+    .jh-tide-instrument,.jh-lunar-ephemeris,.jh-astronomy,.jh-astrology-wheel,.jh-navigation-instrument,.jh-attitude,
+    .jh-compass,.jh-compass__dial,.jh-race-telemetry,.jh-tactile-keypad,.jh-tactile-console,.jh-camera-wheel,.jh-camera-dial__plate
+  ) {
+    background-color: #0a0a0a !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  :is([data-jh-theme="dark"], .dark):is(
+    [data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"],
+    [data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"] *
+  ):is(
+    .jh-button:not(.jh-button--ghost) .jh-button__face,.jh-button--ghost:not(:disabled):is(:hover, :active) .jh-button__face,
+    .jh-slider__thumb,.jh-bar-slider__thumb,.jh-switch__thumb,.jh-tactile-lever__thumb,.jh-tactile-key__face,
+    .jh-tactile-pad__cap,.jh-tactile-encoder__cap,.jh-dial__knob,.jh-radio-option,
+    .jh-segmented__option[aria-checked="true"] span,.jh-segmented__thumb,.jh-tabs__thumb,.jh-context-menu__trigger,
+    .jh-combobox__trigger,.jh-command-trigger,.jh-currency-picker__trigger,.jh-ephemeris-picker__trigger,
+    .jh-oklch-trigger,.jh-spectrum-trigger,.jh-dialog__close,.jh-toast__close,.jh-date-time-slots button,
+    .jh-calendar__day-button[aria-selected="true"],.jh-calendar__selected .jh-calendar__day-button,
+    .jh-financial-order__close,.jh-financial-order__confirm,.jh-ephemeris-picker__submit,
+    .jh-vertical-gallery__aspect-btn,.jh-github-star,.jh-theme-toggle,
+    .jh-theme-picker-popover__modes button[aria-pressed="true"],.jh-theme-picker-popover__reset,
+    .jh-financial-chart__periods button[aria-pressed="true"],.jh-financial-chart__modes button[aria-pressed="true"],
+    .jh-market-picker__tabs button[aria-selected="true"],.jh-ephemeris-picker__targets button[aria-pressed="true"],
+    .jh-step-navigation__step,.jh-spectrum__steppers button,.jh-combobox__option[aria-selected="true"],
+    .jh-currency-picker__options button[aria-selected="true"],.jh-vertical-gallery__ratio-option[aria-selected="true"],
+    .jh-glass-shape
+  ) {
+    background-color: #0e0e0e !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  :is([data-jh-theme="dark"], .dark):is(
+    [data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"],
+    [data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"] *
+  ):is(
+    .jh-input,.jh-search-input,.jh-slider__track,.jh-bar-slider__track,.jh-tactile-lever__track,
+    .jh-progress__track,.jh-switch::before,.jh-segmented,.jh-tabs__list,.jh-dial__bed,.jh-compass__bed,
+    .jh-tactile-encoder,.jh-tactile-console__oled,.jh-tactile-console__speaker,.jh-dialog-summary,
+    .jh-financial-order__asset,.jh-financial-order__side,.jh-financial-order__summary,
+    .jh-financial-order__fields input,.jh-financial-order__fields select,.jh-ephemeris-picker__fields input,
+    .jh-ephemeris-picker__fields select,.jh-command-dialog__search input,.jh-currency-picker__search input,
+    .jh-picker-overlay .jh-search-input,.jh-date-picker__clear,.jh-financial-chart__periods,
+    .jh-financial-chart__modes,.jh-market-picker__tabs,.jh-theme-picker-popover__modes,
+    .jh-spectrum__modes,.jh-spectrum__library-picker,.jh-spectrum__hex-row,.jh-wind-instrument__well,
+    .jh-wind-instrument__tile,.jh-compass__well,.jh-compass__readout,.jh-compass__cardinal-pill,
+    .jh-attitude__pill,.jh-attitude__well,.jh-attitude__readout > div,.jh-navigation-instrument__mode,
+    .jh-navigation-instrument__well,.jh-navigation-instrument__readings > div,.jh-weather__well,
+    .jh-weather__readings > div,.jh-astronomy__sky,.jh-astronomy__scrubber,.jh-astronomy__readouts > div,
+    .jh-astrology-wheel__details > div,.jh-financial-chart__plot-wrap,.jh-financial-chart__stats > div,
+    .jh-metric-card__well,.jh-race-telemetry__cell,.jh-race-telemetry__sectors span
+  ) {
+    background-color: #060606 !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
 }
 `;
 
@@ -2911,6 +3458,18 @@ const DARK_LAB_POLISH = `
 }
 :is([data-jh-theme="dark"], .dark) .relief-art {
   background: radial-gradient(ellipse at 50% 20%, #0d0d0d, #070707);
+}
+:is([data-jh-theme="dark"], .dark) .tactile-study__surface-head {
+  color: #9c9c9c;
+}
+:is([data-jh-theme="dark"], .dark) .tactile-study__surface-head output {
+  color: #ededed;
+}
+:is([data-jh-theme="dark"], .dark) .tactile-study__stage[data-jh-surface-custom="true"] .tactile-study__panel {
+  background: rgb(12 12 12 / var(--jh-surface-alpha, 1)) !important;
+  background-image: none !important;
+  backdrop-filter: blur(var(--jh-surface-blur, 0px)) !important;
+  -webkit-backdrop-filter: blur(var(--jh-surface-blur, 0px)) !important;
 }
 `;
 

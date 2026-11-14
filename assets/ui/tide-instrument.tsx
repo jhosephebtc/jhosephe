@@ -2,6 +2,7 @@ import { useId, useMemo, useState } from 'react';
 import { Button } from './button';
 import { Slider } from './controls';
 import { SegmentedControl } from './segmented-control';
+import { instrumentAccentStyle } from './utils';
 import {
   clamp,
   generateTideSeries,
@@ -32,6 +33,7 @@ export function TideInstrument({
   tidalRange = 2.46,
   moonCoupling = 'Waxing · 78% · Spring tide',
   material = 'solid',
+  accentColor,
 }: {
   station?: string;
   datum?: string;
@@ -44,8 +46,10 @@ export function TideInstrument({
   tidalRange?: number;
   moonCoupling?: string;
   material?: SurfaceMaterial;
+  accentColor?: string;
 }) {
   const id = useId();
+  const areaGradId = `jh-tide-area-${id.replace(/[^a-zA-Z0-9_-]/g, '')}`;
   const [unit, setUnit] = useState<'m' | 'ft'>('m');
   const [inspectIndex, setInspectIndex] = useState<number | null>(null);
   const moment = useMemo(() => date ?? new Date(), [date]);
@@ -111,6 +115,7 @@ export function TideInstrument({
       className="jh-tide-instrument"
       data-jh-material={matAttr}
       aria-labelledby={`${id}-title`}
+      style={instrumentAccentStyle(accentColor)}
     >
       <header className="jh-tide-instrument__header">
         <div>
@@ -147,8 +152,14 @@ export function TideInstrument({
           role="img"
           aria-label={`24-hour tidal curve at ${station}, ${fmtHeight(displayHeightM)} at ${Math.round(displayPhase)} degrees`}
         >
+          <defs>
+            <linearGradient id={areaGradId} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="var(--jh-instrument-accent)" stopOpacity="0.22" />
+              <stop offset="100%" stopColor="var(--jh-instrument-accent)" stopOpacity="0" />
+            </linearGradient>
+          </defs>
           <line x1={chart.padX} y1={chart.h / 2} x2={chart.w - chart.padX} y2={chart.h / 2} className="jh-tide-instrument__datum" />
-          <path d={chart.area} className="jh-tide-instrument__area" />
+          <path d={chart.area} fill={`url(#${areaGradId})`} className="jh-tide-instrument__area" />
           <path d={chart.line} className="jh-tide-instrument__curve" />
           <line
             x1={chart.activePt.x}

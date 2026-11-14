@@ -1,4 +1,5 @@
 import { useMemo, useState, type ReactNode } from 'react';
+import { instrumentAccentStyle } from './utils';
 import { surfaceMaterialAttr, type SurfaceMaterial } from './weather-ephemeris';
 
 const SIGNS = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'] as const;
@@ -72,6 +73,7 @@ export function AstrologyWheel({
   bodies,
   onBodySelect,
   material = 'solid',
+  accentColor,
 }: {
   birthDate?: string;
   birthTime?: string;
@@ -81,6 +83,7 @@ export function AstrologyWheel({
   bodies?: Array<{ name: string; longitude: number }>;
   onBodySelect?: (body: string) => void;
   material?: SurfaceMaterial;
+  accentColor?: string;
 }) {
   const [selectedBody, setSelectedBody] = useState('Sun');
   const birth = useMemo(() => new Date(`${birthDate}T${birthTime}:00`), [birthDate, birthTime]);
@@ -109,6 +112,7 @@ export function AstrologyWheel({
       className="jh-astrology-wheel"
       data-jh-material={matAttr}
       aria-label={`Illustrative natal chart for ${location}`}
+      style={instrumentAccentStyle(accentColor)}
     >
       <header className="jh-astrology-wheel__header">
         <div>
@@ -117,6 +121,7 @@ export function AstrologyWheel({
           <p>{birthDate} · {birthTime} local · {latitude.toFixed(2)}°, {longitude.toFixed(2)}°</p>
         </div>
         <span className="jh-astrology-wheel__badge">
+          <i className="jh-astrology-wheel__badge-dot" aria-hidden="true" />
           Asc {Math.round(ascendant)}°
         </span>
       </header>
@@ -143,6 +148,8 @@ export function AstrologyWheel({
             <circle cx="180" cy="180" r="118" className="jh-astrology-wheel__sign-ring" />
             <circle cx="180" cy="180" r="86" className="jh-astrology-wheel__house-ring" />
             <circle cx="180" cy="180" r="54" className="jh-astrology-wheel__inner-well" />
+            <path d="M180 26l-4.5 7.5h9Z" className="jh-astrology-wheel__ascendant" aria-hidden="true" />
+            <line x1="180" y1="36" x2="180" y2="126" className="jh-astrology-wheel__ascendant-axis" aria-hidden="true" />
 
             {Array.from({ length: 12 }, (_, index) => {
               const start = polar(54, index * 30);

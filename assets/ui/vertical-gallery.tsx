@@ -212,6 +212,7 @@ export function VerticalGallery({
   items = DEFAULT_ITEMS,
   columns = 4,
   visibleRows = 12,
+  maxHeight,
   selectedId,
   defaultSelectedId,
   onSelect,
@@ -226,6 +227,7 @@ export function VerticalGallery({
   title?: string;
   columns?: number;
   visibleRows?: number;
+  maxHeight?: number | string;
   defaultAspectRatio?: GalleryAspectRatio;
   selectedId?: string;
   defaultSelectedId?: string;
@@ -237,11 +239,17 @@ export function VerticalGallery({
 }) {
   const safeCols = Math.max(2, Math.min(6, Math.round(columns)));
   const safeRows = Math.max(4, Math.min(16, Math.round(visibleRows)));
+  const resolvedHeight =
+    maxHeight !== undefined
+      ? typeof maxHeight === 'number'
+        ? `${maxHeight}px`
+        : maxHeight
+      : `calc(${safeRows} * var(--jh-vg-row-h, 36px) + ${Math.max(0, safeRows - 1)} * var(--jh-vg-gap, 6px) + 8px)`;
   const [internalId, setInternalId] = useState(defaultSelectedId ?? items[0]?.id ?? '');
   const activeId = selectedId ?? internalId;
   const viewportRef = useRef<HTMLDivElement>(null);
 
-  useScrollItemReveal(viewportRef, [items.length, safeCols, safeRows], '.jh-vertical-gallery__item');
+  useScrollItemReveal(viewportRef, [items.length, safeCols, safeRows, maxHeight], '.jh-vertical-gallery__item');
 
   const [ratio, setRatio] = useState<GalleryAspectRatio>(defaultAspectRatio);
   const [ratioOpen, setRatioOpen] = useState(false);
@@ -309,34 +317,37 @@ export function VerticalGallery({
         )}
       </div>
 
-      <div
-        ref={viewportRef}
-        className="jh-vertical-gallery__viewport"
-        role="region"
-        aria-label={`${label} grid (${safeCols} by ${safeRows} visible)`}
-        tabIndex={0}
-      >
-        <div className="jh-vertical-gallery__grid">
-          {items.map((item, index) => {
-            const active = item.id === activeId;
-            return (
-              <button
-                key={item.id}
-                type="button"
-                className={cn('jh-vertical-gallery__item', active && 'is-selected')}
-                aria-pressed={active}
-                aria-label={item.title ?? `Image ${index + 1}`}
-                onClick={() => {
-                  if (selectedId === undefined) setInternalId(item.id);
-                  onSelect?.(item, index);
-                }}
-              >
-                <span className="jh-vertical-gallery__thumb">
-                  <SpecimenArtwork item={item} index={index} />
-                </span>
-              </button>
-            );
-          })}
+      <div className="jh-scroll-frame jh-vertical-gallery__frame">
+        <div
+          ref={viewportRef}
+          className="jh-scroll-area jh-vertical-gallery__viewport"
+          style={{ height: resolvedHeight }}
+          tabIndex={0}
+          role="region"
+          aria-label={typeof title === 'string' ? title : 'Vertical image gallery'}
+        >
+          <div className="jh-vertical-gallery__grid">
+            {items.map((item, index) => {
+              const active = item.id === activeId;
+              return (
+                <button
+                  key={item.id}
+                  type="button"
+                  className={cn('jh-vertical-gallery__item', active && 'is-selected')}
+                  aria-pressed={active}
+                  aria-label={item.title ?? `Image ${index + 1}`}
+                  onClick={() => {
+                    if (selectedId === undefined) setInternalId(item.id);
+                    onSelect?.(item, index);
+                  }}
+                >
+                  <span className="jh-vertical-gallery__thumb">
+                    <SpecimenArtwork item={item} index={index} />
+                  </span>
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>

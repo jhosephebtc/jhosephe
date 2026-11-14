@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState, type ReactNode, type RefObject } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode, type RefObject } from 'react';
 import { createPortal } from 'react-dom';
 import { ScrollArea } from './scroll-area';
 import { cn } from './utils';
@@ -37,6 +37,7 @@ export function PickerPanel({
   footer,
   material,
   className,
+  style,
   children,
   preferredHeight = 280,
 }: {
@@ -50,6 +51,7 @@ export function PickerPanel({
   footer?: ReactNode;
   material?: string;
   className?: string;
+  style?: CSSProperties;
   children: ReactNode;
   preferredHeight?: number;
 }) {
@@ -98,6 +100,7 @@ export function PickerPanel({
       data-jh-material={material}
       role="presentation"
       style={{
+        ...style,
         top: box.top,
         left: box.left,
         width: box.width,

@@ -1,31 +1,54 @@
 # React, CSS e shadcn/ui
 
-## Adoção
+## Adoção e arquitetura dual de temas
 
-Leia as convenções locais antes de instalar bibliotecas. Em uma aplicação shadcn/ui existente, mapeie os papéis visuais para os tokens semânticos já utilizados (`background`, `foreground`, `card`, `primary`, `muted`, `border`, `ring` e pares de foreground). Mantenha esses papéis em branco, cinza neutro e preto, inclusive primary, destructive e ring; expresse o significado do estado também em texto e ícone. Adapte a sintaxe de cor e o Tailwind à versão do projeto. Evite substituir toda a folha de tema ou impor uma fonte quando o usuário especificar outra.
+Leia as convenções locais antes de instalar dependências. Em uma aplicação shadcn/ui existente, mapeie os tokens semânticos (`--background`, `--foreground`, `--card`, `--popover`, `--primary`, `--secondary`, `--muted`, `--accent`, `--destructive`, `--border`, `--input`, `--ring`) para a dupla paleta acromática do sistema:
 
-Para projeto novo use Geist Sans. Em ambiente Vite, os pacotes de fonte variável podem ser importados como CSS local; em ambientes com carregador de fontes próprio, use o mecanismo do framework. Mantenha fallback do sistema, `font-kerning: normal` e tokens tipográficos por papel. Use [Tipografia e layout](typography-layout.md) para tracking, entrelinha, spacing e grids. O laboratório é um exemplo, não um requisito para uso da skill.
+- **Light Porcelain (`:root`)**: canvas `#f8f8f8`, superfícies elevadas `#ffffff`, texto `#2e2e2e`, cavidades `#eeeeee`–`#f1f1f1`, foco `#525252`.
+- **Black / Dark Obsidian (`:is([data-jh-theme="dark"], .dark)`)**: canvas e cavidades `#060606`, inputs `#070707` (foco `#090909`), superfícies elevadas `#0a0a0a`, faces manipuláveis `#0e0e0e` → `#0a0a0a`, texto `#ededed`, foco `#383838`.
 
-## Primitivas reutilizáveis
+O gerador determinístico [`scripts/generate-dark-theme.mjs`](../scripts/generate-dark-theme.mjs) mantém o bloco dark sincronizado com os estilos claros em `assets/ui/theme.css` e nos estilos do laboratório. Ao incorporar componentes via registry, todos os estilos distribuídos usam classes e tokens prefixados em `--jh-*` / `.jh-*`, sem aplicar resets globais nem sobrescrever `body` da aplicação hospedeira.
 
-Os arquivos em `assets/ui` foram pensados para cópia e adaptação: as faces e tokens são separados dos controles semânticos. Instale as dependências que os arquivos escolhidos realmente importam; não copie `node_modules`. Componentes de formulário e sobreposição se beneficiam de primitivas que já oferecem teclado, foco e ARIA.
+Use `'Geist Variable', system-ui, sans-serif` (`@fontsource-variable/geist`) em toda a interface, inclusive números de instrumentos, tabelas e blocos de código, mantendo `font-kerning: normal` e `tabular-nums lining-nums` em leituras numéricas. Consulte [Tipografia e layout](typography-layout.md) para escalas, tracking e grids.
 
-- `button`: botão nativo glass com variantes semânticas e feedback liquid, foco fora da superfície e conteúdo em fluxo normal.
-- `smooth-shape`: path responsivo decorativo, com fallback por raio.
-- `slider` e `switch`: valor exposto para tecnologias assistivas; rótulo visível associado. Slider usa puxador sólido de vidro, sem deformação liquid.
-- `dialog`: foco preso no diálogo, Escape, título acessível e retorno de foco ao gatilho.
-- `dial`: se representar um valor contínuo, preserve orientação por teclado e alternativa semântica de slider. Não transforme valores em falsos botões.
-- `instrument`: valor em texto; SVG opcionalmente decorativo.
+## Primitivas reutilizáveis e contratos
+
+Os arquivos em `assets/ui` são independentes e copiáveis via CLI ou manualmente (preservando imports relativos e dependências declaradas):
+
+- **`button`**: botão tátil (`primary | secondary | ghost | working`) com `SmoothShape` contínuo, `--jh-press-x/y` para resposta liquid sem mudança de cor no clique, estado `loading`/`loadingLabel` (`aria-busy="true"`), e foco externo à face.
+- **`smooth-shape`**: path superelíptico via `figma-squircle` (`radius`, `smoothing = 0.6`) com `ResizeObserver` e fallback `border-radius`.
+- **`slider`, `bar-slider`, `tactile-lever`, `switch`**: controles Radix UI com puxadores rígidos de vidro, emissores OKLCH confinados (`accentColor`, `accentColorEnd`, `accentGradient`, `glowIntensity`, `glowBlur`) e suporte completo a teclado.
+- **`dial`, `detent-dial`**: seletores rotativos (`classic | arc | vernier | monolith` no `Dial`) com cálculo angular absoluto do ponteiro, setor inferior morto explícito, emissão confinada em canaletas orbitais e `<input type="range">` acessível por teclado.
+- **`simple-scroll`, `accordion-scroll`, `scroll-area`, `vertical-gallery`**: compartilham a arquitetura `.jh-scroll-frame > .jh-scroll-area` (elevação única no frame externo, scrollbar fina sem setas de `7px`, revelação progressiva por interseção via `useScrollItemReveal`). `VerticalGallery` exibe grade `4 × 12` com seletor de proporção inline (`1:1 | 3:4 | 4:5 | 9:16 | 16:9`) e tiles elevados não-rebaixados.
+- **`dialog`, `menu`, `context-menu`, `command-palette`, `picker-panel`, `combobox`**: superfícies sobrepostas com gerenciamento de foco, `Escape` e posicionamento seguro.
+- **`shader-surface`**: `MeshGradient` acromático lazy-loaded com WebGL2 (`LIGHT_COLORS` e `DARK_COLORS` dinâmicos conforme `data-jh-theme` / `.dark`) e degradação automática para CSS estático sob `prefers-reduced-motion`, `prefers-reduced-transparency`, `forced-colors` ou ausência de WebGL2.
+
+### Transparência contínua e propagação em portais
+
+Para personalizar translucidez e desfoque de superfícies em runtime sem degradar sombras ou legibilidade:
+
+1. Aplique `data-jh-surface-custom="true"` junto das variáveis CSS `--jh-surface-alpha` (`(100 - transparency) / 100`, para `transparency` de `0` a `85`) e `--jh-surface-blur` (`0px` a `32px`) no wrapper do componente.
+2. Quando o controle for aplicado em playgrounds ou no nível da página, sincronize `data-jh-surface-custom`, `--jh-surface-alpha` e `--jh-surface-blur` em `document.documentElement` dentro de `useEffect` (limpando no unmount ou quando ambos retornam a `0`) para que overlays portados (`Dialog`, `Menu`, `Popover`, `PickerPanel`, `CommandPalette`, `FinancialOrderModal`) recebam os mesmos valores.
+3. Combine superfícies translúcidas com `<ShaderSurface />` atrás do palco para manter profundidade perceptível sem alterar `box-shadow`, `color` de texto ou ícones SVG.
 
 ## Acessibilidade e integração
 
-O rótulo descreve a ação, não o material. Desabilitado significa indisponível; não simule desabilitado apenas com opacidade. Ícone sem texto precisa de nome acessível. Área de toque confortável, foco visível, navegação com teclado, rótulos de campos, zoom e contraste são parte do componente.
+- O rótulo descreve a função do controle, nunca o material; ícones sem texto visível exigem `aria-label`.
+- `prefers-reduced-transparency`, `prefers-reduced-motion` e `forced-colors` são tratados diretamente em CSS e JS (`ShaderSurface`, transições, fallbacks opacos).
+- Controles compostos (`DataTable`, `Tabs`, `Accordion`, `CommandPalette`, `Combobox`, `Calendar`, `DateTimePicker`) implementam navegação por teclado, `aria-sort`, `aria-selected`, `aria-expanded` e retorno de foco.
+- Valide `components.json` e aliases (`@/components/jhosephe/...`) antes de executar a CLI shadcn sobre um projeto existente.
 
-`prefers-reduced-transparency`, `forced-colors` e `prefers-reduced-motion` são complementares. Preserve um fallback sólido quando filtros não são suportados e não assuma que `corner-shape` funciona em todos os browsers. Não esconda informações dentro de pseudo-elementos ou texturas.
+## Catálogo instalável e Registry público (64 componentes)
 
-Se gerar componentes shadcn por CLI, valide o arquivo de configuração, alias de caminho, versão e temas do projeto real. Não execute geradores destrutivos sobre arquivos existentes sem verificar colisões.
+O catálogo em `/components` reúne **64 componentes** (`8` primitivas base em `examples/lab/src/library/data.ts` + `56` componentes estendidos em `examples/lab/src/library/extra-data.ts`), organizados em 9 categorias (`Controls`, `Surfaces`, `Instruments`, `Inputs`, `Navigation`, `Feedback`, `Finance`, `Astronomy`, `Weather`). Todos os 64 itens são empacotados por `npm run registry:build` (`scripts/build-registry.mjs`) em `/r/<id>.json` e indexados em `/registry.json`:
 
+```sh
+npx shadcn@latest add https://jhosephe.vercel.app/r/button.json
+```
 
-## Catálogo instalável
-
-O catálogo em `/components` usa os mesmos 26 componentes de `assets/ui` na home, nos detalhes e no registro instalável. `npm run registry:build` gera `/r/<id>.json` com código completo, CSS com prefixo jh e dependências explícitas. O registro não deve instalar resets globais nem trocar o tema da aplicação hospedeira. Menus, modais e pickers mantêm ações claras; controles com estado expõem valor e comportamento por teclado. O calendário deixa a data selecionada legível sem sombra escura. Formulários usam validação nativa e feedback de operação real.
+Além das primitivas essenciais, o registro inclui:
+- **Scroll & Galerias**: `scroll-area`, `simple-scroll`, `accordion-scroll`, `vertical-gallery`, `gallery`, `image-frame`, `filmstrip-gallery`, `image-inspector`.
+- **Hardware Tátil & Ótica**: `tactile-key`, `tactile-keypad`, `tactile-console`, `camera-wheel`, `camera-dial`.
+- **Aplicação & Dados**: `combobox`, `tabs`, `data-table`, `command-palette`, `metric-card`, `accordion`, `step-navigation`, `progress-bar`, `file-transfer`, `data-form`.
+- **Finanças**: `financial-chart`, `market-picker`, `currency-picker`, `financial-order-modal`, `finance-navigation`.
+- **Astronomia, Clima & Telemetria**: `astronomy-instrument`, `ephemeris-picker`, `astrology-wheel`, `lunar-ephemeris`, `weather-conditions`, `wind-instrument`, `tide-instrument`, `weather-instrument`, `compass`, `attitude-indicator`, `navigation-instrument`, `race-telemetry`.
