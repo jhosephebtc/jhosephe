@@ -13397,9 +13397,6 @@ input[type="number"] {
   color: var(--jh-instrument-accent, #222222);
   font-weight: 600;
 }
-.jh-market-picker__asset[aria-selected="true"] {
-  box-shadow: inset 0 1px #fff, inset 0 0 0 1px color-mix(in oklch, var(--jh-instrument-accent, #222222) 24%, transparent), 0 1px 3px #0000000a !important;
-}
 
 /* MetricCard */
 .jh-metric-card__well {
@@ -14022,8 +14019,8 @@ input[type="number"] {
   .jh-date-time-popover,
   .jh-date-time-popover.jh-picker-overlay,
   .jh-date-time-picker,
-  .jh-picker-overlay,
-  [data-jh-material].jh-picker-overlay,
+  .jh-picker-overlay:not(.jh-picker-overlay--modal),
+  [data-jh-material].jh-picker-overlay:not(.jh-picker-overlay--modal),
   .jh-combobox__popover,
   .jh-currency-picker__popover,
   .jh-ephemeris-picker__panel,
@@ -14077,7 +14074,7 @@ input[type="number"] {
   .jh-camera-dial__plate
 ),
 :root:is([data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"]) ~ :is(
-  .jh-picker-overlay,
+  .jh-picker-overlay:not(.jh-picker-overlay--modal),
   .jh-date-popover,
   .jh-date-time-popover,
   .jh-menu,
@@ -14096,8 +14093,8 @@ input[type="number"] {
   .jh-date-popover,
   .jh-date-time-popover,
   .jh-date-time-picker,
-  .jh-picker-overlay,
-  [data-jh-material].jh-picker-overlay,
+  .jh-picker-overlay:not(.jh-picker-overlay--modal),
+  [data-jh-material].jh-picker-overlay:not(.jh-picker-overlay--modal),
   .jh-currency-picker__popover,
   .jh-ephemeris-picker__panel,
   .jh-menu,
@@ -14332,7 +14329,7 @@ input[type="number"] {
     :root[data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"]
   ) :is(
     .jh-dialog,.jh-dialog__content,.jh-dialog-summary,.jh-command-dialog,.jh-date-popover,.jh-date-time-popover,
-    .jh-date-time-picker,.jh-picker-overlay,.jh-currency-picker__popover,.jh-ephemeris-picker__panel,.jh-menu,
+    .jh-date-time-picker,.jh-picker-overlay:not(.jh-picker-overlay--modal),.jh-currency-picker__popover,.jh-ephemeris-picker__panel,.jh-menu,
     .jh-context-menu,.jh-toast,.jh-oklch-palette,.jh-spectrum-popover,.jh-spectrum,.jh-vertical-gallery__ratio-menu,
     .jh-theme-picker-popover,.jh-calendar:not(.jh-date-popover .jh-calendar):not(.jh-date-time-popover .jh-calendar),
     .jh-data-form,.jh-data-table,.jh-metric-card,.jh-tabs,.jh-accordion:not(.jh-scroll-area > .jh-accordion),
@@ -14346,7 +14343,7 @@ input[type="number"] {
   ),
   [data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"]:is(
     .jh-dialog,.jh-dialog__content,.jh-dialog-summary,.jh-command-dialog,.jh-date-popover,.jh-date-time-popover,
-    .jh-date-time-picker,.jh-picker-overlay,.jh-currency-picker__popover,.jh-ephemeris-picker__panel,.jh-menu,
+    .jh-date-time-picker,.jh-picker-overlay:not(.jh-picker-overlay--modal),.jh-currency-picker__popover,.jh-ephemeris-picker__panel,.jh-menu,
     .jh-context-menu,.jh-toast,.jh-oklch-palette,.jh-spectrum-popover,.jh-spectrum,.jh-vertical-gallery__ratio-menu,
     .jh-theme-picker-popover,.jh-calendar,.jh-data-form,.jh-data-table,.jh-metric-card,.jh-tabs,.jh-accordion:not(.jh-scroll-area > .jh-accordion),
     .jh-step-navigation,.jh-radio-group__options,
@@ -14418,6 +14415,34 @@ input[type="number"] {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
   }
+}
+
+/* Modal picker overlay (CommandPalette): full-viewport backdrop scrim instead of card-sized popover */
+.jh-picker-overlay.jh-picker-overlay--modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1400;
+  width: auto;
+  max-width: none;
+  min-width: 0;
+  height: auto;
+  display: grid;
+  place-items: center;
+  padding: 16px !important;
+  border-radius: 0 !important;
+  background: rgb(27 27 27 / .38) !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  overflow: auto;
+}
+.jh-picker-overlay.jh-picker-overlay--modal > .jh-dialog.jh-command-dialog {
+  position: relative;
+  top: auto;
+  left: auto;
+  transform: none;
+  margin: 0;
 }
 
 /* === JH_BLACK_THEME_START === */
@@ -21185,6 +21210,13 @@ input[type="number"] {
 :is([data-jh-theme="dark"], .dark) .jh-theme-picker-popover__label-row output {
   color: rgb(182 182 182);
 }
+:is([data-jh-theme="dark"], .dark) .jh-picker-overlay.jh-picker-overlay--modal {
+  background: rgb(227 227 227 / .38) !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
 :is([data-jh-theme="dark"], .dark) {
   color-scheme: dark;
   --jh-instrument-accent: oklch(100% 0 0);
@@ -23686,9 +23718,6 @@ input[type="number"] {
 :is([data-jh-theme="dark"], .dark) .jh-financial-chart__bar[data-selected="true"],
 :is([data-jh-theme="dark"], .dark) .jh-astronomy__sun { fill: var(--jh-instrument-accent, oklch(100% 0 0)); }
 :is([data-jh-theme="dark"], .dark) .jh-market-picker__check { color: var(--jh-instrument-accent, oklch(100% 0 0)); }
-:is([data-jh-theme="dark"], .dark) .jh-market-picker__asset[aria-selected="true"] {
-  box-shadow: inset 0 1px rgb(255 255 255 / .05), inset 0 0 0 1px color-mix(in oklch, var(--jh-instrument-accent, oklch(100% 0 0)) 28%, transparent), 0 2px 6px rgb(0 0 0 / .85) !important;
-}
 :is([data-jh-theme="dark"], .dark) .jh-astrology-wheel__ascendant {
   fill: var(--jh-instrument-accent, oklch(100% 0 0));
   stroke: #0a0a0a;
@@ -23724,8 +23753,8 @@ input[type="number"] {
   .jh-date-time-popover,
   .jh-date-time-popover.jh-picker-overlay,
   .jh-date-time-picker,
-  .jh-picker-overlay,
-  [data-jh-material].jh-picker-overlay,
+  .jh-picker-overlay:not(.jh-picker-overlay--modal),
+  [data-jh-material].jh-picker-overlay:not(.jh-picker-overlay--modal),
   .jh-combobox__popover,
   .jh-currency-picker__popover,
   .jh-ephemeris-picker__panel,
@@ -23938,7 +23967,7 @@ input[type="number"] {
     [data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"] *
   ):is(
     .jh-dialog,.jh-dialog__content,.jh-dialog-summary,.jh-command-dialog,.jh-date-popover,.jh-date-time-popover,
-    .jh-date-time-picker,.jh-picker-overlay,.jh-currency-picker__popover,.jh-ephemeris-picker__panel,.jh-menu,
+    .jh-date-time-picker,.jh-picker-overlay:not(.jh-picker-overlay--modal),.jh-currency-picker__popover,.jh-ephemeris-picker__panel,.jh-menu,
     .jh-context-menu,.jh-toast,.jh-oklch-palette,.jh-spectrum-popover,.jh-spectrum,.jh-vertical-gallery__ratio-menu,
     .jh-theme-picker-popover,.jh-calendar:not(.jh-date-popover .jh-calendar):not(.jh-date-time-popover .jh-calendar),
     .jh-data-form,.jh-data-table,.jh-metric-card,.jh-tabs,.jh-accordion:not(.jh-scroll-area > .jh-accordion),
@@ -24002,5 +24031,12 @@ input[type="number"] {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
   }
+}
+:is([data-jh-theme="dark"], .dark) .jh-picker-overlay.jh-picker-overlay--modal {
+  background: rgb(0 0 0 / .62) !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
 /* === JH_BLACK_THEME_END === */

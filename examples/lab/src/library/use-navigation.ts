@@ -25,7 +25,7 @@ export function useLibraryNavigation() {
     const anchor = (event.target as Element).closest<HTMLAnchorElement>('a[href]');
     if (!anchor || anchor.target || anchor.hasAttribute('download')) return;
     const url = new URL(anchor.href, window.location.href);
-    if (url.origin !== window.location.origin || url.hash || url.search || !(url.pathname === '/' || url.pathname === '/installation' || url.pathname.startsWith('/components'))) return;
+    if (url.origin !== window.location.origin || url.hash || url.search || !(url.pathname === '/' || url.pathname === '/installation' || url.pathname === '/skills' || url.pathname.startsWith('/components'))) return;
     event.preventDefault();
     const next = url.pathname.replace(/\/$/, '') || '/';
     if (next === path) return;

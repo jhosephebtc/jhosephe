@@ -1,5 +1,5 @@
 import { useEffect, useId, useMemo, useRef, useState, type CSSProperties, type KeyboardEvent as ReactKeyboardEvent, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react';
-import { ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, Check, ChevronDown, ChevronRight, Code2, Copy, CornerDownLeft, Grid2X2, Menu, Monitor, RotateCcw, Search, Smartphone, Star, Sun, X } from 'lucide-react';
+import { ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, Check, ChevronDown, ChevronRight, Code2, Copy, CornerDownLeft, FileText, Grid2X2, Menu, Monitor, RotateCcw, Search, Smartphone, Star, Sun, X } from 'lucide-react';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { Button } from '../../../../assets/ui/button';
 import { Dial } from '../../../../assets/ui/dial';
@@ -17,6 +17,7 @@ import { OklchPalette } from '../../../../assets/ui/oklch-palette';
 import { useLibraryNavigation } from './use-navigation';
 import { ThemeToggle, useJhosepheTheme } from '../theme';
 import { useScrollItemReveal } from '../../../../assets/ui/vertical-gallery';
+import { SkillsPage } from './SkillsPage';
 import './library.css';
 
 const iconProps = { size: 16, strokeWidth: 1.6, 'aria-hidden': true } as const;
@@ -169,10 +170,10 @@ function Header({ path }: { path: string }) {
   return <header className="library-header">
     <div className="library-header-inner">
       <a className="library-brand" href="/" aria-label="jhosephe, home"><Mark /><span>jhosephe<span className="library-brand-dot">.</span></span></a>
-      <nav className="library-header-nav" aria-label="Main navigation"><a aria-current={path.startsWith('/components') ? 'page' : undefined} href="/components">Components</a><a href="/lab">Laboratory</a><a href="/solar">Solar <ArrowUpRight size={12} aria-hidden="true" /></a></nav>
+      <nav className="library-header-nav" aria-label="Main navigation"><a aria-current={path.startsWith('/components') ? 'page' : undefined} href="/components">Components</a><a aria-current={path === '/skills' ? 'page' : undefined} href="/skills">Skills</a><a href="/lab">Laboratory</a><a href="/solar">Solar <ArrowUpRight size={12} aria-hidden="true" /></a></nav>
       <div className="library-header-actions"><SearchDialog /><a className="jh-github-star" href="https://github.com/jhosephebtc/jhosephe" target="_blank" rel="noreferrer" aria-label="Star jhosephe on GitHub"><Star size={14} strokeWidth={1.75} aria-hidden="true" /><span>Star on GitHub</span></a><ThemeToggle /><button className="library-menu" aria-label={menu ? 'Close navigation' : 'Open navigation'} aria-expanded={menu} aria-controls="library-mobile-nav" onClick={() => setMenu(!menu)}>{menu ? <X {...iconProps} /> : <Menu {...iconProps} />}</button><span className="library-version">v0.1</span></div>
     </div>
-    {menu && <nav id="library-mobile-nav" className="library-mobile-nav" aria-label="Mobile navigation"><a href="/components">All components</a><a href="/installation">Installation</a><a href="/lab">Laboratory</a><a href="/solar">Solar panel</a><a className="jh-github-star library-mobile-star" href="https://github.com/jhosephebtc/jhosephe" target="_blank" rel="noreferrer" aria-label="Star jhosephe on GitHub"><Star size={14} strokeWidth={1.75} aria-hidden="true" /><span>Star on GitHub</span></a>{components.map(item => <a key={item.id} href={`/components/${item.id}`}>{item.name}</a>)}</nav>}
+    {menu && <nav id="library-mobile-nav" className="library-mobile-nav" aria-label="Mobile navigation"><a href="/components">All components</a><a href="/installation">Installation</a><a href="/skills">Agent skills</a><a href="/lab">Laboratory</a><a href="/solar">Solar panel</a><a className="jh-github-star library-mobile-star" href="https://github.com/jhosephebtc/jhosephe" target="_blank" rel="noreferrer" aria-label="Star jhosephe on GitHub"><Star size={14} strokeWidth={1.75} aria-hidden="true" /><span>Star on GitHub</span></a>{components.map(item => <a key={item.id} href={`/components/${item.id}`}>{item.name}</a>)}</nav>}
   </header>;
 }
 
@@ -185,7 +186,7 @@ function Sidebar({ path }: { path: string }) {
     </a>
   );
   return <aside className="library-sidebar"><nav aria-label="Component library">
-    <div className="library-nav-group"><p>Getting started</p>{entry('/components', 'Overview', <Grid2X2 {...iconProps} />)}{entry('/installation', 'Installation', <Code2 {...iconProps} />)}</div>
+    <div className="library-nav-group"><p>Getting started</p>{entry('/components', 'Overview', <Grid2X2 {...iconProps} />)}{entry('/installation', 'Installation', <Code2 {...iconProps} />)}{entry('/skills', 'Agent skills', <FileText {...iconProps} />)}</div>
     {categories.filter(category => category !== 'All').map(category => <div className="library-nav-group" key={category}><p>{category}</p>{components.filter(item => item.category === category).map(item => <div key={item.id}>{entry(`/components/${item.id}`, item.name)}</div>)}</div>)}
     <div className="library-nav-group"><p>In context</p>{entry('/lab', 'Laboratory', <Grid2X2 {...iconProps} />)}{entry('/solar', 'Solar panel', <Sun {...iconProps} />)}</div>
   </nav><div className="library-sidebar-note"><span className="library-lens-dot" /><p>Made to be felt.<br /><span>Ready to be yours.</span></p></div></aside>;
@@ -587,6 +588,6 @@ export function Library() {
   const { path, navigate } = useLibraryNavigation();
   const item = components.find(component => path === `/components/${component.id}`);
   const landing = path === '/';
-  useEffect(() => { document.title = `${item ? item.name : landing ? 'Interfaces to feel' : path === '/components' ? 'Components' : path === '/installation' ? 'Installation' : 'Page not found'} — jhosephe`; }, [item, path, landing]);
-  return <div className="library" onClick={navigate}><a className="library-skip" href="#library-main">Skip to content</a><Header path={path} /><div className={landing ? '' : 'library-layout'}>{!landing && <Sidebar path={path} />}<div className="library-route" key={path}>{landing ? <Landing /> : path === '/components' ? <Catalog /> : path === '/installation' ? <Installation /> : item ? <ComponentPage key={item.id} item={item} /> : <NotFound />}</div></div><footer className="library-footer"><a className="library-brand" href="/"><Mark /><span>jhosephe<span className="library-brand-dot">.</span></span></a><p>Interfaces made of small details.</p><a href="/components">Explore the collection <ArrowUpRight {...iconProps} /></a><span>React · CSS · MIT</span></footer></div>;
+  useEffect(() => { document.title = `${item ? item.name : landing ? 'Interfaces to feel' : path === '/components' ? 'Components' : path === '/installation' ? 'Installation' : path === '/skills' ? 'Agent skills' : 'Page not found'} — jhosephe`; }, [item, path, landing]);
+  return <div className="library" onClick={navigate}><a className="library-skip" href="#library-main">Skip to content</a><Header path={path} /><div className={landing ? '' : 'library-layout'}>{!landing && <Sidebar path={path} />}<div className="library-route" key={path}>{landing ? <Landing /> : path === '/components' ? <Catalog /> : path === '/installation' ? <Installation /> : path === '/skills' ? <SkillsPage /> : item ? <ComponentPage key={item.id} item={item} /> : <NotFound />}</div></div><footer className="library-footer"><a className="library-brand" href="/"><Mark /><span>jhosephe<span className="library-brand-dot">.</span></span></a><p>Interfaces made of small details.</p><a href="/skills">Agent skills <ArrowUpRight {...iconProps} /></a><span>React · CSS · MIT</span></footer></div>;
 }

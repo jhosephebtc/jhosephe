@@ -28,6 +28,10 @@
       "destination": "/index.html"
     },
     {
+      "source": "/skills",
+      "destination": "/index.html"
+    },
+    {
       "source": "/lab",
       "destination": "/index.html"
     },

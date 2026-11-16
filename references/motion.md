@@ -32,3 +32,10 @@ Coordene elementos de um mesmo objeto com uma família temporal. Um painel que e
 - Painéis de abas podem entrar com `opacity` e `translateY` de poucos pixels. Preserve o layout, aceite mudanças rápidas e remova o deslocamento sob movimento reduzido.
 - Sob `prefers-reduced-motion: reduce`, remova deslocamento e oscilação não essenciais e apresente estados finais sem atraso. Também pare animação JS, SVG e canvas, não apenas CSS.
 - Em teste de qualidade, alterne rapidamente, navegue por teclado, teste cancelamento e perfil de desempenho com o dispositivo real disponível.
+
+## Animações em SVG & Vídeo Social (MP4 60fps)
+
+Para posts editoriais, gráficos vetoriais animados e exportação em vídeo (`3:2` `1620×1080`, `16:9`, `1:1`, `4:5`, `9:16`), siga [jhosephe-svg-motion](../.agents/skills/jhosephe-svg-motion/SKILL.md):
+- **Rascunho estático primeiro**: gere e valide visualmente os SVGs estáticos com `--preview` antes de animar ou renderizar MP4.
+- **Presença imediata (`<= 0.5s`)**: título, eyebrow e hardware tátil devem estar presentes no frame `0` (com qualquer transição de texto concluída em no máximo `500ms`) para nunca deixar cena vazia no feed.
+- **Sombras 3D e textura sutil**: confine textura de papel (`<feTurbulence>`) apenas ao fundo, eleve objetos com `drop-shadow` direcional em camadas via CSS GPU sRGB e restrinja emissão luminosa a LEDs, arcos e cursores ativos.

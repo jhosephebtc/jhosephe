@@ -803,6 +803,32 @@ const DARK_LIBRARY_POLISH = `
 :is([data-jh-theme="dark"], .dark) .library .jh-search-input input:focus-visible {
   outline: none !important;
 }
+:is([data-jh-theme="dark"], .dark) .library-skills-bundle {
+  background: #0a0a0a;
+  box-shadow: inset 0 1px rgb(255 255 255 / .018), 0 14px 32px -12px rgb(0 0 0 / .94);
+}
+:is([data-jh-theme="dark"], .dark) .library-skills-bundle__copy p,
+:is([data-jh-theme="dark"], .dark) .library-skills-header p {
+  color: #a6a6a6;
+}
+:is([data-jh-theme="dark"], .dark) .library-skills-bundle__copy code {
+  background: #141414;
+  color: #e4e4e4;
+}
+:is([data-jh-theme="dark"], .dark) .library-skills-highlights li {
+  background: #0b0b0b;
+  color: #c8c8c8;
+  box-shadow: inset 0 1px rgb(255 255 255 / .015), 0 4px 12px -8px rgb(0 0 0 / .85);
+}
+:is([data-jh-theme="dark"], .dark) .library-skills-highlights li::before {
+  background: #b8b8b8;
+}
+:is([data-jh-theme="dark"], .dark) .library-skills-downloads .jh-button--secondary {
+  color: #e2e2e2 !important;
+}
+:is([data-jh-theme="dark"], .dark) .library-skills-downloads .jh-button--secondary .jh-button__content {
+  opacity: 1 !important;
+}
 `;
 
 const DARK_COMPONENT_POLISH = `
@@ -3132,9 +3158,6 @@ const DARK_COMPONENT_POLISH = `
 :is([data-jh-theme="dark"], .dark) .jh-financial-chart__bar[data-selected="true"],
 :is([data-jh-theme="dark"], .dark) .jh-astronomy__sun { fill: var(--jh-instrument-accent, oklch(100% 0 0)); }
 :is([data-jh-theme="dark"], .dark) .jh-market-picker__check { color: var(--jh-instrument-accent, oklch(100% 0 0)); }
-:is([data-jh-theme="dark"], .dark) .jh-market-picker__asset[aria-selected="true"] {
-  box-shadow: inset 0 1px rgb(255 255 255 / .05), inset 0 0 0 1px color-mix(in oklch, var(--jh-instrument-accent, oklch(100% 0 0)) 28%, transparent), 0 2px 6px rgb(0 0 0 / .85) !important;
-}
 :is([data-jh-theme="dark"], .dark) .jh-astrology-wheel__ascendant {
   fill: var(--jh-instrument-accent, oklch(100% 0 0));
   stroke: #0a0a0a;
@@ -3170,8 +3193,8 @@ const DARK_COMPONENT_POLISH = `
   .jh-date-time-popover,
   .jh-date-time-popover.jh-picker-overlay,
   .jh-date-time-picker,
-  .jh-picker-overlay,
-  [data-jh-material].jh-picker-overlay,
+  .jh-picker-overlay:not(.jh-picker-overlay--modal),
+  [data-jh-material].jh-picker-overlay:not(.jh-picker-overlay--modal),
   .jh-combobox__popover,
   .jh-currency-picker__popover,
   .jh-ephemeris-picker__panel,
@@ -3384,7 +3407,7 @@ const DARK_COMPONENT_POLISH = `
     [data-jh-surface-custom="true"][data-jh-surface-custom="true"][data-jh-surface-custom="true"] *
   ):is(
     .jh-dialog,.jh-dialog__content,.jh-dialog-summary,.jh-command-dialog,.jh-date-popover,.jh-date-time-popover,
-    .jh-date-time-picker,.jh-picker-overlay,.jh-currency-picker__popover,.jh-ephemeris-picker__panel,.jh-menu,
+    .jh-date-time-picker,.jh-picker-overlay:not(.jh-picker-overlay--modal),.jh-currency-picker__popover,.jh-ephemeris-picker__panel,.jh-menu,
     .jh-context-menu,.jh-toast,.jh-oklch-palette,.jh-spectrum-popover,.jh-spectrum,.jh-vertical-gallery__ratio-menu,
     .jh-theme-picker-popover,.jh-calendar:not(.jh-date-popover .jh-calendar):not(.jh-date-time-popover .jh-calendar),
     .jh-data-form,.jh-data-table,.jh-metric-card,.jh-tabs,.jh-accordion:not(.jh-scroll-area > .jh-accordion),
@@ -3448,6 +3471,13 @@ const DARK_COMPONENT_POLISH = `
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
   }
+}
+:is([data-jh-theme="dark"], .dark) .jh-picker-overlay.jh-picker-overlay--modal {
+  background: rgb(0 0 0 / .62) !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
 `;
 

@@ -78,4 +78,5 @@ npx shadcn@latest add https://jhosephe.vercel.app/r/button.json
 
 - Primitivos de UI, estilos e tokens de referência em [assets/ui](assets/ui)
 - Especificação detalhada do Design System em [docs/design-system.md](docs/design-system.md)
+- Skill complementar de **Posts Sociais, SVGs Animados e Vídeos MP4 (60fps)** em [jhosephe-svg-motion](.agents/skills/jhosephe-svg-motion/SKILL.md)
 - Guias focados por domínio em `references/` (todos linkados acima)

@@ -76,30 +76,33 @@ export function MarketPicker({
       />
       <ScrollArea label={kind + ' assets'} maxHeight={280} className="jh-market-picker__scroll">
         <ul className="jh-market-picker__list" role="listbox" aria-label={kind + ' assets'}>
-          {rows.map(item => (
-            <li key={item.symbol}>
-              <button
-                type="button"
-                role="option"
-                aria-selected={selected === item.symbol}
-                className="jh-market-picker__asset"
-                onClick={() => choose(item.symbol)}
-              >
-                <span className="jh-market-picker__ticker">{item.symbol.slice(0, 1)}</span>
-                <span className="jh-market-picker__name">
-                  <strong>{item.symbol}</strong>
-                  <small>{item.name}</small>
-                </span>
-                <span className="jh-market-picker__price">
-                  <strong>{item.price}</strong>
-                  <small data-positive={!item.change.includes('−')}>
-                    <i className="jh-market-picker__delta-pip" aria-hidden="true" />
-                    {item.change}
-                  </small>
-                </span>
-              </button>
-            </li>
-          ))}
+          {rows.map(item => {
+            const isSelected = selected === item.symbol;
+            return (
+              <li key={item.symbol}>
+                <button
+                  type="button"
+                  role="option"
+                  aria-selected={isSelected}
+                  className="jh-market-picker__asset"
+                  onClick={() => choose(item.symbol)}
+                >
+                  <span className="jh-market-picker__ticker">{item.symbol.slice(0, 1)}</span>
+                  <span className="jh-market-picker__name">
+                    <strong>{item.symbol}</strong>
+                    <small>{item.name}</small>
+                  </span>
+                  <span className="jh-market-picker__price">
+                    <strong>{item.price}</strong>
+                    <small data-positive={!item.change.includes('−')}>
+                      {isSelected ? <i className="jh-market-picker__delta-pip" aria-hidden="true" /> : null}
+                      {item.change}
+                    </small>
+                  </span>
+                </button>
+              </li>
+            );
+          })}
           {!rows.length && <li className="jh-market-picker__empty">No matching assets.</li>}
         </ul>
       </ScrollArea>

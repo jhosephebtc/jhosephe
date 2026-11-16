@@ -1,6 +1,7 @@
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { buildSkillsPublic } from './build-skills.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const destination = resolve(root, 'examples/lab/public');
@@ -95,3 +96,4 @@ for (const [name, title, description, sources, dependencies] of definitions) {
 }
 await writeFile(resolve(destination, 'registry.json'), JSON.stringify({ $schema: 'https://ui.shadcn.com/schema/registry.json', name: 'jhosephe', homepage: 'https://github.com/jhosephebtc/jhosephe', items }, null, 2) + '\n');
 console.log(`Registry pronto: ${items.length} componentes gerados dos arquivos de assets/ui.`);
+await buildSkillsPublic(root, destination);
