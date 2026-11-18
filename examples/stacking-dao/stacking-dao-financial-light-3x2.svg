@@ -1,0 +1,599 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1620 1080" width="1620" height="1080" role="img" aria-label="Stacking DAO Light Analytics — Financial Chart and Audio Meter Green LEDs">
+  <title>Stacking DAO — Financial Analytics Animation (Light Porcelain 3:2)</title>
+  <desc>3:2 Light Porcelain Jhosephe UI animation combining FinancialChart and AudioMeter LED matrix with fast text opacity entrance, growing live TVL/BTC numbers, and seamless 12s loop.</desc>
+
+  <defs>
+    <style>
+      @font-face {
+        font-family: 'Aktiv Grotesk Ex';
+        src: url('./Aktiv_Grotesk_Ex_Bold.ttf') format('truetype');
+        font-weight: 700;
+        font-style: normal;
+        font-display: swap;
+      }
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap');
+
+      .font-aktiv {
+        font-family: 'Aktiv Grotesk Ex', 'Aktiv Grotesk', 'Inter', system-ui, sans-serif;
+        font-weight: 700;
+        font-kerning: normal;
+        font-variant-numeric: proportional-nums lining-nums;
+      }
+      .font-inter {
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        font-kerning: normal;
+        font-variant-numeric: proportional-nums lining-nums;
+      }
+
+      .tray-shadow {
+        filter:
+          drop-shadow(0 20px 44px rgba(28, 56, 48, 0.08))
+          drop-shadow(0 4px 12px rgba(0, 0, 0, 0.04));
+      }
+
+      .led-off {
+        fill: #eceeed;
+      }
+      .led-on {
+        fill: #5ce868;
+        opacity: 0.72;
+        filter: drop-shadow(0 0 4px rgba(111, 242, 111, 0.38));
+      }
+      .led-peak {
+        fill: #2dd440;
+        opacity: 0.96;
+        filter:
+          drop-shadow(0 0 4px rgba(111, 242, 111, 0.85))
+          drop-shadow(0 0 10px rgba(45, 212, 64, 0.45));
+      }
+
+      .chart-line {
+        fill: none;
+        stroke: #1c9e32;
+        stroke-width: 3;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        filter: drop-shadow(0 0 6px rgba(111, 242, 111, 0.55));
+      }
+      .point-glow {
+        filter: drop-shadow(0 0 10px rgba(45, 212, 64, 0.75));
+      }
+    </style>
+
+    <radialGradient id="porcelain-bg" cx="50%" cy="18%" r="82%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="55%" stop-color="#f8f8f8" />
+      <stop offset="100%" stop-color="#f0f2f0" />
+    </radialGradient>
+
+    <linearGradient id="card-light" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#fafafa" />
+    </linearGradient>
+
+    <linearGradient id="chart-area-green" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#6FF26F" stop-opacity="0.22" />
+      <stop offset="100%" stop-color="#6FF26F" stop-opacity="0" />
+    </linearGradient>
+
+    <clipPath id="chart-reveal-clip">
+      <rect id="chart-clip-rect" x="48" y="100" width="0" height="260" />
+    </clipPath>
+  </defs>
+
+  <!-- Light Porcelain Canvas -->
+  <rect width="1620" height="1080" fill="url(#porcelain-bg)" />
+
+  <!-- ==================== 1. TOP BAR: OFFICIAL STACKING DAO LOCKUP (visible from frame 0) ==================== -->
+  <g id="tx-logo" opacity="1" transform="translate(116, 86)">
+    <rect x="0" y="0" width="58" height="58" rx="13" fill="#6FF26F" />
+    <g transform="translate(10.5, 11.5) scale(0.62)">
+      <path d="M 14 0 L 42 0 C 50 0 56 3.5 60 10 L 49 16 C 46.5 12 43.5 10.5 39 10.5 L 14 10.5 Z" fill="#1c3830" />
+      <path d="M 2 10.5 L 14 10.5 C 14 18 20 22 28 22 L 38 22 C 51 22 60 30 60 42 L 48 42 C 48 35.5 43.5 32.5 36 32.5 L 26 32.5 C 12 32.5 2 24.5 2 10.5 Z" fill="#1c3830" />
+      <path d="M 0 44 L 11 38 C 13.5 42 16.5 43.5 21 43.5 L 36 43.5 L 36 54 L 18 54 C 10 54 4 50.5 0 44 Z" fill="#1c3830" />
+    </g>
+    <text x="76" y="42" class="font-aktiv" font-size="34" letter-spacing="-0.3" fill="#1c3830">STACKING<tspan dx="3" dy="-14" font-size="14" letter-spacing="0.3" fill="#1c3830">DAO</tspan></text>
+  </g>
+
+  <!-- ==================== 2. HERO ROW: REAL PROTOCOL TRACTION ==================== -->
+  <g transform="translate(116, 224)">
+    <g id="tx-head" opacity="0">
+      <text x="0" y="64" class="font-inter" font-size="68" font-weight="600" letter-spacing="-2.1" fill="#1c3830">
+        $78.2M powering
+      </text>
+      <text x="0" y="142" class="font-inter" font-size="68" font-weight="600" letter-spacing="-2.1" fill="#1c9e32">
+        Bitcoin yield on Stacks.
+      </text>
+    </g>
+    <text id="tx-sub" opacity="0" x="0" y="200" class="font-inter" font-size="23" font-weight="400" letter-spacing="-0.2" fill="#5d6b63">
+      $4.09M in rewards paid · Track live at <tspan font-weight="600" fill="#1c3830">app.stackingdao.com</tspan>
+    </text>
+
+    <!-- Right: Total BTC Staked Readout (growing live) -->
+    <g id="tx-readout" opacity="0" transform="translate(1388, 0)">
+      <rect x="-224" y="-12" width="224" height="40" rx="20" fill="#e8f8ea" stroke="#24b33c" stroke-opacity="0.24" stroke-width="1" />
+      <text id="btc-pill" x="-112" y="15" text-anchor="middle" class="font-inter" font-size="17" font-weight="600" letter-spacing="-0.2" fill="#168a2b">
+        stBTC · +483 BTC Bond
+      </text>
+
+      <text x="0" y="148" text-anchor="end" class="font-aktiv" font-size="124" letter-spacing="-3" fill="#1c3830">
+        <tspan id="btc-int">0</tspan><tspan dx="-2">.</tspan><tspan id="btc-dec" dx="-1">00</tspan><tspan font-size="44" letter-spacing="0" fill="#1c9e32" dx="10">BTC</tspan>
+      </text>
+    </g>
+  </g>
+
+  <!-- ==================== 3. LIGHT FINANCIAL CHART + AUDIO LED MATRIX ==================== -->
+  <g transform="translate(116, 480)">
+    <rect x="0" y="0" width="1388" height="506" rx="26" fill="url(#card-light)" stroke="#e3e6e4" stroke-width="1.5" class="tray-shadow" />
+    <line x1="28" y1="1.5" x2="1360" y2="1.5" stroke="#ffffff" stroke-width="1.5" />
+
+    <!-- FinancialChart Header -->
+    <g id="tx-card-head" opacity="0" transform="translate(56, 42)">
+      <rect x="0" y="0" width="48" height="48" rx="14" fill="#eaf7ec" stroke="#24b33c" stroke-opacity="0.22" stroke-width="1" />
+      <text x="24" y="33" text-anchor="middle" class="font-aktiv" font-size="22" fill="#1c9e32">S</text>
+
+      <text x="66" y="21" class="font-aktiv" font-size="21" letter-spacing="-0.3" fill="#1c3830">TVL</text>
+      <text x="66" y="45" class="font-inter" font-size="16" font-weight="500" fill="#66746c">Stacking DAO Protocol</text>
+
+      <!-- Live Quote on Right -->
+      <g transform="translate(1276, 0)">
+        <text id="tvl-quote" x="0" y="24" text-anchor="end" class="font-aktiv" font-size="30" letter-spacing="-0.5" fill="#1c3830">$0.00M</text>
+        <circle cx="-250" cy="42" r="4.5" fill="#2dd440" class="point-glow" />
+        <text id="rewards-quote" x="0" y="47" text-anchor="end" class="font-inter" font-size="16" font-weight="600" fill="#18992e">0.00 BTC + 0.00M STX earned</text>
+      </g>
+    </g>
+
+    <!-- Plot Gridlines -->
+    <g stroke="#1c3830" stroke-opacity="0.07" stroke-width="1">
+      <line x1="56" y1="133" x2="1332" y2="133" />
+      <line x1="56" y1="200" x2="1332" y2="200" />
+      <line x1="56" y1="268" x2="1332" y2="268" />
+      <line x1="56" y1="342" x2="1332" y2="342" />
+    </g>
+
+    <!-- AudioMeter 28x10 Green LED Matrix inside Plot -->
+    <g id="audio-led-matrix">
+      <rect id="c_0_0" data-target="led-off" x="56.0" y="126.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_0_1" data-target="led-off" x="56.0" y="148.4" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_0_2" data-target="led-off" x="56.0" y="170.9" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_0_3" data-target="led-off" x="56.0" y="193.3" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_0_4" data-target="led-off" x="56.0" y="215.8" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_0_5" data-target="led-off" x="56.0" y="238.2" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_0_6" data-target="led-off" x="56.0" y="260.7" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_0_7" data-target="led-off" x="56.0" y="283.1" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_0_8" data-target="led-peak" x="56.0" y="305.6" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_0_9" data-target="led-on" x="56.0" y="328.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_1_0" data-target="led-off" x="102.0" y="126.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_1_1" data-target="led-off" x="102.0" y="148.4" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_1_2" data-target="led-off" x="102.0" y="170.9" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_1_3" data-target="led-off" x="102.0" y="193.3" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_1_4" data-target="led-off" x="102.0" y="215.8" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_1_5" data-target="led-off" x="102.0" y="238.2" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_1_6" data-target="led-off" x="102.0" y="260.7" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_1_7" data-target="led-off" x="102.0" y="283.1" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_1_8" data-target="led-peak" x="102.0" y="305.6" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_1_9" data-target="led-on" x="102.0" y="328.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_2_0" data-target="led-off" x="148.0" y="126.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_2_1" data-target="led-off" x="148.0" y="148.4" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_2_2" data-target="led-off" x="148.0" y="170.9" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_2_3" data-target="led-off" x="148.0" y="193.3" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_2_4" data-target="led-off" x="148.0" y="215.8" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_2_5" data-target="led-off" x="148.0" y="238.2" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_2_6" data-target="led-off" x="148.0" y="260.7" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_2_7" data-target="led-peak" x="148.0" y="283.1" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_2_8" data-target="led-on" x="148.0" y="305.6" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_2_9" data-target="led-on" x="148.0" y="328.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_3_0" data-target="led-off" x="194.0" y="126.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_3_1" data-target="led-off" x="194.0" y="148.4" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_3_2" data-target="led-off" x="194.0" y="170.9" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_3_3" data-target="led-off" x="194.0" y="193.3" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_3_4" data-target="led-off" x="194.0" y="215.8" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_3_5" data-target="led-off" x="194.0" y="238.2" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_3_6" data-target="led-off" x="194.0" y="260.7" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_3_7" data-target="led-peak" x="194.0" y="283.1" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_3_8" data-target="led-on" x="194.0" y="305.6" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_3_9" data-target="led-on" x="194.0" y="328.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_4_0" data-target="led-off" x="240.0" y="126.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_4_1" data-target="led-off" x="240.0" y="148.4" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_4_2" data-target="led-off" x="240.0" y="170.9" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_4_3" data-target="led-off" x="240.0" y="193.3" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_4_4" data-target="led-off" x="240.0" y="215.8" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_4_5" data-target="led-off" x="240.0" y="238.2" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_4_6" data-target="led-off" x="240.0" y="260.7" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_4_7" data-target="led-off" x="240.0" y="283.1" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_4_8" data-target="led-peak" x="240.0" y="305.6" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_4_9" data-target="led-on" x="240.0" y="328.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_5_0" data-target="led-off" x="286.0" y="126.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_5_1" data-target="led-off" x="286.0" y="148.4" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_5_2" data-target="led-off" x="286.0" y="170.9" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_5_3" data-target="led-off" x="286.0" y="193.3" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_5_4" data-target="led-off" x="286.0" y="215.8" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_5_5" data-target="led-off" x="286.0" y="238.2" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_5_6" data-target="led-off" x="286.0" y="260.7" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_5_7" data-target="led-peak" x="286.0" y="283.1" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_5_8" data-target="led-on" x="286.0" y="305.6" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_5_9" data-target="led-on" x="286.0" y="328.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_6_0" data-target="led-off" x="332.0" y="126.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_6_1" data-target="led-off" x="332.0" y="148.4" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_6_2" data-target="led-off" x="332.0" y="170.9" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_6_3" data-target="led-off" x="332.0" y="193.3" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_6_4" data-target="led-off" x="332.0" y="215.8" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_6_5" data-target="led-off" x="332.0" y="238.2" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_6_6" data-target="led-peak" x="332.0" y="260.7" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_6_7" data-target="led-on" x="332.0" y="283.1" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_6_8" data-target="led-on" x="332.0" y="305.6" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_6_9" data-target="led-on" x="332.0" y="328.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_7_0" data-target="led-off" x="378.0" y="126.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_7_1" data-target="led-off" x="378.0" y="148.4" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_7_2" data-target="led-off" x="378.0" y="170.9" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_7_3" data-target="led-off" x="378.0" y="193.3" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_7_4" data-target="led-off" x="378.0" y="215.8" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_7_5" data-target="led-off" x="378.0" y="238.2" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_7_6" data-target="led-off" x="378.0" y="260.7" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_7_7" data-target="led-peak" x="378.0" y="283.1" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_7_8" data-target="led-on" x="378.0" y="305.6" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_7_9" data-target="led-on" x="378.0" y="328.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_8_0" data-target="led-off" x="424.0" y="126.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_8_1" data-target="led-off" x="424.0" y="148.4" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_8_2" data-target="led-off" x="424.0" y="170.9" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_8_3" data-target="led-off" x="424.0" y="193.3" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_8_4" data-target="led-off" x="424.0" y="215.8" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_8_5" data-target="led-off" x="424.0" y="238.2" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_8_6" data-target="led-peak" x="424.0" y="260.7" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_8_7" data-target="led-on" x="424.0" y="283.1" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_8_8" data-target="led-on" x="424.0" y="305.6" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_8_9" data-target="led-on" x="424.0" y="328.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_9_0" data-target="led-off" x="470.0" y="126.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_9_1" data-target="led-off" x="470.0" y="148.4" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_9_2" data-target="led-off" x="470.0" y="170.9" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_9_3" data-target="led-off" x="470.0" y="193.3" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_9_4" data-target="led-peak" x="470.0" y="215.8" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_9_5" data-target="led-on" x="470.0" y="238.2" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_9_6" data-target="led-on" x="470.0" y="260.7" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_9_7" data-target="led-on" x="470.0" y="283.1" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_9_8" data-target="led-on" x="470.0" y="305.6" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_9_9" data-target="led-on" x="470.0" y="328.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_10_0" data-target="led-off" x="516.0" y="126.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_10_1" data-target="led-off" x="516.0" y="148.4" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_10_2" data-target="led-off" x="516.0" y="170.9" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_10_3" data-target="led-peak" x="516.0" y="193.3" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_10_4" data-target="led-on" x="516.0" y="215.8" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_10_5" data-target="led-on" x="516.0" y="238.2" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_10_6" data-target="led-on" x="516.0" y="260.7" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_10_7" data-target="led-on" x="516.0" y="283.1" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_10_8" data-target="led-on" x="516.0" y="305.6" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_10_9" data-target="led-on" x="516.0" y="328.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_11_0" data-target="led-off" x="562.0" y="126.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_11_1" data-target="led-off" x="562.0" y="148.4" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_11_2" data-target="led-off" x="562.0" y="170.9" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_11_3" data-target="led-peak" x="562.0" y="193.3" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_11_4" data-target="led-on" x="562.0" y="215.8" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_11_5" data-target="led-on" x="562.0" y="238.2" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_11_6" data-target="led-on" x="562.0" y="260.7" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_11_7" data-target="led-on" x="562.0" y="283.1" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_11_8" data-target="led-on" x="562.0" y="305.6" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_11_9" data-target="led-on" x="562.0" y="328.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_12_0" data-target="led-off" x="608.0" y="126.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_12_1" data-target="led-off" x="608.0" y="148.4" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_12_2" data-target="led-off" x="608.0" y="170.9" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_12_3" data-target="led-peak" x="608.0" y="193.3" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_12_4" data-target="led-on" x="608.0" y="215.8" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_12_5" data-target="led-on" x="608.0" y="238.2" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_12_6" data-target="led-on" x="608.0" y="260.7" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_12_7" data-target="led-on" x="608.0" y="283.1" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_12_8" data-target="led-on" x="608.0" y="305.6" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_12_9" data-target="led-on" x="608.0" y="328.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_13_0" data-target="led-off" x="654.0" y="126.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_13_1" data-target="led-off" x="654.0" y="148.4" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_13_2" data-target="led-peak" x="654.0" y="170.9" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_13_3" data-target="led-on" x="654.0" y="193.3" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_13_4" data-target="led-on" x="654.0" y="215.8" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_13_5" data-target="led-on" x="654.0" y="238.2" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_13_6" data-target="led-on" x="654.0" y="260.7" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_13_7" data-target="led-on" x="654.0" y="283.1" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_13_8" data-target="led-on" x="654.0" y="305.6" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_13_9" data-target="led-on" x="654.0" y="328.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_14_0" data-target="led-off" x="700.0" y="126.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_14_1" data-target="led-off" x="700.0" y="148.4" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_14_2" data-target="led-peak" x="700.0" y="170.9" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_14_3" data-target="led-on" x="700.0" y="193.3" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_14_4" data-target="led-on" x="700.0" y="215.8" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_14_5" data-target="led-on" x="700.0" y="238.2" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_14_6" data-target="led-on" x="700.0" y="260.7" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_14_7" data-target="led-on" x="700.0" y="283.1" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_14_8" data-target="led-on" x="700.0" y="305.6" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_14_9" data-target="led-on" x="700.0" y="328.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_15_0" data-target="led-off" x="746.0" y="126.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_15_1" data-target="led-off" x="746.0" y="148.4" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_15_2" data-target="led-off" x="746.0" y="170.9" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_15_3" data-target="led-peak" x="746.0" y="193.3" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_15_4" data-target="led-on" x="746.0" y="215.8" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_15_5" data-target="led-on" x="746.0" y="238.2" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_15_6" data-target="led-on" x="746.0" y="260.7" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_15_7" data-target="led-on" x="746.0" y="283.1" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_15_8" data-target="led-on" x="746.0" y="305.6" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_15_9" data-target="led-on" x="746.0" y="328.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_16_0" data-target="led-off" x="792.0" y="126.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_16_1" data-target="led-off" x="792.0" y="148.4" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_16_2" data-target="led-peak" x="792.0" y="170.9" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_16_3" data-target="led-on" x="792.0" y="193.3" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_16_4" data-target="led-on" x="792.0" y="215.8" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_16_5" data-target="led-on" x="792.0" y="238.2" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_16_6" data-target="led-on" x="792.0" y="260.7" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_16_7" data-target="led-on" x="792.0" y="283.1" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_16_8" data-target="led-on" x="792.0" y="305.6" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_16_9" data-target="led-on" x="792.0" y="328.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_17_0" data-target="led-off" x="838.0" y="126.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_17_1" data-target="led-off" x="838.0" y="148.4" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_17_2" data-target="led-peak" x="838.0" y="170.9" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_17_3" data-target="led-on" x="838.0" y="193.3" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_17_4" data-target="led-on" x="838.0" y="215.8" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_17_5" data-target="led-on" x="838.0" y="238.2" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_17_6" data-target="led-on" x="838.0" y="260.7" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_17_7" data-target="led-on" x="838.0" y="283.1" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_17_8" data-target="led-on" x="838.0" y="305.6" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_17_9" data-target="led-on" x="838.0" y="328.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_18_0" data-target="led-off" x="884.0" y="126.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_18_1" data-target="led-peak" x="884.0" y="148.4" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_18_2" data-target="led-on" x="884.0" y="170.9" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_18_3" data-target="led-on" x="884.0" y="193.3" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_18_4" data-target="led-on" x="884.0" y="215.8" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_18_5" data-target="led-on" x="884.0" y="238.2" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_18_6" data-target="led-on" x="884.0" y="260.7" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_18_7" data-target="led-on" x="884.0" y="283.1" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_18_8" data-target="led-on" x="884.0" y="305.6" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_18_9" data-target="led-on" x="884.0" y="328.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_19_0" data-target="led-off" x="930.0" y="126.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_19_1" data-target="led-off" x="930.0" y="148.4" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_19_2" data-target="led-peak" x="930.0" y="170.9" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_19_3" data-target="led-on" x="930.0" y="193.3" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_19_4" data-target="led-on" x="930.0" y="215.8" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_19_5" data-target="led-on" x="930.0" y="238.2" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_19_6" data-target="led-on" x="930.0" y="260.7" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_19_7" data-target="led-on" x="930.0" y="283.1" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_19_8" data-target="led-on" x="930.0" y="305.6" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_19_9" data-target="led-on" x="930.0" y="328.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_20_0" data-target="led-off" x="976.0" y="126.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_20_1" data-target="led-peak" x="976.0" y="148.4" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_20_2" data-target="led-on" x="976.0" y="170.9" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_20_3" data-target="led-on" x="976.0" y="193.3" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_20_4" data-target="led-on" x="976.0" y="215.8" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_20_5" data-target="led-on" x="976.0" y="238.2" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_20_6" data-target="led-on" x="976.0" y="260.7" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_20_7" data-target="led-on" x="976.0" y="283.1" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_20_8" data-target="led-on" x="976.0" y="305.6" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_20_9" data-target="led-on" x="976.0" y="328.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_21_0" data-target="led-off" x="1022.0" y="126.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_21_1" data-target="led-peak" x="1022.0" y="148.4" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_21_2" data-target="led-on" x="1022.0" y="170.9" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_21_3" data-target="led-on" x="1022.0" y="193.3" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_21_4" data-target="led-on" x="1022.0" y="215.8" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_21_5" data-target="led-on" x="1022.0" y="238.2" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_21_6" data-target="led-on" x="1022.0" y="260.7" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_21_7" data-target="led-on" x="1022.0" y="283.1" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_21_8" data-target="led-on" x="1022.0" y="305.6" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_21_9" data-target="led-on" x="1022.0" y="328.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_22_0" data-target="led-peak" x="1068.0" y="126.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_22_1" data-target="led-on" x="1068.0" y="148.4" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_22_2" data-target="led-on" x="1068.0" y="170.9" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_22_3" data-target="led-on" x="1068.0" y="193.3" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_22_4" data-target="led-on" x="1068.0" y="215.8" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_22_5" data-target="led-on" x="1068.0" y="238.2" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_22_6" data-target="led-on" x="1068.0" y="260.7" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_22_7" data-target="led-on" x="1068.0" y="283.1" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_22_8" data-target="led-on" x="1068.0" y="305.6" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_22_9" data-target="led-on" x="1068.0" y="328.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_23_0" data-target="led-off" x="1114.0" y="126.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_23_1" data-target="led-peak" x="1114.0" y="148.4" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_23_2" data-target="led-on" x="1114.0" y="170.9" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_23_3" data-target="led-on" x="1114.0" y="193.3" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_23_4" data-target="led-on" x="1114.0" y="215.8" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_23_5" data-target="led-on" x="1114.0" y="238.2" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_23_6" data-target="led-on" x="1114.0" y="260.7" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_23_7" data-target="led-on" x="1114.0" y="283.1" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_23_8" data-target="led-on" x="1114.0" y="305.6" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_23_9" data-target="led-on" x="1114.0" y="328.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_24_0" data-target="led-peak" x="1160.0" y="126.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_24_1" data-target="led-on" x="1160.0" y="148.4" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_24_2" data-target="led-on" x="1160.0" y="170.9" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_24_3" data-target="led-on" x="1160.0" y="193.3" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_24_4" data-target="led-on" x="1160.0" y="215.8" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_24_5" data-target="led-on" x="1160.0" y="238.2" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_24_6" data-target="led-on" x="1160.0" y="260.7" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_24_7" data-target="led-on" x="1160.0" y="283.1" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_24_8" data-target="led-on" x="1160.0" y="305.6" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_24_9" data-target="led-on" x="1160.0" y="328.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_25_0" data-target="led-peak" x="1206.0" y="126.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_25_1" data-target="led-on" x="1206.0" y="148.4" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_25_2" data-target="led-on" x="1206.0" y="170.9" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_25_3" data-target="led-on" x="1206.0" y="193.3" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_25_4" data-target="led-on" x="1206.0" y="215.8" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_25_5" data-target="led-on" x="1206.0" y="238.2" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_25_6" data-target="led-on" x="1206.0" y="260.7" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_25_7" data-target="led-on" x="1206.0" y="283.1" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_25_8" data-target="led-on" x="1206.0" y="305.6" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_25_9" data-target="led-on" x="1206.0" y="328.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_26_0" data-target="led-peak" x="1252.0" y="126.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_26_1" data-target="led-on" x="1252.0" y="148.4" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_26_2" data-target="led-on" x="1252.0" y="170.9" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_26_3" data-target="led-on" x="1252.0" y="193.3" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_26_4" data-target="led-on" x="1252.0" y="215.8" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_26_5" data-target="led-on" x="1252.0" y="238.2" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_26_6" data-target="led-on" x="1252.0" y="260.7" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_26_7" data-target="led-on" x="1252.0" y="283.1" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_26_8" data-target="led-on" x="1252.0" y="305.6" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_26_9" data-target="led-on" x="1252.0" y="328.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_27_0" data-target="led-peak" x="1298.0" y="126.0" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_27_1" data-target="led-on" x="1298.0" y="148.4" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_27_2" data-target="led-on" x="1298.0" y="170.9" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_27_3" data-target="led-on" x="1298.0" y="193.3" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_27_4" data-target="led-on" x="1298.0" y="215.8" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_27_5" data-target="led-on" x="1298.0" y="238.2" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_27_6" data-target="led-on" x="1298.0" y="260.7" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_27_7" data-target="led-on" x="1298.0" y="283.1" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_27_8" data-target="led-on" x="1298.0" y="305.6" width="34" height="14" rx="3.5" class="led-off" />
+      <rect id="c_27_9" data-target="led-on" x="1298.0" y="328.0" width="34" height="14" rx="3.5" class="led-off" />
+    </g>
+
+    <!-- FinancialChart Area + Glowing Green Line revealed synchronously -->
+    <g clip-path="url(#chart-reveal-clip)">
+      <path d="M73.0 312.6 L119.0 312.6 L165.0 290.1 L211.0 290.1 L257.0 312.6 L303.0 290.1 L349.0 267.7 L395.0 290.1 L441.0 267.7 L487.0 222.8 L533.0 200.3 L579.0 200.3 L625.0 200.3 L671.0 177.9 L717.0 177.9 L763.0 200.3 L809.0 177.9 L855.0 177.9 L901.0 155.4 L947.0 177.9 L993.0 155.4 L1039.0 155.4 L1085.0 133.0 L1131.0 155.4 L1177.0 133.0 L1223.0 133.0 L1269.0 133.0 L1315.0 133.0 L1315.0 342 L73.0 342 Z" fill="url(#chart-area-green)" />
+      <path d="M73.0 312.6 L119.0 312.6 L165.0 290.1 L211.0 290.1 L257.0 312.6 L303.0 290.1 L349.0 267.7 L395.0 290.1 L441.0 267.7 L487.0 222.8 L533.0 200.3 L579.0 200.3 L625.0 200.3 L671.0 177.9 L717.0 177.9 L763.0 200.3 L809.0 177.9 L855.0 177.9 L901.0 155.4 L947.0 177.9 L993.0 155.4 L1039.0 155.4 L1085.0 133.0 L1131.0 155.4 L1177.0 133.0 L1223.0 133.0 L1269.0 133.0 L1315.0 133.0" class="chart-line" />
+    </g>
+    <line id="chart-crosshair" x1="73.0" y1="120" x2="73.0" y2="342" stroke="#1c9e32" stroke-opacity="0.35" stroke-width="1.5" stroke-dasharray="4 5" opacity="0" />
+    <circle id="chart-halo" cx="73.0" cy="312.6" r="10" fill="#6FF26F" fill-opacity="0.35" class="point-glow" opacity="0" />
+    <circle id="chart-dot" cx="73.0" cy="312.6" r="5.5" fill="#1c9e32" stroke="#ffffff" stroke-width="2" opacity="0" />
+
+    <!-- Timeline Labels -->
+    <g id="tx-timeline" opacity="0" transform="translate(0, 376)" class="font-inter" font-size="15" font-weight="500" fill="#77857d">
+      <text x="56" y="0">Sep 17</text>
+      <text x="311" y="0" text-anchor="middle">Sep 29</text>
+      <text x="566" y="0" text-anchor="middle">Oct 11</text>
+      <text x="822" y="0" text-anchor="middle">Oct 23</text>
+      <text x="1077" y="0" text-anchor="middle">Nov 04</text>
+      <text x="1332" y="0" text-anchor="end" fill="#1c3830" font-weight="600">Nov 16</text>
+    </g>
+
+    <!-- Bottom 4 Protocol Stats (growing live) -->
+    <line x1="56" y1="402" x2="1332" y2="402" stroke="#1c3830" stroke-opacity="0.08" stroke-width="1" />
+    <g id="tx-stats" opacity="0" transform="translate(56, 442)">
+      <g transform="translate(0, 0)">
+        <text x="0" y="0" class="font-inter" font-size="15" font-weight="500" fill="#6c7a72">BTC TVL</text>
+        <text id="stat-btc-tvl" x="0" y="30" class="font-aktiv" font-size="22" fill="#1c3830">$0.00M</text>
+      </g>
+      <g transform="translate(340, 0)">
+        <text x="0" y="0" class="font-inter" font-size="15" font-weight="500" fill="#6c7a72">STX TVL</text>
+        <text id="stat-stx-tvl" x="0" y="30" class="font-aktiv" font-size="22" fill="#1c3830">0.0M STX</text>
+      </g>
+      <g transform="translate(680, 0)">
+        <text x="0" y="0" class="font-inter" font-size="15" font-weight="500" fill="#6c7a72">Rewards Paid</text>
+        <text id="stat-rewards" x="0" y="30" class="font-aktiv" font-size="22" fill="#1c9e32">$0.00M</text>
+      </g>
+      <g transform="translate(1276, 0)">
+        <text x="0" y="0" text-anchor="end" class="font-inter" font-size="15" font-weight="500" fill="#6c7a72">DeFi Deployed</text>
+        <text x="0" y="30" text-anchor="end" class="font-aktiv" font-size="22" fill="#1c3830"><tspan id="stat-defi">0</tspan>% <tspan font-family="Inter, sans-serif" font-weight="500" font-size="16" fill="#5d6b63">(8,220 holders)</tspan></text>
+      </g>
+    </g>
+  </g>
+
+  <script><![CDATA[
+    (function () {
+      const DURATION = 12000;
+      const PTS = [[73,312.6],[119,312.6],[165,290.1],[211,290.1],[257,312.6],[303,290.1],[349,267.7],[395,290.1],[441,267.7],[487,222.8],[533,200.3],[579,200.3],[625,200.3],[671,177.9],[717,177.9],[763,200.3],[809,177.9],[855,177.9],[901,155.4],[947,177.9],[993,155.4],[1039,155.4],[1085,133],[1131,155.4],[1177,133],[1223,133],[1269,133],[1315,133]];
+      const COLS = 28;
+      const ROWS = 10;
+      const easeOut = t => 1 - Math.pow(1 - t, 3);
+      const easeInOut = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      const clamp01 = v => Math.max(0, Math.min(1, v));
+
+      const txLogo = document.getElementById('tx-logo');
+      const txHead = document.getElementById('tx-head');
+      const txSub = document.getElementById('tx-sub');
+      const txReadout = document.getElementById('tx-readout');
+      const txCardHead = document.getElementById('tx-card-head');
+      const txTimeline = document.getElementById('tx-timeline');
+      const txStats = document.getElementById('tx-stats');
+
+      const clipRect = document.getElementById('chart-clip-rect');
+      const crosshair = document.getElementById('chart-crosshair');
+      const halo = document.getElementById('chart-halo');
+      const dot = document.getElementById('chart-dot');
+
+      const btcInt = document.getElementById('btc-int');
+      const btcDec = document.getElementById('btc-dec');
+      const tvlQuote = document.getElementById('tvl-quote');
+      const rewardsQuote = document.getElementById('rewards-quote');
+      const statBtcTvl = document.getElementById('stat-btc-tvl');
+      const statStxTvl = document.getElementById('stat-stx-tvl');
+      const statRewards = document.getElementById('stat-rewards');
+      const statDefi = document.getElementById('stat-defi');
+
+      const grid = [];
+      for (let c = 0; c < COLS; c++) {
+        const col = [];
+        for (let r = 0; r < ROWS; r++) {
+          const el = document.getElementById('c_' + c + '_' + r);
+          if (el) col.push({ el, target: el.getAttribute('data-target') || 'led-off' });
+        }
+        grid.push(col);
+      }
+
+      function fadeWindow(t, inStart, inDur, outStart, outDur) {
+        if (t < inStart) return 0;
+        if (t < inStart + inDur) return easeOut((t - inStart) / inDur);
+        if (t <= outStart) return 1;
+        if (t < outStart + outDur) return 1 - easeInOut(clamp01((t - outStart) / outDur));
+        return 0;
+      }
+
+      function updateAt(rawMs) {
+        const t = ((rawMs % DURATION) + DURATION) % DURATION;
+
+        // Header visible on frame 0; all texts fade in within <= 460ms
+        if (txHead) txHead.setAttribute('opacity', fadeWindow(t, 0, 260, 11500, 480).toFixed(3));
+        if (txSub)  txSub.setAttribute('opacity', fadeWindow(t, 90, 280, 11460, 480).toFixed(3));
+        if (txReadout) txReadout.setAttribute('opacity', fadeWindow(t, 130, 280, 11440, 480).toFixed(3));
+        if (txCardHead) txCardHead.setAttribute('opacity', fadeWindow(t, 80, 260, 11480, 480).toFixed(3));
+        if (txTimeline) txTimeline.setAttribute('opacity', fadeWindow(t, 140, 280, 11440, 480).toFixed(3));
+        if (txStats) txStats.setAttribute('opacity', fadeWindow(t, 180, 280, 11400, 480).toFixed(3));
+
+        // Chart + LED matrix sweep starts immediately at 250ms -> 6800ms, hold -> 10600ms, return -> 12000ms
+        let prog = 0;
+        if (t >= 250 && t < 6800) {
+          prog = easeInOut((t - 250) / 6550);
+        } else if (t >= 6800 && t < 10600) {
+          prog = 1;
+        } else if (t >= 10600 && t <= 12000) {
+          prog = 1 - easeInOut((t - 10600) / 1400);
+        }
+
+        const fIdx = prog * (PTS.length - 1);
+        const i0 = Math.floor(fIdx);
+        const i1 = Math.min(PTS.length - 1, i0 + 1);
+        const frac = fIdx - i0;
+        const curX = PTS[i0][0] + (PTS[i1][0] - PTS[i0][0]) * frac;
+        const curY = PTS[i0][1] + (PTS[i1][1] - PTS[i0][1]) * frac;
+
+        if (clipRect) clipRect.setAttribute('width', prog <= 0.002 ? '0' : Math.max(0, curX - 48 + 2).toFixed(1));
+        const dotOp = prog > 0.01 ? clamp01(prog * 10).toFixed(3) : '0';
+        if (crosshair) { crosshair.setAttribute('x1', curX.toFixed(1)); crosshair.setAttribute('x2', curX.toFixed(1)); crosshair.setAttribute('opacity', dotOp); }
+        if (halo) { halo.setAttribute('cx', curX.toFixed(1)); halo.setAttribute('cy', curY.toFixed(1)); halo.setAttribute('opacity', dotOp); }
+        if (dot)  { dot.setAttribute('cx', curX.toFixed(1)); dot.setAttribute('cy', curY.toFixed(1)); dot.setAttribute('opacity', dotOp); }
+
+        const activeCols = prog <= 0.005 ? -1 : Math.floor(fIdx + 0.35);
+        for (let c = 0; c < COLS; c++) {
+          const col = grid[c];
+          const lit = c <= activeCols;
+          for (let r = 0; r < col.length; r++) {
+            col[r].el.setAttribute('class', lit ? col[r].target : 'led-off');
+          }
+        }
+
+        const btcVal = (prog * 641.98).toFixed(2).split('.');
+        if (btcInt) btcInt.textContent = btcVal[0];
+        if (btcDec) btcDec.textContent = btcVal[1];
+        if (tvlQuote) tvlQuote.textContent = '$' + (prog * 78.21).toFixed(2) + 'M';
+        if (rewardsQuote) rewardsQuote.textContent = (prog * 25.60).toFixed(2) + ' BTC + ' + (prog * 9.18).toFixed(2) + 'M STX earned';
+        if (statBtcTvl) statBtcTvl.textContent = '$' + (prog * 41.84).toFixed(2) + 'M';
+        if (statStxTvl) statStxTvl.textContent = (prog * 138.9).toFixed(1) + 'M STX';
+        if (statRewards) statRewards.textContent = '$' + (prog * 4.09).toFixed(2) + 'M';
+        if (statDefi) statDefi.textContent = String(Math.round(prog * 29));
+      }
+
+      let manual = false;
+      window.__seekSvgTime = function (tMs) {
+        manual = true;
+        updateAt(tMs);
+      };
+
+      const start = performance.now();
+      function loop(now) {
+        if (manual) return;
+        updateAt(now - start);
+        requestAnimationFrame(loop);
+      }
+      updateAt(0);
+      requestAnimationFrame(loop);
+    })();
+  ]]></script>
+</svg>

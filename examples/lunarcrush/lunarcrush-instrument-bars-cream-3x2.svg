@@ -1,0 +1,265 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1620 1080" width="1620" height="1080">
+  <defs>
+    <style>
+      
+  @font-face { font-family: 'Geist'; src: url('./Geist-Thin.woff2') format('woff2'); font-weight: 100; font-style: normal; }
+  @font-face { font-family: 'Geist'; src: url('./Geist-ExtraLight.woff2') format('woff2'); font-weight: 200; font-style: normal; }
+  @font-face { font-family: 'Geist'; src: url('./Geist-Light.woff2') format('woff2'); font-weight: 300; font-style: normal; }
+  @font-face { font-family: 'Geist'; src: url('./Geist-Regular.woff2') format('woff2'); font-weight: 400; font-style: normal; }
+  @font-face { font-family: 'Geist'; src: url('./Geist-Medium.woff2') format('woff2'); font-weight: 500; font-style: normal; }
+  @font-face { font-family: 'Geist'; src: url('./Geist-SemiBold.woff2') format('woff2'); font-weight: 600; font-style: normal; }
+  @font-face { font-family: 'Geist Serif'; src: url('./GeistSerif-Regular.woff2') format('woff2'); font-weight: 400; font-style: normal; }
+  @font-face { font-family: 'Geist Mono'; src: url('./GeistMono-Regular.woff2') format('woff2'); font-weight: 400; font-style: normal; }
+  @font-face { font-family: 'Geist Mono'; src: url('./GeistMono-Medium.woff2') format('woff2'); font-weight: 500; font-style: normal; }
+  .f-serif { font-family: 'Geist Serif', Georgia, serif; }
+  .f-sans { font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif; }
+  .f-mono { font-family: 'Geist Mono', monospace; }
+  .t-num { font-variant-numeric: tabular-nums; }
+
+      .bar-focal { filter: drop-shadow(0 0 10px rgba(42, 147, 161, 0.55)); }
+      .cursor-pip { animation: cursor-move 8s ease-in-out infinite; filter: drop-shadow(0 0 8px rgba(42, 147, 161, 0.7)); }
+      @keyframes cursor-move {
+        0%, 100% { transform: translateX(0px); }
+        36% { transform: translateX(341px); }
+        72% { transform: translateX(-341px); }
+      }
+      .bar-s-0 { transform-box: view-box; transform-origin: 128.0px 678px; animation: bar-s-0-sy 8s ease-in-out 0s infinite; }
+@keyframes bar-s-0-sy { 0%, 100% { transform: scaleY(1); } 34% { transform: scaleY(1.11); } 68% { transform: scaleY(0.87); } }
+.bar-l-0 { animation: bar-s-0-sy 8s ease-in-out 0.00s infinite; transform-box: view-box; transform-origin: 128.0px 678px; }
+.bar-s-1 { transform-box: view-box; transform-origin: 170.6px 678px; animation: bar-s-1-sy 8s ease-in-out 0s infinite; }
+@keyframes bar-s-1-sy { 0%, 100% { transform: scaleY(1); } 34% { transform: scaleY(1.07); } 68% { transform: scaleY(0.91); } }
+.bar-l-1 { animation: bar-s-1-sy 8s ease-in-out -0.45s infinite; transform-box: view-box; transform-origin: 170.6px 678px; }
+.bar-s-2 { transform-box: view-box; transform-origin: 213.3px 678px; animation: bar-s-2-sy 8s ease-in-out 0s infinite; }
+@keyframes bar-s-2-sy { 0%, 100% { transform: scaleY(1); } 34% { transform: scaleY(1.11); } 68% { transform: scaleY(0.87); } }
+.bar-l-2 { animation: bar-s-2-sy 8s ease-in-out -0.90s infinite; transform-box: view-box; transform-origin: 213.3px 678px; }
+.bar-s-3 { transform-box: view-box; transform-origin: 255.9px 678px; animation: bar-s-3-sy 8s ease-in-out 0s infinite; }
+@keyframes bar-s-3-sy { 0%, 100% { transform: scaleY(1); } 34% { transform: scaleY(1.07); } 68% { transform: scaleY(0.91); } }
+.bar-l-3 { animation: bar-s-3-sy 8s ease-in-out -1.35s infinite; transform-box: view-box; transform-origin: 255.9px 678px; }
+.bar-s-4 { transform-box: view-box; transform-origin: 298.5px 678px; animation: bar-s-4-sy 8s ease-in-out 0s infinite; }
+@keyframes bar-s-4-sy { 0%, 100% { transform: scaleY(1); } 34% { transform: scaleY(1.11); } 68% { transform: scaleY(0.87); } }
+.bar-l-4 { animation: bar-s-4-sy 8s ease-in-out -1.80s infinite; transform-box: view-box; transform-origin: 298.5px 678px; }
+.bar-s-5 { transform-box: view-box; transform-origin: 341.1px 678px; animation: bar-s-5-sy 8s ease-in-out 0s infinite; }
+@keyframes bar-s-5-sy { 0%, 100% { transform: scaleY(1); } 34% { transform: scaleY(1.07); } 68% { transform: scaleY(0.91); } }
+.bar-l-5 { animation: bar-s-5-sy 8s ease-in-out -2.25s infinite; transform-box: view-box; transform-origin: 341.1px 678px; }
+.bar-s-6 { transform-box: view-box; transform-origin: 383.8px 678px; animation: bar-s-6-sy 8s ease-in-out 0s infinite; }
+@keyframes bar-s-6-sy { 0%, 100% { transform: scaleY(1); } 34% { transform: scaleY(1.11); } 68% { transform: scaleY(0.87); } }
+.bar-l-6 { animation: bar-s-6-sy 8s ease-in-out -2.70s infinite; transform-box: view-box; transform-origin: 383.8px 678px; }
+.bar-s-7 { transform-box: view-box; transform-origin: 426.4px 678px; animation: bar-s-7-sy 8s ease-in-out 0s infinite; }
+@keyframes bar-s-7-sy { 0%, 100% { transform: scaleY(1); } 34% { transform: scaleY(1.07); } 68% { transform: scaleY(0.91); } }
+.bar-l-7 { animation: bar-s-7-sy 8s ease-in-out 0.00s infinite; transform-box: view-box; transform-origin: 426.4px 678px; }
+.bar-s-8 { transform-box: view-box; transform-origin: 469.0px 678px; animation: bar-s-8-sy 8s ease-in-out 0s infinite; }
+@keyframes bar-s-8-sy { 0%, 100% { transform: scaleY(1); } 34% { transform: scaleY(1.11); } 68% { transform: scaleY(0.87); } }
+.bar-l-8 { animation: bar-s-8-sy 8s ease-in-out -0.45s infinite; transform-box: view-box; transform-origin: 469.0px 678px; }
+.bar-s-9 { transform-box: view-box; transform-origin: 511.6px 678px; animation: bar-s-9-sy 8s ease-in-out 0s infinite; }
+@keyframes bar-s-9-sy { 0%, 100% { transform: scaleY(1); } 34% { transform: scaleY(1.07); } 68% { transform: scaleY(0.91); } }
+.bar-l-9 { animation: bar-s-9-sy 8s ease-in-out -0.90s infinite; transform-box: view-box; transform-origin: 511.6px 678px; }
+.bar-s-10 { transform-box: view-box; transform-origin: 554.3px 678px; animation: bar-s-10-sy 8s ease-in-out 0s infinite; }
+@keyframes bar-s-10-sy { 0%, 100% { transform: scaleY(1); } 34% { transform: scaleY(1.11); } 68% { transform: scaleY(0.87); } }
+.bar-l-10 { animation: bar-s-10-sy 8s ease-in-out -1.35s infinite; transform-box: view-box; transform-origin: 554.3px 678px; }
+.bar-s-11 { transform-box: view-box; transform-origin: 596.9px 678px; animation: bar-s-11-sy 8s ease-in-out 0s infinite; }
+@keyframes bar-s-11-sy { 0%, 100% { transform: scaleY(1); } 34% { transform: scaleY(1.07); } 68% { transform: scaleY(0.91); } }
+.bar-l-11 { animation: bar-s-11-sy 8s ease-in-out -1.80s infinite; transform-box: view-box; transform-origin: 596.9px 678px; }
+.bar-s-12 { transform-box: view-box; transform-origin: 639.5px 678px; animation: bar-s-12-sy 8s ease-in-out 0s infinite; }
+@keyframes bar-s-12-sy { 0%, 100% { transform: scaleY(1); } 34% { transform: scaleY(1.11); } 68% { transform: scaleY(0.87); } }
+.bar-l-12 { animation: bar-s-12-sy 8s ease-in-out -2.25s infinite; transform-box: view-box; transform-origin: 639.5px 678px; }
+.bar-s-13 { transform-box: view-box; transform-origin: 682.1px 678px; animation: bar-s-13-sy 8s ease-in-out 0s infinite; }
+@keyframes bar-s-13-sy { 0%, 100% { transform: scaleY(1); } 34% { transform: scaleY(1.07); } 68% { transform: scaleY(0.91); } }
+.bar-l-13 { animation: bar-a-13 8s ease-in-out infinite, bar-s-13-sy 8s ease-in-out -2.70s infinite; transform-box: view-box; transform-origin: 682.1px 678px; }
+@keyframes bar-a-13 { 0%, 100% { opacity: 1; } 36% { opacity: 1; } 72% { opacity: 0; } }
+.bar-s-14 { transform-box: view-box; transform-origin: 724.8px 678px; animation: bar-s-14-sy 8s ease-in-out 0s infinite; }
+@keyframes bar-s-14-sy { 0%, 100% { transform: scaleY(1); } 34% { transform: scaleY(1.11); } 68% { transform: scaleY(0.87); } }
+.bar-l-14 { animation: bar-a-14 8s ease-in-out infinite, bar-s-14-sy 8s ease-in-out 0.00s infinite; transform-box: view-box; transform-origin: 724.8px 678px; }
+@keyframes bar-a-14 { 0%, 100% { opacity: 1; } 36% { opacity: 1; } 72% { opacity: 0; } }
+.bar-s-15 { transform-box: view-box; transform-origin: 767.4px 678px; animation: bar-s-15-sy 8s ease-in-out 0s infinite; }
+@keyframes bar-s-15-sy { 0%, 100% { transform: scaleY(1); } 34% { transform: scaleY(1.07); } 68% { transform: scaleY(0.91); } }
+.bar-l-15 { animation: bar-a-15 8s ease-in-out infinite, bar-s-15-sy 8s ease-in-out -0.45s infinite; transform-box: view-box; transform-origin: 767.4px 678px; }
+@keyframes bar-a-15 { 0%, 100% { opacity: 1; } 36% { opacity: 1; } 72% { opacity: 0; } }
+.bar-s-16 { transform-box: view-box; transform-origin: 810.0px 678px; animation: bar-s-16-sy 8s ease-in-out 0s infinite; }
+@keyframes bar-s-16-sy { 0%, 100% { transform: scaleY(1); } 34% { transform: scaleY(1.11); } 68% { transform: scaleY(0.87); } }
+.bar-l-16 { animation: bar-a-16 8s ease-in-out infinite, bar-s-16-sy 8s ease-in-out -0.90s infinite; transform-box: view-box; transform-origin: 810.0px 678px; }
+@keyframes bar-a-16 { 0%, 100% { opacity: 1; } 36% { opacity: 1; } 72% { opacity: 0; } }
+.bar-s-17 { transform-box: view-box; transform-origin: 852.6px 678px; animation: bar-s-17-sy 8s ease-in-out 0s infinite; }
+@keyframes bar-s-17-sy { 0%, 100% { transform: scaleY(1); } 34% { transform: scaleY(1.07); } 68% { transform: scaleY(0.91); } }
+.bar-l-17 { animation: bar-a-17 8s ease-in-out infinite, bar-s-17-sy 8s ease-in-out -1.35s infinite; transform-box: view-box; transform-origin: 852.6px 678px; }
+@keyframes bar-a-17 { 0%, 100% { opacity: 1; } 36% { opacity: 1; } 72% { opacity: 0; } }
+.bar-s-18 { transform-box: view-box; transform-origin: 895.3px 678px; animation: bar-s-18-sy 8s ease-in-out 0s infinite; }
+@keyframes bar-s-18-sy { 0%, 100% { transform: scaleY(1); } 34% { transform: scaleY(1.11); } 68% { transform: scaleY(0.87); } }
+.bar-l-18 { animation: bar-a-18 8s ease-in-out infinite, bar-s-18-sy 8s ease-in-out -1.80s infinite; transform-box: view-box; transform-origin: 895.3px 678px; }
+@keyframes bar-a-18 { 0%, 100% { opacity: 1; } 36% { opacity: 1; } 72% { opacity: 0; } }
+.bar-s-19 { transform-box: view-box; transform-origin: 937.9px 678px; animation: bar-s-19-sy 8s ease-in-out 0s infinite; }
+@keyframes bar-s-19-sy { 0%, 100% { transform: scaleY(1); } 34% { transform: scaleY(1.07); } 68% { transform: scaleY(0.91); } }
+.bar-l-19 { animation: bar-a-19 8s ease-in-out infinite, bar-s-19-sy 8s ease-in-out -2.25s infinite; transform-box: view-box; transform-origin: 937.9px 678px; }
+@keyframes bar-a-19 { 0%, 100% { opacity: 1; } 36% { opacity: 1; } 72% { opacity: 0; } }
+.bar-s-20 { transform-box: view-box; transform-origin: 980.5px 678px; animation: bar-s-20-sy 8s ease-in-out 0s infinite; }
+@keyframes bar-s-20-sy { 0%, 100% { transform: scaleY(1); } 34% { transform: scaleY(1.11); } 68% { transform: scaleY(0.87); } }
+.bar-l-20 { animation: bar-a-20 8s ease-in-out infinite, bar-s-20-sy 8s ease-in-out -2.70s infinite; transform-box: view-box; transform-origin: 980.5px 678px; }
+@keyframes bar-a-20 { 0%, 100% { opacity: 1; } 36% { opacity: 1; } 72% { opacity: 0; } }
+.bar-s-21 { transform-box: view-box; transform-origin: 1023.1px 678px; animation: bar-s-21-sy 8s ease-in-out 0s infinite; }
+@keyframes bar-s-21-sy { 0%, 100% { transform: scaleY(1); } 34% { transform: scaleY(1.07); } 68% { transform: scaleY(0.91); } }
+.bar-l-21 { animation: bar-a-21 8s ease-in-out infinite, bar-s-21-sy 8s ease-in-out 0.00s infinite; transform-box: view-box; transform-origin: 1023.1px 678px; }
+@keyframes bar-a-21 { 0%, 100% { opacity: 0; } 36% { opacity: 1; } 72% { opacity: 0; } }
+.bar-s-22 { transform-box: view-box; transform-origin: 1065.8px 678px; animation: bar-s-22-sy 8s ease-in-out 0s infinite; }
+@keyframes bar-s-22-sy { 0%, 100% { transform: scaleY(1); } 34% { transform: scaleY(1.11); } 68% { transform: scaleY(0.87); } }
+.bar-l-22 { animation: bar-a-22 8s ease-in-out infinite, bar-s-22-sy 8s ease-in-out -0.45s infinite; transform-box: view-box; transform-origin: 1065.8px 678px; }
+@keyframes bar-a-22 { 0%, 100% { opacity: 0; } 36% { opacity: 1; } 72% { opacity: 0; } }
+.bar-s-23 { transform-box: view-box; transform-origin: 1108.4px 678px; animation: bar-s-23-sy 8s ease-in-out 0s infinite; }
+@keyframes bar-s-23-sy { 0%, 100% { transform: scaleY(1); } 34% { transform: scaleY(1.07); } 68% { transform: scaleY(0.91); } }
+.bar-l-23 { animation: bar-a-23 8s ease-in-out infinite, bar-s-23-sy 8s ease-in-out -0.90s infinite; transform-box: view-box; transform-origin: 1108.4px 678px; }
+@keyframes bar-a-23 { 0%, 100% { opacity: 0; } 36% { opacity: 1; } 72% { opacity: 0; } }
+.bar-s-24 { transform-box: view-box; transform-origin: 1151.0px 678px; animation: bar-s-24-sy 8s ease-in-out 0s infinite; }
+@keyframes bar-s-24-sy { 0%, 100% { transform: scaleY(1); } 34% { transform: scaleY(1.11); } 68% { transform: scaleY(0.87); } }
+.bar-l-24 { animation: bar-a-24 8s ease-in-out infinite, bar-s-24-sy 8s ease-in-out -1.35s infinite; transform-box: view-box; transform-origin: 1151.0px 678px; }
+@keyframes bar-a-24 { 0%, 100% { opacity: 0; } 36% { opacity: 1; } 72% { opacity: 0; } }
+.bar-s-25 { transform-box: view-box; transform-origin: 1193.6px 678px; animation: bar-s-25-sy 8s ease-in-out 0s infinite; }
+@keyframes bar-s-25-sy { 0%, 100% { transform: scaleY(1); } 34% { transform: scaleY(1.07); } 68% { transform: scaleY(0.91); } }
+.bar-l-25 { animation: bar-a-25 8s ease-in-out infinite, bar-s-25-sy 8s ease-in-out -1.80s infinite; transform-box: view-box; transform-origin: 1193.6px 678px; }
+@keyframes bar-a-25 { 0%, 100% { opacity: 0; } 36% { opacity: 1; } 72% { opacity: 0; } }
+.bar-s-26 { transform-box: view-box; transform-origin: 1236.3px 678px; animation: bar-s-26-sy 8s ease-in-out 0s infinite; }
+@keyframes bar-s-26-sy { 0%, 100% { transform: scaleY(1); } 34% { transform: scaleY(1.11); } 68% { transform: scaleY(0.87); } }
+.bar-l-26 { animation: bar-a-26 8s ease-in-out infinite, bar-s-26-sy 8s ease-in-out -2.25s infinite; transform-box: view-box; transform-origin: 1236.3px 678px; }
+@keyframes bar-a-26 { 0%, 100% { opacity: 0; } 36% { opacity: 1; } 72% { opacity: 0; } }
+.bar-s-27 { transform-box: view-box; transform-origin: 1278.9px 678px; animation: bar-s-27-sy 8s ease-in-out 0s infinite; }
+@keyframes bar-s-27-sy { 0%, 100% { transform: scaleY(1); } 34% { transform: scaleY(1.07); } 68% { transform: scaleY(0.91); } }
+.bar-l-27 { animation: bar-a-27 8s ease-in-out infinite, bar-s-27-sy 8s ease-in-out -2.70s infinite; transform-box: view-box; transform-origin: 1278.9px 678px; }
+@keyframes bar-a-27 { 0%, 100% { opacity: 0; } 36% { opacity: 1; } 72% { opacity: 0; } }
+.bar-s-28 { transform-box: view-box; transform-origin: 1321.5px 678px; animation: bar-s-28-sy 8s ease-in-out 0s infinite; }
+@keyframes bar-s-28-sy { 0%, 100% { transform: scaleY(1); } 34% { transform: scaleY(1.11); } 68% { transform: scaleY(0.87); } }
+.bar-l-28 { animation: bar-a-28 8s ease-in-out infinite, bar-s-28-sy 8s ease-in-out 0.00s infinite; transform-box: view-box; transform-origin: 1321.5px 678px; }
+@keyframes bar-a-28 { 0%, 100% { opacity: 0; } 36% { opacity: 1; } 72% { opacity: 0; } }
+.bar-s-29 { transform-box: view-box; transform-origin: 1364.1px 678px; animation: bar-s-29-sy 8s ease-in-out 0s infinite; }
+@keyframes bar-s-29-sy { 0%, 100% { transform: scaleY(1); } 34% { transform: scaleY(1.07); } 68% { transform: scaleY(0.91); } }
+.bar-l-29 { opacity: 0; animation: bar-s-29-sy 8s ease-in-out -0.45s infinite; transform-box: view-box; transform-origin: 1364.1px 678px; }
+.bar-s-30 { transform-box: view-box; transform-origin: 1406.8px 678px; animation: bar-s-30-sy 8s ease-in-out 0s infinite; }
+@keyframes bar-s-30-sy { 0%, 100% { transform: scaleY(1); } 34% { transform: scaleY(1.11); } 68% { transform: scaleY(0.87); } }
+.bar-l-30 { opacity: 0; animation: bar-s-30-sy 8s ease-in-out -0.90s infinite; transform-box: view-box; transform-origin: 1406.8px 678px; }
+.bar-s-31 { transform-box: view-box; transform-origin: 1449.4px 678px; animation: bar-s-31-sy 8s ease-in-out 0s infinite; }
+@keyframes bar-s-31-sy { 0%, 100% { transform: scaleY(1); } 34% { transform: scaleY(1.07); } 68% { transform: scaleY(0.91); } }
+.bar-l-31 { opacity: 0; animation: bar-s-31-sy 8s ease-in-out -1.35s infinite; transform-box: view-box; transform-origin: 1449.4px 678px; }
+.bar-s-32 { transform-box: view-box; transform-origin: 1492.0px 678px; animation: bar-s-32-sy 8s ease-in-out 0s infinite; }
+@keyframes bar-s-32-sy { 0%, 100% { transform: scaleY(1); } 34% { transform: scaleY(1.11); } 68% { transform: scaleY(0.87); } }
+.bar-l-32 { opacity: 0; animation: bar-s-32-sy 8s ease-in-out -1.80s infinite; transform-box: view-box; transform-origin: 1492.0px 678px; }
+
+    </style>
+    
+    <filter id="paper-cream-1" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.76" numOctaves="3" seed="17" stitchTiles="stitch" result="grain"/>
+      <feColorMatrix type="matrix" in="grain"
+        values="0 0 0 0 0.22
+                0 0 0 0 0.2
+                0 0 0 0 0.16
+                0 0 0 0.052 0"/>
+    </filter>
+    <filter id="paper-cream-1-fiber" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.08 0.22" numOctaves="2" seed="42" stitchTiles="stitch" result="cloud"/>
+      <feColorMatrix type="matrix" in="cloud"
+        values="0 0 0 0 0.24
+                0 0 0 0 0.22
+                0 0 0 0 0.18
+                0 0 0 0.037 0"/>
+    </filter>
+    <pattern id="paper-cream-1-mesh" width="150" height="150" patternUnits="userSpaceOnUse">
+      <circle cx="24" cy="36" r="0.7" fill="#363228" fill-opacity="0.034"/>
+      <circle cx="118" cy="92" r="0.6" fill="#363228" fill-opacity="0.029"/>
+      <path d="M52 14q8 3 16 1" stroke="#363228" stroke-opacity="0.018" stroke-width="0.6" fill="none"/>
+      <path d="M128 134q-6 4 -12 2" stroke="#363228" stroke-opacity="0.018" stroke-width="0.6" fill="none"/>
+    </pattern>
+  </defs>
+
+  <rect width="1620" height="1080" fill="#EDEBE6"/>
+  <g pointer-events="none">
+    <rect x="-20" y="-20" width="1660" height="1120" filter="url(#paper-cream-1-fiber)"/>
+    <rect x="-20" y="-20" width="1660" height="1120" filter="url(#paper-cream-1)"/>
+    <rect width="1620" height="1080" fill="url(#paper-cream-1-mesh)"/>
+  </g>
+
+  <g>
+    <text x="96" y="102" class="f-mono" font-size="13" font-weight="500" fill="#0E5661" letter-spacing="0.18em">LUNARCRUSH DATA  ·  SCALE</text>
+    <text x="96" y="218" class="f-serif" font-size="82" font-weight="400" fill="#0E5661" letter-spacing="-0.028em">
+      <tspan x="96" dy="0">41 categories.</tspan>
+      <tspan x="96" dy="88">One live signal.</tspan>
+    </text>
+    <g transform="translate(1524 202)">
+      <text x="0" y="0" text-anchor="end" class="f-mono" font-size="12" font-weight="500" fill="#2A93A1" letter-spacing="0.16em">POSTS PER DAY</text>
+      <text id="ib-hero-num" x="0" y="104" text-anchor="end" class="f-sans t-num" font-size="112" font-weight="200" fill="#0E5661" letter-spacing="-0.035em">100M<tspan fill="#2A93A1">+</tspan></text>
+    </g>
+  </g>
+
+  <g>
+    <path d="M128 456V444H530" fill="none" stroke="#C6C3B8" stroke-width="1.2"/>
+    <text x="810" y="448" text-anchor="middle" class="f-mono" font-size="11.5" fill="#526C72" letter-spacing="0.16em">37 ENDPOINTS  ·  POST → API &lt;60S</text>
+    <path d="M1090 444H1492V456" fill="none" stroke="#C6C3B8" stroke-width="1.2"/>
+
+    <line x1="120" y1="696" x2="1500" y2="696" stroke="#CFCBC0" stroke-width="1.2"/>
+    <rect x="120.0" y="482" width="16" height="196" rx="8" fill="#DAD7CE"/><rect x="120.0" y="482" width="16" height="196" rx="8" fill="#0E5661" class="bar-l bar-l-0 "/><rect x="164.6" y="560" width="12" height="118" rx="6" fill="#DAD7CE"/><rect x="164.6" y="560" width="12" height="118" rx="6" fill="#0E5661" class="bar-l bar-l-1 "/><rect x="207.3" y="560" width="12" height="118" rx="6" fill="#DAD7CE"/><rect x="207.3" y="560" width="12" height="118" rx="6" fill="#0E5661" class="bar-l bar-l-2 "/><rect x="249.9" y="560" width="12" height="118" rx="6" fill="#DAD7CE"/><rect x="249.9" y="560" width="12" height="118" rx="6" fill="#0E5661" class="bar-l bar-l-3 "/><rect x="290.5" y="482" width="16" height="196" rx="8" fill="#DAD7CE"/><rect x="290.5" y="482" width="16" height="196" rx="8" fill="#0E5661" class="bar-l bar-l-4 "/><rect x="335.1" y="560" width="12" height="118" rx="6" fill="#DAD7CE"/><rect x="335.1" y="560" width="12" height="118" rx="6" fill="#0E5661" class="bar-l bar-l-5 "/><rect x="377.8" y="560" width="12" height="118" rx="6" fill="#DAD7CE"/><rect x="377.8" y="560" width="12" height="118" rx="6" fill="#0E5661" class="bar-l bar-l-6 "/><rect x="420.4" y="560" width="12" height="118" rx="6" fill="#DAD7CE"/><rect x="420.4" y="560" width="12" height="118" rx="6" fill="#0E5661" class="bar-l bar-l-7 "/><rect x="461.0" y="482" width="16" height="196" rx="8" fill="#DAD7CE"/><rect x="461.0" y="482" width="16" height="196" rx="8" fill="#177582" class="bar-l bar-l-8 "/><rect x="505.6" y="560" width="12" height="118" rx="6" fill="#DAD7CE"/><rect x="505.6" y="560" width="12" height="118" rx="6" fill="#177582" class="bar-l bar-l-9 "/><rect x="548.3" y="560" width="12" height="118" rx="6" fill="#DAD7CE"/><rect x="548.3" y="560" width="12" height="118" rx="6" fill="#177582" class="bar-l bar-l-10 "/><rect x="590.9" y="560" width="12" height="118" rx="6" fill="#DAD7CE"/><rect x="590.9" y="560" width="12" height="118" rx="6" fill="#177582" class="bar-l bar-l-11 "/><rect x="631.5" y="482" width="16" height="196" rx="8" fill="#DAD7CE"/><rect x="631.5" y="482" width="16" height="196" rx="8" fill="#177582" class="bar-l bar-l-12 "/><rect x="676.1" y="560" width="12" height="118" rx="6" fill="#DAD7CE"/><rect x="676.1" y="560" width="12" height="118" rx="6" fill="#177582" class="bar-l bar-l-13 "/><rect x="718.8" y="560" width="12" height="118" rx="6" fill="#DAD7CE"/><rect x="718.8" y="560" width="12" height="118" rx="6" fill="#177582" class="bar-l bar-l-14 "/><rect x="761.4" y="560" width="12" height="118" rx="6" fill="#DAD7CE"/><rect x="761.4" y="560" width="12" height="118" rx="6" fill="#2A93A1" class="bar-l bar-l-15 "/><rect x="802.0" y="482" width="16" height="196" rx="8" fill="#DAD7CE"/><rect x="802.0" y="482" width="16" height="196" rx="8" fill="#2A93A1" class="bar-l bar-l-16 "/><rect x="846.6" y="560" width="12" height="118" rx="6" fill="#DAD7CE"/><rect x="846.6" y="560" width="12" height="118" rx="6" fill="#2A93A1" class="bar-l bar-l-17 "/><rect x="889.3" y="560" width="12" height="118" rx="6" fill="#DAD7CE"/><rect x="889.3" y="560" width="12" height="118" rx="6" fill="#2A93A1" class="bar-l bar-l-18 "/><rect x="931.9" y="560" width="12" height="118" rx="6" fill="#DAD7CE"/><rect x="931.9" y="560" width="12" height="118" rx="6" fill="#2A93A1" class="bar-l bar-l-19 "/><rect x="972.5" y="482" width="16" height="196" rx="8" fill="#DAD7CE"/><rect x="972.5" y="482" width="16" height="196" rx="8" fill="#2A93A1" class="bar-l bar-l-20 bar-focal"/><rect x="1017.1" y="560" width="12" height="118" rx="6" fill="#DAD7CE"/><rect x="1017.1" y="560" width="12" height="118" rx="6" fill="#2A93A1" class="bar-l bar-l-21 "/><rect x="1059.8" y="560" width="12" height="118" rx="6" fill="#DAD7CE"/><rect x="1059.8" y="560" width="12" height="118" rx="6" fill="#2A93A1" class="bar-l bar-l-22 "/><rect x="1102.4" y="560" width="12" height="118" rx="6" fill="#DAD7CE"/><rect x="1102.4" y="560" width="12" height="118" rx="6" fill="#2A93A1" class="bar-l bar-l-23 "/><rect x="1143.0" y="482" width="16" height="196" rx="8" fill="#DAD7CE"/><rect x="1143.0" y="482" width="16" height="196" rx="8" fill="#2A93A1" class="bar-l bar-l-24 "/><rect x="1187.6" y="560" width="12" height="118" rx="6" fill="#DAD7CE"/><rect x="1187.6" y="560" width="12" height="118" rx="6" fill="#2A93A1" class="bar-l bar-l-25 "/><rect x="1230.3" y="560" width="12" height="118" rx="6" fill="#DAD7CE"/><rect x="1230.3" y="560" width="12" height="118" rx="6" fill="#2A93A1" class="bar-l bar-l-26 "/><rect x="1272.9" y="560" width="12" height="118" rx="6" fill="#DAD7CE"/><rect x="1272.9" y="560" width="12" height="118" rx="6" fill="#2A93A1" class="bar-l bar-l-27 "/><rect x="1313.5" y="482" width="16" height="196" rx="8" fill="#DAD7CE"/><rect x="1313.5" y="482" width="16" height="196" rx="8" fill="#2A93A1" class="bar-l bar-l-28 "/><rect x="1358.1" y="560" width="12" height="118" rx="6" fill="#DAD7CE"/><rect x="1358.1" y="560" width="12" height="118" rx="6" fill="#2A93A1" class="bar-l bar-l-29 "/><rect x="1400.8" y="560" width="12" height="118" rx="6" fill="#DAD7CE"/><rect x="1400.8" y="560" width="12" height="118" rx="6" fill="#2A93A1" class="bar-l bar-l-30 "/><rect x="1443.4" y="560" width="12" height="118" rx="6" fill="#DAD7CE"/><rect x="1443.4" y="560" width="12" height="118" rx="6" fill="#2A93A1" class="bar-l bar-l-31 "/><rect x="1484.0" y="482" width="16" height="196" rx="8" fill="#DAD7CE"/><rect x="1484.0" y="482" width="16" height="196" rx="8" fill="#2A93A1" class="bar-l bar-l-32 "/>
+    <circle cx="980.5" cy="696" r="5" fill="#2A93A1" class="cursor-pip"/>
+    <g>
+        <line x1="298.5" y1="696" x2="298.5" y2="730" stroke="#8C9B9F" stroke-width="1.2"/>
+        <circle cx="298.5" cy="696" r="3" fill="#7E8E92"/>
+        <text id="ib-m-0" x="298.5" y="782" text-anchor="middle" class="f-sans t-num" font-size="44" font-weight="300" fill="#145D68" letter-spacing="-0.025em">6</text>
+        <text x="298.5" y="810" text-anchor="middle" class="f-mono" font-size="11.5" fill="#587177" letter-spacing="0.16em">NETWORKS</text>
+      </g>
+      <g>
+        <line x1="810.0" y1="696" x2="810.0" y2="730" stroke="#2A93A1" stroke-width="1.8"/>
+        <circle cx="810.0" cy="696" r="4.5" fill="#2A93A1"/>
+        <text id="ib-m-1" x="810.0" y="782" text-anchor="middle" class="f-sans t-num" font-size="44" font-weight="300" fill="#0E5661" letter-spacing="-0.025em">10M+</text>
+        <text x="810.0" y="810" text-anchor="middle" class="f-mono" font-size="11.5" fill="#2A93A1" letter-spacing="0.16em">CREATORS</text>
+      </g>
+      <g>
+        <line x1="1321.5" y1="696" x2="1321.5" y2="730" stroke="#8C9B9F" stroke-width="1.2"/>
+        <circle cx="1321.5" cy="696" r="3" fill="#7E8E92"/>
+        <text id="ib-m-2" x="1321.5" y="782" text-anchor="middle" class="f-sans t-num" font-size="44" font-weight="300" fill="#145D68" letter-spacing="-0.025em">2020</text>
+        <text x="1321.5" y="810" text-anchor="middle" class="f-mono" font-size="11.5" fill="#587177" letter-spacing="0.16em">SINCE</text>
+      </g>
+  </g>
+
+  <g>
+    <g transform="translate(96 968) scale(0.25)">
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M31.2726 81.3604C31.2726 61.9026 47.217 46.1642 66.8416 46.1642C86.466 46.1644 102.411 61.9027 102.411 81.3604C102.41 100.514 86.9603 116.064 67.7586 116.545L66.8416 116.557C47.217 116.557 31.2727 100.818 31.2726 81.3604ZM95.127 80.6407C94.7469 65.8038 82.6461 53.7966 67.5726 53.4193L66.8416 53.41C51.1854 53.41 38.5468 65.9533 38.5468 81.3604L38.5552 82.0802C38.9416 97.1562 51.43 109.311 66.8416 109.311C82.4975 109.311 95.1363 96.7673 95.1364 81.3604L95.127 80.6407Z" fill="#0E5661"/>
+    <path d="M67.002 0C104.005 6.13987e-05 134.002 29.997 134.002 67C134.002 80.4414 130.044 92.9584 123.23 103.449C142.051 66.8016 104.532 26.9862 67.002 26.9861C29.4722 26.9861 -8.0472 66.8016 10.7742 103.449C3.95994 92.9584 0.00195312 80.4414 0.00195312 67C0.00195312 29.9969 29.9989 0 67.002 0ZM67.002 7.44444C40.3445 7.44444 17.7777 24.9586 10.1808 49.1077C10.7575 48.3265 11.3517 47.558 11.961 46.8022C24.9325 30.7133 45.7421 19.5417 67.002 19.5417C88.2618 19.5417 109.071 30.7133 122.043 46.8022C122.652 47.5579 123.246 48.3267 123.822 49.1077C116.225 24.9588 93.6592 7.44449 67.002 7.44444Z" fill="#0E5661"/>
+    <path d="M314.746 56.8876C326.043 56.8876 331.568 62.264 331.568 71.6934V98.2447H323.075V93.1992H322.663C320.271 97.0867 315.653 99.2373 309.799 99.2373C300.975 99.2373 296.192 94.688 296.192 87.9054C296.192 81.1229 300.151 77.1526 309.634 75.581L317.467 74.2576C321.426 73.5959 322.663 73.0996 322.663 71.528C322.663 66.6479 320.271 63.5874 314.746 63.5874C309.386 63.5874 306.583 66.4824 306.253 70.7009H297.759C298.254 62.3467 304.686 56.8876 314.746 56.8876ZM222.671 57.4393V80.7876C222.671 88.8187 226.144 91.5509 231.271 91.5509C236.977 91.5509 241.112 86.666 241.112 78.3037V57.4393H250.043V97.8434H241.525V91.9649H241.195C238.879 96.5186 234.744 98.8369 228.956 98.8369C220.852 98.8369 213.741 94.5316 213.741 81.9467V57.4393H222.671ZM392.288 39.8867C405.932 39.8867 414.698 47.5867 416.93 59.2608H407.421C405.436 52.0576 400.392 48.1663 392.288 48.1663C381.207 48.1663 374.013 56.8598 374.013 69.3618C374.013 81.6155 381.29 90.5574 392.04 90.5574C400.805 90.5574 405.436 86.666 407.421 79.4628H416.93C414.698 91.137 405.684 98.8369 391.957 98.8369C375.253 98.8369 364.338 86.5004 364.338 69.3618C364.338 52.4716 375.501 39.8867 392.288 39.8867ZM460.719 57.4393V80.7876C460.719 88.8187 464.192 91.5509 469.319 91.5509C475.025 91.5509 479.159 86.666 479.159 78.3037V57.4393H488.09V97.8434H479.573V91.9649H479.242C476.927 96.5186 472.792 98.8369 467.003 98.8369C458.9 98.8369 451.788 94.5316 451.788 81.9467V57.4393H460.719ZM510.811 56.4458C520.156 56.4458 527.515 60.2544 527.515 68.6995H519.163C519.163 64.7253 515.607 62.7382 510.811 62.7382C506.098 62.7382 502.542 64.7253 502.542 68.2855C502.542 71.0177 504.444 72.4252 509.24 73.2532L516.682 74.4951C523.05 75.5715 528.59 78.0553 528.59 85.5897C528.59 94.4488 521.148 98.8369 510.398 98.8369C500.309 98.8369 492.95 94.6971 492.95 86.252H501.467C501.467 90.723 506.015 92.5445 510.398 92.5445C516.6 92.5445 519.659 90.3918 519.659 86.666C519.659 83.6854 517.592 82.4435 513.54 81.7811L506.098 80.4564C499.896 79.4628 493.942 76.979 493.942 69.3618C493.942 61.0823 501.302 56.4458 510.811 56.4458ZM181.344 40.8803V89.8122H208.881V97.8434H172V40.8803H181.344ZM276.32 56.4458C284.341 56.4458 291.452 60.7511 291.452 73.336V97.8434H282.522V74.4951C282.522 66.464 279.131 63.7318 273.922 63.7318C268.216 63.7318 263.833 68.6167 263.833 76.7306V97.8434H254.902V57.4393H263.502V63.3178H263.833C266.148 58.764 270.448 56.4458 276.32 56.4458ZM356.162 56.4458C357.816 56.4458 359.718 56.6942 361.785 58.1017L359.47 66.05C357.651 65.1393 356.079 64.7253 354.508 64.7253C348.472 64.7253 345.577 70.6038 345.577 77.6413V97.8434H336.647V57.4393H345.247V63.3178H345.495C347.479 59.0124 351.035 56.4458 356.162 56.4458ZM441.305 56.4458C442.959 56.4458 444.861 56.6942 446.928 58.1017L444.613 66.05C442.794 65.1393 441.223 64.7253 439.651 64.7253C433.615 64.7253 430.721 70.6038 430.721 77.6413V97.8434H421.79V57.4393H430.39V63.3178H430.638C432.623 59.0124 436.178 56.4458 441.305 56.4458ZM542.381 37.2373L542.381 49.955L542.38 50.9226C542.375 53.8899 542.338 58.6982 542.05 63.3178H542.381C544.696 58.764 548.996 56.4458 554.867 56.4458C562.888 56.4458 570 60.7511 570 73.336V97.8434H561.069V74.4951C561.069 66.464 557.679 63.7318 552.469 63.7318C546.681 63.7318 542.381 68.8651 542.381 76.8134V97.8434H533.45V37.2373H542.381ZM323.109 77.6774C322.278 78.6749 320.867 79.2568 318.957 79.5893L311.981 80.753C307.248 81.5012 305.421 83.5793 305.421 86.738C305.421 90.063 307.746 92.3074 312.313 92.3074C318.043 92.3074 323.109 88.733 323.109 81.418V77.6774Z" fill="#0E5661"/>
+  </g>
+    <text x="1524" y="992" text-anchor="end" class="f-mono" font-size="13.5" fill="#2A7A86" letter-spacing="0.14em">LUNARCRUSH.COM/DATA  ·  NOV 16, 2026</text>
+  </g>
+  <script><![CDATA[
+    (function () {
+      var DUR = 8000;
+      
+    var heroEl = document.getElementById('ib-hero-num');
+    var m1El = document.getElementById('ib-m-1');
+    function renderAt(p) {
+      var s = Math.sin(2 * Math.PI * p);
+      if (heroEl) {
+        if (Math.abs(s) < 0.06) {
+          heroEl.innerHTML = '100M<tspan fill="#2A93A1">+</tspan>';
+        } else {
+          var m = (100 + 12.4 * s).toFixed(1);
+          heroEl.innerHTML = m + 'M<tspan fill="#2A93A1">+</tspan>';
+        }
+      }
+      if (m1El) {
+        if (Math.abs(s) < 0.06) {
+          m1El.textContent = '10M+';
+        } else {
+          m1El.textContent = (10 + 0.8 * s).toFixed(1) + 'M+';
+        }
+      }
+    }
+  
+      var manual = false;
+      window.__seekSvgTime = function (tMs) {
+        manual = true;
+        renderAt((((tMs / DUR) % 1) + 1) % 1);
+      };
+      renderAt(0);
+      if (typeof requestAnimationFrame === 'function') {
+        var t0 = performance.now();
+        function loop(now) {
+          if (manual) return;
+          renderAt(((now - t0) % DUR) / DUR);
+          requestAnimationFrame(loop);
+        }
+        requestAnimationFrame(loop);
+      }
+    })();
+  ]]></script>
+</svg>

@@ -1,0 +1,327 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1620 1080" width="1620" height="1080" role="img" aria-label="Stacking DAO Instrument Bars Light — Earn native BTC yield, never lock liquidity">
+  <title>Stacking DAO — Instrument Bars Yield Animation (Light Porcelain 3:2)</title>
+  <desc>3:2 Light Porcelain Jhosephe UI animation with Fluor Green emissive InstrumentBars light, fast text opacity entrance, live Stacking DAO APYs (2.45% stBTC, 5.98% stSTXbtc, 5.99% stSTX, 6.64% Native), and seamless 12s loop.</desc>
+
+  <defs>
+    <style>
+      @font-face {
+        font-family: 'Aktiv Grotesk Ex';
+        src: url('./Aktiv_Grotesk_Ex_Bold.ttf') format('truetype');
+        font-weight: 700;
+        font-style: normal;
+        font-display: swap;
+      }
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap');
+
+      .font-aktiv {
+        font-family: 'Aktiv Grotesk Ex', 'Aktiv Grotesk', 'Inter', system-ui, sans-serif;
+        font-weight: 700;
+        font-kerning: normal;
+        font-variant-numeric: proportional-nums lining-nums;
+      }
+      .font-inter {
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        font-kerning: normal;
+        font-variant-numeric: proportional-nums lining-nums;
+      }
+
+      /* Jhosephe UI Light Porcelain InstrumentBars with Green Emissive Light */
+      .bar-inactive {
+        fill: #e4e6e5;
+      }
+      .bar-active {
+        fill: #47e356;
+        opacity: 0.95;
+        filter:
+          drop-shadow(0 0 4px rgba(111, 242, 111, 0.65))
+          drop-shadow(0 0 10px rgba(71, 227, 86, 0.30));
+      }
+      .bar-lead {
+        fill: #24c939;
+        opacity: 1;
+        filter:
+          drop-shadow(0 0 4px rgba(111, 242, 111, 0.92))
+          drop-shadow(0 0 12px rgba(36, 201, 57, 0.52))
+          drop-shadow(0 0 22px rgba(111, 242, 111, 0.35));
+      }
+      .tray-shadow {
+        filter:
+          drop-shadow(0 18px 42px rgba(28, 56, 48, 0.08))
+          drop-shadow(0 4px 12px rgba(0, 0, 0, 0.04));
+      }
+      .milestone-glow {
+        filter: drop-shadow(0 0 6px rgba(71, 227, 86, 0.55));
+      }
+    </style>
+
+    <!-- Light Porcelain Canvas -->
+    <radialGradient id="porcelain-canvas" cx="50%" cy="20%" r="80%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="55%" stop-color="#f8f8f8" />
+      <stop offset="100%" stop-color="#f1f2f0" />
+    </radialGradient>
+
+    <!-- Elevated Light Display Tray -->
+    <linearGradient id="tray-light-surface" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#fafafa" />
+    </linearGradient>
+  </defs>
+
+  <!-- Light Porcelain Canvas -->
+  <rect width="1620" height="1080" fill="url(#porcelain-canvas)" />
+
+  <!-- ==================== 1. TOP BAR: OFFICIAL STACKING DAO LOCKUP (visible from frame 0) ==================== -->
+  <g id="tx-logo" opacity="1" transform="translate(116, 92)">
+    <rect x="0" y="0" width="58" height="58" rx="13" fill="#6FF26F" />
+    <g transform="translate(10.5, 11.5) scale(0.62)">
+      <path d="M 14 0 L 42 0 C 50 0 56 3.5 60 10 L 49 16 C 46.5 12 43.5 10.5 39 10.5 L 14 10.5 Z" fill="#1c3830" />
+      <path d="M 2 10.5 L 14 10.5 C 14 18 20 22 28 22 L 38 22 C 51 22 60 30 60 42 L 48 42 C 48 35.5 43.5 32.5 36 32.5 L 26 32.5 C 12 32.5 2 24.5 2 10.5 Z" fill="#1c3830" />
+      <path d="M 0 44 L 11 38 C 13.5 42 16.5 43.5 21 43.5 L 36 43.5 L 36 54 L 18 54 C 10 54 4 50.5 0 44 Z" fill="#1c3830" />
+    </g>
+    <text x="76" y="42" class="font-aktiv" font-size="34" letter-spacing="-0.3" fill="#1c3830">STACKING<tspan dx="3" dy="-14" font-size="14" letter-spacing="0.3" fill="#1c3830">DAO</tspan></text>
+  </g>
+
+  <!-- ==================== 2. HERO ROW: ENGAGING HOOK (LEFT) + LIVE APY (RIGHT) ==================== -->
+  <g transform="translate(116, 248)">
+    <!-- Left: Crisp High-Contrast Light Copy -->
+    <g id="tx-head" opacity="0">
+      <text x="0" y="72" class="font-inter" font-size="72" font-weight="600" letter-spacing="-2.2" fill="#1c3830">
+        Earn native BTC yield.
+      </text>
+      <text x="0" y="154" class="font-inter" font-size="72" font-weight="600" letter-spacing="-2.2" fill="#1e9e35">
+        Never lock liquidity.
+      </text>
+    </g>
+    <text id="tx-sub" opacity="0" x="0" y="216" class="font-inter" font-size="24" font-weight="400" letter-spacing="-0.2" fill="#5e6b64">
+      Stake in seconds at <tspan font-weight="600" fill="#1c3830">app.stackingdao.com</tspan> · $78M+ TVL
+    </text>
+
+    <!-- Right: Light Brand Pill Badge + Giant Aktiv Grotesk Ex APY Readout -->
+    <g id="tx-readout" opacity="0" transform="translate(1388, 0)">
+      <rect x="-204" y="-12" width="204" height="40" rx="20" fill="#eaf8eb" stroke="#24b33c" stroke-opacity="0.22" stroke-width="1" />
+      <text id="apy-pill" x="-102" y="15" text-anchor="middle" class="font-inter" font-size="18" font-weight="600" letter-spacing="-0.2" fill="#178a2c">stBTC · APY</text>
+
+      <text x="0" y="168" text-anchor="end" class="font-aktiv" font-size="158" letter-spacing="-3.5" fill="#1c3830">
+        <tspan id="apy-int">0</tspan><tspan dx="-3">.</tspan><tspan id="apy-d1" dx="-2">0</tspan><tspan id="apy-d2" dx="-1">0</tspan><tspan font-size="58" letter-spacing="0" fill="#21b83d" dx="4">%</tspan>
+      </text>
+    </g>
+  </g>
+
+  <!-- ==================== 3. JHOSEPHE UI LIGHT PORCELAIN INSTRUMENT BARS TRAY ==================== -->
+  <g transform="translate(116, 540)">
+    <rect x="0" y="0" width="1388" height="432" rx="26" fill="url(#tray-light-surface)" stroke="#e4e6e5" stroke-width="1.5" class="tray-shadow" />
+    <line x1="28" y1="1.5" x2="1360" y2="1.5" stroke="#ffffff" stroke-width="1.5" />
+
+    <!-- Top Hairline Brackets inside Tray (.jh-instrument__line) -->
+    <path d="M 52 54 H 380 M 1008 54 H 1336" fill="none" stroke="#1c3830" stroke-opacity="0.10" stroke-width="1.5" />
+
+    <!-- 33 Precision Instrument Bars -->
+    <g id="instrument-bars">
+      <rect id="b0"  x="52.00"   y="102" width="11" height="118" rx="5.5" class="bar-inactive" />
+      <rect id="b1"  x="91.78"   y="150" width="11" height="70"  rx="5.5" class="bar-inactive" />
+      <rect id="b2"  x="131.56"  y="150" width="11" height="70"  rx="5.5" class="bar-inactive" />
+      <rect id="b3"  x="171.34"  y="150" width="11" height="70"  rx="5.5" class="bar-inactive" />
+      <rect id="b4"  x="211.13"  y="102" width="11" height="118" rx="5.5" class="bar-inactive" />
+      <rect id="b5"  x="250.91"  y="150" width="11" height="70"  rx="5.5" class="bar-inactive" />
+      <rect id="b6"  x="290.69"  y="150" width="11" height="70"  rx="5.5" class="bar-inactive" />
+      <rect id="b7"  x="330.47"  y="150" width="11" height="70"  rx="5.5" class="bar-inactive" />
+      <rect id="b8"  x="370.25"  y="102" width="11" height="118" rx="5.5" class="bar-inactive" />
+      <rect id="b9"  x="410.03"  y="150" width="11" height="70"  rx="5.5" class="bar-inactive" />
+      <rect id="b10" x="449.81"  y="150" width="11" height="70"  rx="5.5" class="bar-inactive" />
+      <rect id="b11" x="489.59"  y="150" width="11" height="70"  rx="5.5" class="bar-inactive" />
+      <rect id="b12" x="529.38"  y="102" width="11" height="118" rx="5.5" class="bar-inactive" />
+      <rect id="b13" x="569.16"  y="150" width="11" height="70"  rx="5.5" class="bar-inactive" />
+      <rect id="b14" x="608.94"  y="150" width="11" height="70"  rx="5.5" class="bar-inactive" />
+      <rect id="b15" x="648.72"  y="150" width="11" height="70"  rx="5.5" class="bar-inactive" />
+      <rect id="b16" x="688.50"  y="102" width="11" height="118" rx="5.5" class="bar-inactive" />
+      <rect id="b17" x="728.28"  y="150" width="11" height="70"  rx="5.5" class="bar-inactive" />
+      <rect id="b18" x="768.06"  y="150" width="11" height="70"  rx="5.5" class="bar-inactive" />
+      <rect id="b19" x="807.84"  y="150" width="11" height="70"  rx="5.5" class="bar-inactive" />
+      <rect id="b20" x="847.63"  y="102" width="11" height="118" rx="5.5" class="bar-inactive" />
+      <rect id="b21" x="887.41"  y="150" width="11" height="70"  rx="5.5" class="bar-inactive" />
+      <rect id="b22" x="927.19"  y="150" width="11" height="70"  rx="5.5" class="bar-inactive" />
+      <rect id="b23" x="966.97"  y="150" width="11" height="70"  rx="5.5" class="bar-inactive" />
+      <rect id="b24" x="1006.75" y="102" width="11" height="118" rx="5.5" class="bar-inactive" />
+      <rect id="b25" x="1046.53" y="150" width="11" height="70"  rx="5.5" class="bar-inactive" />
+      <rect id="b26" x="1086.31" y="150" width="11" height="70"  rx="5.5" class="bar-inactive" />
+      <rect id="b27" x="1126.09" y="150" width="11" height="70"  rx="5.5" class="bar-inactive" />
+      <rect id="b28" x="1165.88" y="102" width="11" height="118" rx="5.5" class="bar-inactive" />
+      <rect id="b29" x="1205.66" y="150" width="11" height="70"  rx="5.5" class="bar-inactive" />
+      <rect id="b30" x="1245.44" y="150" width="11" height="70"  rx="5.5" class="bar-inactive" />
+      <rect id="b31" x="1285.22" y="150" width="11" height="70"  rx="5.5" class="bar-inactive" />
+      <rect id="b32" x="1325.00" y="102" width="11" height="118" rx="5.5" class="bar-inactive" />
+    </g>
+
+    <!-- Bottom Baseline (.jh-instrument__baseline) -->
+    <path d="M 52 242 H 1336" fill="none" stroke="#1c3830" stroke-opacity="0.10" stroke-width="1.5" />
+
+    <!-- ==================== 4. LIVE APP YIELD MILESTONES ==================== -->
+    <g id="yield-milestones" opacity="0" transform="translate(0, 242)">
+      <!-- Marker 1: stBTC (bar 8, live app: 2.45% APY) -->
+      <g transform="translate(375.75, 0)">
+        <line id="m1-tick" x1="0" y1="0" x2="0" y2="16" stroke="#1c3830" stroke-opacity="0.22" stroke-width="2" />
+        <text id="m1-val" x="0" y="60" text-anchor="middle" class="font-aktiv" font-size="28" letter-spacing="-0.4" fill="#8b948f">2<tspan dx="-1">.</tspan><tspan dx="-1">45</tspan><tspan id="m1-pct" dx="1">%</tspan></text>
+        <text id="m1-lbl" x="0" y="96" text-anchor="middle" class="font-inter" font-size="19" font-weight="500" fill="#8b948f">stBTC</text>
+      </g>
+
+      <!-- Marker 2: stSTXbtc (bar 16, live app: 5.98% APY) -->
+      <g transform="translate(694, 0)">
+        <line id="m2-tick" x1="0" y1="0" x2="0" y2="16" stroke="#1c3830" stroke-opacity="0.22" stroke-width="2" />
+        <text id="m2-val" x="0" y="60" text-anchor="middle" class="font-aktiv" font-size="28" letter-spacing="-0.4" fill="#8b948f">5<tspan dx="-1">.</tspan><tspan dx="-1">98</tspan><tspan id="m2-pct" dx="1">%</tspan></text>
+        <text id="m2-lbl" x="0" y="96" text-anchor="middle" class="font-inter" font-size="19" font-weight="500" fill="#8b948f">stSTXbtc</text>
+      </g>
+
+      <!-- Marker 3: stSTX (bar 24, live app: 5.99% APY) -->
+      <g transform="translate(1012.25, 0)">
+        <line id="m3-tick" x1="0" y1="0" x2="0" y2="16" stroke="#1c3830" stroke-opacity="0.22" stroke-width="2" />
+        <text id="m3-val" x="0" y="60" text-anchor="middle" class="font-aktiv" font-size="28" letter-spacing="-0.4" fill="#8b948f">5<tspan dx="-1">.</tspan><tspan dx="-1">99</tspan><tspan id="m3-pct" dx="1">%</tspan></text>
+        <text id="m3-lbl" x="0" y="96" text-anchor="middle" class="font-inter" font-size="19" font-weight="500" fill="#8b948f">stSTX</text>
+      </g>
+
+      <!-- Marker 4: Native (bar 32, live app: 6.64% APY) -->
+      <g transform="translate(1330.5, 0)">
+        <line id="m4-tick" x1="0" y1="0" x2="0" y2="16" stroke="#1c3830" stroke-opacity="0.22" stroke-width="2" />
+        <text id="m4-val" x="5.5" y="60" text-anchor="end" class="font-aktiv" font-size="28" letter-spacing="-0.4" fill="#8b948f">6<tspan dx="-1">.</tspan><tspan dx="-1">64</tspan><tspan id="m4-pct" dx="1">%</tspan></text>
+        <text id="m4-lbl" x="5.5" y="96" text-anchor="end" class="font-inter" font-size="19" font-weight="500" fill="#8b948f">Native</text>
+      </g>
+    </g>
+  </g>
+
+  <script><![CDATA[
+    (function () {
+      const DURATION = 12000;
+      const ease = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      const easeOut = t => 1 - Math.pow(1 - t, 3);
+      const clamp01 = v => Math.max(0, Math.min(1, v));
+      const lerp = (a, b, t) => a + (b - a) * t;
+
+      const SEGMENTS = [
+        [0,     1900, 0,  8,  0.00, 2.45, 'stBTC · APY',    0],
+        [1900,  3100, 8,  8,  2.45, 2.45, 'stBTC · APY',    1],
+        [3100,  5000, 8,  16, 2.45, 5.98, 'stSTXbtc · APY', 1],
+        [5000,  6200, 16, 16, 5.98, 5.98, 'stSTXbtc · APY', 2],
+        [6200,  7700, 16, 24, 5.98, 5.99, 'stSTX · APY',    2],
+        [7700,  8900, 24, 24, 5.99, 5.99, 'stSTX · APY',    3],
+        [8900, 10200, 24, 32, 5.99, 6.64, 'Native · APY',   3],
+        [10200,11150, 32, 32, 6.64, 6.64, 'Native · APY',   4],
+        [11150,12000, 32, 0,  6.64, 0.00, 'stBTC · APY',    0]
+      ];
+
+      const txHead = document.getElementById('tx-head');
+      const txSub = document.getElementById('tx-sub');
+      const txReadout = document.getElementById('tx-readout');
+      const txMilestones = document.getElementById('yield-milestones');
+
+      function fadeWindow(t, inStart, inDur, outStart, outDur) {
+        if (t < inStart) return 0;
+        if (t < inStart + inDur) return easeOut((t - inStart) / inDur);
+        if (t <= outStart) return 1;
+        if (t < outStart + outDur) return 1 - ease(clamp01((t - outStart) / outDur));
+        return 0;
+      }
+
+      const bars = Array.from({ length: 33 }, (_, i) => document.getElementById('b' + i));
+      const apyInt = document.getElementById('apy-int');
+      const apyD1 = document.getElementById('apy-d1');
+      const apyD2 = document.getElementById('apy-d2');
+      const apyPill = document.getElementById('apy-pill');
+
+      const milestones = [
+        { idx: 8,  tick: document.getElementById('m1-tick'), val: document.getElementById('m1-val'), pct: document.getElementById('m1-pct'), lbl: document.getElementById('m1-lbl') },
+        { idx: 16, tick: document.getElementById('m2-tick'), val: document.getElementById('m2-val'), pct: document.getElementById('m2-pct'), lbl: document.getElementById('m2-lbl') },
+        { idx: 24, tick: document.getElementById('m3-tick'), val: document.getElementById('m3-val'), pct: document.getElementById('m3-pct'), lbl: document.getElementById('m3-lbl') },
+        { idx: 32, tick: document.getElementById('m4-tick'), val: document.getElementById('m4-val'), pct: document.getElementById('m4-pct'), lbl: document.getElementById('m4-lbl') }
+      ];
+
+      function updateAt(rawMs) {
+        const t = ((rawMs % DURATION) + DURATION) % DURATION;
+
+        if (txHead) txHead.setAttribute('opacity', fadeWindow(t, 0, 260, 11500, 480).toFixed(3));
+        if (txSub)  txSub.setAttribute('opacity', fadeWindow(t, 90, 280, 11460, 480).toFixed(3));
+        if (txReadout) txReadout.setAttribute('opacity', fadeWindow(t, 130, 280, 11440, 480).toFixed(3));
+        if (txMilestones) txMilestones.setAttribute('opacity', fadeWindow(t, 160, 280, 11420, 480).toFixed(3));
+
+        let seg = SEGMENTS[0];
+        for (let i = 0; i < SEGMENTS.length; i++) {
+          if (t >= SEGMENTS[i][0] && t <= SEGMENTS[i][1]) { seg = SEGMENTS[i]; break; }
+        }
+        const span = Math.max(1, seg[1] - seg[0]);
+        const p = ease(clamp01((t - seg[0]) / span));
+        const barPos = lerp(seg[2], seg[3], p);
+        const leadIdx = Math.round(barPos);
+        const apy = lerp(seg[4], seg[5], p);
+
+        for (let i = 0; i < bars.length; i++) {
+          const el = bars[i];
+          if (!el) continue;
+          el.setAttribute('class', i < leadIdx ? 'bar-active' : i === leadIdx ? 'bar-lead' : 'bar-inactive');
+        }
+
+        const formatted = apy.toFixed(2);
+        const parts = formatted.split('.');
+        if (apyInt) apyInt.textContent = parts[0];
+        if (apyD1) apyD1.textContent = parts[1][0];
+        if (apyD2) apyD2.textContent = parts[1][1];
+        if (apyPill) apyPill.textContent = seg[6];
+
+        for (let k = 0; k < milestones.length; k++) {
+          const m = milestones[k];
+          const isCurrent = Math.abs(leadIdx - m.idx) <= 2 && leadIdx >= m.idx - 1 && (seg[7] === k + 1 || (leadIdx >= m.idx && (k === milestones.length - 1 || leadIdx < milestones[k + 1].idx)));
+          const isReached = leadIdx >= m.idx;
+          if (!m.tick || !m.val || !m.lbl) continue;
+
+          if (isCurrent) {
+            m.tick.setAttribute('y2', '20');
+            m.tick.setAttribute('stroke', '#24c939');
+            m.tick.setAttribute('stroke-opacity', '1');
+            m.tick.setAttribute('stroke-width', '2.5');
+            m.tick.setAttribute('class', 'milestone-glow');
+            m.val.setAttribute('fill', '#1a9e31');
+            m.val.setAttribute('font-size', '30');
+            if (m.pct) m.pct.setAttribute('fill', '#1a9e31');
+            m.lbl.setAttribute('fill', '#1c3830');
+            m.lbl.setAttribute('font-weight', '600');
+          } else if (isReached) {
+            m.tick.setAttribute('y2', '16');
+            m.tick.setAttribute('stroke', '#24b33c');
+            m.tick.setAttribute('stroke-opacity', '0.7');
+            m.tick.setAttribute('stroke-width', '2');
+            m.tick.removeAttribute('class');
+            m.val.setAttribute('fill', '#1c3830');
+            m.val.setAttribute('font-size', '28');
+            if (m.pct) m.pct.setAttribute('fill', '#1fa836');
+            m.lbl.setAttribute('fill', '#5e6b64');
+            m.lbl.setAttribute('font-weight', '500');
+          } else {
+            m.tick.setAttribute('y2', '16');
+            m.tick.setAttribute('stroke', '#1c3830');
+            m.tick.setAttribute('stroke-opacity', '0.22');
+            m.tick.setAttribute('stroke-width', '2');
+            m.tick.removeAttribute('class');
+            m.val.setAttribute('fill', '#8b948f');
+            m.val.setAttribute('font-size', '28');
+            if (m.pct) m.pct.setAttribute('fill', '#8b948f');
+            m.lbl.setAttribute('fill', '#8b948f');
+            m.lbl.setAttribute('font-weight', '500');
+          }
+        }
+      }
+
+      let manual = false;
+      window.__seekSvgTime = function (tMs) {
+        manual = true;
+        updateAt(tMs);
+      };
+
+      const start = performance.now();
+      function loop(now) {
+        if (manual) return;
+        updateAt(now - start);
+        requestAnimationFrame(loop);
+      }
+      updateAt(0);
+      requestAnimationFrame(loop);
+    })();
+  ]]></script>
+</svg>

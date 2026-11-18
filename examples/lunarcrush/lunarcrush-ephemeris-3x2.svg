@@ -1,0 +1,336 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1620 1080" width="1620" height="1080">
+  <defs>
+    <style>
+      
+  @font-face { font-family: 'Geist'; src: url('./Geist-Thin.woff2') format('woff2'); font-weight: 100; font-style: normal; }
+  @font-face { font-family: 'Geist'; src: url('./Geist-ExtraLight.woff2') format('woff2'); font-weight: 200; font-style: normal; }
+  @font-face { font-family: 'Geist'; src: url('./Geist-Light.woff2') format('woff2'); font-weight: 300; font-style: normal; }
+  @font-face { font-family: 'Geist'; src: url('./Geist-Regular.woff2') format('woff2'); font-weight: 400; font-style: normal; }
+  @font-face { font-family: 'Geist'; src: url('./Geist-Medium.woff2') format('woff2'); font-weight: 500; font-style: normal; }
+  @font-face { font-family: 'Geist'; src: url('./Geist-SemiBold.woff2') format('woff2'); font-weight: 600; font-style: normal; }
+  @font-face { font-family: 'Geist Serif'; src: url('./GeistSerif-Regular.woff2') format('woff2'); font-weight: 400; font-style: normal; }
+  @font-face { font-family: 'Geist Mono'; src: url('./GeistMono-Regular.woff2') format('woff2'); font-weight: 400; font-style: normal; }
+  @font-face { font-family: 'Geist Mono'; src: url('./GeistMono-Medium.woff2') format('woff2'); font-weight: 500; font-style: normal; }
+  .f-serif { font-family: 'Geist Serif', Georgia, serif; }
+  .f-sans { font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif; }
+  .f-mono { font-family: 'Geist Mono', monospace; }
+  .t-num { font-variant-numeric: tabular-nums; }
+
+      .tick-cyan { filter: drop-shadow(0 0 5px rgba(56, 196, 216, 0.52)); }
+      .photon-glow { filter: drop-shadow(0 0 9px rgba(92, 225, 230, 0.85)); }
+      .ephem-bezel {
+        filter:
+          drop-shadow(4px 10px 16px rgba(0, 0, 0, 0.72))
+          drop-shadow(16px 32px 54px rgba(0, 0, 0, 0.85));
+      }
+      .ray-orbit {
+        transform-origin: 1226px 508px;
+        animation: ray-swing 8s ease-in-out infinite;
+      }
+      @keyframes ray-swing {
+        0%, 100% { transform: rotate(104deg); }
+        25% { transform: rotate(128deg); }
+        75% { transform: rotate(74deg); }
+      }
+      .moon-light-rig {
+        transform-origin: 1226px 508px;
+        animation: moon-tilt 8s ease-in-out infinite;
+      }
+      @keyframes moon-tilt {
+        0%, 100% { transform: rotate(14deg); }
+        25% { transform: rotate(38deg); }
+        75% { transform: rotate(-16deg); }
+      }
+      .moon-umbra-sweep {
+        animation: umbra-glide 8s ease-in-out infinite;
+        transform-origin: 1226px 508px;
+      }
+      @keyframes umbra-glide {
+        0%, 100% { transform: translateX(0px) scaleX(1); }
+        25% { transform: translateX(-82px) scaleX(0.92); }
+        75% { transform: translateX(84px) scaleX(1.06); }
+      }
+      .moon-rim-sweep {
+        transform-origin: 1226px 508px;
+        animation: rim-pulse 8s ease-in-out infinite;
+      }
+      @keyframes rim-pulse {
+        0%, 100% { opacity: 0.72; transform: scale(1); }
+        25% { opacity: 0.96; transform: scale(1.03); }
+        75% { opacity: 0.48; transform: scale(0.98); }
+      }
+      .moon-librate {
+        animation: moon-lib 8s ease-in-out infinite;
+        transform-origin: 1226px 508px;
+      }
+      @keyframes moon-lib {
+        0%, 100% { transform: translateX(0px) rotate(0deg); }
+        25% { transform: translateX(-12px) rotate(-4deg); }
+        75% { transform: translateX(12px) rotate(4deg); }
+      }
+      .moon-halo-breath {
+        animation: moon-halo 8s ease-in-out infinite;
+      }
+      @keyframes moon-halo {
+        0%, 100% { opacity: 0.42; }
+        25% { opacity: 0.84; }
+        75% { opacity: 0.22; }
+      }
+      .trace-pat {
+        stroke-dasharray: 22 100;
+        stroke-dashoffset: 0;
+        animation: pat-run 8s linear infinite;
+      }
+      @keyframes pat-run {
+        0% { stroke-dashoffset: 0; opacity: 0.9; }
+        86% { stroke-dashoffset: -122; opacity: 0.9; }
+        100% { stroke-dashoffset: -122; opacity: 0; }
+      }
+      .pat-halo { animation: phalo 4s ease-in-out infinite; transform-origin: 794px 650px; }
+      @keyframes phalo { 0%, 100% { transform: scale(1); opacity: 0.34; } 50% { transform: scale(1.75); opacity: 0; } }
+      .ep-tk-7 { animation: ep-tk-k-7 8s ease-in-out infinite; }
+@keyframes ep-tk-k-7 { 0%, 100% { opacity: 1; } 25% { opacity: 1; } 75% { opacity: 0.25; } }
+.ep-tk-8 { animation: ep-tk-k-8 8s ease-in-out infinite; }
+@keyframes ep-tk-k-8 { 0%, 100% { opacity: 1; } 25% { opacity: 1; } 75% { opacity: 0.25; } }
+.ep-tk-9 { animation: ep-tk-k-9 8s ease-in-out infinite; }
+@keyframes ep-tk-k-9 { 0%, 100% { opacity: 1; } 25% { opacity: 1; } 75% { opacity: 0.25; } }
+.ep-tk-10 { animation: ep-tk-k-10 8s ease-in-out infinite; }
+@keyframes ep-tk-k-10 { 0%, 100% { opacity: 1; } 25% { opacity: 1; } 75% { opacity: 0.25; } }
+.ep-tk-11 { animation: ep-tk-k-11 8s ease-in-out infinite; }
+@keyframes ep-tk-k-11 { 0%, 100% { opacity: 1; } 25% { opacity: 1; } 75% { opacity: 0.25; } }
+.ep-tk-12 { animation: ep-tk-k-12 8s ease-in-out infinite; }
+@keyframes ep-tk-k-12 { 0%, 100% { opacity: 1; } 25% { opacity: 1; } 75% { opacity: 0.25; } }
+.ep-tk-13 { animation: ep-tk-k-13 8s ease-in-out infinite; }
+@keyframes ep-tk-k-13 { 0%, 100% { opacity: 0.25; } 25% { opacity: 1; } 75% { opacity: 0.25; } }
+.ep-tk-14 { animation: ep-tk-k-14 8s ease-in-out infinite; }
+@keyframes ep-tk-k-14 { 0%, 100% { opacity: 0.25; } 25% { opacity: 1; } 75% { opacity: 0.25; } }
+.ep-tk-15 { animation: ep-tk-k-15 8s ease-in-out infinite; }
+@keyframes ep-tk-k-15 { 0%, 100% { opacity: 0.25; } 25% { opacity: 1; } 75% { opacity: 0.25; } }
+.ep-tk-16 { animation: ep-tk-k-16 8s ease-in-out infinite; }
+@keyframes ep-tk-k-16 { 0%, 100% { opacity: 0.25; } 25% { opacity: 1; } 75% { opacity: 0.25; } }
+.ep-tk-17 { animation: ep-tk-k-17 8s ease-in-out infinite; }
+@keyframes ep-tk-k-17 { 0%, 100% { opacity: 0.25; } 25% { opacity: 1; } 75% { opacity: 0.25; } }
+.ep-tk-18 { animation: ep-tk-k-18 8s ease-in-out infinite; }
+@keyframes ep-tk-k-18 { 0%, 100% { opacity: 0.25; } 25% { opacity: 1; } 75% { opacity: 0.25; } }
+
+    </style>
+    <radialGradient id="cosmos-bg-6" cx="76%" cy="48%" r="54%">
+      <stop offset="0%" stop-color="#0E5661" stop-opacity="0.24"/>
+      <stop offset="60%" stop-color="#072227" stop-opacity="0.06"/>
+      <stop offset="100%" stop-color="#06090A" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="moon-corona-6" cx="50%" cy="50%" r="50%">
+      <stop offset="68%" stop-color="#38C4D8" stop-opacity="0.28"/>
+      <stop offset="86%" stop-color="#1E6B75" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#06090A" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="lunar-night-matte" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#111619"/>
+      <stop offset="100%" stop-color="#070A0C"/>
+    </linearGradient>
+    <linearGradient id="lunar-lit-matte" x1="0.1" y1="0.2" x2="0.95" y2="0.7">
+      <stop offset="0%" stop-color="#225560"/>
+      <stop offset="48%" stop-color="#5FA8B2"/>
+      <stop offset="100%" stop-color="#DCEEF0"/>
+    </linearGradient>
+    <radialGradient id="lunar-limb-shadow" cx="62%" cy="48%" r="54%">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="76%" stop-color="#000000" stop-opacity="0.14"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.62"/>
+    </radialGradient>
+    <linearGradient id="patriots-fill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2A93A1" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#06090A" stop-opacity="0"/>
+    </linearGradient>
+    <clipPath id="moon-clip-6">
+      <circle cx="1226" cy="508" r="142"/>
+    </clipPath>
+    
+    <filter id="paper-dark-6" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.76" numOctaves="3" seed="17" stitchTiles="stitch" result="grain"/>
+      <feColorMatrix type="matrix" in="grain"
+        values="0 0 0 0 0.93
+                0 0 0 0 0.92
+                0 0 0 0 0.9
+                0 0 0 0.055 0"/>
+    </filter>
+    <filter id="paper-dark-6-fiber" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.08 0.22" numOctaves="2" seed="42" stitchTiles="stitch" result="cloud"/>
+      <feColorMatrix type="matrix" in="cloud"
+        values="0 0 0 0 0.85
+                0 0 0 0 0.9
+                0 0 0 0 0.92
+                0 0 0 0.040 0"/>
+    </filter>
+    <pattern id="paper-dark-6-mesh" width="150" height="150" patternUnits="userSpaceOnUse">
+      <circle cx="24" cy="36" r="0.7" fill="#EDEBE6" fill-opacity="0.036"/>
+      <circle cx="118" cy="92" r="0.6" fill="#EDEBE6" fill-opacity="0.030"/>
+      <path d="M52 14q8 3 16 1" stroke="#EDEBE6" stroke-opacity="0.019" stroke-width="0.6" fill="none"/>
+      <path d="M128 134q-6 4 -12 2" stroke="#EDEBE6" stroke-opacity="0.019" stroke-width="0.6" fill="none"/>
+    </pattern>
+    
+    <filter id="moon-regolith-grain" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.76" numOctaves="3" seed="17" stitchTiles="stitch" result="grain"/>
+      <feColorMatrix type="matrix" in="grain"
+        values="0 0 0 0 0.93
+                0 0 0 0 0.92
+                0 0 0 0 0.9
+                0 0 0 0.09 0"/>
+    </filter>
+    <filter id="moon-regolith-grain-fiber" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.08 0.22" numOctaves="2" seed="42" stitchTiles="stitch" result="cloud"/>
+      <feColorMatrix type="matrix" in="cloud"
+        values="0 0 0 0 0.85
+                0 0 0 0 0.9
+                0 0 0 0 0.92
+                0 0 0 0.065 0"/>
+    </filter>
+    <pattern id="moon-regolith-grain-mesh" width="150" height="150" patternUnits="userSpaceOnUse">
+      <circle cx="24" cy="36" r="0.7" fill="#EDEBE6" fill-opacity="0.058"/>
+      <circle cx="118" cy="92" r="0.6" fill="#EDEBE6" fill-opacity="0.050"/>
+      <path d="M52 14q8 3 16 1" stroke="#EDEBE6" stroke-opacity="0.032" stroke-width="0.6" fill="none"/>
+      <path d="M128 134q-6 4 -12 2" stroke="#EDEBE6" stroke-opacity="0.032" stroke-width="0.6" fill="none"/>
+    </pattern>
+  </defs>
+
+  <rect width="1620" height="1080" fill="#06090A"/>
+  <rect width="1620" height="1080" fill="url(#cosmos-bg-6)"/>
+  <g pointer-events="none">
+    <rect x="-20" y="-20" width="1660" height="1120" filter="url(#paper-dark-6-fiber)"/>
+    <rect x="-20" y="-20" width="1660" height="1120" filter="url(#paper-dark-6)"/>
+    <rect width="1620" height="1080" fill="url(#paper-dark-6-mesh)"/>
+  </g>
+
+  <g>
+    <text x="96" y="102" class="f-mono" font-size="13.5" fill="#38C4D8" letter-spacing="0.18em">NEW ENGLAND PATRIOTS  ·  10 DAYS</text>
+    <text x="96" y="236" class="f-serif" font-size="82" font-weight="400" fill="#EDEBE6" letter-spacing="-0.03em">
+      <tspan x="96" dy="0">Patriots fans soured</tspan>
+      <tspan x="96" dy="88">before kickoff.</tspan>
+    </text>
+
+    <g>
+      <path id="pat-area" d="M 96 514 L 186 504 L 276 498 L 366 534 L 456 558 L 546 616 L 636 616 L 720 652 L 794 650 L 794 824 L 96 824 Z" fill="url(#patriots-fill)"/>
+      <path id="pat-line" d="M 96 514 L 186 504 L 276 498 L 366 534 L 456 558 L 546 616 L 636 616 L 720 652 L 794 650" fill="none" stroke="#38C4D8" stroke-width="4" stroke-linejoin="round" stroke-linecap="round" class="tick-cyan"/>
+      <path id="pat-trace" d="M 96 514 L 186 504 L 276 498 L 366 534 L 456 558 L 546 616 L 636 616 L 720 652 L 794 650" pathLength="100" fill="none" stroke="#B6FCFF" stroke-width="4.5" stroke-linecap="round" class="trace-pat"/>
+      <line x1="96" y1="824" x2="794" y2="824" stroke="#EDEBE6" stroke-opacity="0.2" stroke-width="1.2"/>
+
+      <g id="pat-oval" transform="translate(708 608)">
+        <ellipse cx="0" cy="0" rx="88" ry="40" fill="none" stroke="#38C4D8" stroke-width="2.2" class="tick-cyan" transform="rotate(-4)"/>
+        <ellipse cx="1" cy="1" rx="83" ry="35" fill="none" stroke="#7BF0FA" stroke-opacity="0.45" stroke-width="1" transform="rotate(2)"/>
+        <text id="pat-num" x="0" y="16" text-anchor="middle" class="f-sans t-num" font-size="48" font-weight="200" fill="#8BF3FF" letter-spacing="-0.02em">48%</text>
+      </g>
+      <circle id="pat-halo" cx="794" cy="650" r="14" fill="#38C4D8" class="pat-halo"/>
+      <circle id="pat-dot" cx="794" cy="650" r="8" fill="#5CE1E6" class="photon-glow"/>
+
+      <text x="96" y="864" class="f-mono t-num" font-size="14" fill="#8299A0">Nov 6</text>
+      <text x="794" y="864" text-anchor="end" class="f-mono t-num" font-size="14" fill="#EDEBE6">Nov 15</text>
+    </g>
+  </g>
+
+  <g>
+    <g class="ephem-bezel">
+      <circle cx="1226" cy="508" r="264" fill="#0B1012" stroke="#1E2C30" stroke-width="1.2"/>
+      <circle cx="1226" cy="508" r="228" fill="#050708" stroke="#000000" stroke-width="2"/>
+      <circle cx="1226" cy="508" r="172" fill="#0C1114" stroke="#1A262A" stroke-width="1"/>
+      <circle cx="1226" cy="508" r="149" fill="#040607"/>
+    </g>
+
+    <path d="M0 -228v-20" stroke="#2A93A1" stroke-opacity="1" stroke-width="3" stroke-linecap="round" transform="translate(1226 508) rotate(0.0)" class="tick-cyan"/><path d="M0 -220v-12" stroke="#2A93A1" stroke-opacity="1" stroke-width="1.8" stroke-linecap="round" transform="translate(1226 508) rotate(12.9)" class="tick-cyan"/><path d="M0 -220v-12" stroke="#2A93A1" stroke-opacity="1" stroke-width="1.8" stroke-linecap="round" transform="translate(1226 508) rotate(25.7)" class="tick-cyan"/><path d="M0 -220v-12" stroke="#2A93A1" stroke-opacity="1" stroke-width="1.8" stroke-linecap="round" transform="translate(1226 508) rotate(38.6)" class="tick-cyan"/><path d="M0 -220v-12" stroke="#2A93A1" stroke-opacity="1" stroke-width="1.8" stroke-linecap="round" transform="translate(1226 508) rotate(51.4)" class="tick-cyan"/><path d="M0 -220v-12" stroke="#2A93A1" stroke-opacity="1" stroke-width="1.8" stroke-linecap="round" transform="translate(1226 508) rotate(64.3)" class="tick-cyan"/><path d="M0 -220v-12" stroke="#2A93A1" stroke-opacity="1" stroke-width="1.8" stroke-linecap="round" transform="translate(1226 508) rotate(77.1)" class="tick-cyan"/><path d="M0 -228v-20" stroke="#2A93A1" stroke-opacity="1" stroke-width="3" stroke-linecap="round" transform="translate(1226 508) rotate(90.0)" class="tick-cyan ep-tk-7"/><path d="M0 -220v-12" stroke="#2A93A1" stroke-opacity="1" stroke-width="1.8" stroke-linecap="round" transform="translate(1226 508) rotate(102.9)" class="tick-cyan ep-tk-8"/><path d="M0 -220v-12" stroke="#8DF4FF" stroke-opacity="1" stroke-width="1.8" stroke-linecap="round" transform="translate(1226 508) rotate(115.7)" class="tick-cyan ep-tk-9"/><path d="M0 -220v-12" stroke="#8DF4FF" stroke-opacity="1" stroke-width="1.8" stroke-linecap="round" transform="translate(1226 508) rotate(128.6)" class="tick-cyan ep-tk-10"/><path d="M0 -220v-12" stroke="#8DF4FF" stroke-opacity="1" stroke-width="1.8" stroke-linecap="round" transform="translate(1226 508) rotate(141.4)" class="tick-cyan ep-tk-11"/><path d="M0 -220v-12" stroke="#8DF4FF" stroke-opacity="1" stroke-width="1.8" stroke-linecap="round" transform="translate(1226 508) rotate(154.3)" class="tick-cyan ep-tk-12"/><path d="M0 -220v-12" stroke="#4ABBD0" stroke-opacity="1" stroke-width="1.8" stroke-linecap="round" transform="translate(1226 508) rotate(167.1)" class="ep-tk-13"/><path d="M0 -228v-20" stroke="#4ABBD0" stroke-opacity="1" stroke-width="3" stroke-linecap="round" transform="translate(1226 508) rotate(180.0)" class="ep-tk-14"/><path d="M0 -220v-12" stroke="#4ABBD0" stroke-opacity="1" stroke-width="1.8" stroke-linecap="round" transform="translate(1226 508) rotate(192.9)" class="ep-tk-15"/><path d="M0 -220v-12" stroke="#4ABBD0" stroke-opacity="1" stroke-width="1.8" stroke-linecap="round" transform="translate(1226 508) rotate(205.7)" class="ep-tk-16"/><path d="M0 -220v-12" stroke="#4ABBD0" stroke-opacity="1" stroke-width="1.8" stroke-linecap="round" transform="translate(1226 508) rotate(218.6)" class="ep-tk-17"/><path d="M0 -220v-12" stroke="#4ABBD0" stroke-opacity="1" stroke-width="1.8" stroke-linecap="round" transform="translate(1226 508) rotate(231.4)" class="ep-tk-18"/><path d="M0 -220v-12" stroke="#18272B" stroke-opacity="0.6" stroke-width="1.8" stroke-linecap="round" transform="translate(1226 508) rotate(244.3)" class=""/><path d="M0 -220v-12" stroke="#18272B" stroke-opacity="0.6" stroke-width="1.8" stroke-linecap="round" transform="translate(1226 508) rotate(257.1)" class=""/><path d="M0 -228v-20" stroke="#18272B" stroke-opacity="0.6" stroke-width="3" stroke-linecap="round" transform="translate(1226 508) rotate(270.0)" class=""/><path d="M0 -220v-12" stroke="#18272B" stroke-opacity="0.6" stroke-width="1.8" stroke-linecap="round" transform="translate(1226 508) rotate(282.9)" class=""/><path d="M0 -220v-12" stroke="#18272B" stroke-opacity="0.6" stroke-width="1.8" stroke-linecap="round" transform="translate(1226 508) rotate(295.7)" class=""/><path d="M0 -220v-12" stroke="#18272B" stroke-opacity="0.6" stroke-width="1.8" stroke-linecap="round" transform="translate(1226 508) rotate(308.6)" class=""/><path d="M0 -220v-12" stroke="#18272B" stroke-opacity="0.6" stroke-width="1.8" stroke-linecap="round" transform="translate(1226 508) rotate(321.4)" class=""/><path d="M0 -220v-12" stroke="#18272B" stroke-opacity="0.6" stroke-width="1.8" stroke-linecap="round" transform="translate(1226 508) rotate(334.3)" class=""/><path d="M0 -220v-12" stroke="#18272B" stroke-opacity="0.6" stroke-width="1.8" stroke-linecap="round" transform="translate(1226 508) rotate(347.1)" class=""/>
+
+    <g class="ray-orbit">
+      <line x1="1226" y1="302" x2="1226" y2="358" stroke="#38C4D8" stroke-opacity="0.55" stroke-width="1.4"/>
+      <circle cx="1226" cy="298" r="6" fill="#7BF0FA" class="photon-glow"/>
+    </g>
+
+    <circle cx="1226" cy="508" r="166" fill="url(#moon-corona-6)" class="moon-halo-breath"/>
+
+    <g clip-path="url(#moon-clip-6)">
+      <circle cx="1226" cy="508" r="142" fill="url(#lunar-night-matte)"/>
+      <g class="moon-light-rig">
+        <circle cx="1234" cy="508" r="148" fill="#2F6B76" opacity="0.52" style="filter: blur(20px)"/>
+        <circle cx="1230" cy="508" r="144" fill="url(#lunar-lit-matte)" opacity="0.92"/>
+        <circle cx="1244" cy="508" r="130" fill="#DDF3F6" opacity="0.28" class="moon-rim-sweep" style="filter: blur(18px)"/>
+        <g class="moon-umbra-sweep">
+          <ellipse cx="1095.36" cy="508" rx="139.2" ry="181.8" fill="#090D10" opacity="0.72" style="filter: blur(24px)"/>
+          <ellipse cx="1095.36" cy="508" rx="134.9" ry="176.1" fill="url(#lunar-night-matte)" style="filter: blur(11px)"/>
+        </g>
+      </g>
+      <g class="moon-librate" opacity="0.14" style="mix-blend-mode: multiply;">
+        <ellipse cx="1250" cy="476" rx="68" ry="44" fill="#0B2328" transform="rotate(-18 1250 476)" style="filter: blur(18px)"/>
+        <ellipse cx="1284" cy="526" rx="52" ry="62" fill="#0C2A30" transform="rotate(14 1284 526)" style="filter: blur(20px)"/>
+        <ellipse cx="1204" cy="538" rx="64" ry="38" fill="#091D22" transform="rotate(24 1204 538)" style="filter: blur(18px)"/>
+      </g>
+      <rect x="1074" y="356" width="304" height="304" filter="url(#moon-regolith-grain)" opacity="0.72"/>
+      <circle cx="1226" cy="508" r="142" fill="url(#lunar-limb-shadow)"/>
+    </g>
+    <circle cx="1226" cy="508" r="142" fill="none" stroke="#EDEBE6" stroke-opacity="0.09" stroke-width="1"/>
+
+    <text id="moon-lit-readout" x="1226" y="838" text-anchor="middle" class="f-mono t-num" font-size="12.5" fill="#7D969D" letter-spacing="0.16em">48% LIT  ·  GALAXY SCORE™  ·  ALTRANK™</text>
+  </g>
+
+  <g>
+    <g transform="translate(96 968) scale(0.25)">
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M31.2726 81.3604C31.2726 61.9026 47.217 46.1642 66.8416 46.1642C86.466 46.1644 102.411 61.9027 102.411 81.3604C102.41 100.514 86.9603 116.064 67.7586 116.545L66.8416 116.557C47.217 116.557 31.2727 100.818 31.2726 81.3604ZM95.127 80.6407C94.7469 65.8038 82.6461 53.7966 67.5726 53.4193L66.8416 53.41C51.1854 53.41 38.5468 65.9533 38.5468 81.3604L38.5552 82.0802C38.9416 97.1562 51.43 109.311 66.8416 109.311C82.4975 109.311 95.1363 96.7673 95.1364 81.3604L95.127 80.6407Z" fill="#EDEBE6"/>
+    <path d="M67.002 0C104.005 6.13987e-05 134.002 29.997 134.002 67C134.002 80.4414 130.044 92.9584 123.23 103.449C142.051 66.8016 104.532 26.9862 67.002 26.9861C29.4722 26.9861 -8.0472 66.8016 10.7742 103.449C3.95994 92.9584 0.00195312 80.4414 0.00195312 67C0.00195312 29.9969 29.9989 0 67.002 0ZM67.002 7.44444C40.3445 7.44444 17.7777 24.9586 10.1808 49.1077C10.7575 48.3265 11.3517 47.558 11.961 46.8022C24.9325 30.7133 45.7421 19.5417 67.002 19.5417C88.2618 19.5417 109.071 30.7133 122.043 46.8022C122.652 47.5579 123.246 48.3267 123.822 49.1077C116.225 24.9588 93.6592 7.44449 67.002 7.44444Z" fill="#EDEBE6"/>
+    <path d="M314.746 56.8876C326.043 56.8876 331.568 62.264 331.568 71.6934V98.2447H323.075V93.1992H322.663C320.271 97.0867 315.653 99.2373 309.799 99.2373C300.975 99.2373 296.192 94.688 296.192 87.9054C296.192 81.1229 300.151 77.1526 309.634 75.581L317.467 74.2576C321.426 73.5959 322.663 73.0996 322.663 71.528C322.663 66.6479 320.271 63.5874 314.746 63.5874C309.386 63.5874 306.583 66.4824 306.253 70.7009H297.759C298.254 62.3467 304.686 56.8876 314.746 56.8876ZM222.671 57.4393V80.7876C222.671 88.8187 226.144 91.5509 231.271 91.5509C236.977 91.5509 241.112 86.666 241.112 78.3037V57.4393H250.043V97.8434H241.525V91.9649H241.195C238.879 96.5186 234.744 98.8369 228.956 98.8369C220.852 98.8369 213.741 94.5316 213.741 81.9467V57.4393H222.671ZM392.288 39.8867C405.932 39.8867 414.698 47.5867 416.93 59.2608H407.421C405.436 52.0576 400.392 48.1663 392.288 48.1663C381.207 48.1663 374.013 56.8598 374.013 69.3618C374.013 81.6155 381.29 90.5574 392.04 90.5574C400.805 90.5574 405.436 86.666 407.421 79.4628H416.93C414.698 91.137 405.684 98.8369 391.957 98.8369C375.253 98.8369 364.338 86.5004 364.338 69.3618C364.338 52.4716 375.501 39.8867 392.288 39.8867ZM460.719 57.4393V80.7876C460.719 88.8187 464.192 91.5509 469.319 91.5509C475.025 91.5509 479.159 86.666 479.159 78.3037V57.4393H488.09V97.8434H479.573V91.9649H479.242C476.927 96.5186 472.792 98.8369 467.003 98.8369C458.9 98.8369 451.788 94.5316 451.788 81.9467V57.4393H460.719ZM510.811 56.4458C520.156 56.4458 527.515 60.2544 527.515 68.6995H519.163C519.163 64.7253 515.607 62.7382 510.811 62.7382C506.098 62.7382 502.542 64.7253 502.542 68.2855C502.542 71.0177 504.444 72.4252 509.24 73.2532L516.682 74.4951C523.05 75.5715 528.59 78.0553 528.59 85.5897C528.59 94.4488 521.148 98.8369 510.398 98.8369C500.309 98.8369 492.95 94.6971 492.95 86.252H501.467C501.467 90.723 506.015 92.5445 510.398 92.5445C516.6 92.5445 519.659 90.3918 519.659 86.666C519.659 83.6854 517.592 82.4435 513.54 81.7811L506.098 80.4564C499.896 79.4628 493.942 76.979 493.942 69.3618C493.942 61.0823 501.302 56.4458 510.811 56.4458ZM181.344 40.8803V89.8122H208.881V97.8434H172V40.8803H181.344ZM276.32 56.4458C284.341 56.4458 291.452 60.7511 291.452 73.336V97.8434H282.522V74.4951C282.522 66.464 279.131 63.7318 273.922 63.7318C268.216 63.7318 263.833 68.6167 263.833 76.7306V97.8434H254.902V57.4393H263.502V63.3178H263.833C266.148 58.764 270.448 56.4458 276.32 56.4458ZM356.162 56.4458C357.816 56.4458 359.718 56.6942 361.785 58.1017L359.47 66.05C357.651 65.1393 356.079 64.7253 354.508 64.7253C348.472 64.7253 345.577 70.6038 345.577 77.6413V97.8434H336.647V57.4393H345.247V63.3178H345.495C347.479 59.0124 351.035 56.4458 356.162 56.4458ZM441.305 56.4458C442.959 56.4458 444.861 56.6942 446.928 58.1017L444.613 66.05C442.794 65.1393 441.223 64.7253 439.651 64.7253C433.615 64.7253 430.721 70.6038 430.721 77.6413V97.8434H421.79V57.4393H430.39V63.3178H430.638C432.623 59.0124 436.178 56.4458 441.305 56.4458ZM542.381 37.2373L542.381 49.955L542.38 50.9226C542.375 53.8899 542.338 58.6982 542.05 63.3178H542.381C544.696 58.764 548.996 56.4458 554.867 56.4458C562.888 56.4458 570 60.7511 570 73.336V97.8434H561.069V74.4951C561.069 66.464 557.679 63.7318 552.469 63.7318C546.681 63.7318 542.381 68.8651 542.381 76.8134V97.8434H533.45V37.2373H542.381ZM323.109 77.6774C322.278 78.6749 320.867 79.2568 318.957 79.5893L311.981 80.753C307.248 81.5012 305.421 83.5793 305.421 86.738C305.421 90.063 307.746 92.3074 312.313 92.3074C318.043 92.3074 323.109 88.733 323.109 81.418V77.6774Z" fill="#EDEBE6"/>
+  </g>
+    <text x="1524" y="992" text-anchor="end" class="f-mono" font-size="13.5" fill="#8299A0" letter-spacing="0.14em">LUNARCRUSH DATA  ·  NOV 15, 2026</text>
+  </g>
+
+  <script><![CDATA[
+    (function () {
+      var DUR = 8000;
+      
+    var readout = document.getElementById('moon-lit-readout');
+    var pLine = document.getElementById('pat-line');
+    var pTrace = document.getElementById('pat-trace');
+    var pArea = document.getElementById('pat-area');
+    var pOval = document.getElementById('pat-oval');
+    var pNum = document.getElementById('pat-num');
+    var pDot = document.getElementById('pat-dot');
+    var pHalo = document.getElementById('pat-halo');
+    var pPts = [[96,514],[186,504],[276,498],[366,534],[456,558],[546,616],[636,616],[720,652],[794,650]];
+    function renderAt(p) {
+      var s = Math.sin(2 * Math.PI * p);
+      if (readout) {
+        var k = 0.48 + 0.29 * s;
+        readout.textContent = Math.round(k * 100) + '% LIT  ·  GALAXY SCORE™  ·  ALTRANK™';
+      }
+      var pts = pPts.map(function (pt, idx) {
+        var w = Math.max(0, (idx - 2) / 6);
+        var dy = -34 * s * w;
+        return [pt[0], Number((pt[1] + dy).toFixed(1))];
+      });
+      var d = pts.map(function (pt, idx) { return (idx === 0 ? 'M ' : 'L ') + pt[0] + ' ' + pt[1]; }).join(' ');
+      var a = d + ' L 794 824 L 96 824 Z';
+      if (pLine) pLine.setAttribute('d', d);
+      if (pTrace) pTrace.setAttribute('d', d);
+      if (pArea) pArea.setAttribute('d', a);
+      var endPt = pts[pts.length - 1];
+      if (pDot) pDot.setAttribute('cy', endPt[1]);
+      if (pHalo) {
+        pHalo.setAttribute('cy', endPt[1]);
+        pHalo.style.transformOrigin = endPt[0] + 'px ' + endPt[1] + 'px';
+      }
+      if (pOval) pOval.setAttribute('transform', 'translate(708 ' + (608 + (endPt[1] - 650)).toFixed(1) + ')');
+      if (pNum) pNum.textContent = Math.round(48 + 9 * s) + '%';
+    }
+  
+      var manual = false;
+      window.__seekSvgTime = function (tMs) {
+        manual = true;
+        renderAt((((tMs / DUR) % 1) + 1) % 1);
+      };
+      renderAt(0);
+      if (typeof requestAnimationFrame === 'function') {
+        var t0 = performance.now();
+        function loop(now) {
+          if (manual) return;
+          renderAt(((now - t0) % DUR) / DUR);
+          requestAnimationFrame(loop);
+        }
+        requestAnimationFrame(loop);
+      }
+    })();
+  ]]></script>
+</svg>

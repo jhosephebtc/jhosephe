@@ -1,0 +1,172 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1620 1080" width="1620" height="1080">
+  <defs>
+    <style>
+      
+  @font-face { font-family: 'Geist'; src: url('./Geist-Thin.woff2') format('woff2'); font-weight: 100; font-style: normal; }
+  @font-face { font-family: 'Geist'; src: url('./Geist-ExtraLight.woff2') format('woff2'); font-weight: 200; font-style: normal; }
+  @font-face { font-family: 'Geist'; src: url('./Geist-Light.woff2') format('woff2'); font-weight: 300; font-style: normal; }
+  @font-face { font-family: 'Geist'; src: url('./Geist-Regular.woff2') format('woff2'); font-weight: 400; font-style: normal; }
+  @font-face { font-family: 'Geist'; src: url('./Geist-Medium.woff2') format('woff2'); font-weight: 500; font-style: normal; }
+  @font-face { font-family: 'Geist'; src: url('./Geist-SemiBold.woff2') format('woff2'); font-weight: 600; font-style: normal; }
+  @font-face { font-family: 'Geist Serif'; src: url('./GeistSerif-Regular.woff2') format('woff2'); font-weight: 400; font-style: normal; }
+  @font-face { font-family: 'Geist Mono'; src: url('./GeistMono-Regular.woff2') format('woff2'); font-weight: 400; font-style: normal; }
+  @font-face { font-family: 'Geist Mono'; src: url('./GeistMono-Medium.woff2') format('woff2'); font-weight: 500; font-style: normal; }
+  .f-serif { font-family: 'Geist Serif', Georgia, serif; }
+  .f-sans { font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif; }
+  .f-mono { font-family: 'Geist Mono', monospace; }
+  .t-num { font-variant-numeric: tabular-nums; }
+
+      .trace-sweep {
+        stroke-dasharray: 22 100;
+        stroke-dashoffset: 0;
+        animation: comet-run 8s linear infinite;
+      }
+      @keyframes comet-run {
+        0% { stroke-dashoffset: 0; opacity: 0.9; }
+        85% { stroke-dashoffset: -122; opacity: 0.9; }
+        100% { stroke-dashoffset: -122; opacity: 0; }
+      }
+      .oval-draw {
+        stroke-dasharray: 100;
+        stroke-dashoffset: 0;
+        animation: oval-pulse 8s ease-in-out infinite;
+      }
+      @keyframes oval-pulse {
+        0%, 100% { stroke-dashoffset: 0; opacity: 1; }
+        18% { stroke-dashoffset: 18; opacity: 0.65; }
+        42% { stroke-dashoffset: 0; opacity: 1; }
+      }
+      .end-beacon { animation: beacon-ring 4s ease-in-out infinite; transform-origin: 1524px 422px; }
+      @keyframes beacon-ring {
+        0%, 100% { transform: scale(1); opacity: 0.36; }
+        50% { transform: scale(1.75); opacity: 0; }
+      }
+    </style>
+    <linearGradient id="cream-sage-fill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0E5661" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="#0E5661" stop-opacity="0.06"/>
+    </linearGradient>
+    
+    <filter id="paper-cream-2" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.76" numOctaves="3" seed="17" stitchTiles="stitch" result="grain"/>
+      <feColorMatrix type="matrix" in="grain"
+        values="0 0 0 0 0.22
+                0 0 0 0 0.2
+                0 0 0 0 0.16
+                0 0 0 0.055 0"/>
+    </filter>
+    <filter id="paper-cream-2-fiber" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.08 0.22" numOctaves="2" seed="42" stitchTiles="stitch" result="cloud"/>
+      <feColorMatrix type="matrix" in="cloud"
+        values="0 0 0 0 0.24
+                0 0 0 0 0.22
+                0 0 0 0 0.18
+                0 0 0 0.040 0"/>
+    </filter>
+    <pattern id="paper-cream-2-mesh" width="150" height="150" patternUnits="userSpaceOnUse">
+      <circle cx="24" cy="36" r="0.7" fill="#363228" fill-opacity="0.036"/>
+      <circle cx="118" cy="92" r="0.6" fill="#363228" fill-opacity="0.030"/>
+      <path d="M52 14q8 3 16 1" stroke="#363228" stroke-opacity="0.019" stroke-width="0.6" fill="none"/>
+      <path d="M128 134q-6 4 -12 2" stroke="#363228" stroke-opacity="0.019" stroke-width="0.6" fill="none"/>
+    </pattern>
+  </defs>
+
+  <rect width="1620" height="1080" fill="#EDEBE6"/>
+  <g pointer-events="none">
+    <rect x="-20" y="-20" width="1660" height="1120" filter="url(#paper-cream-2-fiber)"/>
+    <rect x="-20" y="-20" width="1660" height="1120" filter="url(#paper-cream-2)"/>
+    <rect width="1620" height="1080" fill="url(#paper-cream-2-mesh)"/>
+  </g>
+
+  <g>
+    <text x="96" y="102" class="f-mono" font-size="14" font-weight="500" fill="#0E5661" letter-spacing="0.2em">ERLING HAALAND  ·  SENTIMENT</text>
+    <text x="96" y="246" class="f-serif" font-size="86" font-weight="400" fill="#0E5661" letter-spacing="-0.03em">
+      <tspan x="96" dy="0">Eight straight days</tspan>
+      <tspan x="96" dy="92">in the 90s.</tspan>
+    </text>
+    <text x="96" y="424" class="f-sans" font-size="23" font-weight="300" fill="#2A7A86">
+      Rolling positive sentiment streak tracked across 6 networks.
+    </text>
+  </g>
+
+  <g>
+    <path id="hl-area" d="M 816 560 L 860 412 L 906 514 L 952 456 L 1002 488 L 1048 526 L 1096 468 L 1144 424 L 1192 466 L 1240 456 L 1288 438 L 1336 404 L 1382 378 L 1428 368 L 1474 396 L 1500 384 L 1524 422 L 1524 740 L 816 740 Z" fill="url(#cream-sage-fill)"/>
+    <path id="hl-line" d="M 816 560 L 860 412 L 906 514 L 952 456 L 1002 488 L 1048 526 L 1096 468 L 1144 424 L 1192 466 L 1240 456 L 1288 438 L 1336 404 L 1382 378 L 1428 368 L 1474 396 L 1500 384 L 1524 422" fill="none" stroke="#0E5661" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+    <path id="hl-trace" d="M 816 560 L 860 412 L 906 514 L 952 456 L 1002 488 L 1048 526 L 1096 468 L 1144 424 L 1192 466 L 1240 456 L 1288 438 L 1336 404 L 1382 378 L 1428 368 L 1474 396 L 1500 384 L 1524 422" pathLength="100" fill="none" stroke="#38C4D8" stroke-width="4.5" stroke-linejoin="round" stroke-linecap="round" class="trace-sweep"/>
+    <line x1="816" y1="740" x2="1524" y2="740" stroke="#0E5661" stroke-opacity="0.32" stroke-width="1.2"/>
+    <line x1="816.0" y1="748" x2="816.0" y2="759" stroke="#0E5661" stroke-opacity="0.55" stroke-width="1.2"/><line x1="845.5" y1="748" x2="845.5" y2="753.5" stroke="#0E5661" stroke-opacity="0.25" stroke-width="1.2"/><line x1="875.0" y1="748" x2="875.0" y2="753.5" stroke="#0E5661" stroke-opacity="0.25" stroke-width="1.2"/><line x1="904.5" y1="748" x2="904.5" y2="753.5" stroke="#0E5661" stroke-opacity="0.25" stroke-width="1.2"/><line x1="934.0" y1="748" x2="934.0" y2="759" stroke="#0E5661" stroke-opacity="0.55" stroke-width="1.2"/><line x1="963.5" y1="748" x2="963.5" y2="753.5" stroke="#0E5661" stroke-opacity="0.25" stroke-width="1.2"/><line x1="993.0" y1="748" x2="993.0" y2="753.5" stroke="#0E5661" stroke-opacity="0.25" stroke-width="1.2"/><line x1="1022.5" y1="748" x2="1022.5" y2="753.5" stroke="#0E5661" stroke-opacity="0.25" stroke-width="1.2"/><line x1="1052.0" y1="748" x2="1052.0" y2="759" stroke="#0E5661" stroke-opacity="0.55" stroke-width="1.2"/><line x1="1081.5" y1="748" x2="1081.5" y2="753.5" stroke="#0E5661" stroke-opacity="0.25" stroke-width="1.2"/><line x1="1111.0" y1="748" x2="1111.0" y2="753.5" stroke="#0E5661" stroke-opacity="0.25" stroke-width="1.2"/><line x1="1140.5" y1="748" x2="1140.5" y2="753.5" stroke="#0E5661" stroke-opacity="0.25" stroke-width="1.2"/><line x1="1170.0" y1="748" x2="1170.0" y2="759" stroke="#0E5661" stroke-opacity="0.55" stroke-width="1.2"/><line x1="1199.5" y1="748" x2="1199.5" y2="753.5" stroke="#0E5661" stroke-opacity="0.25" stroke-width="1.2"/><line x1="1229.0" y1="748" x2="1229.0" y2="753.5" stroke="#0E5661" stroke-opacity="0.25" stroke-width="1.2"/><line x1="1258.5" y1="748" x2="1258.5" y2="753.5" stroke="#0E5661" stroke-opacity="0.25" stroke-width="1.2"/><line x1="1288.0" y1="748" x2="1288.0" y2="759" stroke="#0E5661" stroke-opacity="0.55" stroke-width="1.2"/><line x1="1317.5" y1="748" x2="1317.5" y2="753.5" stroke="#0E5661" stroke-opacity="0.25" stroke-width="1.2"/><line x1="1347.0" y1="748" x2="1347.0" y2="753.5" stroke="#0E5661" stroke-opacity="0.25" stroke-width="1.2"/><line x1="1376.5" y1="748" x2="1376.5" y2="753.5" stroke="#0E5661" stroke-opacity="0.25" stroke-width="1.2"/><line x1="1406.0" y1="748" x2="1406.0" y2="759" stroke="#0E5661" stroke-opacity="0.55" stroke-width="1.2"/><line x1="1435.5" y1="748" x2="1435.5" y2="753.5" stroke="#0E5661" stroke-opacity="0.25" stroke-width="1.2"/><line x1="1465.0" y1="748" x2="1465.0" y2="753.5" stroke="#0E5661" stroke-opacity="0.25" stroke-width="1.2"/><line x1="1494.5" y1="748" x2="1494.5" y2="753.5" stroke="#0E5661" stroke-opacity="0.25" stroke-width="1.2"/><line x1="1524.0" y1="748" x2="1524.0" y2="759" stroke="#0E5661" stroke-opacity="0.55" stroke-width="1.2"/>
+
+    <g id="hl-oval" transform="translate(1432 308)">
+      <ellipse cx="0" cy="0" rx="88" ry="42" pathLength="100" fill="#EDEBE6" fill-opacity="0.72" stroke="#0E5661" stroke-width="2.6" transform="rotate(-4)" class="oval-draw"/>
+      <ellipse cx="2" cy="1" rx="84" ry="37" fill="none" stroke="#2A93A1" stroke-opacity="0.55" stroke-width="1.2" transform="rotate(2)"/>
+      <text id="hl-num" x="0" y="15" text-anchor="middle" class="f-sans t-num" font-size="48" font-weight="200" fill="#0E5661" letter-spacing="-0.02em">90%</text>
+    </g>
+    <circle id="hl-halo" cx="1524" cy="422" r="14" fill="#2A93A1" class="end-beacon"/>
+    <circle id="hl-dot" cx="1524" cy="422" r="7.5" fill="#0E5661"/>
+
+    <text x="816" y="794" class="f-mono t-num" font-size="14" fill="#0E5661" letter-spacing="0.06em">Oct 28</text>
+    <text x="1524" y="794" text-anchor="end" class="f-mono t-num" font-size="14" fill="#0E5661" letter-spacing="0.06em">Nov 15</text>
+  </g>
+
+  <g>
+    <g transform="translate(96 968) scale(0.25)">
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M31.2726 81.3604C31.2726 61.9026 47.217 46.1642 66.8416 46.1642C86.466 46.1644 102.411 61.9027 102.411 81.3604C102.41 100.514 86.9603 116.064 67.7586 116.545L66.8416 116.557C47.217 116.557 31.2727 100.818 31.2726 81.3604ZM95.127 80.6407C94.7469 65.8038 82.6461 53.7966 67.5726 53.4193L66.8416 53.41C51.1854 53.41 38.5468 65.9533 38.5468 81.3604L38.5552 82.0802C38.9416 97.1562 51.43 109.311 66.8416 109.311C82.4975 109.311 95.1363 96.7673 95.1364 81.3604L95.127 80.6407Z" fill="#0E5661"/>
+    <path d="M67.002 0C104.005 6.13987e-05 134.002 29.997 134.002 67C134.002 80.4414 130.044 92.9584 123.23 103.449C142.051 66.8016 104.532 26.9862 67.002 26.9861C29.4722 26.9861 -8.0472 66.8016 10.7742 103.449C3.95994 92.9584 0.00195312 80.4414 0.00195312 67C0.00195312 29.9969 29.9989 0 67.002 0ZM67.002 7.44444C40.3445 7.44444 17.7777 24.9586 10.1808 49.1077C10.7575 48.3265 11.3517 47.558 11.961 46.8022C24.9325 30.7133 45.7421 19.5417 67.002 19.5417C88.2618 19.5417 109.071 30.7133 122.043 46.8022C122.652 47.5579 123.246 48.3267 123.822 49.1077C116.225 24.9588 93.6592 7.44449 67.002 7.44444Z" fill="#0E5661"/>
+    <path d="M314.746 56.8876C326.043 56.8876 331.568 62.264 331.568 71.6934V98.2447H323.075V93.1992H322.663C320.271 97.0867 315.653 99.2373 309.799 99.2373C300.975 99.2373 296.192 94.688 296.192 87.9054C296.192 81.1229 300.151 77.1526 309.634 75.581L317.467 74.2576C321.426 73.5959 322.663 73.0996 322.663 71.528C322.663 66.6479 320.271 63.5874 314.746 63.5874C309.386 63.5874 306.583 66.4824 306.253 70.7009H297.759C298.254 62.3467 304.686 56.8876 314.746 56.8876ZM222.671 57.4393V80.7876C222.671 88.8187 226.144 91.5509 231.271 91.5509C236.977 91.5509 241.112 86.666 241.112 78.3037V57.4393H250.043V97.8434H241.525V91.9649H241.195C238.879 96.5186 234.744 98.8369 228.956 98.8369C220.852 98.8369 213.741 94.5316 213.741 81.9467V57.4393H222.671ZM392.288 39.8867C405.932 39.8867 414.698 47.5867 416.93 59.2608H407.421C405.436 52.0576 400.392 48.1663 392.288 48.1663C381.207 48.1663 374.013 56.8598 374.013 69.3618C374.013 81.6155 381.29 90.5574 392.04 90.5574C400.805 90.5574 405.436 86.666 407.421 79.4628H416.93C414.698 91.137 405.684 98.8369 391.957 98.8369C375.253 98.8369 364.338 86.5004 364.338 69.3618C364.338 52.4716 375.501 39.8867 392.288 39.8867ZM460.719 57.4393V80.7876C460.719 88.8187 464.192 91.5509 469.319 91.5509C475.025 91.5509 479.159 86.666 479.159 78.3037V57.4393H488.09V97.8434H479.573V91.9649H479.242C476.927 96.5186 472.792 98.8369 467.003 98.8369C458.9 98.8369 451.788 94.5316 451.788 81.9467V57.4393H460.719ZM510.811 56.4458C520.156 56.4458 527.515 60.2544 527.515 68.6995H519.163C519.163 64.7253 515.607 62.7382 510.811 62.7382C506.098 62.7382 502.542 64.7253 502.542 68.2855C502.542 71.0177 504.444 72.4252 509.24 73.2532L516.682 74.4951C523.05 75.5715 528.59 78.0553 528.59 85.5897C528.59 94.4488 521.148 98.8369 510.398 98.8369C500.309 98.8369 492.95 94.6971 492.95 86.252H501.467C501.467 90.723 506.015 92.5445 510.398 92.5445C516.6 92.5445 519.659 90.3918 519.659 86.666C519.659 83.6854 517.592 82.4435 513.54 81.7811L506.098 80.4564C499.896 79.4628 493.942 76.979 493.942 69.3618C493.942 61.0823 501.302 56.4458 510.811 56.4458ZM181.344 40.8803V89.8122H208.881V97.8434H172V40.8803H181.344ZM276.32 56.4458C284.341 56.4458 291.452 60.7511 291.452 73.336V97.8434H282.522V74.4951C282.522 66.464 279.131 63.7318 273.922 63.7318C268.216 63.7318 263.833 68.6167 263.833 76.7306V97.8434H254.902V57.4393H263.502V63.3178H263.833C266.148 58.764 270.448 56.4458 276.32 56.4458ZM356.162 56.4458C357.816 56.4458 359.718 56.6942 361.785 58.1017L359.47 66.05C357.651 65.1393 356.079 64.7253 354.508 64.7253C348.472 64.7253 345.577 70.6038 345.577 77.6413V97.8434H336.647V57.4393H345.247V63.3178H345.495C347.479 59.0124 351.035 56.4458 356.162 56.4458ZM441.305 56.4458C442.959 56.4458 444.861 56.6942 446.928 58.1017L444.613 66.05C442.794 65.1393 441.223 64.7253 439.651 64.7253C433.615 64.7253 430.721 70.6038 430.721 77.6413V97.8434H421.79V57.4393H430.39V63.3178H430.638C432.623 59.0124 436.178 56.4458 441.305 56.4458ZM542.381 37.2373L542.381 49.955L542.38 50.9226C542.375 53.8899 542.338 58.6982 542.05 63.3178H542.381C544.696 58.764 548.996 56.4458 554.867 56.4458C562.888 56.4458 570 60.7511 570 73.336V97.8434H561.069V74.4951C561.069 66.464 557.679 63.7318 552.469 63.7318C546.681 63.7318 542.381 68.8651 542.381 76.8134V97.8434H533.45V37.2373H542.381ZM323.109 77.6774C322.278 78.6749 320.867 79.2568 318.957 79.5893L311.981 80.753C307.248 81.5012 305.421 83.5793 305.421 86.738C305.421 90.063 307.746 92.3074 312.313 92.3074C318.043 92.3074 323.109 88.733 323.109 81.418V77.6774Z" fill="#0E5661"/>
+  </g>
+    <text x="1524" y="992" text-anchor="end" class="f-mono" font-size="13.5" fill="#0E5661" letter-spacing="0.16em">LUNARCRUSH DATA  ·  NOV 16, 2026</text>
+  </g>
+  <script><![CDATA[
+    (function () {
+      var DUR = 8000;
+      
+    var basePts = [[816,560],[860,412],[906,514],[952,456],[1002,488],[1048,526],[1096,468],[1144,424],[1192,466],[1240,456],[1288,438],[1336,404],[1382,378],[1428,368],[1474,396],[1500,384],[1524,422]];
+    var areaEl = document.getElementById('hl-area');
+    var lineEl = document.getElementById('hl-line');
+    var traceEl = document.getElementById('hl-trace');
+    var ovalEl = document.getElementById('hl-oval');
+    var numEl = document.getElementById('hl-num');
+    var dotEl = document.getElementById('hl-dot');
+    var haloEl = document.getElementById('hl-halo');
+    function renderAt(p) {
+      var s = Math.sin(2 * Math.PI * p);
+      var pts = basePts.map(function (pt, idx) {
+        var w = Math.max(0, (idx - 5) / 11);
+        var wave = Math.sin(2 * Math.PI * (p + idx * 0.08));
+        var dy = -26 * s * w - 7 * wave * (1 - w * 0.5);
+        if (idx === basePts.length - 1) dy = -28 * s;
+        return [pt[0], Number((pt[1] + dy).toFixed(1))];
+      });
+      var d = pts.map(function (pt, idx) { return (idx === 0 ? 'M ' : 'L ') + pt[0] + ' ' + pt[1]; }).join(' ');
+      var a = d + ' L 1524 740 L 816 740 Z';
+      if (lineEl) lineEl.setAttribute('d', d);
+      if (traceEl) traceEl.setAttribute('d', d);
+      if (areaEl) areaEl.setAttribute('d', a);
+      var endPt = pts[pts.length - 1];
+      if (dotEl) dotEl.setAttribute('cy', endPt[1]);
+      if (haloEl) {
+        haloEl.setAttribute('cy', endPt[1]);
+        haloEl.style.transformOrigin = endPt[0] + 'px ' + endPt[1] + 'px';
+      }
+      if (ovalEl) ovalEl.setAttribute('transform', 'translate(1432 ' + (308 + (endPt[1] - 422)).toFixed(1) + ')');
+      if (numEl) numEl.textContent = Math.round(90 + 4.2 * s) + '%';
+    }
+  
+      var manual = false;
+      window.__seekSvgTime = function (tMs) {
+        manual = true;
+        renderAt((((tMs / DUR) % 1) + 1) % 1);
+      };
+      renderAt(0);
+      if (typeof requestAnimationFrame === 'function') {
+        var t0 = performance.now();
+        function loop(now) {
+          if (manual) return;
+          renderAt(((now - t0) % DUR) / DUR);
+          requestAnimationFrame(loop);
+        }
+        requestAnimationFrame(loop);
+      }
+    })();
+  ]]></script>
+</svg>

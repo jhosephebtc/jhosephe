@@ -1,0 +1,390 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1620 1080" width="1620" height="1080" role="img" aria-label="Stacking DAO Tactile Coin — Button Press Ignites Green Debossed Logo and Outer Charge">
+  <title>Stacking DAO — Tactile Coin Press &amp; Green Charge Animation (Light Porcelain 3:2)</title>
+  <desc>3:2 Light Porcelain Jhosephe UI animation where pressing and releasing the tactile coin ignites the debossed green Stacking DAO logo and gradually charges the outer green light ring.</desc>
+
+  <defs>
+    <style>
+      @font-face {
+        font-family: 'Aktiv Grotesk Ex';
+        src: url('./Aktiv_Grotesk_Ex_Bold.ttf') format('truetype');
+        font-weight: 700;
+        font-style: normal;
+        font-display: swap;
+      }
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap');
+
+      .font-aktiv {
+        font-family: 'Aktiv Grotesk Ex', 'Aktiv Grotesk', 'Inter', system-ui, sans-serif;
+        font-weight: 700;
+        font-kerning: normal;
+        font-variant-numeric: proportional-nums lining-nums;
+      }
+      .font-inter {
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        font-kerning: normal;
+        font-variant-numeric: proportional-nums lining-nums;
+      }
+
+      .coin-shadow-idle {
+        filter:
+          drop-shadow(0 12px 10px rgba(0, 0, 0, 0.08))
+          drop-shadow(0 28px 36px rgba(0, 0, 0, 0.14));
+      }
+
+      .coin-shadow-pressed {
+        filter:
+          drop-shadow(0 3px 4px rgba(0, 0, 0, 0.10))
+          drop-shadow(0 8px 12px rgba(0, 0, 0, 0.12));
+      }
+
+      .charge-arc-glow {
+        filter:
+          drop-shadow(0 0 4px rgba(111, 242, 111, 0.88))
+          drop-shadow(0 0 12px rgba(45, 212, 64, 0.48));
+      }
+
+      .debossed-green-glow {
+        filter:
+          drop-shadow(0 0 5px rgba(111, 242, 111, 0.92))
+          drop-shadow(0 0 14px rgba(45, 212, 64, 0.58))
+          drop-shadow(0 0 26px rgba(111, 242, 111, 0.36));
+      }
+
+      .status-dot-glow {
+        filter: drop-shadow(0 0 6px rgba(45, 212, 64, 0.65));
+      }
+    </style>
+
+    <!-- Light Porcelain Canvas -->
+    <radialGradient id="porcelain-bg" cx="65%" cy="45%" r="80%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="55%" stop-color="#f8f8f8" />
+      <stop offset="100%" stop-color="#f0f1f0" />
+    </radialGradient>
+
+    <!-- Outer Recessed Bed -->
+    <radialGradient id="coin-bed-light" cx="50%" cy="54%" r="54%">
+      <stop offset="0%" stop-color="#e3e5e4" />
+      <stop offset="72%" stop-color="#eef0ef" />
+      <stop offset="100%" stop-color="#f7f8f7" />
+    </radialGradient>
+
+    <linearGradient id="bed-rim-light" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0.11" />
+      <stop offset="50%" stop-color="#000000" stop-opacity="0.02" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.95" />
+    </linearGradient>
+
+    <!-- High-Relief Porcelain Coin Body -->
+    <linearGradient id="coin-body-light" x1="18%" y1="12%" x2="82%" y2="88%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="48%" stop-color="#f1f2f1" />
+      <stop offset="82%" stop-color="#e3e5e4" />
+      <stop offset="100%" stop-color="#f5f6f5" />
+    </linearGradient>
+
+    <!-- Machined Coin Face -->
+    <radialGradient id="coin-face-light" cx="32%" cy="18%" r="78%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="56%" stop-color="#f4f5f4" />
+      <stop offset="100%" stop-color="#e9ebea" />
+    </radialGradient>
+
+    <linearGradient id="coin-rim-light" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="1" />
+      <stop offset="55%" stop-color="#ffffff" stop-opacity="0.4" />
+      <stop offset="100%" stop-color="#b8bdbb" stop-opacity="0.5" />
+    </linearGradient>
+
+    <!-- Unlit Debossed Cavity Base -->
+    <linearGradient id="deboss-cavity" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#c9cfcc" />
+      <stop offset="45%" stop-color="#dce0de" />
+      <stop offset="100%" stop-color="#e9ecea" />
+    </linearGradient>
+
+    <!-- Emissive Fluor Green Fill for Debossed S Mark -->
+    <linearGradient id="s-green-emissive" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#22c937" />
+      <stop offset="55%" stop-color="#4be65a" />
+      <stop offset="100%" stop-color="#76f776" />
+    </linearGradient>
+
+    <!-- Charging Arc Stroke Gradient -->
+    <linearGradient id="charge-arc-grad" x1="15%" y1="85%" x2="85%" y2="15%">
+      <stop offset="0%" stop-color="#22c937" />
+      <stop offset="60%" stop-color="#52eb60" />
+      <stop offset="100%" stop-color="#86ff86" />
+    </linearGradient>
+
+    <!-- Soft Porcelain Surface Light Spill under Debossed S (6-stop zero-banding) -->
+    <radialGradient id="s-surface-spill" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#6FF26F" stop-opacity="0.28" />
+      <stop offset="32%" stop-color="#6FF26F" stop-opacity="0.16" />
+      <stop offset="58%" stop-color="#6FF26F" stop-opacity="0.06" />
+      <stop offset="82%" stop-color="#6FF26F" stop-opacity="0.015" />
+      <stop offset="100%" stop-color="#6FF26F" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- Reliable SVG Mask with wide unclipped bounds for bottom-up ignition -->
+    <mask id="s-ignite-mask" maskUnits="userSpaceOnUse" x="-260" y="-260" width="520" height="520">
+      <rect x="-260" y="-260" width="520" height="520" fill="#000000" />
+      <rect id="s-mask-rect" x="-260" y="95" width="520" height="520" fill="#ffffff" />
+    </mask>
+  </defs>
+
+  <!-- Light Porcelain Canvas -->
+  <rect width="1620" height="1080" fill="url(#porcelain-bg)" />
+
+  <!-- ==================== LEFT: BRAND LOCKUP + ENGAGING COPY ==================== -->
+  <g transform="translate(116, 108)">
+    <!-- Official Stacking DAO Lockup (Light Porcelain — visible from frame 0) -->
+    <g id="tx-logo" opacity="1" transform="translate(0, 0)">
+      <rect x="0" y="0" width="58" height="58" rx="13" fill="#6FF26F" />
+      <g transform="translate(10.5, 11.5) scale(0.62)">
+        <path d="M 14 0 L 42 0 C 50 0 56 3.5 60 10 L 49 16 C 46.5 12 43.5 10.5 39 10.5 L 14 10.5 Z" fill="#1c3830" />
+        <path d="M 2 10.5 L 14 10.5 C 14 18 20 22 28 22 L 38 22 C 51 22 60 30 60 42 L 48 42 C 48 35.5 43.5 32.5 36 32.5 L 26 32.5 C 12 32.5 2 24.5 2 10.5 Z" fill="#1c3830" />
+        <path d="M 0 44 L 11 38 C 13.5 42 16.5 43.5 21 43.5 L 36 43.5 L 36 54 L 18 54 C 10 54 4 50.5 0 44 Z" fill="#1c3830" />
+      </g>
+      <text x="76" y="42" class="font-aktiv" font-size="34" letter-spacing="-0.3" fill="#1c3830">STACKING<tspan dx="3" dy="-14" font-size="14" letter-spacing="0.3" fill="#1c3830">DAO</tspan></text>
+    </g>
+
+    <!-- High-Impact Headline -->
+    <g id="tx-head" opacity="0">
+      <text x="0" y="294" class="font-inter" font-size="74" font-weight="600" letter-spacing="-2.3" fill="#1c3830">
+        Tap once to stake.
+      </text>
+      <text x="0" y="380" class="font-inter" font-size="74" font-weight="600" letter-spacing="-2.3" fill="#1c9e32">
+        Earn Bitcoin 24/7.
+      </text>
+    </g>
+
+    <!-- Concise App Value & Live Metrics -->
+    <text id="tx-sub" opacity="0" x="0" y="452" class="font-inter" font-size="24" font-weight="400" letter-spacing="-0.2" fill="#5d6b63">
+      Auto-compounding yield at <tspan font-weight="600" fill="#1c3830">app.stackingdao.com</tspan>
+    </text>
+
+    <!-- Synchronized Charging Status Readout -->
+    <g id="tx-stat" opacity="0" transform="translate(0, 740)">
+      <circle id="status-dot" cx="8" cy="-8" r="5" fill="#c8cecb" />
+      <text x="28" y="0" class="font-aktiv" font-size="34" letter-spacing="-0.5" fill="#1c3830">
+        <tspan id="charge-pct">0</tspan><tspan fill="#1c9e32">%</tspan>
+      </text>
+      <text x="176" y="-2" class="font-inter" font-size="21" font-weight="500" fill="#5d6b63">
+        <tspan id="charge-state">Standby</tspan> · <tspan id="charge-apy" font-weight="600" fill="#1c3830">0.00% APY</tspan>
+      </text>
+    </g>
+  </g>
+
+  <!-- ==================== RIGHT: HIGH-RELIEF LIGHT PORCELAIN COIN / TACTILE DIAL ==================== -->
+  <g transform="translate(1155, 540)">
+    <!-- Subtle Outer Datum Marks (-135, 0, +135) -->
+    <g stroke="#1c3830" stroke-opacity="0.18" stroke-width="2.5" stroke-linecap="round">
+      <path d="M 0 -308 v -8" transform="rotate(-135)" />
+      <path d="M 0 -308 v -10" transform="rotate(0)" />
+      <path d="M 0 -308 v -8" transform="rotate(135)" />
+    </g>
+
+    <!-- Outer Charging Track (matching Dial arc) -->
+    <path d="M -198 198 A 280 280 0 1 1 198 198" fill="none" stroke="#e4e7e5" stroke-width="8" stroke-linecap="round" />
+
+    <!-- Gradual Green Charging Arc (animated 0% -> 100%) -->
+    <path id="charge-arc" d="M -198 198 A 280 280 0 1 1 198 198" fill="none" stroke="url(#charge-arc-grad)" stroke-width="8.5" stroke-linecap="round" pathLength="100" stroke-dasharray="0 100" opacity="0" class="charge-arc-glow" />
+
+    <!-- Outer Recessed Bed (.jh-dial__bed light mode) -->
+    <circle cx="0" cy="0" r="256" fill="url(#coin-bed-light)" stroke="url(#bed-rim-light)" stroke-width="2.5" />
+
+    <!-- Pressable High-Relief Porcelain Coin Group -->
+    <g id="coin-press-group" transform="translate(0, 0) scale(1)">
+      <g id="coin-shadow-wrap" class="coin-shadow-idle">
+        <!-- Extruded porcelain coin skirt -->
+        <circle id="coin-skirt" cx="0" cy="12" r="204" fill="#d3d6d4" />
+        <!-- Main coin cylinder -->
+        <circle cx="0" cy="0" r="204" fill="url(#coin-body-light)" stroke="url(#coin-rim-light)" stroke-width="2" />
+      </g>
+
+      <!-- Machined Coin Face (.jh-dial__top) -->
+      <circle cx="0" cy="-3" r="180" fill="url(#coin-face-light)" stroke="#ffffff" stroke-opacity="0.9" stroke-width="1.5" />
+      <!-- Subtle minted coin inner ring -->
+      <circle cx="0" cy="-3" r="164" fill="none" stroke="#1c3830" stroke-opacity="0.06" stroke-width="1.5" />
+      <!-- Subtle green ambient reflection ring around coin face when lit -->
+      <circle id="coin-green-halo" cx="0" cy="-3" r="164" fill="none" stroke="#6FF26F" stroke-opacity="0" stroke-width="2.5" class="charge-arc-glow" />
+
+      <!-- ==================== DEBOSSED STACKING DAO LOGO ==================== -->
+      <g transform="translate(0, -3)">
+        <!-- Base Debossed (Baixo Relevo) Cavity -->
+        <g transform="translate(-93, -84) scale(3.1)">
+          <!-- Bottom bright catch-light -->
+          <g transform="translate(0, 0.9)" fill="#ffffff" opacity="0.94">
+            <path d="M 14 0 L 42 0 C 50 0 56 3.5 60 10 L 49 16 C 46.5 12 43.5 10.5 39 10.5 L 14 10.5 Z" />
+            <path d="M 2 10.5 L 14 10.5 C 14 18 20 22 28 22 L 38 22 C 51 22 60 30 60 42 L 48 42 C 48 35.5 43.5 32.5 36 32.5 L 26 32.5 C 12 32.5 2 24.5 2 10.5 Z" />
+            <path d="M 0 44 L 11 38 C 13.5 42 16.5 43.5 21 43.5 L 36 43.5 L 36 54 L 18 54 C 10 54 4 50.5 0 44 Z" />
+          </g>
+          <!-- Top inner shadow edge -->
+          <g transform="translate(0, -0.7)" fill="#aeb5b1" opacity="0.88">
+            <path d="M 14 0 L 42 0 C 50 0 56 3.5 60 10 L 49 16 C 46.5 12 43.5 10.5 39 10.5 L 14 10.5 Z" />
+            <path d="M 2 10.5 L 14 10.5 C 14 18 20 22 28 22 L 38 22 C 51 22 60 30 60 42 L 48 42 C 48 35.5 43.5 32.5 36 32.5 L 26 32.5 C 12 32.5 2 24.5 2 10.5 Z" />
+            <path d="M 0 44 L 11 38 C 13.5 42 16.5 43.5 21 43.5 L 36 43.5 L 36 54 L 18 54 C 10 54 4 50.5 0 44 Z" />
+          </g>
+          <!-- Recessed inner cavity surface -->
+          <g fill="url(#deboss-cavity)">
+            <path d="M 14 0 L 42 0 C 50 0 56 3.5 60 10 L 49 16 C 46.5 12 43.5 10.5 39 10.5 L 14 10.5 Z" />
+            <path d="M 2 10.5 L 14 10.5 C 14 18 20 22 28 22 L 38 22 C 51 22 60 30 60 42 L 48 42 C 48 35.5 43.5 32.5 36 32.5 L 26 32.5 C 12 32.5 2 24.5 2 10.5 Z" />
+            <path d="M 0 44 L 11 38 C 13.5 42 16.5 43.5 21 43.5 L 36 43.5 L 36 54 L 18 54 C 10 54 4 50.5 0 44 Z" />
+          </g>
+        </g>
+
+        <!-- Soft Radial Green Light Spill across Porcelain Coin Face -->
+        <circle id="s-surface-glow" cx="0" cy="0" r="158" fill="url(#s-surface-spill)" opacity="0" />
+
+        <!-- Lit Glowing Green Debossed S Mark (drop-shadow outside mask so glow is never clipped) -->
+        <g id="s-green-group" opacity="0" class="debossed-green-glow">
+          <g mask="url(#s-ignite-mask)">
+            <g transform="translate(-93, -84) scale(3.1)" fill="url(#s-green-emissive)">
+              <path d="M 14 0 L 42 0 C 50 0 56 3.5 60 10 L 49 16 C 46.5 12 43.5 10.5 39 10.5 L 14 10.5 Z" />
+              <path d="M 2 10.5 L 14 10.5 C 14 18 20 22 28 22 L 38 22 C 51 22 60 30 60 42 L 48 42 C 48 35.5 43.5 32.5 36 32.5 L 26 32.5 C 12 32.5 2 24.5 2 10.5 Z" />
+              <path d="M 0 44 L 11 38 C 13.5 42 16.5 43.5 21 43.5 L 36 43.5 L 36 54 L 18 54 C 10 54 4 50.5 0 44 Z" />
+            </g>
+            <!-- Subtle inner top shadow inside lit green cavity to preserve debossed 3D depth -->
+            <g transform="translate(-93, -84.7) scale(3.1)" fill="#158528" opacity="0.28">
+              <path d="M 14 0 L 42 0 C 50 0 56 3.5 60 10 L 49 16 C 46.5 12 43.5 10.5 39 10.5 L 14 10.5 Z" />
+              <path d="M 2 10.5 L 14 10.5 C 14 18 20 22 28 22 L 38 22 C 51 22 60 30 60 42 L 48 42 C 48 35.5 43.5 32.5 36 32.5 L 26 32.5 C 12 32.5 2 24.5 2 10.5 Z" />
+              <path d="M 0 44 L 11 38 C 13.5 42 16.5 43.5 21 43.5 L 36 43.5 L 36 54 L 18 54 C 10 54 4 50.5 0 44 Z" />
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+
+  <script><![CDATA[
+    (function () {
+      const DURATION = 12000;
+      const easeOutCubic = t => 1 - Math.pow(1 - t, 3);
+      const easeInOutCubic = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      const clamp01 = v => Math.max(0, Math.min(1, v));
+
+      const txLogo = document.getElementById('tx-logo');
+      const txHead = document.getElementById('tx-head');
+      const txSub = document.getElementById('tx-sub');
+      const txStat = document.getElementById('tx-stat');
+      const coinGroup = document.getElementById('coin-press-group');
+      const coinShadowWrap = document.getElementById('coin-shadow-wrap');
+      const coinSkirt = document.getElementById('coin-skirt');
+      const sMaskRect = document.getElementById('s-mask-rect');
+      const sGreenGroup = document.getElementById('s-green-group');
+      const sSurfaceGlow = document.getElementById('s-surface-glow');
+      const coinHalo = document.getElementById('coin-green-halo');
+      const chargeArc = document.getElementById('charge-arc');
+      const chargePct = document.getElementById('charge-pct');
+      const chargeState = document.getElementById('charge-state');
+      const chargeApy = document.getElementById('charge-apy');
+      const statusDot = document.getElementById('status-dot');
+
+      function fadeWindow(t, inStart, inDur, outStart, outDur) {
+        if (t < inStart) return 0;
+        if (t < inStart + inDur) return easeOutCubic((t - inStart) / inDur);
+        if (t <= outStart) return 1;
+        if (t < outStart + outDur) return 1 - easeInOutCubic(clamp01((t - outStart) / outDur));
+        return 0;
+      }
+
+      function updateAt(rawMs) {
+        const t = ((rawMs % DURATION) + DURATION) % DURATION;
+
+        // Header visible on frame 0; all texts fade in within <= 460ms
+        if (txHead) txHead.setAttribute('opacity', fadeWindow(t, 0, 260, 11500, 480).toFixed(3));
+        if (txSub)  txSub.setAttribute('opacity', fadeWindow(t, 90, 280, 11460, 480).toFixed(3));
+        if (txStat) txStat.setAttribute('opacity', fadeWindow(t, 160, 280, 11420, 480).toFixed(3));
+
+        // 1. Tactile Button Press & Return starts immediately (450ms -> 1450ms)
+        let press = 0;
+        if (t >= 450 && t < 820) {
+          press = easeInOutCubic((t - 450) / 370);
+        } else if (t >= 820 && t < 1000) {
+          press = 1;
+        } else if (t >= 1000 && t < 1450) {
+          press = 1 - easeOutCubic((t - 1000) / 450);
+        }
+
+        const ty = press * 8.5;
+        const sc = 1 - press * 0.024;
+        if (coinGroup) coinGroup.setAttribute('transform', 'translate(0, ' + ty.toFixed(2) + ') scale(' + sc.toFixed(4) + ')');
+        if (coinSkirt) coinSkirt.setAttribute('cy', (12 - press * 7).toFixed(2));
+        if (coinShadowWrap) coinShadowWrap.setAttribute('class', press > 0.45 ? 'coin-shadow-pressed' : 'coin-shadow-idle');
+
+        // 2. Green Logo Ignition inside Debossed S (starts as coin springs back: 1200ms -> 2500ms)
+        let logoLight = 0;
+        if (t >= 1200 && t < 2500) {
+          logoLight = easeOutCubic((t - 1200) / 1300);
+        } else if (t >= 2500 && t < 10800) {
+          logoLight = 1;
+        } else if (t >= 10800 && t <= 12000) {
+          logoLight = 1 - easeInOutCubic((t - 10800) / 1200);
+        }
+
+        const maskY = 95 - logoLight * 355;
+        if (sMaskRect) sMaskRect.setAttribute('y', maskY.toFixed(1));
+        if (sGreenGroup) sGreenGroup.setAttribute('opacity', logoLight > 0.01 ? clamp01(logoLight * 1.4).toFixed(3) : '0');
+        if (sSurfaceGlow) sSurfaceGlow.setAttribute('opacity', logoLight.toFixed(3));
+        if (coinHalo) coinHalo.setAttribute('stroke-opacity', (logoLight * 0.34).toFixed(3));
+
+        // 3. Outer Charging Ring & Growing APY Readout (2000ms -> 8600ms, hold to 10800ms, return 10800ms -> 12000ms)
+        let charge = 0;
+        let arcOpacity = 1;
+        if (t >= 2000 && t < 8600) {
+          charge = easeInOutCubic((t - 2000) / 6600);
+        } else if (t >= 8600 && t < 10800) {
+          charge = 1;
+        } else if (t >= 10800 && t <= 12000) {
+          const resetP = easeInOutCubic((t - 10800) / 1200);
+          charge = 1 - resetP;
+          arcOpacity = 1 - resetP;
+        }
+
+        const dash = (charge * 100).toFixed(2);
+        if (chargeArc) {
+          chargeArc.setAttribute('stroke-dasharray', dash + ' 100');
+          chargeArc.setAttribute('opacity', charge > 0.005 ? arcOpacity.toFixed(3) : '0');
+        }
+
+        // 4. Status Dot, Charging Percentage & Live APY Readout
+        const pct = Math.round(charge * 100);
+        const liveApy = (charge * 6.64).toFixed(2);
+        if (chargePct) chargePct.textContent = String(pct);
+        if (chargeApy) chargeApy.textContent = liveApy + '% APY';
+        if (chargeState) {
+          chargeState.textContent =
+            t < 1500 ? 'Pressing coin' :
+            charge < 0.05 ? 'Igniting yield' :
+            charge < 0.99 ? 'Charging yield' :
+            'Yield active';
+        }
+        if (statusDot) {
+          if (logoLight > 0.15) {
+            statusDot.setAttribute('fill', '#2dd440');
+            statusDot.setAttribute('class', 'status-dot-glow');
+          } else {
+            statusDot.setAttribute('fill', '#c8cecb');
+            statusDot.removeAttribute('class');
+          }
+        }
+      }
+
+      let manual = false;
+      window.__seekSvgTime = function (tMs) {
+        manual = true;
+        updateAt(tMs);
+      };
+
+      const start = performance.now();
+      function loop(now) {
+        if (manual) return;
+        updateAt(now - start);
+        requestAnimationFrame(loop);
+      }
+      updateAt(0);
+      requestAnimationFrame(loop);
+    })();
+  ]]></script>
+</svg>

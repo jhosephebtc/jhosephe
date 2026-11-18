@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en" class="dark" data-jh-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stacking DAO × Jhosephe UI — All 3:2 Motion Pieces</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      @font-face {
+        font-family: 'Aktiv Grotesk Ex';
+        src: url('./Aktiv_Grotesk_Ex_Bold.ttf') format('truetype');
+        font-weight: 700;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+        background: #06140c;
+        color: #ffffff;
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        padding: 32px 24px;
+      }
+
+      .gallery {
+        width: min(1240px, 100%);
+        margin: 0 auto;
+        display: grid;
+        gap: 32px;
+      }
+
+      .stage {
+        width: 100%;
+        aspect-ratio: 3 / 2;
+        border-radius: 20px;
+        overflow: hidden;
+      }
+
+      .stage object {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="gallery">
+      <section class="stage">
+        <object data="./stacking-dao-instrument-bars-3x2.svg" type="image/svg+xml" aria-label="Instrument Bars Dark"></object>
+      </section>
+      <section class="stage">
+        <object data="./stacking-dao-instrument-bars-light-3x2.svg" type="image/svg+xml" aria-label="Instrument Bars Light"></object>
+      </section>
+      <section class="stage">
+        <object data="./stacking-dao-financial-light-3x2.svg" type="image/svg+xml" aria-label="Financial Chart & Audio LEDs Light"></object>
+      </section>
+      <section class="stage">
+        <object data="./stacking-dao-coin-light-3x2.svg" type="image/svg+xml" aria-label="Tactile Coin Light"></object>
+      </section>
+      <section class="stage">
+        <object data="./stacking-dao-tactile-dial-3x2.svg" type="image/svg+xml" aria-label="Tactile Dial Dark"></object>
+      </section>
+    </main>
+  </body>
+</html>

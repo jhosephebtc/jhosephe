@@ -1,0 +1,300 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1620" height="1080" role="img" aria-label="Stacking DAO Tactile Dial — Stake BTC and STX on Stacks">
+  <title>Stacking DAO — Tactile Dial Animation (3:2)</title>
+  <desc>Minimalist Stacking DAO SVG animation in 3:2 (1620x1080) with fast opacity text entrance, growing APY readout synced to the Jhosephe UI Tactile Dial, and seamless 12s loop.</desc>
+
+  <defs>
+    <style>
+      @font-face {
+        font-family: 'Aktiv Grotesk Ex';
+        src: url('./Aktiv_Grotesk_Ex_Bold.ttf') format('truetype');
+        font-weight: 700;
+        font-style: normal;
+        font-display: swap;
+      }
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;display=swap');
+
+      .font-aktiv {
+        font-family: 'Aktiv Grotesk Ex', 'Aktiv Grotesk', 'Inter', system-ui, sans-serif;
+        font-weight: 700;
+        font-kerning: normal;
+        font-variant-numeric: proportional-nums lining-nums;
+      }
+      .font-inter {
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        font-kerning: normal;
+        font-variant-numeric: proportional-nums lining-nums;
+      }
+
+      .dial-knob-shadow {
+        filter:
+          drop-shadow(0 5px 4px rgba(2, 6, 5, 0.92))
+          drop-shadow(2px 16px 24px rgba(0, 0, 0, 0.88));
+      }
+
+      .dial-arc-glow {
+        filter:
+          drop-shadow(0 0 3px rgba(111, 242, 111, 0.85))
+          drop-shadow(0 0 10px rgba(111, 242, 111, 0.45))
+          drop-shadow(0 0 22px rgba(111, 242, 111, 0.22));
+      }
+
+      .dial-led-glow {
+        filter:
+          drop-shadow(0 0 3px rgba(170, 255, 170, 0.95))
+          drop-shadow(0 0 9px rgba(111, 242, 111, 0.78))
+          drop-shadow(0 0 20px rgba(111, 242, 111, 0.42));
+      }
+
+      .status-dot-glow {
+        filter:
+          drop-shadow(0 0 3px rgba(111, 242, 111, 0.9))
+          drop-shadow(0 0 10px rgba(111, 242, 111, 0.55));
+      }
+
+      .ambient-glow {
+        filter: blur(110px);
+      }
+
+      .detent-active {
+        filter: drop-shadow(0 0 8px rgba(111, 242, 111, 0.55));
+      }
+    </style>
+
+    <!-- .jh-dial__bed (Ultra-dark green-obsidian recessed well) -->
+    <radialGradient id="dial-bed" cx="50%" cy="54%" r="54%">
+      <stop offset="0%" stop-color="#060b09" />
+      <stop offset="78%" stop-color="#09120f" />
+      <stop offset="100%" stop-color="#0c1814" />
+    </radialGradient>
+
+    <linearGradient id="bed-rim" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#020504" stop-opacity="0.95" />
+      <stop offset="50%" stop-color="#060c0a" stop-opacity="0.25" />
+      <stop offset="100%" stop-color="#f5f5ef" stop-opacity="0.035" />
+    </linearGradient>
+
+    <linearGradient id="dial-knob-body" x1="15%" y1="10%" x2="85%" y2="90%">
+      <stop offset="0%" stop-color="#15241f" />
+      <stop offset="48%" stop-color="#0b1411" />
+      <stop offset="80%" stop-color="#101c18" />
+      <stop offset="100%" stop-color="#09110e" />
+    </linearGradient>
+
+    <radialGradient id="dial-top-cap" cx="30%" cy="15%" r="78%">
+      <stop offset="0%" stop-color="#162621" />
+      <stop offset="55%" stop-color="#0d1814" />
+      <stop offset="100%" stop-color="#080f0d" />
+    </radialGradient>
+
+    <linearGradient id="knob-top-rim" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f5f5ef" stop-opacity="0.09" />
+      <stop offset="35%" stop-color="#f5f5ef" stop-opacity="0.015" />
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.5" />
+    </linearGradient>
+
+    <linearGradient id="fluor-arc" x1="15%" y1="85%" x2="85%" y2="15%">
+      <stop offset="0%" stop-color="#4de25e" />
+      <stop offset="55%" stop-color="#6FF26F" />
+      <stop offset="100%" stop-color="#a2ffa2" />
+    </linearGradient>
+
+    <linearGradient id="led-pill-core" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#b8ffb8" />
+      <stop offset="50%" stop-color="#6FF26F" />
+      <stop offset="100%" stop-color="#5ae05a" />
+    </linearGradient>
+  </defs>
+
+  <!-- Almost-Black Canvas (#070c0a) -->
+  <rect width="1200" height="800" fill="#070c0a" />
+
+  <!-- Ambient Dark Green Light Behind Dial -->
+  <circle cx="885" cy="400" r="200" fill="#1c3830" opacity="0.85" class="ambient-glow" />
+  <circle cx="885" cy="400" r="100" fill="#6FF26F" opacity="0.12" class="ambient-glow" />
+
+  <!-- ==================== LEFT: BRAND & TYPOGRAPHY ==================== -->
+  <g transform="translate(88, 178)">
+    <!-- Stacking DAO Logotype (always visible from frame 0) -->
+    <g id="tx-logo" opacity="1">
+      <g transform="translate(0, 2) scale(0.68)">
+        <path d="M 14 0 L 42 0 C 50 0 56 3.5 60 10 L 49 16 C 46.5 12 43.5 10.5 39 10.5 L 14 10.5 Z" fill="#6FF26F" />
+        <path d="M 2 10.5 L 14 10.5 C 14 18 20 22 28 22 L 38 22 C 51 22 60 30 60 42 L 48 42 C 48 35.5 43.5 32.5 36 32.5 L 26 32.5 C 12 32.5 2 24.5 2 10.5 Z" fill="#6FF26F" />
+        <path d="M 0 44 L 11 38 C 13.5 42 16.5 43.5 21 43.5 L 36 43.5 L 36 54 L 18 54 C 10 54 4 50.5 0 44 Z" fill="#6FF26F" />
+      </g>
+      <text x="54" y="31" class="font-aktiv" font-size="22" letter-spacing="1.2" fill="#f5f5ef">STACKING<tspan dy="-8" font-size="10.5" fill="#6FF26F" letter-spacing="0.8">DAO</tspan></text>
+    </g>
+
+    <!-- Headline -->
+    <g id="tx-head" opacity="0">
+      <text x="0" y="132" class="font-aktiv" font-size="46" letter-spacing="-0.8" fill="#f5f5ef">Stake <tspan fill="#6FF26F">BTC</tspan> and <tspan fill="#6FF26F">STX</tspan></text>
+      <text x="0" y="186" class="font-aktiv" font-size="46" letter-spacing="-0.8" fill="#f5f5ef">on Stacks</text>
+    </g>
+
+    <!-- Subtitle -->
+    <text id="tx-sub" opacity="0" x="0" y="236" class="font-inter" font-size="18" font-weight="400" fill="#f5f5ef" fill-opacity="0.78">
+      Stacking DAO is the hub for staking on Stacks.
+    </text>
+
+    <!-- Synchronized Live APY Counter & Status Line -->
+    <g id="tx-stat" opacity="0" transform="translate(0, 344)">
+      <text x="0" y="-28" class="font-aktiv" font-size="54" letter-spacing="-1.2" fill="#f5f5ef">
+        <tspan id="dial-apy">2.45</tspan><tspan font-size="26" fill="#6FF26F" dx="2">%</tspan>
+        <tspan font-family="Inter, sans-serif" font-weight="500" font-size="16" fill="#f5f5ef" fill-opacity="0.54" dx="10">APY</tspan>
+      </text>
+
+      <circle cx="5" cy="19" r="3.5" fill="#6FF26F" class="status-dot-glow" />
+      <text id="dial-mode-name" x="20" y="24" class="font-aktiv" font-size="16" fill="#f5f5ef">stBTC</text>
+      <text id="dial-mode-desc" x="148" y="24" class="font-inter" font-size="15" font-weight="400" fill="#f5f5ef" fill-opacity="0.64">Auto-compounding sBTC yield · Liquid in DeFi</text>
+    </g>
+  </g>
+
+  <!-- ==================== RIGHT: NATIVE 1:1 JHOSEPHE UI TACTILE DIAL ==================== -->
+  <g transform="translate(885, 400)">
+    <!-- Detent Labels aligned at -135°, -45°, +45°, +135° -->
+    <g id="tx-detents" opacity="0" class="font-inter" font-size="12.5" font-weight="500">
+      <text id="dl-0" x="-142" y="138" text-anchor="middle" fill="#6FF26F" class="detent-active">stBTC</text>
+      <text id="dl-1" x="-142" y="-134" text-anchor="middle" fill="#f5f5ef" fill-opacity="0.34">stSTXbtc</text>
+      <text id="dl-2" x="142" y="-134" text-anchor="middle" fill="#f5f5ef" fill-opacity="0.34">stSTX</text>
+      <text id="dl-3" x="142" y="138" text-anchor="middle" fill="#f5f5ef" fill-opacity="0.34">Native</text>
+    </g>
+
+    <!-- Datum Marks (-135, 0, +135) -->
+    <g stroke="#f5f5ef" stroke-opacity="0.22" stroke-width="2" stroke-linecap="round">
+      <path d="M 0 -169 v -5.5" transform="rotate(-135)" />
+      <path d="M 0 -169 v -6.5" transform="rotate(0)" />
+      <path d="M 0 -169 v -5.5" transform="rotate(135)" />
+    </g>
+
+    <!-- Arc Bed (r=152.5) -->
+    <path d="M -107.83 107.83 A 152.5 152.5 0 1 1 107.83 107.83" fill="none" stroke="#111e19" stroke-width="6.5" stroke-linecap="round" />
+
+    <!-- Emissive Fluor Green Arc Fill -->
+    <path id="dial-arc" class="dial-arc-glow" d="M -107.83 107.83 A 152.5 152.5 0 1 1 107.83 107.83" fill="none" stroke="url(#fluor-arc)" stroke-width="6.5" stroke-linecap="round" pathLength="100" stroke-dasharray="1.4 100" />
+
+    <!-- Tactile Bed (.jh-dial__bed: r=140) -->
+    <circle cx="0" cy="0" r="140" fill="url(#dial-bed)" stroke="url(#bed-rim)" stroke-width="2" />
+
+    <!-- Tactile Knob (.jh-dial__knob: r=90) -->
+    <g class="dial-knob-shadow">
+      <circle cx="0" cy="7" r="90" fill="#040806" />
+      <circle cx="0" cy="0" r="90" fill="url(#dial-knob-body)" stroke="url(#knob-top-rim)" stroke-width="1.5" />
+    </g>
+
+    <!-- Recessed / beveled Top Cap (.jh-dial__top) -->
+    <ellipse cx="0" cy="-2" rx="80" ry="78" fill="url(#dial-top-cap)" stroke="#050a08" stroke-opacity="0.7" stroke-width="1.5" />
+    <ellipse cx="0" cy="-2" rx="78.5" ry="76.5" fill="none" stroke="#f5f5ef" stroke-opacity="0.035" stroke-width="1" />
+
+    <!-- Rotating Indicator Light (.jh-dial__mark) -->
+    <g id="dial-knob-turn" transform="translate(0, -2) rotate(-135)">
+      <rect x="-3.75" y="-64" width="7.5" height="34" rx="3.75" fill="url(#led-pill-core)" class="dial-led-glow" />
+    </g>
+  </g>
+
+  <script><![CDATA[
+    (function () {
+      const DURATION = 12000;
+      const easeInOut = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      const easeOut = t => 1 - Math.pow(1 - t, 3);
+      const clamp01 = v => Math.max(0, Math.min(1, v));
+      const lerp = (a, b, t) => a + (b - a) * t;
+
+      // Live Stacking DAO APY sequence synchronized with -135 -> -45 -> +45 -> +135 -> -135
+      // Starts moving quickly at 500ms; header stays visible at frame 0; all texts reveal within <= 460ms
+      const SEGMENTS = [
+        [0,     1700, -135, -135, 2.45, 2.45, 0],
+        [1700,  2800, -135,  -45, 2.45, 5.98, 1],
+        [2800,  4900,  -45,  -45, 5.98, 5.98, 1],
+        [4900,  6000,  -45,   45, 5.98, 5.99, 2],
+        [6000,  8100,   45,   45, 5.99, 5.99, 2],
+        [8100,  9200,   45,  135, 5.99, 6.64, 3],
+        [9200, 10800,  135,  135, 6.64, 6.64, 3],
+        [10800,12000,  135, -135, 6.64, 2.45, 0]
+      ];
+
+      const MODES = [
+        { name: 'stBTC',    desc: 'Auto-compounding sBTC yield · Liquid in DeFi' },
+        { name: 'stSTXbtc', desc: 'Liquid STX staking · Direct BTC rewards' },
+        { name: 'stSTX',    desc: 'Liquid STX stacking · Auto-compounding STX' },
+        { name: 'Native',   desc: 'Direct BTC rewards · Non-custodial STX' }
+      ];
+
+      const txLogo = document.getElementById('tx-logo');
+      const txHead = document.getElementById('tx-head');
+      const txSub = document.getElementById('tx-sub');
+      const txStat = document.getElementById('tx-stat');
+      const txDetents = document.getElementById('tx-detents');
+      const knobTurn = document.getElementById('dial-knob-turn');
+      const dialArc = document.getElementById('dial-arc');
+      const dialApy = document.getElementById('dial-apy');
+      const modeName = document.getElementById('dial-mode-name');
+      const modeDesc = document.getElementById('dial-mode-desc');
+      const dLabels = [0, 1, 2, 3].map(i => document.getElementById('dl-' + i));
+
+      function fadeWindow(t, inStart, inDur, outStart, outDur) {
+        if (t < inStart) return 0;
+        if (t < inStart + inDur) return easeOut((t - inStart) / inDur);
+        if (t <= outStart) return 1;
+        if (t < outStart + outDur) return 1 - easeInOut((t - outStart) / outDur);
+        return 0;
+      }
+
+      function updateAt(rawMs) {
+        const t = ((rawMs % DURATION) + DURATION) % DURATION;
+
+        // Header visible on frame 0; all other texts fade in within <= 460ms
+        if (txHead) txHead.setAttribute('opacity', fadeWindow(t, 0, 260, 11500, 480).toFixed(3));
+        if (txSub)  txSub.setAttribute('opacity', fadeWindow(t, 90, 280, 11460, 480).toFixed(3));
+        if (txStat) txStat.setAttribute('opacity', fadeWindow(t, 160, 280, 11420, 480).toFixed(3));
+        if (txDetents) txDetents.setAttribute('opacity', fadeWindow(t, 120, 300, 11460, 480).toFixed(3));
+
+        let seg = SEGMENTS[0];
+        for (let i = 0; i < SEGMENTS.length; i++) {
+          if (t >= SEGMENTS[i][0] && t <= SEGMENTS[i][1]) { seg = SEGMENTS[i]; break; }
+        }
+        const span = Math.max(1, seg[1] - seg[0]);
+        const p = easeInOut(clamp01((t - seg[0]) / span));
+        const deg = lerp(seg[2], seg[3], p);
+        const frac = (deg + 135) / 270;
+        const arcDash = Math.max(1.4, frac * 100);
+        const apy = lerp(seg[4], seg[5], p);
+
+        if (knobTurn) knobTurn.setAttribute('transform', 'translate(0, -2) rotate(' + deg.toFixed(2) + ')');
+        if (dialArc) dialArc.setAttribute('stroke-dasharray', arcDash.toFixed(2) + ' 100');
+        if (dialApy) dialApy.textContent = apy.toFixed(2);
+
+        const activeIdx = Math.min(3, Math.max(0, Math.round(frac * 3)));
+        if (modeName) modeName.textContent = MODES[activeIdx].name;
+        if (modeDesc) modeDesc.textContent = MODES[activeIdx].desc;
+
+        for (let i = 0; i < dLabels.length; i++) {
+          const el = dLabels[i];
+          if (!el) continue;
+          if (i === activeIdx) {
+            el.setAttribute('fill', '#6FF26F');
+            el.removeAttribute('fill-opacity');
+            el.setAttribute('class', 'detent-active');
+          } else {
+            el.setAttribute('fill', '#f5f5ef');
+            el.setAttribute('fill-opacity', '0.34');
+            el.removeAttribute('class');
+          }
+        }
+      }
+
+      let manual = false;
+      window.__seekSvgTime = function (tMs) {
+        manual = true;
+        updateAt(tMs);
+      };
+
+      const start = performance.now();
+      function loop(now) {
+        if (manual) return;
+        updateAt(now - start);
+        requestAnimationFrame(loop);
+      }
+      updateAt(0);
+      requestAnimationFrame(loop);
+    })();
+  ]]></script>
+</svg>
